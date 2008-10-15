@@ -1,4 +1,4 @@
-package br.eng.rps.cosmo;
+package br.ufrgs.enq.jcosmo;
 
 
 /**

@@ -1,9 +1,9 @@
-package br.eng.rps.cosmo.test;
+package br.ufrgs.enq.jcosmo.test;
 
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import br.eng.rps.cosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 
 public class COSMOSACTest extends TestCase {
 
