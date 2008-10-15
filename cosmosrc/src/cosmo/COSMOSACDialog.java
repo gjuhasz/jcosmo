@@ -38,9 +38,9 @@ import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import br.eng.rps.cosmo.COSMOSAC;
-import br.eng.rps.cosmo.COSMOSACCompound;
-import br.eng.rps.cosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSACCompound;
+import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.

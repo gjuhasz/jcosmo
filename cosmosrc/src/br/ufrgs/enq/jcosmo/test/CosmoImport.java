@@ -1,4 +1,4 @@
-package br.eng.rps.cosmo.test;
+package br.ufrgs.enq.jcosmo.test;
 
 import java.io.File;
 import java.sql.Connection;

@@ -1,9 +1,9 @@
-package br.eng.rps.cosmo.test;
+package br.ufrgs.enq.jcosmo.test;
 
 import junit.framework.TestCase;
-import br.eng.rps.cosmo.COSMOSAC;
-import br.eng.rps.cosmo.COSMOSACCompound;
-import br.eng.rps.cosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSACCompound;
+import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 public class DatabaseTest extends TestCase {
 

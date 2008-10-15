@@ -20,7 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import br.eng.rps.cosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 /**
  * The About dialog.
