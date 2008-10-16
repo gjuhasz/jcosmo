@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<project default="cosmodist" basedir=".">
+	
+ <property name="version" value="0.9.1" />
+ 	
+ <property name="launch4j.dir" location="/usr/local/share/java/launch4j" />
+ <taskdef name="launch4j"
+	    classname="net.sf.launch4j.ant.Launch4jTask"
+	    classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar" />
+	
+ <target name="cosmodist" >
+ 	<launch4j configFile="dist/cosmol4j.xml" />
+ 	
+ 	<delete file="cosmo.jar"/>
+ 	<!-- TODO: uncompressed jar file because Derby becomes extremely slow if compressed -->
+ 	<jar destfile="cosmo.jar" compress="false">
+ 	    <fileset dir="bin" includes="br/eng/rps/cosmo/*"/>
+ 	    <fileset dir="bin" includes="cosmo/*" />
+ 	    <fileset dir="." includes="cosmodb/**/*" excludes="**/tmp/** **/*.lck"/>
+	<manifest>
+      <attribute name="Built-By" value="${user.name}"/>
+      <attribute name="Main-Class" value="cosmo.COSMOSACDialog"/>
+      <attribute name="Class-Path" value="./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.6.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
+    </manifest>
+ 	</jar>
+
+ 	<delete file="dist/cosmo-${version}.zip"/>
+ 	<zip destfile="dist/cosmo-${version}.zip">
+ 	    <zipfileset dir="../cosmodb" prefix="cosmo/cosmodb"/>
+	    <zipfileset dir="lib" prefix="cosmo/lib" excludes="unit.jar javacsv.jar commons-math* *ipopt*"/>
+    	<zipfileset file="cosmo.jar" prefix="cosmo"/>
+    	<zipfileset file="dist/cosmo.exe" prefix="cosmo"/>
+    	<zipfileset file="dist/cosmo.sh" filemode="755" prefix="cosmo"/>
+ 	  </zip>
+ 	<delete file="dist/cosmo-${version}.tar.gz"/>
+ 	<tar destfile="dist/cosmo-${version}.tar.gz" compression="gzip">
+ 		<zipfileset src="dist/cosmo-${version}.zip"/>
+ 	  </tar>
+ </target>
+  
+</project>
