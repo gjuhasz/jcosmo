@@ -16,19 +16,18 @@
  	<delete file="cosmo.jar"/>
  	<!-- TODO: uncompressed jar file because Derby becomes extremely slow if compressed -->
  	<jar destfile="cosmo.jar" compress="false">
- 	    <fileset dir="bin" includes="br/eng/rps/cosmo/*"/>
- 	    <fileset dir="bin" includes="cosmo/*" />
- 	    <fileset dir="." includes="cosmodb/**/*" excludes="**/tmp/** **/*.lck"/>
+ 	    <fileset dir="bin" includes="br/ufrgs/enq/jcosmo/*"/>
+ 	    <fileset dir="bin" includes="jcosmo/*" />
+ 	    <fileset dir=".." includes="cosmodb/**/*" excludes="**/tmp/** **/*.lck"/>
 	<manifest>
       <attribute name="Built-By" value="${user.name}"/>
-      <attribute name="Main-Class" value="cosmo.COSMOSACDialog"/>
+      <attribute name="Main-Class" value="jcosmo.COSMOSACDialog"/>
       <attribute name="Class-Path" value="./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.6.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
     </manifest>
  	</jar>
 
  	<delete file="dist/cosmo-${version}.zip"/>
  	<zip destfile="dist/cosmo-${version}.zip">
- 	    <zipfileset dir="../cosmodb" prefix="cosmo/cosmodb"/>
 	    <zipfileset dir="lib" prefix="cosmo/lib" excludes="unit.jar javacsv.jar commons-math* *ipopt*"/>
     	<zipfileset file="cosmo.jar" prefix="cosmo"/>
     	<zipfileset file="dist/cosmo.exe" prefix="cosmo"/>

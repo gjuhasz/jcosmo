@@ -1,4 +1,4 @@
-package cosmo;
+package jcosmo;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
