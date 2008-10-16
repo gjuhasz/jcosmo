@@ -17,7 +17,7 @@ import java.sql.Statement;
  */
 public class COSMOSACDataBase
 {
-	public static final String DEFAULT_DATABASE = "jar:(cosmo.jar)cosmodb";
+	public static final String DEFAULT_DATABASE = "jar:(jcosmo.jar)cosmodb";
 
 	private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 
