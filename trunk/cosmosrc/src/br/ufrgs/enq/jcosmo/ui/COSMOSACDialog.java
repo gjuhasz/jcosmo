@@ -53,6 +53,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -231,10 +232,12 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		plot2.setDomainGridlinePaint(Color.white);
 		plot2.setRangeGridlinePaint(Color.white);
 
-		XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot2.getRenderer();
-		r2.setUseFillPaint(true);
-		r2.setBaseFillPaint(Color.white);
-		r2.setBaseShapesVisible(true);
+		XYSplineRenderer r2 = new XYSplineRenderer();
+		plot2.setRenderer(r2);
+//		XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot2.getRenderer();
+//		r2.setUseFillPaint(true);
+//		r2.setBaseFillPaint(Color.white);
+		r2.setBaseShapesVisible(false);
 
 		JPanel south = new JPanel();
 		south.setLayout(new FlowLayout());
