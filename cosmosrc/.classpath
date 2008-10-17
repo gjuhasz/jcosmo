@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="lib" path="lib/javacsv.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.10.jar"/>
-	<classpathentry kind="lib" path="lib/jfreechart-1.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/junit-3.8.2.jar"/>
+	<classpathentry kind="lib" path="D:/jcosmo/cosmosrc/lib/jfreechart-1.0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
