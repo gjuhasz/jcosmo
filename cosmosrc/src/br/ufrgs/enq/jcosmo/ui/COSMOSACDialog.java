@@ -1,4 +1,4 @@
-package jcosmo;
+package br.ufrgs.enq.jcosmo.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
