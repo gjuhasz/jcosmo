@@ -19,11 +19,14 @@
 
 package br.ufrgs.enq.jcosmo.ui;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Paint;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -99,7 +102,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	COSMOSAC cosmosac = new COSMOSAC();
 
 	public COSMOSACDialog() {
-		super("COSMO-SAC Gamma Plotter");
+		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
@@ -233,6 +236,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		plot2.setRangeGridlinePaint(Color.white);
 
 		XYSplineRenderer r2 = new XYSplineRenderer();
+		BasicStroke stroke = new BasicStroke(2.5f);
+		r2.setStroke(stroke);
+
 		plot2.setRenderer(r2);
 //		XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot2.getRenderer();
 //		r2.setUseFillPaint(true);
