@@ -20,21 +20,25 @@
 package br.ufrgs.enq.jcosmo.ui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -44,7 +48,7 @@ import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 /**
  * The About dialog.
  * 
- * @author rafael
+ * @author renan, rafael
  *
  */
 public class AddClass extends JDialog {
@@ -63,33 +67,41 @@ public class AddClass extends JDialog {
 		setLayout(new BorderLayout());
 
 		JPanel north = new JPanel(new GridLayout(0,2));
-		JPanel south = new JPanel(new GridLayout(0,2));
+		JPanel south = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
 		list.setVisibleRowCount(5);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(list);
+		
+		okButton = new JButton("Add");
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				add();				
+			}	
+		});
+		okButton.setEnabled(false);		
 
 		JButton searchButton = new JButton("Search");
 		Search Search = new Search(searchButton);
 		searchButton.setActionCommand("Search");
 		searchButton.addActionListener(Search);
 
-		okButton = new JButton("Ok");
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				ok();				
-			}	
-		});
-		okButton.setEnabled(false);		
-
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton("Close");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				setVisible(false);
 			}
-		});	
+		});
+		
+		// connect ESC to the cancelButton
+		KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		getRootPane().registerKeyboardAction(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				setVisible(false);
+			}
+		}, esc, JComponent.WHEN_IN_FOCUSED_WINDOW); 
 
 		componente = new JTextField(10);
 		componente.addActionListener(Search);
@@ -125,7 +137,7 @@ public class AddClass extends JDialog {
 			try {
 				res = db.executeQuery(query);
 
-				// The result should be exactly on row length
+				// Add all results found
 				while(res!=null && res.next()){
 					listModel.addElement(res.getString(1));
 				}
@@ -155,7 +167,7 @@ public class AddClass extends JDialog {
 		}
 	}
 
-	public void ok(){
+	public void add(){
 		String name = listModel.getElementAt(list.getSelectedIndex()).toString();
 		if (name.equals("") || dlg.containsList(name)) {
 			Toolkit.getDefaultToolkit().beep();
@@ -163,6 +175,6 @@ public class AddClass extends JDialog {
 		}
 		dlg.addList(name);
 		dlg.visibRemove(true);
-		setVisible(false);		
+//		setVisible(false);		
 	}	
 }
