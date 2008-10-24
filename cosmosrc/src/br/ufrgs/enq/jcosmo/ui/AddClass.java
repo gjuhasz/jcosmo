@@ -26,6 +26,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -102,6 +104,15 @@ public class AddClass extends JDialog {
 				setVisible(false);
 			}
 		}, esc, JComponent.WHEN_IN_FOCUSED_WINDOW); 
+		
+		// connect double click to the addButton
+		list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2){
+					add();
+					}
+				}
+			}); 
 
 		componente = new JTextField(10);
 		componente.addActionListener(Search);
