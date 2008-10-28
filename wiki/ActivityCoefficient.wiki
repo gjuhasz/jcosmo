@@ -21,13 +21,13 @@ Necessary procedure:
 
 This is the simplest code:
 {{{
-COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
+COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 COSMOSACCompound c1 = db.getComp("water");
 COSMOSACCompound c2 = db.getComp("ethanol");
 
-double[ ] cavityVolume = new double[ 2 ];
-cavityVolume[ 0 ] = c1.Vcosmo;
-cavityVolume[ 1 ] = c2.Vcosmo;
+double[] cavityVolume = new double[2];
+cavityVolume[0] = c1.Vcosmo;
+cavityVolume[1] = c2.Vcosmo;
 
 double[ ][ ] sigma = new double[ 2 ][ ];
 sigma[ 0 ] = c1.sigma;
