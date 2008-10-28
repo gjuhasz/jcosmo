@@ -1,39 +1,41 @@
 This page shows how to use jcosmo to calculate the activity coefficient of a binary mixture.
 
 == Necessary procedure ==
-1) Creat variable COSMOSACDataBase:
+1) Import br.ufrgs.enq.jcosmo.*;
+
+2) Creat variable COSMOSACDataBase:
 {{{
 COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
 }}}
-2) Select two componds of the database:
+3) Select two componds of the database:
 {{{
 COSMOSACCompound c = db.getComp("compondName");
 }}}
-3) Get of the database the "volume occupied by the molecular":
+4) Get of the database the "volume occupied by the molecular":
 {{{
 cavityVolume = c.Vcosmo;
 }}}
-4) Get of the database the sigma profiles:
+5) Get of the database the sigma profiles:
 {{{
 sigma = c.sigma;
 }}}
-5) Creat variable COSMOSAC:
+6) Creat variable COSMOSAC:
 {{{
 COSMOSAC cosmosac = new COSMOSAC( );
 }}}
-6) Set parameters of calculation:
+7) Set parameters of calculation:
 {{{
 cosmosac.setParameters(cavityVolume, c1.charge, sigma);
 }}}
-7) Set temperature (Kelvin):
+8) Set temperature (Kelvin):
 {{{
 cosmosac.setTemperature(T);
 }}}
-8) Set composition:
+9) Set composition:
 {{{
 cosmosac.setComposition(z);
 }}}
-9) Use vector to get ln(gamma):
+10) Use vector to get ln(gamma):
 {{{
 cosmosac.activityCoefficient(lnGamma);
 }}}
