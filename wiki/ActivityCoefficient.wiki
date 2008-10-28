@@ -1,14 +1,14 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+== Introduction ==
 
 This page shows how to use jcosmo to calculate the activity coefficient of a binary mixture.
 
-= Details =
+== Details ==
 
 Necessary procedure:
   # Creat variable COSMOSACDataBase: _COSMOSACDataBase db = COSMOSACDataBase.getInstance( );_
-  ## Select two componds of the database: _COSMOSACCompound c = db.getComp("compondName");_
+  # Select two componds of the database: _COSMOSACCompound c = db.getComp("compondName");_
   # Get of the database the "volume occupied by the molecular": _cavityVolume = c.Vcosmo;_
   # Get of the database the sigma profiles: _sigma = c.sigma;_
   # Creat variable COSMOSAC: _COSMOSAC cosmosac = new COSMOSAC( );_
@@ -17,10 +17,10 @@ Necessary procedure:
   # Set composition: _cosmosac.setComposition(z);_
   # Use vector to get ln(gamma): _cosmosac.activityCoefficient(lnGamma);_
 
-= Example Code = 
+== Example Code ==
 
 This is the simplest code:
-
+{{{
 _COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
 
 _COSMOSACCompound c1 = db.getComp("water");
@@ -56,3 +56,4 @@ _z[ 1 ] = 1 - z[ 0 ];
 _cosmosac.setComposition(z);
 
 _cosmosac.activityCoefficient(lnGamma);_
+}}}
