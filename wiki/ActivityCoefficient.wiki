@@ -23,36 +23,25 @@ This is the simplest code:
 {{{
 COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
 COSMOSACCompound c1 = db.getComp("water");
-
 COSMOSACCompound c2 = db.getComp("ethanol");
 
 double[ ] cavityVolume = new double[ 2 ];
-
 cavityVolume[ 0 ] = c1.Vcosmo;
+cavityVolume[ 1 ] = c2.Vcosmo;
 
-_cavityVolume[ 1 ] = c2.Vcosmo;
+double[ ][ ] sigma = new double[ 2 ][ ];
+sigma[ 0 ] = c1.sigma;
+sigma[ 1 ] = c2.sigma;
 
-_double[ ][ ] sigma = new double[ 2 ][ ];
+COSMOSAC cosmosac = new COSMOSAC( );
+cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+cosmosac.setTemperature(273.15); // T em Kelvin
 
-_sigma[ 0 ] = c1.sigma;
+double[ ] z = new double[ 2 ];
+double[ ] lnGamma = new double[ 2 ];
+z[ 0 ] = 0.00;
+z[ 1 ] = 1 - z[ 0 ];
 
-_sigma[ 1 ] = c2.sigma;
-
-_COSMOSAC cosmosac = new COSMOSAC( );
-
-_cosmosac.setParameters(cavityVolume, c1.charge, sigma);
-
-_cosmosac.setTemperature(273.15); // T em Kelvin
-
-_double[ ] z = new double[ 2 ];
-
-_double[ ] lnGamma = new double[ 2 ];
-
-_z[ 0 ] = 0.00;
-
-_z[ 1 ] = 1 - z[ 0 ];
-
-_cosmosac.setComposition(z);
-
-_cosmosac.activityCoefficient(lnGamma);_
+cosmosac.setComposition(z);
+cosmosac.activityCoefficient(lnGamma);
 }}}
