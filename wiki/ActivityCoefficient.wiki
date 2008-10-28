@@ -1,8 +1,12 @@
 This page shows how to use jcosmo to calculate the activity coefficient of a binary mixture.
 
 == Necessary procedure ==
-1) Import br.ufrgs.enq.jcosmo.[*];
-
+1) Imports:
+{{{
+import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSACCompound;
+import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+}}}
 2) Creat variable COSMOSACDataBase:
 {{{
 COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
