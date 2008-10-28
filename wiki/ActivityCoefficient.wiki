@@ -1,3 +1,5 @@
+#summary how to use jcosmo to calculate the activity coefficient
+
 This page shows how to use jcosmo to calculate the activity coefficient of a binary mixture.
 
 == Necessary procedure ==
