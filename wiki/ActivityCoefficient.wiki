@@ -44,6 +44,9 @@ cosmosac.setComposition(z);
 cosmosac.activityCoefficient(lnGamma);
 }}}
 11) Use exponential to convert ln(gamma) for gamma.
+{{{
+gamma = Math.exp(lnGamma);
+}}}
 
 == Example Code ==
 
