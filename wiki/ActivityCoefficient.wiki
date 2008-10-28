@@ -21,15 +21,14 @@ Necessary procedure:
 
 This is the simplest code:
 {{{
-_COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
+COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
+COSMOSACCompound c1 = db.getComp("water");
 
-_COSMOSACCompound c1 = db.getComp("water");
+COSMOSACCompound c2 = db.getComp("ethanol");
 
-_COSMOSACCompound c2 = db.getComp("ethanol");
+double[ ] cavityVolume = new double[ 2 ];
 
-_double[ ] cavityVolume = new double[ 2 ];
-
-_cavityVolume[ 0 ] = c1.Vcosmo;
+cavityVolume[ 0 ] = c1.Vcosmo;
 
 _cavityVolume[ 1 ] = c2.Vcosmo;
 
