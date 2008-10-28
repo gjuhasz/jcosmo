@@ -3,7 +3,6 @@ This page shows how to use jcosmo to calculate the activity coefficient of a bin
 == Necessary procedure ==
 1) Creat variable COSMOSACDataBase:
      _COSMOSACDataBase db = COSMOSACDataBase.getInstance( );_
-
 2) Select two componds of the database: _COSMOSACCompound c = db.getComp("compondName");_
 
 3) Get of the database the "volume occupied by the molecular": _cavityVolume = c.Vcosmo;_
