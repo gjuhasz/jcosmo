@@ -43,6 +43,7 @@ cosmosac.setComposition(z);
 {{{
 cosmosac.activityCoefficient(lnGamma);
 }}}
+11) Use exponential to convert ln(gamma) for gamma.
 
 == Example Code ==
 
@@ -71,4 +72,8 @@ z[1] = 1 - z[0];
 
 cosmosac.setComposition(z);
 cosmosac.activityCoefficient(lnGamma);
+
+double[] gamma = new double[2];
+gamma[0] = Math.exp(lnGamma[0];
+gamma[1] = Math.exp(lnGamma[1];
 }}}
