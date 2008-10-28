@@ -27,17 +27,17 @@ _COSMOSACCompound c1 = db.getComp("water");
 
 _COSMOSACCompound c2 = db.getComp("ethanol");
 
-_double[ ] cavityVolume = new double[2];
+_double[ ] cavityVolume = new double[ 2 ];
 
-_cavityVolume[0] = c1.Vcosmo;
+_cavityVolume[ 0 ] = c1.Vcosmo;
 
-_cavityVolume[1] = c2.Vcosmo;
+_cavityVolume[ 1 ] = c2.Vcosmo;
 
 _double[ ][ ] sigma = new double[2][ ];
 
-_sigma[0] = c1.sigma;
+_sigma[ 0 ] = c1.sigma;
 
-_sigma[1] = c2.sigma;
+_sigma[ 1 ] = c2.sigma;
 
 _COSMOSAC cosmosac = new COSMOSAC( );
 
