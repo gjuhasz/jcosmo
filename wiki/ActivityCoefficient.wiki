@@ -3,24 +3,40 @@ This page shows how to use jcosmo to calculate the activity coefficient of a bin
 == Necessary procedure ==
 1) Creat variable COSMOSACDataBase:
 {{{
-_COSMOSACDataBase db = COSMOSACDataBase.getInstance( );_
+COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
 }}}
 2) Select two componds of the database:
-     _COSMOSACCompound c = db.getComp("compondName");_
+{{{
+COSMOSACCompound c = db.getComp("compondName");
+}}}
 3) Get of the database the "volume occupied by the molecular":
-     _cavityVolume = c.Vcosmo;_
+{{{
+cavityVolume = c.Vcosmo;
+}}}
 4) Get of the database the sigma profiles:
-     _sigma = c.sigma;_
+{{{
+sigma = c.sigma;
+}}}
 5) Creat variable COSMOSAC:
-     _COSMOSAC cosmosac = new COSMOSAC( );_
+{{{
+COSMOSAC cosmosac = new COSMOSAC( );
+}}}
 6) Set parameters of calculation:
-     _cosmosac.setParameters(cavityVolume, c1.charge, sigma);_
+{{{
+cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+}}}
 7) Set temperature (Kelvin):
-     _cosmosac.setTemperature(T);_
+{{{
+cosmosac.setTemperature(T);
+}}}
 8) Set composition:
-     _cosmosac.setComposition(z);_
+{{{
+cosmosac.setComposition(z);
+}}}
 9) Use vector to get ln(gamma):
-     _cosmosac.activityCoefficient(lnGamma);_
+{{{
+cosmosac.activityCoefficient(lnGamma);
+}}}
 
 == Example Code ==
 
