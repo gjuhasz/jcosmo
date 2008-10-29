@@ -1,0 +1,23 @@
+#summary Using the jcosmo to plot a Vapor-Liquid Equilibrium diagrams.
+
+== Introduction ==
+
+For each component in a binary mixture, one could make a vapor-liquid equilibrium diagram. Such a diagram would graph liquid/vapor mole fraction on a horizontal axis and pressure on a vertical axis, with constant temperature. In such VLE diagrams, liquid mole fractions for components 1 and 2 can be represented as x1 and x2 respectively, and vapor mole fractions of the corresponding components are commonly represented as y1 and y2. Using the modified Raoult's Law for not ideal liquids, through the Activity Coefficient (jcosmo) , it's possible to plot a vapor-liquid equilibrium diagrams.
+
+=== Raoult's Law ===
+
+Raoult's law states: the vapor pressure of an ideal solution is dependent on the vapor pressure of each chemical component and the mole fraction of the component present in the solution. Changing the Raoult's Law using the activity coefficient to correct the liquid expression (right size) to a real liquid, enough to:
+
+P.y,,i,, = x,,i,,.gamma,,i,,.P^sat^,,i,, , (i = 1, 2, 3, ..., N)
+
+=== Antoine Equation ===
+
+The Antoine equation is a vapor pressure equation and describes the relation of the saturated vapor pressure and the temperature for pure components. The equation uses three trial parameters A, B and C.
+
+ln P^sat^/KPa = A - B / (T/°C + C)
+
+= Test with jcosmo =
+
+We test two binary mixtures (Ethanol + Toluene and Methanol + Methil-Acetate) to check if the model represented the azeotrope. The parameters to Antoine equation were taken from _Introduction to chemist engineering thermodynamics 7th ed_. The Ethanol/Toluene mixture
+
+[http://i307.photobucket.com/albums/nn318/renanpgb/VLEdiagrams.jpg]
