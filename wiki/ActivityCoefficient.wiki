@@ -1,6 +1,6 @@
-#summary how to use jcosmo to calculate the activity coefficient
+#summary How to use JCosmo to calculate the activity coefficient.
 
-This page shows how to use jcosmo to calculate the activity coefficient of a binary mixture.
+This page shows how to use JCosmoto calculate the activity coefficient of a binary mixture.
 
 == Necessary procedure ==
 1) Imports:
@@ -11,9 +11,9 @@ import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 }}}
 2) Creat variable COSMOSACDataBase:
 {{{
-COSMOSACDataBase db = COSMOSACDataBase.getInstance( );
+COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 }}}
-3) Select two componds of the database:
+3) Select two componds of the database, the compond should be available in the JCosmo database and must be spelled correctly according to the database:
 {{{
 COSMOSACCompound c = db.getComp("compondName");
 }}}
@@ -25,7 +25,7 @@ cavityVolume = c.Vcosmo;
 {{{
 sigma = c.sigma;
 }}}
-6) Creat variable COSMOSAC:
+6) Creat variable COSMOSAC to calculate the activity coefficient:
 {{{
 COSMOSAC cosmosac = new COSMOSAC( );
 }}}
@@ -37,15 +37,17 @@ cosmosac.setParameters(cavityVolume, c1.charge, sigma);
 {{{
 cosmosac.setTemperature(T);
 }}}
-9) Set composition:
+9) Set composition (use array), the activity coefficient depends on the compositions:
 {{{
+double [] z = new double[2];
 cosmosac.setComposition(z);
 }}}
-10) Use vector to get ln(gamma):
+10) Use array to get ln(gamma):
 {{{
+double [] lnGamma = new double[2];
 cosmosac.activityCoefficient(lnGamma);
 }}}
-11) Use exponential to convert ln(gamma) for gamma.
+*NOTE*: The JCosmo calculates the natural logarithm of the activity coefficient, to obtain the activity coefficient itself use the exponential.
 {{{
 gamma = Math.exp(lnGamma);
 }}}
