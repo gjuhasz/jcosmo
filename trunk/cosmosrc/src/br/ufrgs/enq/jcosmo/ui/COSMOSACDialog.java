@@ -144,7 +144,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		listModel = new DefaultListModel();
 		list = new JList(listModel);
-		list.setBorder(BorderFactory.createTitledBorder("componds"));
+		list.setBorder(BorderFactory.createTitledBorder("compounds"));
 		list.setVisibleRowCount(2);
 		JScrollPane listScrollPane = new JScrollPane(list);		
 

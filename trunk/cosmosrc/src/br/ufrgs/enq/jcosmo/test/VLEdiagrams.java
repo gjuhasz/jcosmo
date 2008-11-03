@@ -21,8 +21,6 @@ package br.ufrgs.enq.jcosmo.test;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
@@ -43,7 +41,7 @@ import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
-public class VLEdiagrams extends JFrame implements ActionListener {
+public class VLEdiagrams extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	int n = 21;
@@ -280,11 +278,4 @@ public class VLEdiagrams extends JFrame implements ActionListener {
 		test.setVisible(true);
 		
 	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

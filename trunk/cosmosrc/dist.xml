@@ -2,7 +2,7 @@
 
 <project default="jcosmodist" basedir=".">
 	
- <property name="version" value="0.9.2" />
+ <property name="version" value="1.0.0" />
  	
  <property name="launch4j.dir" location="/usr/local/share/java/launch4j" />
  <taskdef name="launch4j"
@@ -16,13 +16,13 @@
  	<delete file="jcosmo.jar"/>
  	<!-- TODO: uncompressed jar file because Derby becomes extremely slow if compressed -->
  	<jar destfile="jcosmo.jar" compress="false">
- 	    <fileset dir="bin" includes="br/ufrgs/enq/jcosmo/*"/>
+ 	    <fileset dir="bin" includes="br/ufrgs/enq/jcosmo/**/*"/>
  	    <fileset dir="bin" includes="jcosmo/*" />
  	    <fileset dir=".." includes="cosmodb/**/*" excludes="**/tmp/** **/*.lck"/>
 	<manifest>
       <attribute name="Built-By" value="${user.name}"/>
       <attribute name="Main-Class" value="br.ufrgs.enq.jcosmo.ui.COSMOSACDialog"/>
-      <attribute name="Class-Path" value="./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.6.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
+      <attribute name="Class-Path" value="./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.11.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
     </manifest>
  	</jar>
 
