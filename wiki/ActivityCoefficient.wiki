@@ -13,9 +13,9 @@ import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 {{{
 COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 }}}
-3) Select two componds of the database, the compond should be available in the JCosmo database and must be spelled correctly according to the database:
+3) Select two componds of the database, the compound should be available in the JCosmo database and must be spelled correctly according to the database:
 {{{
-COSMOSACCompound c = db.getComp("compondName");
+COSMOSACCompound c = db.getComp("compoundName");
 }}}
 4) Get of the database the "volume occupied by the molecular":
 {{{
