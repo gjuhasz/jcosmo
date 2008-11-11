@@ -49,8 +49,8 @@ public class AboutDialog extends JDialog {
 				
 				"<br><br>For more details check http://code.google.com/p/jcosmo" +
 				
-				"<br><br>This software is provided AS IS and should be" +
-				"<br>used for evaluation purposes only (LGPL license)." + 
+				"<br><br>This software is provided AS IS" +
+				"<br>WITHOUT WARRANTY OF ANY KIND (LGPL license)." + 
 
 				"<br><br>This implementation is inspired on the code" +
 				"<br>available at http://www.design.che.vt.edu." +
