@@ -44,17 +44,21 @@ public class AboutDialog extends JDialog {
 		JLabel text = new JLabel(
 				"<html><center>This is a small program for the calculation of" +
 				"<br>activity coefficients and g<sup>E</sup> of binary mixtures" +
-				"<br>using the COSMO-SAC model." +
+				"<br>using a COSMO-SAC implementation which is" +
+				"<br>a re-implementation of COSMO-RS by A. Klampt." +
+				
+				"<br><br>For more details check http://code.google.com/p/jcosmo" +
 				
 				"<br><br>This software is provided AS IS and should be" +
-				"<br>used for evaluation purposes only." + 
+				"<br>used for evaluation purposes only (LGPL license)." + 
+
+				"<br><br>This implementation is inspired on the code" +
+				"<br>available at http://www.design.che.vt.edu." +
 				
 				"<br><br>Rafael de Pelegrini Soares - http://www.rps.eng.br" +
 				"<br>Renan Pereira Gerber" +
-				"<br> $Date: 2008-03-29 23:49:38 -0300 (Sat, 29 Mar 2008) $" + 
+				"<br> $Date: 2008-03-29 23:49:38 -0300 (Sat, 29 Mar 2008) $" +
 				
-				"<br><br>Based on code and data available at" +
-				"<br>Virginia Tech - http://www.design.che.vt.edu" + 
 				"</center></html>");
 		getContentPane().add(text, BorderLayout.CENTER);
 
