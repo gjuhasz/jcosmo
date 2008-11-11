@@ -45,7 +45,7 @@ public class AboutDialog extends JDialog {
 				"<html><center>This is a small program for the calculation of" +
 				"<br>activity coefficients and g<sup>E</sup> of binary mixtures" +
 				"<br>using a COSMO-SAC implementation which is" +
-				"<br>a re-implementation of COSMO-RS by A. Klampt." +
+				"<br>a re-implementation of COSMO-RS by A. Klamt." +
 				
 				"<br><br>For more details check http://code.google.com/p/jcosmo" +
 				
