@@ -1,4 +1,5 @@
 #summary Using the jcosmo to plot a Vapor-Liquid Equilibrium diagrams.
+#labels Featured
 
 == Introduction ==
 
