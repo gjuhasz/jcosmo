@@ -44,7 +44,7 @@ public class COSMOSAC {
 	static final double EO = 2.395e-4;
 	public static final double AEFFPRIME = 7.5;
 	double aEffPrime = AEFFPRIME;
-	
+
 	static final double RGAS = 0.001987;
 	public static final double VNORM = 66.69;
 	public static final double ANORM = 79.53;
@@ -54,19 +54,19 @@ public class COSMOSAC {
 
 	// (LIN AND SANDLER USE A CONSTANT FPOL WHICH YEILDS EPS=3.68)
 	public static final double EPSILON = 3.667;
-	
+
 	/** Default coordination number (KLAMT USED 7.2) */
 	public static final double COORD = 10.0;
 	double coord = COORD;
-	
+
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
-	
+
 	double sigmaHB = SIGMAHB;
 	double cHB = CHB;
 
 	double alphaPrime;
-	
+
 	private static final double TOLERANCE = 1e-6;
 
 	protected double T;
@@ -90,9 +90,10 @@ public class COSMOSAC {
 	double [][] sigma;
 	double [] charge;
 	double deltaW[][];
+	double expDeltaW_RT[][];
 	double SEGGAMMA[];
 	double SEGGAMMAPR[][];
-	
+
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
 
@@ -101,8 +102,8 @@ public class COSMOSAC {
 	 */
 	public COSMOSAC(){
 	}
-	
-	
+
+
 	public double getAEffPrime() {
 		return aEffPrime;
 	}
@@ -159,7 +160,14 @@ public class COSMOSAC {
 	public void setTemperature(double T){
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
-		
+
+		// Update the exp of deltaW
+		for (int m = 0; m < compseg; m++) {
+			for(int n = 0; n < compseg; n++) {
+				expDeltaW_RT[m][n] =  Math.exp(-deltaW[m][n] * inv_RT);
+			}
+		}
+
 		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent)
 		for(int i=0; i<ncomps; ++i){
 			int niter = 0;
@@ -169,7 +177,7 @@ public class COSMOSAC {
 				for(int m=0; m<compseg; ++m){
 					double SUMMATION = 0.0;
 					for(int n=0; n<compseg; ++n){
-						SUMMATION += sigma[i][n]/ACOSMO[i]*SEGGAMMAPR[i][n]*Math.exp(-deltaW[m][n] * inv_RT);
+						SUMMATION += sigma[i][n]/ACOSMO[i]*SEGGAMMAPR[i][n] * expDeltaW_RT[m][n];
 					}
 					// NOTE: starting value comes from last calculation
 					// update with a new value
@@ -180,10 +188,12 @@ public class COSMOSAC {
 					break;
 				norm = newnorm;
 			}
-//			System.out.println("SEGGAMMA I:" + i + " niter:" + niter);
+			//			System.out.println("SEGGAMMA I:" + i + " niter:" + niter);
 		}
+
+
 	}
-	
+
 	/**
 	 * Sets the composition of the mixture in molar basis.
 	 * @param z the molar composition.
@@ -191,7 +201,7 @@ public class COSMOSAC {
 	public void setComposition(double []z){
 		for (int i = 0; i < ncomps; i++)
 			this.z[i] = z[i];
-		
+
 		// CALCULATE THE MIXTURE SIGMA PROFILE
 		double denom = 0;
 		for (int i = 0; i < ncomps; i++) {
@@ -215,13 +225,11 @@ public class COSMOSAC {
 		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/EO;
 		double fpol = (EPSILON-1.0)/(EPSILON+0.5);
 		alphaPrime = fpol*alpha;
-		
+
 		ACOSMO = new double[ncomps];
 		PROFILE = new double[compseg];
-		deltaW = new double[compseg][];
-		for(int i=0; i<compseg; ++i){
-			deltaW[i] = new double[compseg];
-		}
+		deltaW = new double[compseg][compseg];
+		expDeltaW_RT = new double[compseg][compseg];
 
 		SEGGAMMA = new double[compseg];
 		SEGGAMMAPR = new double[ncomps][];
@@ -233,12 +241,12 @@ public class COSMOSAC {
 			ACOSMO[i] = 0;
 			for (int m = 0; m < sigma[i].length; m++) {
 				ACOSMO[i] += sigma[i][m];
-				
+
 				// initialize all SEGGAMMAPR (reused between calculations)
 				SEGGAMMAPR[i][m] = 1.0;
 			}
 		}
-		
+
 		double SIGMAACC = 0, SIGMADON = 0;
 		double chargemn = 0;
 		for(int m=0; m<compseg; ++m){
@@ -256,10 +264,10 @@ public class COSMOSAC {
 				}
 				chargemn = charge[m]+charge[n];
 				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn +
-					cHB * Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
+				cHB * Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
 			}
 		}
-		
+
 		// some more composition independent properties
 		for(int i=0; i<ncomps; ++i){
 			RNORM[i] = VCOSMO[i]/vnorm;
@@ -267,7 +275,7 @@ public class COSMOSAC {
 			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
 		}
 	}
-	
+
 	/**
 	 * Calculates the activity coefficients.
 	 * 
@@ -276,26 +284,32 @@ public class COSMOSAC {
 	public void activityCoefficient(double[] lnGama){
 		activityCoefficientLn(lnGama, 0);
 	}
-
-	/**
-	 * Calculates the activity coefficients.
-	 * 
-	 * @param lnGama the vector to put the results in.
-	 */
-	public void activityCoefficientLn(double[] lnGama, int start){
+	
+	void updateSEGGAMMA(){
 		// ITERATION FOR SEGMENT ACTIVITY COEF. (MIXTURE)
 		double norm = -1;
 		int niter = 0;
-		while(true){ 
+
+		// initialize with the unity
+//		for (int m = 0; m < compseg; m++)
+//			SEGGAMMA[m]=1.0;
+		while(true){
 			for (int m = 0; m < compseg; m++) {
 				double SUMMATION = 0.0;
 				for(int n = 0; n < compseg; n++) {
-					SUMMATION += PROFILE[n]* SEGGAMMA[n] * Math.exp(-deltaW[m][n] * inv_RT);
+					SUMMATION += PROFILE[n]* SEGGAMMA[n] * expDeltaW_RT[m][n];
 				}
 				// NOTE: starting value comes from last calculation
-				// update the solution
-				SEGGAMMA[m]=1.0/SUMMATION;
+				// update the solution with successive substitutions
+//				if(niter == 0)
+					SEGGAMMA[m]=1.0/SUMMATION;
+//				else{
+//					// trying to emulate a Newton like method
+//					double SUMM = PROFILE[m] * Math.exp(-deltaW[m][m] * inv_RT);
+//					SEGGAMMA[m] -= (SEGGAMMA[m]*SUMMATION - 1.0)/(SUMMATION + SEGGAMMA[m]*SUMM);
+//				}
 			}
+
 			double newnorm = blas_dnrm2(SEGGAMMA.length, SEGGAMMA, 1);
 			if(Math.abs((norm - newnorm)/newnorm) <= TOLERANCE)
 				break;
@@ -303,6 +317,16 @@ public class COSMOSAC {
 			++niter;
 		}
 //		System.out.println("SEGGAMMA niter:" + niter + " norm:" + norm);
+	}
+
+	/**
+	 * Calculates the activity coefficients.
+	 * 
+	 * @param lnGama the vector to put the results in.
+	 */
+	public void activityCoefficientLn(double[] lnGama, int start){
+
+		updateSEGGAMMA();
 
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
@@ -318,7 +342,7 @@ public class COSMOSAC {
 
 		for(int i=0; i<ncomps; ++i){
 			double phi_z = RNORM[i]/BOTPHI;
-			
+
 			double theta_phi = QNORM[i]/BOTTHETA/(RNORM[i]/BOTPHI);
 
 			// GAMMASGI IS ACTUALLY LNGAMMASG
@@ -337,7 +361,7 @@ public class COSMOSAC {
 			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
 		}
 	}
-	
+
 	/**
 	 * @param n the input vector length
 	 * @param x the input vector
