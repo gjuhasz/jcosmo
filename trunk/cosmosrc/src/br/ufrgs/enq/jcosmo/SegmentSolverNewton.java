@@ -17,7 +17,7 @@ public class SegmentSolverNewton implements ISegmentSolver {
 	Vector residuals;
 	
 	public void solve(double PROFILE[], double factor, double SEGGAMMA[], double expDeltaW_RT[][], double tol){
-		if(jacobian==null){
+		if(jacobian==null || this.compseg!=PROFILE.length){
 			compseg = PROFILE.length;
 			jacobian = new DenseMatrix(compseg, compseg);
 			residuals = new DenseVector(compseg);
@@ -48,13 +48,14 @@ public class SegmentSolverNewton implements ISegmentSolver {
 			if(norm <= tol || niter>maxiter)
 				break;
 
-			// update the vector accordingly to the Newton formula
+			// update the vector accordingly to the Newton formula, but
+			// keep it positive
 			jacobian.solve(residuals, residuals);
 			for (int i = 0; i < SEGGAMMA.length; i++)
-				SEGGAMMA[i] -= residuals.get(i);
+				SEGGAMMA[i] = Math.max(0, SEGGAMMA[i] - residuals.get(i));
 
 			++niter;
 		}
-		System.out.println("SEGGAMMA niter:" + niter);
+//		System.out.println("SEGGAMMA niter:" + niter);
 	}
 }

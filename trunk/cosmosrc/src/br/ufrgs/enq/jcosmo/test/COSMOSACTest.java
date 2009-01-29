@@ -19,43 +19,45 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 
-import junit.framework.TestCase;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSACCompound;
+import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
-public class COSMOSACTest extends TestCase {
+/**
+ * This program mimics the original FORTRAN code from VT-2005
+ * @author rafael
+ *
+ */
+public class COSMOSACTest {
 
-	public void testMethylAcetateWater() throws Exception{
+	public static void main(String[] args) {
+
 		double T =330.15;
 		
-		ArrayList<Double> chargeArgument = new ArrayList<Double>();
-		ArrayList<Double> sigma1 = new ArrayList<Double>();	
-		ArrayList<Double> sigma2 = new ArrayList<Double>();	
-		
-		// methyl acetate (638)
-		CosmoImport.readSigmaProfile(638, chargeArgument, sigma1);		
-		// water (1076)
-		CosmoImport.readSigmaProfile(1076, chargeArgument, sigma2);	
-		
-		assertEquals(sigma1.size(), sigma2.size());
-		
-		double cavityVolume[] = {97.00036, 25.73454};
-		
-		double [] charge = new double[chargeArgument.size()];
-		for (int i = 0; i < charge.length; i++) {
-			charge[i] = chargeArgument.get(i);
+		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
+		COSMOSACCompound c1;
+		COSMOSACCompound c2;
+		try {
+			c1 = db.getComp("methyl-acetate");
+			c2 = db.getComp("water");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
 		}
+
+		double[] cavityVolume = new double[2];
+		cavityVolume[0] = c1.Vcosmo;
+		cavityVolume[1] = c2.Vcosmo;
+
 		double [][] sigma = new double[2][];
-		sigma[0] = new double[charge.length];
-		sigma[1] = new double[charge.length];
-		for (int i = 0; i < charge.length; i++) {
-			sigma[0][i] = sigma1.get(i);
-			sigma[1][i] = sigma2.get(i);
-		}
-		
+		sigma[0] = c1.sigma;
+		sigma[1] = c2.sigma;
+
 		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, charge, sigma);
+		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
 		
 		cosmosac.setTemperature(T);
 		
