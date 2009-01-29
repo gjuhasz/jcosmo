@@ -31,7 +31,7 @@ package br.ufrgs.enq.jcosmo;
  * There are several improvements on the code:
  * <ul>
  * <li>Code was translated for Java
- * <li>It can evaluate infinite dilution (x=0) activity coeficients (original code
+ * <li>It can evaluate infinite dilution (x=0) activity coefficients (original code
  * had a bug and returned NaN for this case)
  * <li>There are some changes on the segment activity converging mechanism (much better performance)
  * </ul>
@@ -159,6 +159,29 @@ public class COSMOSAC {
 	public void setTemperature(double T){
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
+		
+		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent)
+		for(int i=0; i<ncomps; ++i){
+			int niter = 0;
+			double norm = -1;
+			while(true){
+				++niter;
+				for(int m=0; m<compseg; ++m){
+					double SUMMATION = 0.0;
+					for(int n=0; n<compseg; ++n){
+						SUMMATION += sigma[i][n]/ACOSMO[i]*SEGGAMMAPR[i][n]*Math.exp(-deltaW[m][n] * inv_RT);
+					}
+					// NOTE: starting value comes from last calculation
+					// update with a new value
+					SEGGAMMAPR[i][m] = 1.0/SUMMATION;
+				}
+				double newnorm = blas_dnrm2(SEGGAMMAPR[i].length, SEGGAMMAPR[i], 1);
+				if(Math.abs((norm - newnorm)/newnorm) <= TOLERANCE)
+					break;
+				norm = newnorm;
+			}
+//			System.out.println("SEGGAMMA I:" + i + " niter:" + niter);
+		}
 	}
 	
 	/**
@@ -280,29 +303,6 @@ public class COSMOSAC {
 			++niter;
 		}
 //		System.out.println("SEGGAMMA niter:" + niter + " norm:" + norm);
-
-
-		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES)
-		for(int i=0; i<ncomps; ++i){
-			niter = 0;
-			while(true){
-				++niter;
-				for(int m=0; m<compseg; ++m){
-					double SUMMATION = 0.0;
-					for(int n=0; n<compseg; ++n){
-						SUMMATION += sigma[i][n]/ACOSMO[i]*SEGGAMMAPR[i][n]*Math.exp(-deltaW[m][n] * inv_RT);
-					}
-					// NOTE: starting value comes from last calculation
-					// update with a new value
-					SEGGAMMAPR[i][m] = 1.0/SUMMATION;
-				}
-				double newnorm = blas_dnrm2(SEGGAMMAPR[i].length, SEGGAMMAPR[i], 1);
-				if(Math.abs((norm - newnorm)/newnorm) <= TOLERANCE)
-					break;
-				norm = newnorm;
-			}
-//			System.out.println("SEGGAMMA I:" + i + " niter:" + niter);
-		}
 
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
