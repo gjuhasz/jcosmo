@@ -20,6 +20,7 @@
 package br.ufrgs.enq.jcosmo;
 
 
+
 /**
  * COSMO-SAC activity model.
  * 
@@ -93,6 +94,8 @@ public class COSMOSAC {
 	double expDeltaW_RT[][];
 	double SEGGAMMA[];
 	double SEGGAMMAPR[][];
+	
+	ISegmentSolver segSolver;
 
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
@@ -170,28 +173,8 @@ public class COSMOSAC {
 
 		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent)
 		for(int i=0; i<ncomps; ++i){
-			int niter = 0;
-			double norm = -1;
-			while(true){
-				++niter;
-				for(int m=0; m<compseg; ++m){
-					double SUMMATION = 0.0;
-					for(int n=0; n<compseg; ++n){
-						SUMMATION += sigma[i][n]/ACOSMO[i]*SEGGAMMAPR[i][n] * expDeltaW_RT[m][n];
-					}
-					// NOTE: starting value comes from last calculation
-					// update with a new value
-					SEGGAMMAPR[i][m] = 1.0/SUMMATION;
-				}
-				double newnorm = blas_dnrm2(SEGGAMMAPR[i].length, SEGGAMMAPR[i], 1);
-				if(Math.abs((norm - newnorm)/newnorm) <= TOLERANCE)
-					break;
-				norm = newnorm;
-			}
-			//			System.out.println("SEGGAMMA I:" + i + " niter:" + niter);
+			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i], expDeltaW_RT, TOLERANCE);
 		}
-
-
 	}
 
 	/**
@@ -232,12 +215,14 @@ public class COSMOSAC {
 		expDeltaW_RT = new double[compseg][compseg];
 
 		SEGGAMMA = new double[compseg];
-		SEGGAMMAPR = new double[ncomps][];
+		SEGGAMMAPR = new double[ncomps][compseg];
+		segSolver = new SegmentSolverNewton();
+//		segSolver = new SegmentSolverSimple();
+		
 		RNORM = new double[ncomps];
 		QNORM = new double[ncomps];
 		li = new double[ncomps];
 		for(int i=0; i<ncomps; ++i){
-			SEGGAMMAPR[i] = new double[compseg];
 			ACOSMO[i] = 0;
 			for (int m = 0; m < sigma[i].length; m++) {
 				ACOSMO[i] += sigma[i][m];
@@ -285,48 +270,14 @@ public class COSMOSAC {
 		activityCoefficientLn(lnGama, 0);
 	}
 	
-	void updateSEGGAMMA(){
-		// ITERATION FOR SEGMENT ACTIVITY COEF. (MIXTURE)
-		double norm = -1;
-		int niter = 0;
-
-		// initialize with the unity
-//		for (int m = 0; m < compseg; m++)
-//			SEGGAMMA[m]=1.0;
-		while(true){
-			for (int m = 0; m < compseg; m++) {
-				double SUMMATION = 0.0;
-				for(int n = 0; n < compseg; n++) {
-					SUMMATION += PROFILE[n]* SEGGAMMA[n] * expDeltaW_RT[m][n];
-				}
-				// NOTE: starting value comes from last calculation
-				// update the solution with successive substitutions
-//				if(niter == 0)
-					SEGGAMMA[m]=1.0/SUMMATION;
-//				else{
-//					// trying to emulate a Newton like method
-//					double SUMM = PROFILE[m] * Math.exp(-deltaW[m][m] * inv_RT);
-//					SEGGAMMA[m] -= (SEGGAMMA[m]*SUMMATION - 1.0)/(SUMMATION + SEGGAMMA[m]*SUMM);
-//				}
-			}
-
-			double newnorm = blas_dnrm2(SEGGAMMA.length, SEGGAMMA, 1);
-			if(Math.abs((norm - newnorm)/newnorm) <= TOLERANCE)
-				break;
-			norm = newnorm;
-			++niter;
-		}
-//		System.out.println("SEGGAMMA niter:" + niter + " norm:" + norm);
-	}
-
 	/**
 	 * Calculates the activity coefficients.
 	 * 
 	 * @param lnGama the vector to put the results in.
 	 */
 	public void activityCoefficientLn(double[] lnGama, int start){
-
-		updateSEGGAMMA();
+		// Solve for the SEGGAMMA of the mixture
+		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW_RT, TOLERANCE);
 
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
@@ -360,19 +311,6 @@ public class COSMOSAC {
 			}
 			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
 		}
-	}
-
-	/**
-	 * @param n the input vector length
-	 * @param x the input vector
-	 * @param incx the increment (usually 1)
-	 * @return the euclidean norm of the given vector
-	 */
-	private static double blas_dnrm2(int n, double[] x, int incx){
-		double sum = 0;
-		for (int i = 0; i < n; i+= incx)
-			sum += x[i] * x[i];
-		return Math.sqrt(sum);
 	}
 
 	public boolean isIgnoreSG() {
