@@ -2,7 +2,7 @@
 
 <project default="jcosmodist" basedir=".">
 	
- <property name="version" value="1.0.1" />
+ <property name="version" value="1.1.0" />
  	
  <property name="launch4j.dir" location="/usr/local/share/java/launch4j" />
  <taskdef name="launch4j"
@@ -22,7 +22,7 @@
 	<manifest>
       <attribute name="Built-By" value="${user.name}"/>
       <attribute name="Main-Class" value="br.ufrgs.enq.jcosmo.ui.COSMOSACDialog"/>
-      <attribute name="Class-Path" value="./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.11.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
+      <attribute name="Class-Path" value="./lib/mtj.jar ./lib/lapack-0.8.jar ./lib/jlapack_jni-071118.jar ./lib/blas-0.8.jar ./lib/f2jutil-071114.jar ./lib/commons-math-1.2.jar ./lib/jfreechart-1.0.11.jar ./lib/derby.jar ./lib/jcommon-1.0.10.jar"/>
     </manifest>
  	</jar>
 
