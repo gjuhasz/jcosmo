@@ -1,1 +1,1 @@
-Program('COSMO-SAC-VT-2005_v2.for', F77FLAGS = ['-ffree-form'], LIBS = ['gfortran', 'gfortranbegin'])
+Program('COSMO-SAC-VT-2005_v2.for', FORTRANFLAGS = ['-ffree-form'], LIBS = ['gfortran', 'gfortranbegin'])
