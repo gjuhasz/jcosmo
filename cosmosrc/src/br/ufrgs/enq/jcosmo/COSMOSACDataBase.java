@@ -31,6 +31,9 @@ import java.sql.Statement;
  * This database contains the data of the sigma profiles for a large set
  * of compounds.
  * 
+ * TODO: now there is an open-source package named GAMESS which can compute the required
+ * sigma profiles.
+ * 
  * @author Rafael de Pelegrini Soares
  *
  */
