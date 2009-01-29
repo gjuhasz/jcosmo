@@ -216,8 +216,8 @@ public class COSMOSAC {
 
 		SEGGAMMA = new double[compseg];
 		SEGGAMMAPR = new double[ncomps][compseg];
-		segSolver = new SegmentSolverNewton();
-//		segSolver = new SegmentSolverSimple();
+//		segSolver = new SegmentSolverNewton();
+		segSolver = new SegmentSolverSimple();
 		
 		RNORM = new double[ncomps];
 		QNORM = new double[ncomps];
