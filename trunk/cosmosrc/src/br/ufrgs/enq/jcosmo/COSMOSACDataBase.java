@@ -31,7 +31,8 @@ import java.sql.Statement;
  * This database contains the data of the sigma profiles for a large set
  * of compounds.
  * 
- * TODO: now there is an open-source package named GAMESS which can compute the required
+ * TODO: there is an open-source package named GAMESS which has a
+ * COSMO code (COSGMS) but accordingly to the author it cannot compute the required
  * sigma profiles.
  * 
  * @author Rafael de Pelegrini Soares
