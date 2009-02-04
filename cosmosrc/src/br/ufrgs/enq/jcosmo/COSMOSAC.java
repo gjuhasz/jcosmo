@@ -262,6 +262,22 @@ public class COSMOSAC {
 	}
 
 	/**
+	 * @return the current segment solver.
+	 */
+	public ISegmentSolver getSegSolver() {
+		return segSolver;
+	}
+
+	/**
+	 * Set the segment solver, default is {@link SegmentSolverNewton}.
+	 * @param segSolver the segment solver to be used
+	 */
+	public void setSegSolver(ISegmentSolver segSolver) {
+		this.segSolver = segSolver;
+	}
+
+
+	/**
 	 * Calculates the activity coefficients.
 	 * 
 	 * @param lnGama the vector to put the results in.
