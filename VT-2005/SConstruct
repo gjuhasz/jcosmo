@@ -1,1 +1,3 @@
 Program('COSMO-SAC-VT-2005_v2.for', FORTRANFLAGS = ['-ffree-form'], LIBS = ['gfortran', 'gfortranbegin'])
+
+Program('Sigma-average_v2.for', FORTRANFLAGS = ['-ffree-form'], LIBS = ['gfortran', 'gfortranbegin'])
