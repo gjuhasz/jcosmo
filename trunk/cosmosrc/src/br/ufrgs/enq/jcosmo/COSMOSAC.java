@@ -155,6 +155,13 @@ public class COSMOSAC {
 
 		rebuildInternals();
 	}
+	
+	/**
+	 * @return the cavity volume vector
+	 */
+	public double[] getCavityVolume(){
+		return VCOSMO;
+	}
 
 	/**
 	 * Sets the system temperature in Kelvin
