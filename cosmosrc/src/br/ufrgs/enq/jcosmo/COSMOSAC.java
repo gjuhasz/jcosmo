@@ -153,7 +153,7 @@ public class COSMOSAC {
 		for (int i = 0; i < ncomps; i++)
 			z[i] = 1.0/ncomps;
 
-		rebuildInternals();
+		parametersChanged();
 	}
 	
 	/**
@@ -211,7 +211,7 @@ public class COSMOSAC {
 	 * This function calculates all quantities which do not depend on composition
 	 * or temperature.
 	 */
-	private void rebuildInternals(){
+	public void parametersChanged(){
 		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/EO;
 		double fpol = (EPSILON-1.0)/(EPSILON+0.5);
 		alphaPrime = fpol*alpha;

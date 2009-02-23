@@ -29,9 +29,9 @@ import org.apache.commons.math.distribution.NormalDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 /**
- * Create the sigma profile based on COSMO/GAMESS LOG file.
+ * Create the sigma profile based on GAMESS LOG or MOPAC COS file.
  * 
- * <p>This class will extract the segments information of a COSMO/GAMESS LOG file
+ * <p>This class will extract the segments information from the file
  * to construct the sigma profile as needed by {@link COSMOSAC}.
  * The log file can be passed directly to the constructor, it will look for the
  * segment information.
@@ -42,21 +42,29 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
  * @author rafael
  *
  */
-public class SigmaAverageGAMESS {
+public class SigmaProfileGenerator {
 	private static final double REFF = 0.81764200000000;
 	private static final double CHARGE_LOWER = -0.025;
-	private static final double AU_ANGSTRON = 0.529177249;
+	protected static final double AU_ANGSTRON = 0.529177249;
 
 	double[] x, y, z, area, SIGMA, SIGMANEW;
 	double SP[], CHGDEN[];
 	
 	double increment;
+	double volume;
+	
+	public enum FileType {
+		GAMESS,
+		MOPAC
+	};
+	
+	FileType type;
 
 	/**
 	 * Creates the sigma profile given a COSMO/GAMESS output file with the default number of segments (51).
 	 */
-	public SigmaAverageGAMESS(String fileName) throws Exception {
-		this(fileName, 51);
+	public SigmaProfileGenerator(FileType type, String fileName) throws Exception {
+		this(type, fileName, 51);
 	}
 
 	/**
@@ -66,8 +74,17 @@ public class SigmaAverageGAMESS {
 	 * @param sigmaPoints the number of elements on the resulting profile (usually 51)
 	 * @throws Exception if there is a problem when reading the file
 	 */
-	public SigmaAverageGAMESS(String fileName, int sigmaPoints) throws Exception {
-		readSegmentCharges(fileName);
+	public SigmaProfileGenerator(FileType type, String fileName, int sigmaPoints) throws Exception {
+		this.type = type;
+		
+		switch (type) {
+		case GAMESS:
+			readSegmentChargesGAMESS(fileName);
+			break;
+		case MOPAC:
+			readSegmentChargesMOPAC(fileName);
+			break;
+		}
 		
 		increment = -(CHARGE_LOWER*2)/(double)(sigmaPoints-1);
 		// SETTING CHGDEN MATRIX
@@ -79,10 +96,16 @@ public class SigmaAverageGAMESS {
 			CHGDEN[J] = CHARGE_LOWER + increment*(double)J;
 		}
 		
-		averageCharges(sigmaPoints);
-//		simpleSorting();
-		normalSorting(SIGMANEW);
-//		normalSorting(SIGMA);
+		switch (type) {
+		case GAMESS:
+			averageCharges(sigmaPoints);
+//			simpleSorting();
+			normalSorting(SIGMANEW);
+			break;
+		case MOPAC:
+			normalSorting(SIGMA);
+			break;
+		}
 	}
 
 	/**
@@ -100,7 +123,7 @@ public class SigmaAverageGAMESS {
 		return CHGDEN;
 	}
 
-	void readSegmentCharges(String filename) throws Exception{
+	void readSegmentChargesGAMESS(String filename) throws Exception{
 
 		Scanner input = new Scanner(new File(filename));
 		input.useLocale(Locale.US);
@@ -137,6 +160,61 @@ public class SigmaAverageGAMESS {
 			area[i] = input.nextDouble();
 			SIGMA[i] = input.nextDouble();
 			// input.nextLine(); // density (charge/area)
+		}
+		input.close();
+	}
+	
+	void readSegmentChargesMOPAC(String filename) throws Exception{
+
+		Scanner input = new Scanner(new File(filename));
+		input.useLocale(Locale.US);
+
+		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
+		int cosmoSegments = 0;
+		while(input.hasNext()){
+			if(volume==0 && input.next().equals("COSMO")
+					 && input.next().equals("VOLUME")
+					 && input.next().equals("=")
+					){
+				volume = input.nextDouble();
+			}
+			if(input.next().equals("SEGMENT")
+					 && input.next().equals("DATA:")
+					 && input.next().equals("NPS=")
+					){
+				cosmoSegments = input.nextInt();
+				
+				input.next();
+				input.nextLine(); // skip the header file
+				break;
+			}
+			input.nextLine();
+		}
+
+		if(cosmoSegments==0)
+			throw new Exception("File " + filename + " does not have SEGMENTS information");
+
+		x = new double[cosmoSegments];
+		y = new double[cosmoSegments];
+		z = new double[cosmoSegments];
+		area = new double[cosmoSegments];
+		SIGMA = new double[cosmoSegments];
+
+		for (int i = 0; i < cosmoSegments; i++) {
+			input.nextInt(); // segment id
+			input.nextInt(); // atom
+			input.nextInt(); // elem
+//			x[i] = input.nextDouble()*AU_ANGSTRON;
+//			y[i] = input.nextDouble()*AU_ANGSTRON;
+//			z[i] = input.nextDouble()*AU_ANGSTRON;
+			x[i] = input.nextDouble();
+			y[i] = input.nextDouble();
+			z[i] = input.nextDouble();
+
+			input.nextDouble(); // charge
+			area[i] = input.nextDouble();
+			SIGMA[i] = input.nextDouble();
+			input.nextLine(); // skip potential
 		}
 		input.close();
 	}
@@ -181,7 +259,7 @@ public class SigmaAverageGAMESS {
 
 	void normalSorting(double [] SIGMANEW) throws MathException {
 
-		double stdDev = increment;
+		double stdDev = increment/3;
 
 //		stdDev = Math.sqrt(org.apache.commons.math.stat.StatUtils.variance(SIGMANEW));
 //		stdDev /= 6;
@@ -213,36 +291,11 @@ public class SigmaAverageGAMESS {
 			out.println(CHGDEN[i] + "\t" + SP[i]);
 		}
 	}
-
+	
 	/**
-	 * @param args
+	 * @return the cosmo cavity volume in A^3
 	 */
-	public static void main(String[] args) {
-		String filename;
-
-		try {
-			int nseg = 51;
-			if(args.length > 0){
-				filename = args[0];
-				if(args.length>1){
-					try{
-						nseg = Integer.parseInt(args[1]);
-					}
-					catch (NumberFormatException e) {
-						System.out.println("Invalid number of segments");
-						return;
-					}
-				}			
-			}
-			else{
-				Scanner in = new Scanner(System.in);
-				System.out.print("Enter with the GAMESS LOG FILE: ");
-				filename = in.nextLine();
-			}
-			SigmaAverageGAMESS a = new SigmaAverageGAMESS(filename, nseg);
-			a.printProfile(System.out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public double getVolume(){
+		return volume;
 	}
 }
