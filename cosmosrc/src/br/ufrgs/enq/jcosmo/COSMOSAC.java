@@ -157,6 +157,38 @@ public class COSMOSAC {
 	}
 	
 	/**
+	 * Creates a new COSMO-SAC object given the compounds.
+	 * 
+	 * The user can use either this function or {@link #setParameters(double[], double[], double[][])}.
+	 * Multi-compound mixtures are supported.
+	 * 
+	 * @throws Exception 
+	 * 
+	 */
+	public void setComponents(COSMOSACCompound []comps) throws Exception{
+		
+		this.ncomps = comps.length;
+		this.compseg = charge.length;
+
+		this.VCOSMO = new double[ncomps];
+		this.charge = comps[0].charge;
+		this.sigma = new double[ncomps][];
+
+		for (int i = 0; i < comps.length; i++) {
+			this.VCOSMO[i] = comps[i].Vcosmo;
+			this.sigma[i] = comps[i].sigma;
+		}
+
+		this.T = 300;
+
+		z = new double[ncomps];
+		for (int i = 0; i < ncomps; i++)
+			z[i] = 1.0/ncomps;
+
+		parametersChanged();
+	}
+	
+	/**
 	 * @return the cavity volume vector
 	 */
 	public double[] getCavityVolume(){
