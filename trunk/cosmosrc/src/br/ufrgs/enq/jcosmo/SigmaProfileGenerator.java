@@ -43,7 +43,7 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
  *
  */
 public class SigmaProfileGenerator {
-	private static final double REFF = 0.81764200000000;
+	private static final double RAV = 0.81764200000000;
 	private static final double CHARGE_LOWER = -0.025;
 	protected static final double AU_ANGSTRON = 0.529177249;
 
@@ -103,6 +103,8 @@ public class SigmaProfileGenerator {
 			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
+//			averageCharges(sigmaPoints);
+//			simpleSorting();
 			normalSorting(SIGMA);
 			break;
 		}
@@ -219,15 +221,16 @@ public class SigmaProfileGenerator {
 		input.close();
 	}
 
+// from Mullins, Liu, Ghaderi, Fast, 2008
 	void averageCharges(int sigmaPoints) {
 		SIGMANEW = new double[x.length];
 
-		double REFF2 = REFF*REFF;
+		double RAV2 = RAV*RAV;
 
 		// BEGIN AVERAGING SURFACE CHARGES
 		for(int J=0; J<x.length; ++J){
 			double num = 0.0;
-			double den =0.0;
+			double den = 0.0;
 
 			for(int K=0; K<x.length; ++K){
 				double RADK2 = area[K]/Math.PI;
@@ -239,10 +242,47 @@ public class SigmaProfileGenerator {
 				
 				double DMN2 = DMN*DMN;
 				
-				double exp = Math.exp(-DMN2/(RADK2+REFF2));
+				double exp = Math.exp(-DMN2/(RADK2+RAV2));
+				
+				double temp = ( (RADK2 * RAV2)/(RADK2 + RAV2) )*exp;
+				num += SIGMA[K]*temp;
+				den += temp;
+//				num += SIGMA[K]*(RADK2 * REFF2)/(RADK2 + REFF2)*exp;
+//				den += (RADK2*REFF2)/(RADK2+REFF2)*exp;
+			}
+			SIGMANEW[J] = num/den;
+		}
+	}
+	
 
-				num += SIGMA[K]*(RADK2 * REFF2)/(RADK2 + REFF2)*exp;
-				den += (RADK2*REFF2)/(RADK2+REFF2)*exp;
+// from Sandler, 2007
+	void averageCharges2(int sigmaPoints) {
+		SIGMANEW = new double[x.length];
+		
+		double Fdecay = 3.57;
+		double Reff = 1.52;
+		double Reff2 = Reff*Reff;
+
+		// BEGIN AVERAGING SURFACE CHARGES
+		for(int J=0; J<x.length; ++J){
+			double num = 0.0;
+			double den = 0.0;
+
+			for(int K=0; K<x.length; ++K){
+				double Rn2 = area[K]/Math.PI;
+				
+				double deltax = x[K]-x[J];
+				double deltay = y[K]-y[J];
+				double deltaz = z[K]-z[J];
+				double Dmn = Math.sqrt(deltax*deltax + deltay*deltay + deltaz*deltaz);
+				
+				double Dmn2 = Dmn*Dmn;
+				
+				double exp = Math.exp(-Fdecay*(Dmn2/(Rn2+Reff2)));
+				
+				double temp = ( (Rn2 * Reff2)/(Rn2 + Reff2) )*exp;
+				num += SIGMA[K]*temp;
+				den += temp;
 			}
 			SIGMANEW[J] = num/den;
 		}

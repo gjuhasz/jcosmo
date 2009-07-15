@@ -3,6 +3,7 @@ package br.ufrgs.enq.jcosmo.idac;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
@@ -12,7 +13,7 @@ import com.csvreader.CsvReader;
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
  * 
- * @author rafael
+ * @author rafael e renan
  *
  */
 public class IDACExperiments {
@@ -75,13 +76,21 @@ public class IDACExperiments {
 			}
 			
 			COSMOSACCompound comps[] = new COSMOSACCompound[2];
-			comps[0] = db.getComp(compNames[0]);
-			comps[1] = db.getComp(compNames[1]);
-			if(comps[0] == null)
-				throw new IllegalArgumentException("Component " + compNames[0] + " not found.");
-			if(comps[1] == null)
-				throw new IllegalArgumentException("Component " + compNames[1] + " not found.");
-
+			if (modelClass == COSMOPAC.class.getName()){
+				comps[0] = db.getComp("water");
+				comps[0].name = compNames[0].toUpperCase();
+				comps[1] = db.getComp("water");
+				comps[1].name = compNames[1].toUpperCase();
+			} 
+			else {
+				comps[0] = db.getComp(compNames[0].replace(' ', '-'));
+				comps[1] = db.getComp(compNames[1].replace(' ', '-'));
+				if(comps[0] == null)
+					throw new IllegalArgumentException("Component " + compNames[0] + " not found.");
+				if(comps[1] == null)
+					throw new IllegalArgumentException("Component " + compNames[1] + " not found.");
+			}
+			
 			model.setComponents(comps);
 			
 			models.add(model);
@@ -110,15 +119,15 @@ public class IDACExperiments {
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
 			
-			double gammaCalc = Math.exp(lnGamma[0]);
-//			double lngammaInf = Math.log(gammaInf);
-//			double rd = lngammaInf - lngammaCalc;
-			double rd = gammaInf - gammaCalc;
+//			double gammaCalc = Math.exp(lnGamma[0]);
+			double lngammaInf = Math.log(gammaInf);
+			double rd = lngammaInf - lnGamma[0];
+//			double rd = gammaInf - gammaCalc;
 			if(leastSquares)
 				rd = rd*rd;
 			else
-//				rd = Math.abs(rd)/lngammaInf;
-				rd = Math.abs(rd)/gammaInf;
+				rd = Math.abs(rd);
+//				rd = Math.abs(rd)/gammaInf;
 			
 			AARD += rd;
 			++NP;
