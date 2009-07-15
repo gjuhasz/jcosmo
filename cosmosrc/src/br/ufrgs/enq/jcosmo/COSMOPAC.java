@@ -50,13 +50,62 @@ public class COSMOPAC extends COSMOSAC {
 //		setCHB(35594.636);
 //		setSigmaHB(0.01464);
 		
-////		// optimization based on VLE experiments
+		// optimization based on VLE experiments
 //		setAEffPrime(2.032);
 //		setCoord(0.4954);
 //		setVnorm(9.11500);
 //		setAnorm(32.71439);
 //		setCHB(31747.393);
 //		setSigmaHB(0.006491);
+		
+		// teste COST:0.33605919189470757 NP:264
+//		setAEffPrime(7.104872197041376);
+//		setCoord(10.0);
+//		setVnorm(50.356158728594586);
+//		setAnorm(40.34455758285999);
+//		setCHB(38909.18398032317);
+//		setSigmaHB(0.007610431584682716);
+		
+		// teste  COST:0.3349320427103625 NP:264
+//		setAEffPrime(6.987770682010926);
+//		setCoord(10.831896133137302);
+//		setVnorm(56.70929194847275);
+//		setAnorm(41.20603421625156);
+//		setCHB(39338.90939677377);
+//		setSigmaHB(0.007689283637684755);
+		
+		// teste  COST:0.36202518040747816 NP:310 
+//		setAEffPrime(7.5);
+//		setCoord(10.0);
+//		setVnorm(39.312074722512);
+//		setAnorm(44.47306992385012);
+//		setCHB(33385.50979424656);
+//		setSigmaHB(0.0072033250851981315);
+		
+		// teste COST:0.5048779355889912 NP:285
+//		setAEffPrime(7.5);
+//		setCoord(10.0);
+//		setVnorm(42.07135995186812);
+//		setAnorm(44.5202111100251);
+//		setCHB(30559.688907926902);
+//		setSigmaHB(0.007010968843097385);
+		
+//		 teste 0.51
+//		setAEffPrime(7.5);
+//		setCoord(10.0);
+//		setVnorm(29.059646484375016);
+//		setAnorm(36.52438549804689);
+//		setCHB(52973.5185546875);
+//		setSigmaHB(0.008460908203124996);
+		
+		// teste COST:0.464473140176675
+//		setAEffPrime(7.5);
+//		setCoord(10.0);
+		setVnorm(38.15387540947493);
+		setAnorm(40.685560114024895);
+		setCHB(29662.893349642523);
+		setSigmaHB(0.0066128361885796965);
+		
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -66,8 +115,15 @@ public class COSMOPAC extends COSMOSAC {
 		this.sigma = new double[ncomps][];
 
 		for (int i = 0; i < comps.length; i++) {
-			SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
-					"mopac/" + comps[i].name + ".cos");
+			SigmaProfileGenerator s = null;
+			
+			try {
+				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
+						"mopac/" + comps[i].name + ".cos");												
+			} catch (Exception e) {
+				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
+						"mopac/" + comps[i].name.replace('-',' ') + ".cos");
+			}			
 			
 			this.charge = s.getChargeDensity();
 			this.VCOSMO[i] = s.getVolume();

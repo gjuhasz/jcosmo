@@ -36,6 +36,6 @@ public class SegmentSolverSimple implements ISegmentSolver {
 
 			++niter;
 		}
-		System.out.println("SEGGAMMA niter:" + niter);
+//		System.out.println("SEGGAMMA niter:" + niter);
 	}
 }

@@ -38,6 +38,18 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 //			}
 //		}
 
+		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/ChloroAlkane-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Water-Alkane.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Water-CycloAlkane.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Water-Alcohol.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Water-HeavyAlcohol.csv", modelClass));
+		
 		experiments.add(new IDACExperiments("idac/Alkane-Alcohol.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
 
@@ -49,6 +61,7 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 
 		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
 
 //		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass));
@@ -56,10 +69,9 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
 
-		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));
-
-		experiments.add(new IDACExperiments("idac/Water-Alcohol.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));
+		
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -83,14 +95,15 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 6;
+//		return 6;
+		return 4;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
 
-		pars[i++] = cosmo.getAEffPrime();
-		pars[i++] = cosmo.getCoord();
+//		pars[i++] = cosmo.getAEffPrime();
+//		pars[i++] = cosmo.getCoord();
 		pars[i++] = cosmo.getVnorm();
 		pars[i++] = cosmo.getAnorm();
 		pars[i++] = cosmo.getCHB();
@@ -107,8 +120,8 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 				COSMOSAC cosmo = (COSMOSAC) model;
 
 				int i=0;
-				cosmo.setAEffPrime(pars[i++]);
-				cosmo.setCoord(pars[i++]);
+//				cosmo.setAEffPrime(pars[i++]);
+//				cosmo.setCoord(pars[i++]);
 				cosmo.setVnorm(pars[i++]);
 				cosmo.setAnorm(pars[i++]);
 				cosmo.setCHB(pars[i++]);
@@ -133,7 +146,8 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		for (int i = 0; i < pars.length; i++) {
 			System.out.print(pars[i] + " ");
 		}
-		System.out.println(" COST:" + cost);
+//		System.out.println(" COST:" + cost);
+		System.out.println(" COST:" + cost + " NP:" + NP);
 		return cost;
 	}
 
@@ -173,7 +187,7 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 //		DiRect direct = new DiRect(est);
 //		direct.setMinSize(1e-5);
 //		direct.setTransform(new PaloschiTransformation());
-////		direct.setMaxEvals(200);
+//		direct.setMaxEvals(200);
 //		direct.optimize();
 //		x1 = direct.getMinValue();
 
@@ -181,6 +195,8 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		for (int i = 0; i < x1.length; i++) {
 			System.out.print(x1[i] + " ");
 		}
+		System.out.println(" COST:" + optimizer.getMinima()[0].getCost());
+		
 		System.out.println("\nStarted from: ");
 		for (int i = 0; i < x0.length; i++) {
 			System.out.print(x0[i] + " ");

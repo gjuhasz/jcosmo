@@ -168,10 +168,10 @@ public class COSMOSAC {
 	public void setComponents(COSMOSACCompound []comps) throws Exception{
 		
 		this.ncomps = comps.length;
+		this.charge = comps[0].charge;
 		this.compseg = charge.length;
 
-		this.VCOSMO = new double[ncomps];
-		this.charge = comps[0].charge;
+		this.VCOSMO = new double[ncomps];		
 		this.sigma = new double[ncomps][];
 
 		for (int i = 0; i < comps.length; i++) {
@@ -255,8 +255,8 @@ public class COSMOSAC {
 
 		SEGGAMMA = new double[compseg];
 		SEGGAMMAPR = new double[ncomps][compseg];
-		segSolver = new SegmentSolverNewton();
-//		segSolver = new SegmentSolverSimple();
+//		segSolver = new SegmentSolverNewton();
+		segSolver = new SegmentSolverSimple();
 		
 		RNORM = new double[ncomps];
 		QNORM = new double[ncomps];
