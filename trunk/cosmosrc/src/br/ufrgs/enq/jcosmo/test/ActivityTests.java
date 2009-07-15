@@ -19,40 +19,26 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
-import java.sql.SQLException;
-
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 public class ActivityTests {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1;
-		COSMOSACCompound c2;
-		try {
-			c1 = db.getComp("methyl-acetate");
-			c2 = db.getComp("water");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
+		
+		COSMOSACCompound comps[] = new COSMOSACCompound[2];
+		comps[0] = db.getComp("propionic-acid");
+		comps[1] = db.getComp("cyclohexane");
+		
+		COSMOSAC cosmosac = new COSMOPAC();
+		cosmosac.setSigmaHB(COSMOSAC.SIGMAHB);
+		cosmosac.setComponents(comps);
 
-		double[] cavityVolume = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
-
-		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
-
-		cosmosac.setTemperature(330.15);
+		cosmosac.setTemperature(298);
 
 		int n = 100;
 		double x[] = new double[2];
