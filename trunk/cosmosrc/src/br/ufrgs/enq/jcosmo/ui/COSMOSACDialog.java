@@ -99,6 +99,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double [] lnGamma = new double[2];
 	COSMOSAC cosmosac = new COSMOSAC();
 
+	@SuppressWarnings("deprecation")
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
