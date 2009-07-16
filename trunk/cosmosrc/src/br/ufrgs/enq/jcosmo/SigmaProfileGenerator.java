@@ -98,14 +98,15 @@ public class SigmaProfileGenerator {
 		
 		switch (type) {
 		case GAMESS:
-			averageCharges(sigmaPoints);
+			averageCharges();
 //			simpleSorting();
 			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
-//			averageCharges(sigmaPoints);
+			averageCharges();
 //			simpleSorting();
-			normalSorting(SIGMA);
+//			normalSorting(SIGMA);
+			normalSorting(SIGMANEW);
 			break;
 		}
 	}
@@ -222,7 +223,7 @@ public class SigmaProfileGenerator {
 	}
 
 // from Mullins, Liu, Ghaderi, Fast, 2008
-	void averageCharges(int sigmaPoints) {
+	void averageCharges() {
 		SIGMANEW = new double[x.length];
 
 		double RAV2 = RAV*RAV;
