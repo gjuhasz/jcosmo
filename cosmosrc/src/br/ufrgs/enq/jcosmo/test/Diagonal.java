@@ -2,6 +2,7 @@ package br.ufrgs.enq.jcosmo.test;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +127,8 @@ public class Diagonal extends JFrame {
 		double T;
 		// infinite dilution activity calculation
 		z[0] = 0; z[1] = 1-z[0];
-		XYSeries point = new XYSeries(filename);
+		File file = new File(filename);
+		XYSeries point = new XYSeries(file.getName().substring(0, file.getName().lastIndexOf('.')));
 		
 		for (int i = start; i < models.size(); i++) {
 			COSMOSAC model = models.get(i);
@@ -148,8 +150,8 @@ public class Diagonal extends JFrame {
 		JFreeChart chart = ChartFactory.createXYLineChart(null, 
 				"exp", "calc", null, PlotOrientation.VERTICAL, true, true, false);
 		plot = (XYPlot) chart.getPlot();		
-		plot.getDomainAxis().setRange(new Range(-1, 24));
-		plot.getRangeAxis().setRange(new Range(-1, 27));
+		plot.getDomainAxis().setRange(new Range(-2, 26));
+		plot.getRangeAxis().setRange(new Range(-2, 26));
 	
 		XYSeriesCollection[] dataset = new XYSeriesCollection [points.size()];
 		int i;
@@ -172,8 +174,8 @@ public class Diagonal extends JFrame {
 		
 		XYSeriesCollection dataset2 = new XYSeriesCollection();
 		XYSeries diag = new XYSeries("diagonal");
-		diag.add(-1, -1);
-		diag.add(24, 24);
+		diag.add(-2, -2);
+		diag.add(26, 26);
 		dataset2.addSeries(diag);
 		
 		plot.setDataset(i+1, dataset2);
