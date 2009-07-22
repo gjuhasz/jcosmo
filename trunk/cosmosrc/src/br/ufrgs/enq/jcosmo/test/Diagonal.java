@@ -14,6 +14,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -37,6 +38,7 @@ public class Diagonal extends JFrame {
 
 	private String modelClass;
 	private int NP=0;
+	private int start;
 	
 	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
 	
@@ -52,6 +54,7 @@ public class Diagonal extends JFrame {
 		this.modelClass = modelClass;
 		color.add(cor);
 		
+		start = models.size();
 		loadContents();
 		addPoint();
 	}
@@ -111,6 +114,7 @@ public class Diagonal extends JFrame {
 			models.add(model);
 			temperatures.add(T);
 			gammaInfs.add(gammaInf);
+			NP++;
 		}
 		reader.close();
 	}
@@ -124,7 +128,7 @@ public class Diagonal extends JFrame {
 		z[0] = 0; z[1] = 1-z[0];
 		XYSeries point = new XYSeries(filename);
 		
-		for (int i = 0; i < models.size(); i++) {
+		for (int i = start; i < models.size(); i++) {
 			COSMOSAC model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
@@ -133,8 +137,7 @@ public class Diagonal extends JFrame {
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
 						
-			point.add(lnGamma[0], Math.log(gammaInf));
-			NP++;
+			point.add(Math.log(gammaInf), lnGamma[0]);
 		}
 		points.add(point);
 	}
@@ -143,10 +146,10 @@ public class Diagonal extends JFrame {
 				
 		XYPlot plot;
 		JFreeChart chart = ChartFactory.createXYLineChart(null, 
-				"calc", "exp", null, PlotOrientation.VERTICAL, true, true, false);
+				"exp", "calc", null, PlotOrientation.VERTICAL, true, true, false);
 		plot = (XYPlot) chart.getPlot();		
-//		plot.getDomainAxis().setRange(new Range(-1, 24));
-//		plot.getRangeAxis().setRange(new Range(-1, 24));
+		plot.getDomainAxis().setRange(new Range(-1, 24));
+		plot.getRangeAxis().setRange(new Range(-1, 27));
 	
 		XYSeriesCollection[] dataset = new XYSeriesCollection [points.size()];
 		int i;
@@ -158,19 +161,14 @@ public class Diagonal extends JFrame {
 			plot.setDataset(i, dataset[i]);
 //			r.setBaseFillPaint(color.get(i));
 			plot.setRenderer(i, r);
-		}		
+		}
 		
-//		for(i=0; i<points.size(); i++){
-//			plot.setDataset(i, dataset[i]);
-//		}
-
-//		XYSeriesCollection dataset = new XYSeriesCollection();
-//		dataset.addSeries(points.get(1));
-//		dataset.addSeries(points.get(2));
-//		plot.setDataset(0, dataset);
-//		XYSplineRenderer r = new XYSplineRenderer();
-//		r.setBaseLinesVisible(false);
-//		plot.setRenderer(0, r);
+//		XYSeriesCollection dataset1 = new XYSeriesCollection();
+//		dataset1.addSeries(point);
+//		plot.setDataset(0, dataset1);
+//		XYSplineRenderer r1 = new XYSplineRenderer();
+//		r1.setBaseLinesVisible(false);
+//		plot.setRenderer(0, r1);
 		
 		XYSeriesCollection dataset2 = new XYSeriesCollection();
 		XYSeries diag = new XYSeries("diagonal");
@@ -178,10 +176,10 @@ public class Diagonal extends JFrame {
 		diag.add(24, 24);
 		dataset2.addSeries(diag);
 		
-		plot.setDataset(1, dataset2);
+		plot.setDataset(i+1, dataset2);
 		XYSplineRenderer r2 = new XYSplineRenderer();
 		r2.setBaseShapesVisible(false);
-		plot.setRenderer(1, r2);
+		plot.setRenderer(i+1, r2);
 				
 		ChartPanel chartPanel = new ChartPanel(chart);
 		JPanel jp = new JPanel(new BorderLayout());
@@ -231,8 +229,8 @@ public class Diagonal extends JFrame {
 //
 //		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
 //		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-		
-//		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass, Color.RED);
+//		
+//		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
 //		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
