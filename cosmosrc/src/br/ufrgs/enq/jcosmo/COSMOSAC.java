@@ -287,8 +287,13 @@ public class COSMOSAC {
 					SIGMAACC = charge[n];
 				}
 				chargemn = charge[m]+charge[n];
-				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn +
-				cHB * Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
+				double sigmaHb2 = 2*sigmaHB*sigmaHB;
+				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
+				double hb =
+//					Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
+					(1-Math.exp(-SIGMAACC*SIGMAACC/sigmaHb2)) * Math.max(0.0, SIGMAACC) *
+					(1-Math.exp(-SIGMADON*SIGMADON/sigmaHb2)) * Math.min(0.0, SIGMADON);
+				deltaW[m][n] += cHB * hb;
 			}
 		}
 
