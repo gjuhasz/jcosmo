@@ -173,7 +173,7 @@ public class Diagonal extends JFrame {
 //		plot.setRenderer(0, r1);
 		
 		XYSeriesCollection dataset2 = new XYSeriesCollection();
-		XYSeries diag = new XYSeries("diagonal");
+		XYSeries diag = new XYSeries(NP);
 		diag.add(-2, -2);
 		diag.add(26, 26);
 		dataset2.addSeries(diag);
@@ -206,7 +206,6 @@ public class Diagonal extends JFrame {
 		String modelClass = COSMOPAC.class.getName();
 		
 		Diagonal dig = new Diagonal();
-		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Aromatic-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/ChloroAlkane-Water.csv", modelClass);
@@ -216,27 +215,41 @@ public class Diagonal extends JFrame {
 		dig.addIDACExperiments("idac/Water-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/Water-HeavyAlcohol.csv", modelClass);
 		
-//		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
-//
-//		dig.addIDACExperiments("idac/Alcohol-HeavyAlkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/HeavyAlkane-Alcohol.csv", modelClass);
-//
-//		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
-//
-//		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
-//
-//		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
-//		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-//		
-//		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
-//		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
-//		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/ChloroAlkane-Water.csv", modelClass);
+		
+		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
+		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
+
+		dig.addIDACExperiments("idac/Alcohol-HeavyAlkane.csv", modelClass);
+		dig.addIDACExperiments("idac/HeavyAlkane-Alcohol.csv", modelClass);
+
+		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
+
+		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
+		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
+
+		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
+		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
+		
+		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
+		
+		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
+		dig.addIDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
+				
+		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
+		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkene-Amine.csv", modelClass);
 		
 		dig.PlotDig();	
 	}
