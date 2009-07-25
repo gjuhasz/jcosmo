@@ -65,9 +65,12 @@ public class COSMOSAC {
 	public static final double CHB = 85580.0;
 
 	double epsilon = EPSILON;
+	double eo = EO;
 	double sigmaHB = SIGMAHB;
 	double cHB = CHB;
 
+	boolean sigmaGaussian = false;
+	
 	double alphaPrime;
 
 	private static final double TOLERANCE = 1e-6;
@@ -117,14 +120,23 @@ public class COSMOSAC {
 		this.epsilon = epsilon;
 	}
 	
+	public void setSigmaGaussian(boolean sigmaGaussian){
+		this.sigmaGaussian = sigmaGaussian;
+	}
+	
 
 	public double getAEffPrime() {
 		return aEffPrime;
 	}
-
-
 	public void setAEffPrime(double aEffPrime) {
 		this.aEffPrime = aEffPrime;
+	}
+	
+	public double getEo() {
+		return eo;
+	}
+	public void setEo(double eo) {
+		this.eo = eo;
 	}
 
 
@@ -255,7 +267,7 @@ public class COSMOSAC {
 	 * or temperature.
 	 */
 	public void parametersChanged(){
-		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/EO;
+		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/eo;
 		double fpol = (epsilon-1.0)/(epsilon+0.5);
 		alphaPrime = fpol*alpha;
 
@@ -300,10 +312,15 @@ public class COSMOSAC {
 				chargemn = charge[m]+charge[n];
 				double sigmaHb2 = 2*sigmaHB*sigmaHB;
 				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
-				double hb =
-//					Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
-					(1-Math.exp(-SIGMAACC*SIGMAACC/sigmaHb2)) * Math.max(0.0, SIGMAACC) *
-					(1-Math.exp(-SIGMADON*SIGMADON/sigmaHb2)) * Math.min(0.0, SIGMADON);
+				
+				double hb = 0.0;
+				if(sigmaGaussian)
+					hb =
+						(1-Math.exp(-SIGMAACC*SIGMAACC/sigmaHb2)) * Math.max(0.0, SIGMAACC) *
+						(1-Math.exp(-SIGMADON*SIGMADON/sigmaHb2)) * Math.min(0.0, SIGMADON);
+				else
+					hb = Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
+				
 				deltaW[m][n] += cHB * hb;
 			}
 		}
