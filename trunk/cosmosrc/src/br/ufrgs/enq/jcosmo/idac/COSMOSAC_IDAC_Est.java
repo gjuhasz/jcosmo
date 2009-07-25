@@ -10,7 +10,9 @@ import org.apache.commons.math.optimization.DirectSearchOptimizer;
 import org.apache.commons.math.optimization.NelderMead;
 import org.apache.commons.math.optimization.PointCostPair;
 
+import br.ufrgs.enq.direct.DiRect;
 import br.ufrgs.enq.direct.ObjectiveFunction;
+import br.ufrgs.enq.direct.PaloschiTransformation;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 
@@ -38,7 +40,7 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 //			}
 //		}
 
-		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
 ////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));
@@ -95,19 +97,20 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-//		return 6;
-		return 4;
+		return 6;
+//		return 4;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
 
-//		pars[i++] = cosmo.getAEffPrime();
+		pars[i++] = cosmo.getAEffPrime();
 //		pars[i++] = cosmo.getCoord();
 		pars[i++] = cosmo.getVnorm();
 		pars[i++] = cosmo.getAnorm();
 		pars[i++] = cosmo.getCHB();
 		pars[i++] = cosmo.getSigmaHB();
+		pars[i++] = cosmo.getEpsilon();
 	}
 
 	public double cost(double[] pars) throws CostException {
@@ -120,12 +123,13 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 				COSMOSAC cosmo = (COSMOSAC) model;
 
 				int i=0;
-//				cosmo.setAEffPrime(pars[i++]);
+				cosmo.setAEffPrime(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
 				cosmo.setVnorm(pars[i++]);
 				cosmo.setAnorm(pars[i++]);
 				cosmo.setCHB(pars[i++]);
 				cosmo.setSigmaHB(pars[i++]);
+				cosmo.setEpsilon(pars[i++]);
 				// update some internal variables
 				cosmo.parametersChanged();
 			}
@@ -183,19 +187,24 @@ public class COSMOSAC_IDAC_Est implements CostFunction, ObjectiveFunction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-//		DiRect direct = new DiRect(est);
-//		direct.setMinSize(1e-5);
-//		direct.setTransform(new PaloschiTransformation());
-//		direct.setMaxEvals(200);
-//		direct.optimize();
-//		x1 = direct.getMinValue();
-
 		System.out.println("Solution found: ");
 		for (int i = 0; i < x1.length; i++) {
 			System.out.print(x1[i] + " ");
 		}
 		System.out.println(" COST:" + optimizer.getMinima()[0].getCost());
+
+//		DiRect direct = new DiRect(est);
+//		direct.setMinSize(1e-6);
+////		direct.setTransform(new PaloschiTransformation());
+//		direct.setMaxEvals(2000);
+//		direct.optimize();
+//		x1 = direct.getMinValue();
+//		System.out.println("Solution found: ");
+//		for (int i = 0; i < x1.length; i++) {
+//			System.out.print(x1[i] + " ");
+//		}
+//		System.out.println(" COST:" + direct.getMinObjective());
+		
 		
 		System.out.println("\nStarted from: ");
 		for (int i = 0; i < x0.length; i++) {

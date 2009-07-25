@@ -43,7 +43,8 @@ package br.ufrgs.enq.jcosmo;
 public class COSMOSAC {
 
 	static final double EO = 2.395e-4;
-	public static final double AEFFPRIME = 7.5;
+//	public static final double AEFFPRIME = 7.5;
+	public static final double AEFFPRIME = 7.25; // accordingly to Shu Wang and Stanley I. Sandler Ind. Eng. Chem. Res. 2007
 	double aEffPrime = AEFFPRIME;
 
 	static final double RGAS = 0.001987;
@@ -63,6 +64,7 @@ public class COSMOSAC {
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
 
+	double epsilon = EPSILON;
 	double sigmaHB = SIGMAHB;
 	double cHB = CHB;
 
@@ -106,14 +108,23 @@ public class COSMOSAC {
 	public COSMOSAC(){
 	}
 
+	public double getEpsilon() {
+		return epsilon;
+	}
+
+
+	public void setEpsilon(double epsilon) {
+		this.epsilon = epsilon;
+	}
+	
 
 	public double getAEffPrime() {
 		return aEffPrime;
 	}
 
 
-	public void setAEffPrime(double effPrime) {
-		aEffPrime = effPrime;
+	public void setAEffPrime(double aEffPrime) {
+		this.aEffPrime = aEffPrime;
 	}
 
 
@@ -245,7 +256,7 @@ public class COSMOSAC {
 	 */
 	public void parametersChanged(){
 		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/EO;
-		double fpol = (EPSILON-1.0)/(EPSILON+0.5);
+		double fpol = (epsilon-1.0)/(epsilon+0.5);
 		alphaPrime = fpol*alpha;
 
 		ACOSMO = new double[ncomps];
