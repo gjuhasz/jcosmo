@@ -32,10 +32,8 @@ import com.csvreader.CsvReader;
  * @author rafael e renan
  *
  */
-public class Diagonal extends JFrame {
+public class IDACDiagonal extends JFrame {
 	private static final long serialVersionUID = 1L;
-
-	String filename;
 
 	private String modelClass;
 	private int NP=0;
@@ -51,20 +49,19 @@ public class Diagonal extends JFrame {
 //	static XYSeries point = new XYSeries(" ");
 	
 	public void addIDACExperiments(String filename, String modelClass, Color cor) throws Exception {
-		this.filename = filename;
 		this.modelClass = modelClass;
 		color.add(cor);
 		
 		start = models.size();
-		loadContents();
-		addPoint();
+		loadContents(filename);
+		addPoints(filename);
 	}
 	
 	public void addIDACExperiments(String filename, String modelClass) throws Exception {
 		addIDACExperiments(filename,modelClass, null);
 	}
 	
-	public void loadContents() throws Exception{
+	public void loadContents(String filename) throws Exception{
 		COSMOSAC model = null;
 		
 		CsvReader reader = new CsvReader(filename);
@@ -104,13 +101,23 @@ public class Diagonal extends JFrame {
 			else {
 				comps[0] = db.getComp(compNames[0].replace(' ', '-'));
 				comps[1] = db.getComp(compNames[1].replace(' ', '-'));
-				if(comps[0] == null)
-					throw new IllegalArgumentException("Component " + compNames[0] + " not found.");
-				if(comps[1] == null)
-					throw new IllegalArgumentException("Component " + compNames[1] + " not found.");
+				if(comps[0] == null){
+					System.err.println("Component " + compNames[0] + " not found, it will be ignored.");
+					continue;
+				}
+				if(comps[1] == null){
+					System.err.println("Component " + compNames[1] + " not found, it will be ignored.");
+					continue;
+				}
 			}
 			
-			model.setComponents(comps);
+			try{
+				model.setComponents(comps);
+			}
+			catch (Exception e) {
+				System.err.println(e.getMessage() + ", it will be ignored.");
+				continue;
+			}
 			
 			models.add(model);
 			temperatures.add(T);
@@ -120,7 +127,7 @@ public class Diagonal extends JFrame {
 		reader.close();
 	}
 	
-	public void addPoint() throws Exception{
+	public void addPoints(String filename) throws Exception{
 		
 		double z[] = new double[2];
 		double lnGamma[] = new double[2];
@@ -144,11 +151,11 @@ public class Diagonal extends JFrame {
 		points.add(point);
 	}
 	
-	public void PlotDig(){
+	public void showPlot(){
 				
 		XYPlot plot;
 		JFreeChart chart = ChartFactory.createXYLineChart(null, 
-				"exp", "calc", null, PlotOrientation.VERTICAL, true, true, false);
+				"Logarithm of Experimental IDAC", "Logarithm of Model IDAC", null, PlotOrientation.VERTICAL, true, true, false);
 		plot = (XYPlot) chart.getPlot();		
 		plot.getDomainAxis().setRange(new Range(-2, 26));
 		plot.getRangeAxis().setRange(new Range(-2, 26));
@@ -191,66 +198,5 @@ public class Diagonal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400,500);
 		setVisible(true);	
-	}
-		
-	public int getNP() {
-		return NP;
-	}
-	
-	public List<COSMOSAC> getModels() {
-		return models;
-	}
-	
-	
-	public static void main (String[] args) throws Exception{
-		String modelClass = COSMOPAC.class.getName();
-		
-		Diagonal dig = new Diagonal();
-		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Aromatic-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/ChloroAlkane-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Water-CycloAlkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Water-Alcohol.csv", modelClass);
-		dig.addIDACExperiments("idac/Water-HeavyAlcohol.csv", modelClass);
-		
-		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/ChloroAlkane-Water.csv", modelClass);
-		
-		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
-		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
-
-		dig.addIDACExperiments("idac/Alcohol-HeavyAlkane.csv", modelClass);
-		dig.addIDACExperiments("idac/HeavyAlkane-Alcohol.csv", modelClass);
-
-		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
-
-		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
-		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
-
-		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
-		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
-		
-		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
-		
-		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
-		dig.addIDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
-				
-		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
-		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkene-Amine.csv", modelClass);
-		
-		dig.PlotDig();	
 	}
 }
