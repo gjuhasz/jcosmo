@@ -31,6 +31,6 @@ water/1-octanol,373,4,10,5.95,3.76,5.27,7.41,1.49,4.59,-,,,,,,
 water/1-decanol,298,4.9,10,6.66,5.7,5.86,8.59,1.39,9.75,-,,,,,,
 water/1-decanol,333,4.3,10,6.85,4.61,6.18,8.85,1.39,6.96,-,,,,,,
 water/1-decanol,373,3.8,10,5.8,4.05,6.29,9.07,1.41,4.88,-,,,,,,
-water/1,2-dichloroethane,293,122,2
+"water/1,2-dichloroethane",293,122,2
 water/1-chlorobutane,293,244,3
 water/2-chlorobutane,286,196,3
