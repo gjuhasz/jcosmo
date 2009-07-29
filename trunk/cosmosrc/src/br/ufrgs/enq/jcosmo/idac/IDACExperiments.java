@@ -119,15 +119,15 @@ public class IDACExperiments {
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
 			
-//			double gammaCalc = Math.exp(lnGamma[0]);
-			double lngammaInf = Math.log(gammaInf);
-			double rd = lngammaInf - lnGamma[0];
-//			double rd = gammaInf - gammaCalc;
+			double gammaCalc = Math.exp(lnGamma[0]);
+//			double lngammaInf = Math.log(gammaInf);
+//			double rd = lngammaInf - lnGamma[0];
+			double rd = gammaInf - gammaCalc;
 			if(leastSquares)
 				rd = rd*rd;
 			else
-				rd = Math.abs(rd);
-//				rd = Math.abs(rd)/gammaInf;
+//				rd = Math.abs(rd);
+				rd = Math.abs(rd)/gammaInf;
 			
 			AARD += rd;
 			++NP;
