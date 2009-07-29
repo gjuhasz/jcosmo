@@ -1,5 +1,5 @@
-"System","T","GammaInf","Ref"
-"cyclopentane/water",293,249000,14
-"cyclohexane/water",298,83300,14
-"cycloheptane/water",293,181000,14
-"cyclooctane/water",293,787105,14
+System,T,GammaInf,Ref
+cyclopentane/water,293,249000,14
+cyclohexane/water,298,83300,14
+cycloheptane/water,293,181000,14
+cyclooctane/water,293,787000,14
