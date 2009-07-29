@@ -1,7 +1,6 @@
-"System","T","GammaInf","Ref"
-"benzene/water",298,2440,4
-"toluene/water",298,9900,4
-"naphthalene/water",298,66200,4
-"acenaphthene/water",298,442000,4
-"fluorene/water",298,597000,4
-"indane/water",298,60000,4
+System,T,GammaInf,Ref
+benzene/water,298,2440,4
+toluene/water,298,9900,4
+ethylbenzene/water,298,40100,4
+propylbenzene/water,298,133000,4
+butylbenzene/water,298,597000,4
