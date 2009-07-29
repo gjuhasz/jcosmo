@@ -159,6 +159,11 @@ public class IDACDiagonal extends JFrame {
 		plot = (XYPlot) chart.getPlot();		
 		plot.getDomainAxis().setRange(new Range(-2, 26));
 		plot.getRangeAxis().setRange(new Range(-2, 26));
+		
+		plot.setBackgroundPaint(Color.black);
+//		plot.setOutlinePaint(Color.black);
+//		plot.setDomainGridlinePaint(Color.white);
+//		plot.setRangeGridlinePaint(Color.white);
 	
 		XYSeriesCollection[] dataset = new XYSeriesCollection [points.size()];
 		int i;
@@ -185,10 +190,26 @@ public class IDACDiagonal extends JFrame {
 		diag.add(26, 26);
 		dataset2.addSeries(diag);
 		
+		XYSeriesCollection dataset3 = new XYSeriesCollection();
+		XYSeries erroPos = new XYSeries("20%");
+		erroPos.add(-2, -2*1.2);
+		erroPos.add(26, 26*1.2);
+		dataset3.addSeries(erroPos);
+		
+		XYSeriesCollection dataset4 = new XYSeriesCollection();
+		XYSeries erroNeg = new XYSeries("20%");
+		erroNeg.add(-2, -2*0.8);
+		erroNeg.add(26, 26*0.8);
+		dataset4.addSeries(erroNeg);
+		
 		plot.setDataset(i+1, dataset2);
+		plot.setDataset(i+2, dataset3);
+		plot.setDataset(i+3, dataset4);
 		XYSplineRenderer r2 = new XYSplineRenderer();
 		r2.setBaseShapesVisible(false);
 		plot.setRenderer(i+1, r2);
+		plot.setRenderer(i+2, r2);
+		plot.setRenderer(i+3, r2);
 				
 		ChartPanel chartPanel = new ChartPanel(chart);
 		JPanel jp = new JPanel(new BorderLayout());
