@@ -1,4 +1,5 @@
 #summary Logarithm of model IDAC versus logarithm of experimental IDAC for COSMO-SAC.
+#labels Featured
 
 = Introduction =
 
