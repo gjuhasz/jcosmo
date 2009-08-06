@@ -34,77 +34,123 @@ public class COSMOPAC extends COSMOSAC {
 	public COSMOPAC() {
 		// TODO: needs a reparametrization based on experiments (VLE, LLE, etc)!!
 		
-		// optimization based on IDAC (opt)
-//		setAEffPrime(7.18165706857084);
-//		setCoord(13.3026);
-//		setVnorm(82.629);
-//		setAnorm(55.78477);
-//		setCHB(69460.875);
-//		setSigmaHB(0.008250);
-
-		// optimization based on IDAC (Direct)
-//		setAEffPrime(5.08);
-//		setCoord(17.43);
-//		setVnorm(66.69);
-//		setAnorm(53.87);
-//		setCHB(35594.636);
-//		setSigmaHB(0.01464);
+		// teste COST:0.37800887481053136 NP:242
+//		setAEffPrime(6.406312590256911);
+////		setCoord(10.0);
+//		setVnorm(49.08102528394544);
+//		setAnorm(48.8073386838568);
+//		setCHB(24991.230313953296);
+//		setSigmaHB(0.0022658291813892955);
+//		setEpsilon(3.2756158636530275);
 		
-		// optimization based on VLE experiments
-//		setAEffPrime(2.032);
-//		setCoord(0.4954);
-//		setVnorm(9.11500);
-//		setAnorm(32.71439);
-//		setCHB(31747.393);
-//		setSigmaHB(0.006491);
+		// teste COST:0.32256382240158127 NP:242
+//		setAEffPrime(6.998695161135107);
+////		setCoord(10.0);
+//		setVnorm(91.5841666358196);
+//		setAnorm(33.69882992335153);
+//		setCHB(57479.50661977082);
+//		setSigmaHB(0.006949893900864999);
+//		setEpsilon(10.255836590044746);
 		
-		// teste COST:0.33605919189470757 NP:264
-//		setAEffPrime(7.104872197041376);
+		// teste COST:0.33753272552129526 NP:242
+//		setAEffPrime(7.092291285998105);
+////		setCoord(10.0);
+//		setVnorm(21.501990883549087);
+//		setAnorm(32.252260681169446);
+//		setCHB(42020.95995384622);
+//		setSigmaHB(0.00886888028547375);
+//		setEpsilon(3.8698365749213774);
+//		setSigmaGaussian(true);
+		
+		// teste COST:0.2887708953007761 NP:242
+//		setAEffPrime(6.472620447898134);
 //		setCoord(10.0);
-//		setVnorm(50.356158728594586);
-//		setAnorm(40.34455758285999);
-//		setCHB(38909.18398032317);
-//		setSigmaHB(0.007610431584682716);
+//		setVnorm(53.159972679322344);
+//		setAnorm(48.679351183766364);
+//		setCHB(22145.117295919925);
+//		setSigmaHB(0.0021335704762264537);
+//		setEpsilon(2.99944948223479);
+				
+		// teste COST:0.2563595580149685 NP:242
+//		setAEffPrime(5.833182929456752);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+////		setAnorm(ANORM);
+//		setCHB(19049.08512470434);
+//		setSigmaHB(0.0014294669608294712);
+//		setEpsilon(2.812848033405693);
 		
-		// teste  COST:0.3349320427103625 NP:264
-//		setAEffPrime(6.987770682010926);
-//		setCoord(10.831896133137302);
-//		setVnorm(56.70929194847275);
-//		setAnorm(41.20603421625156);
-//		setCHB(39338.90939677377);
-//		setSigmaHB(0.007689283637684755);
+		// teste COST:0.25779779158503163 NP:242
+//		setAEffPrime(6.01151508164739);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+////		setAnorm(ANORM);
+//		setCHB(17014.10714339448);
+//		setSigmaHB(0.0014599629489520833);
+////		setEpsilon(EPSILON);
 		
-		// teste  COST:0.36202518040747816 NP:310 
-//		setAEffPrime(7.5);
-//		setCoord(10.0);
-//		setVnorm(39.312074722512);
-//		setAnorm(44.47306992385012);
-//		setCHB(33385.50979424656);
-//		setSigmaHB(0.0072033250851981315);
+		// teste COST:0.2568374014591271 NP:242
+////		setAEffPrime(AEFFPRIME);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+////		setAnorm(ANORM);
+//		setCHB(16967.584194174266);
+//		setSigmaHB(0.0014936105325412134);
+////		setEpsilon(EPSILON);
 		
-		// teste COST:0.5048779355889912 NP:285
-//		setAEffPrime(7.5);
-//		setCoord(10.0);
-//		setVnorm(42.07135995186812);
-//		setAnorm(44.5202111100251);
-//		setCHB(30559.688907926902);
-//		setSigmaHB(0.007010968843097385);
+		// teste COST:0.4448006278656969 NP:343
+//		setAEffPrime(8.109259259259261);
+//		setCoord(13.555555555555554);
+////		setVnorm(VNORM);
+//		setAnorm(37.114000000000004);
+//		setCHB(131222.66666666666);
+////		setSigmaHB(SIGMAHB);
+//		setEpsilon(6.491948148148148);
 		
-//		 teste 0.51
-//		setAEffPrime(7.5);
-//		setCoord(10.0);
-//		setVnorm(29.059646484375016);
-//		setAnorm(36.52438549804689);
-//		setCHB(52973.5185546875);
-//		setSigmaHB(0.008460908203124996);
+		// teste COST:0.3725789961109445 NP:343 gamma
+//		setAEffPrime(6.5);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+//		setAnorm(44.10);
+//		setCHB(19880.0);
+//		setSigmaHB(0.0027);
+//		setEpsilon(4.7); 
 		
-		// teste COST:0.464473140176675
-//		setAEffPrime(7.5);
-//		setCoord(10.0);
-		setVnorm(38.15387540947493);
-		setAnorm(40.685560114024895);
-		setCHB(29662.893349642523);
-		setSigmaHB(0.0066128361885796965);
+		// teste COST:0.47677915807855176 NP:343 lngamma
+//		setAEffPrime(6.5);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+//		setAnorm(34.50);
+//		setCHB(15590.5);
+//		setSigmaHB(0.0027);
+//		setEpsilon(10.25);
+		
+		// teste COST:0.3514230794222891 NP:343 lngamma%
+//		setAEffPrime(6.82037037037037);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+//		setAnorm(22.975333333333335);
+//		setCHB(85580.0);
+//		setSigmaHB(0.0064088888888888884);
+//		setEpsilon(4.970822222222221);
+		
+		// teste COST:0.45866623662193606 NP:343 gamma
+//		setAEffPrime(7.413137623530041);
+////		setCoord(COORD);
+////		setVnorm(VNORM);
+//		setAnorm(31.120902318292327);
+//		setCHB(65243.713860566);
+//		setSigmaHB(0.0064);
+//		setEpsilon(6.090955782578806);
+		
+		// optimized parameters COST:0.3455019859714253 NP:343 lngamma%
+		setAEffPrime(7.25);
+		setCoord(10.0);
+		setVnorm(66.69);
+		setAnorm(25.85);
+		setCHB(85580.0);
+		setSigmaHB(0.0064);
+		setEpsilon(4.971);
 		
 	}
 
