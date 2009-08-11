@@ -58,6 +58,8 @@ public class DiagonalCOSMOSAC {
 		
 //		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass);		
+
+		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		dig.showPlot();
 	}
