@@ -85,10 +85,14 @@ public class IDACExperiments {
 			else {
 				comps[0] = db.getComp(compNames[0].replace(' ', '-'));
 				comps[1] = db.getComp(compNames[1].replace(' ', '-'));
-				if(comps[0] == null)
-					throw new IllegalArgumentException("Component " + compNames[0] + " not found.");
-				if(comps[1] == null)
-					throw new IllegalArgumentException("Component " + compNames[1] + " not found.");
+				if(comps[0] == null){
+					System.err.println("Component " + compNames[0] + " not found, it will be ignored.");
+					continue;
+				}
+				if(comps[1] == null){
+					System.err.println("Component " + compNames[1] + " not found, it will be ignored.");
+					continue;
+				}
 			}
 			
 			model.setComponents(comps);
@@ -121,12 +125,13 @@ public class IDACExperiments {
 			
 			double gammaCalc = Math.exp(lnGamma[0]);
 //			double lngammaInf = Math.log(gammaInf);
-//			double rd = lngammaInf - lnGamma[0];
+//			double rd = (lngammaInf - lnGamma[0]);
 			double rd = gammaInf - gammaCalc;
 			if(leastSquares)
 				rd = rd*rd;
 			else
 //				rd = Math.abs(rd);
+//				rd = Math.abs(rd)/(Math.abs(lngammaInf)+0.01);
 				rd = Math.abs(rd)/gammaInf;
 			
 			AARD += rd;
