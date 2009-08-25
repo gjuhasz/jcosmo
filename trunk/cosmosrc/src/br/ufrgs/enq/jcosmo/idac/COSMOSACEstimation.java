@@ -5,18 +5,11 @@ import java.util.List;
 
 import org.apache.commons.math.estimation.EstimatedParameter;
 import org.apache.commons.math.estimation.EstimationException;
+import org.apache.commons.math.estimation.Estimator;
+import org.apache.commons.math.estimation.LevenbergMarquardtEstimator;
 import org.apache.commons.math.estimation.SimpleEstimationProblem;
 import org.apache.commons.math.estimation.WeightedMeasurement;
-import org.apache.commons.math.optimization.ConvergenceChecker;
-import org.apache.commons.math.optimization.CostException;
-import org.apache.commons.math.optimization.CostFunction;
-import org.apache.commons.math.optimization.DirectSearchOptimizer;
-import org.apache.commons.math.optimization.NelderMead;
-import org.apache.commons.math.optimization.PointCostPair;
 
-import br.ufrgs.enq.direct.DiRect;
-import br.ufrgs.enq.direct.ObjectiveFunction;
-import br.ufrgs.enq.direct.PaloschiTransformation;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 
@@ -73,6 +66,16 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	}
 
 	public COSMOSACEstimation() throws Exception {
+		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
+		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME, false));
+		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD, false));
+		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM, false));
+		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM, false));
+		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB, false));
+		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB, false));
+		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON, false));
+		
+		
 //		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSACGAMESS.class.getName();
 		String modelClass = COSMOPAC.class.getName();
@@ -136,95 +139,21 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 //		experiments.add(new IDACExperiments("idac/nonaqueous2.csv", modelClass));
 		
 		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
+		
+		addAllMeasurements();
 	}
-
-	public boolean getBounds(double[] xl, double[] xu) {
-		getCurrent(xl);
-		for (int i = 0; i < xu.length; i++) {
-			double x = xl[i];
-			xl[i] = x - 0.8*x;
-			xu[i] = x + 0.8*x;
-		}
-		return true;
-	}
-
-	public int getNumberOfVariables() {
-		return getNumberOfPars();
-	}
-	public double objectiveFunction(double[] x) {
-		try {
-			return cost(x);
-		} catch (CostException e) {
-			return 1000; // return a high cost to avoid this point
-		}
-	}
-	public int getNumberOfPars(){
-//		return 6;
-		return 4;
-	}
-	public void getCurrent(double [] pars){
-		int i=0;
-		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
-
-//		pars[i++] = cosmo.getAEffPrime();
-//		pars[i++] = cosmo.getCoord();
-//		pars[i++] = cosmo.getVnorm();
-		pars[i++] = cosmo.getAnorm();
-		pars[i++] = cosmo.getCHB();
-		pars[i++] = cosmo.getSigmaHB();
-		pars[i++] = cosmo.getEpsilon();
-	}
-
-	public double cost(double[] pars) throws CostException {
-		double cost = 0;
-		int NP = 0;
-
-		for(IDACExperiments exp : experiments){
-			for(COSMOSAC model : exp.getModels()){
-
-				COSMOSAC cosmo = (COSMOSAC) model;
-
-				int i=0;
-//				cosmo.setAEffPrime(pars[i++]);
-//				cosmo.setCoord(pars[i++]);
-//				cosmo.setVnorm(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
-				cosmo.setCHB(pars[i++]);
-				cosmo.setSigmaHB(pars[i++]);
-				cosmo.setEpsilon(pars[i++]);
-				
-				// update some internal variables
-				cosmo.parametersChanged();
-			}
-
-			try {
-				exp.calcDeviations();
-			} catch (Exception e) {
-				throw new CostException(e);
-			}
-			if(exp.getNP()>0){
-				NP += exp.getNP();
-				cost += exp.getAARD() * exp.getNP();
+	
+	void addAllMeasurements(){
+		for(IDACExperiments e : experiments){
+			List<Double> measures = e.getMeasures();
+			List<COSMOSAC> models = e.getModels();
+			for (int i = 0; i < measures.size(); i++) {
+				addMeasurement(new Measure(measures.get(i), models.get(i)));
 			}
 		}
-		cost /= NP;
-
-		System.out.println("PARS: ");
-		for (int i = 0; i < pars.length; i++) {
-			System.out.print(pars[i] + " ");
-		}
-//		System.out.println(" COST:" + cost);
-		System.out.println(" COST:" + cost + " NP:" + NP);
-		return cost;
 	}
 
-	class Checker implements ConvergenceChecker {
-		public boolean converged(PointCostPair[] pair) {
-			return Math.abs(pair[0].getCost() - pair[1].getCost())/pair[0].getCost() < 1e-3;
-		}
-	}
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EstimationException {
 		COSMOSACEstimation est;
 		try {
 			est = new COSMOSACEstimation();
@@ -233,32 +162,13 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 			return;
 		}
 
-		double [] x0 = new double[est.getNumberOfPars()];
-		double [] x1 = new double[est.getNumberOfPars()];
-
-		est.getCurrent(x0);
-
-//		DirectSearchOptimizer optimizer;		
-//		optimizer = new NelderMead();
-//		//		optimizer = new MultiDirectional();
-//		for (int i = 0; i < x1.length; i++) {
-//			x1[i] = 0.8 * x0[i];
-//		}
-//		try {
-//			optimizer.minimize(est, 2000, est.new Checker(), x0, x1);
-//			x1 = optimizer.getMinima()[0].getPoint();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("Solution found: ");
-//		for (int i = 0; i < x1.length; i++) {
-//			System.out.print(x1[i] + " ");
-//		}
-//		System.out.println(" COST:" + optimizer.getMinima()[0].getCost());
-
-		System.out.println("\nStarted from: ");
-		for (int i = 0; i < x0.length; i++) {
-			System.out.print(x0[i] + " ");
+		Estimator solver = new LevenbergMarquardtEstimator();
+//		Estimator solver = new GaussNewtonEstimator();
+		
+		solver.estimate(est);
+		
+		for(EstimatedParameter p : est.getAllParameters()){
+			System.out.println(p.getName() + "= " + p.getEstimate());
 		}
 	}
 }
