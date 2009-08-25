@@ -55,6 +55,10 @@ public class IDACExperiments {
 		
 		CsvReader reader = new CsvReader(filename);
 		
+		// infinite dilution activity calculation
+		double z[] = new double[2];
+		z[0] = 0; z[1] = 1-z[0];
+		
 		// skip the headers
 		reader.readHeaders();
 		
@@ -101,6 +105,8 @@ public class IDACExperiments {
 			}
 			
 			model.setComponents(comps);
+			model.setTemperature(T);
+			model.setComposition(z);
 			
 			models.add(model);
 			temperatures.add(T);
