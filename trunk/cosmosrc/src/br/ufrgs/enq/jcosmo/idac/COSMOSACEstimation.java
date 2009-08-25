@@ -107,9 +107,9 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
-//		
-////		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
-//				
+		
+//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+				
 		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
 
@@ -150,7 +150,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 			List<Double> measures = e.getMeasures();
 			List<COSMOSAC> models = e.getModels();
 			for (int i = 0; i < measures.size(); i++) {
-				addMeasurement(new Measure(measures.get(i), models.get(i)));
+				addMeasurement(new Measure(Math.log(measures.get(i)), models.get(i)));
 			}
 		}
 	}
