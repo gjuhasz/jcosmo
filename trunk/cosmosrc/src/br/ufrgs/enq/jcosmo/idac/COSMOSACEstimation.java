@@ -58,6 +58,8 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 					model.setEpsilon(p.getEstimate());
 			}
 			model.parametersChanged();
+			model.setTemperature(model.getT());
+			model.setComposition(model.getComposition());
 			
 			model.activityCoefficient(lnGamma);
 			return lnGamma[0];
@@ -67,13 +69,13 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 
 	public COSMOSACEstimation() throws Exception {
 		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
-		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME, false));
-		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD, false));
+		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME, true));
+		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD, true));
 		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM, false));
-		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM, false));
-		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB, false));
+		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM, true));
+		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB, true));
 		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB, false));
-		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON, false));
+		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON, true));
 		
 		
 //		String modelClass = COSMOSAC.class.getName();
@@ -96,49 +98,49 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 //		}
 
 		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));//
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
-		
-//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
-				
-		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
-
-		experiments.add(new IDACExperiments("idac/Alkane-Alcohol.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass));//
-		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
-		
-		experiments.add(new IDACExperiments("idac/Alkene-Amine.csv", modelClass));
-		
-		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass));//
-		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
-		
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass));//
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
-		
-		experiments.add(new IDACExperiments("idac/CycloAlkene-Amine.csv", modelClass));
-
-//		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));//
-		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass));
-		
-//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/nonaqueous2.csv", modelClass));
-		
-		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
+//		
+////		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+//				
+//		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
+//
+//		experiments.add(new IDACExperiments("idac/Alkane-Alcohol.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
+//		
+//		experiments.add(new IDACExperiments("idac/Alkene-Amine.csv", modelClass));
+//		
+//		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
+//		
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
+//		
+//		experiments.add(new IDACExperiments("idac/CycloAlkene-Amine.csv", modelClass));
+//
+////		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass));
+//		
+////		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/nonaqueous2.csv", modelClass));
+//		
+//		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
 		
 		addAllMeasurements();
 	}
@@ -163,16 +165,25 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		}
 
 		Estimator solver = new LevenbergMarquardtEstimator();
-//		Estimator solver = new GaussNewtonEstimator();
+//		Estimator solver = new GaussNewtonEstimator(2000, 1e-2, 1e-2);
+		
+		EstimatedParameter[] pars = est.getUnboundParameters();
+		System.out.println("Initial values:");
+		for (int j = 0; j < pars.length; j++) {
+			EstimatedParameter p = pars[j];
+			System.out.println(p.getName() + "= " + p.getEstimate()); // + " +- " + errors[j]);
+		}
 		
 		solver.estimate(est);
 		double[] errors = solver.guessParametersErrors(est);
+//		double[][] cov = solver.getCovariances(est);
 		
-		EstimatedParameter[] pars = est.getUnboundParameters();
-		
-		for (int j = 0; j < errors.length; j++) {
+		for (int j = 0; j < pars.length; j++) {
 			EstimatedParameter p = pars[j];
 			System.out.println(p.getName() + "= " + p.getEstimate() + " +- " + errors[j]);
 		}
+//		for (int i = 0; i < cov.length; i++) {
+//			System.out.println(cov[i]);
+//		}
 	}
 }
