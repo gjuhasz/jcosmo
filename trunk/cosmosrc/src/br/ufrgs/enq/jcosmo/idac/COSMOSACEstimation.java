@@ -166,9 +166,13 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 //		Estimator solver = new GaussNewtonEstimator();
 		
 		solver.estimate(est);
+		double[] errors = solver.guessParametersErrors(est);
 		
-		for(EstimatedParameter p : est.getAllParameters()){
-			System.out.println(p.getName() + "= " + p.getEstimate());
+		EstimatedParameter[] pars = est.getUnboundParameters();
+		
+		for (int j = 0; j < errors.length; j++) {
+			EstimatedParameter p = pars[j];
+			System.out.println(p.getName() + "= " + p.getEstimate() + " +- " + errors[j]);
 		}
 	}
 }
