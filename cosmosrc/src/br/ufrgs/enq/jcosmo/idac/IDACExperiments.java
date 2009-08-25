@@ -27,9 +27,6 @@ public class IDACExperiments {
 	private boolean leastSquares;
 	
 	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
-	public List<COSMOSAC> getModels() {
-		return models;
-	}
 
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
@@ -44,6 +41,14 @@ public class IDACExperiments {
 	public IDACExperiments(String filename, String modelClass) throws Exception {
 		this(filename, modelClass, false);
 	}
+	
+	public List<COSMOSAC> getModels() {
+		return models;
+	}
+	public List<Double> getMeasures() {
+		return gammaInfs;
+	}
+
 	
 	public void loadContents() throws Exception{
 		COSMOSAC model = null;
