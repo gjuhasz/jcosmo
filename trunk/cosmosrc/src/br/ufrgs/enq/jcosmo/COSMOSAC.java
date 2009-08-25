@@ -238,6 +238,10 @@ public class COSMOSAC {
 			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i], expDeltaW_RT, TOLERANCE);
 		}
 	}
+	
+	public double getT(){
+		return T;
+	}
 
 	/**
 	 * Sets the composition of the mixture in molar basis.
@@ -259,6 +263,10 @@ public class COSMOSAC {
 			}
 			PROFILE[m] = numer/denom;
 		}
+	}
+	
+	public double[] getComposition(){
+		return z;
 	}
 
 	/**
