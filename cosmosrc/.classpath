@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="lib/jlapack_jni-071118.jar"/>
 	<classpathentry kind="lib" path="lib/blas-0.8.jar"/>
 	<classpathentry kind="lib" path="lib/f2jutil-071114.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/direct.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
