@@ -43,8 +43,8 @@ package br.ufrgs.enq.jcosmo;
 public class COSMOSAC {
 
 	static final double EO = 2.395e-4;
-//	public static final double AEFFPRIME = 7.5;
-	public static final double AEFFPRIME = 7.25; // accordingly to Shu Wang and Stanley I. Sandler Ind. Eng. Chem. Res. 2007
+	public static final double AEFFPRIME = 7.5;
+//	public static final double AEFFPRIME = 7.25; // accordingly to Shu Wang and Stanley I. Sandler Ind. Eng. Chem. Res. 2007
 	double aEffPrime = AEFFPRIME;
 
 	static final double RGAS = 0.001987;
