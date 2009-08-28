@@ -1,7 +1,7 @@
 System,T,GammaInf,Ref
 acetone/water,298,7.8,10
 2-butanone/water,298,26.2,10
-2-pentanone/water,298,1002,9
+2-pentanone/water,298,93.7,9,"Fixed with DOI 10.1007/s10822-006-9079-6"
 2-heptanone/water,298,1460,8
 2-octanone/water,298,6350,8
 2-nonanone/water,290,21000,8
