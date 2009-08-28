@@ -17,6 +17,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	
 	List<IDACExperiments> experiments;
 	
+	@SuppressWarnings("serial")
 	class Measure extends WeightedMeasurement {
 		COSMOSAC model;
 		double lnGamma[] = new double[2];
@@ -30,7 +31,9 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		public double getPartial(EstimatedParameter p) {
 			double oldy = getTheoreticalValue();
 			double oldPar = p.getEstimate();
-			double delta = 1e-4;
+			
+			double eps = Math.sqrt(1e-16);
+			double delta = oldPar * eps + 1e-8;
 			
 			p.setEstimate(oldPar + delta);
 			double newy = getTheoreticalValue();
@@ -69,13 +72,13 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 
 	public COSMOSACEstimation() throws Exception {
 		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
-//		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME, true));
-//		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD, true));
-//		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM, true));
-//		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM, false));
-		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB, false));
-		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB, false));
-//		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON, true));
+		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
+//		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
+//		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
+//		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
+		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
+		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
+		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));
 		
 		
 //		String modelClass = COSMOSAC.class.getName();
@@ -103,7 +106,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));//
+		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
@@ -116,25 +119,25 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		experiments.add(new IDACExperiments("idac/Alkane-Alcohol.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass));//
+		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
 		
 		experiments.add(new IDACExperiments("idac/Alkene-Amine.csv", modelClass));
 		
 		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass));//
+		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
 		
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass));//
+		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
 		
 		experiments.add(new IDACExperiments("idac/CycloAlkene-Amine.csv", modelClass));
 
-//		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));//
+		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass));
 		
 //		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
@@ -178,13 +181,31 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		double[] errors = solver.guessParametersErrors(est);
 		double[][] cov = solver.getCovariances(est);
 		
+		System.out.println("\nSolution RMS=" + solver.getRMS(est));
+		
+		System.out.println("\nEstimated values:");
 		for (int j = 0; j < pars.length; j++) {
 			EstimatedParameter p = pars[j];
 			System.out.println(p.getName() + "= " + p.getEstimate() + " +- " + errors[j]);
 		}
+		
+		System.out.println("\nCovariance Matrix:");
 		for (int i = 0; i < cov.length; i++) {
 			for (int j = 0; j < cov[i].length; j++) {
 				System.out.print(cov[i][j] + "  ");
+			}
+			System.out.println();
+		}
+		
+		System.out.print("\nStandard deviation:");
+		for (int i = 0; i < cov.length; i++)
+			System.out.print(Math.sqrt(cov[i][i]) + " ");
+		System.out.println();
+		
+		System.out.println("\nCorrelation Matrix:");
+		for (int i = 0; i < cov.length; i++) {
+			for (int j = 0; j < cov[i].length; j++) {
+				System.out.print(cov[i][j]/Math.sqrt(cov[i][i] * cov[j][j]) + "  ");
 			}
 			System.out.println();
 		}
