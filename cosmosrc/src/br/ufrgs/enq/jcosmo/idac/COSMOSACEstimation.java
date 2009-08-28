@@ -23,7 +23,8 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		double lnGamma[] = new double[2];
 		
 		public Measure(double value, COSMOSAC model) {
-			super(1.0, value);
+			super(1.0/(Math.abs(value) + 1e-2), value);
+//			super(1.0, value);
 			this.model = model;
 		}
 
@@ -75,7 +76,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
 //		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
 //		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
-//		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
+		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
 		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
 		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
 		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));
