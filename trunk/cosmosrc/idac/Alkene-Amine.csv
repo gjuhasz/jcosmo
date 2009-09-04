@@ -1,7 +1,7 @@
 System,T(K),GammaInf,Ref
-2-pentene/DMF,293,7,7
-2-pentene/DMF,313,6.3,7
-2-pentene/DMF,333,5.7,7
+cis-2-pentene/DMF,293,7,7
+cis-2-pentene/DMF,313,6.3,7
+cis-2-pentene/DMF,333,5.7,7
 1-hexene/DMF,293,9.6,7
 1-hexene/DMF,313,7.7,7
 1-hexene/DMF,333,6.7,7
@@ -14,3 +14,6 @@ System,T(K),GammaInf,Ref
 1-decene/DMF,293,27.19,7
 1-decene/DMF,313,23.1,7
 1-decene/DMF,333,17.8,7
+1-dodecene/DMF,293,45.2,7
+1-dodecene/DMF,313,38.9,7
+1-dodecene/DMF,333,29.4,7
