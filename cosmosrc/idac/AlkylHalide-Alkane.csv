@@ -8,6 +8,15 @@ chloroform/n-octane,293,1.43,15
 chloroform/n-hexadecane,293,1.1,15
 chloroform/n-hexadecane,303,1.06,15
 chloroform/n-hexadecane,313,1.01,15
+chloroform/n-octadecane,303,1,15
+chloroform/n-octadecane,313,0.97,15
+chloroform/n-octadecane,323,0.93,15
+chloroform/n-eicosane,326,0.89,15
+chloroform/n-eicosane,347,0.83,15
+chloroform/n-eicosane,367,0.8,15
+chloroform/n-tetracosane,324,0.76,15
+chloroform/n-tetracosane,343,0.73,15
+chloroform/n-tetracosane,353,0.72,15
 carbon tetrachloride/n-hexane,301,1.2,15
 carbon tetrachloride/n-hexane,315,1.2,15
 carbon tetrachloride/n-hexane,332,1.19,15
@@ -19,6 +28,16 @@ carbon tetrachloride/n-hexadecane,313,0.8,15
 carbon tetrachloride/n-hexadecane,320,0.8,15
 carbon tetrachloride/n-hexadecane,327,0.78,15
 carbon tetrachloride/n-hexadecane,333,0.78,15
+carbon tetrachloride/n-octadecane,303,0.77,15
+carbon tetrachloride/n-octadecane,313,0.76,15
+carbon tetrachloride/n-octadecane,323,0.75,15
+carbon tetrachloride/n-eicosane,329,0.77,15
+carbon tetrachloride/n-eicosane,338,0.75,15
+carbon tetrachloride/n-eicosane,348,0.74,15
+carbon tetrachloride/n-tetracosane,324,0.65,15
+carbon tetrachloride/n-tetracosane,333,0.63,15
+carbon tetrachloride/n-tetracosane,343,0.62,15
+carbon tetrachloride/n-tetracosane,353,0.61,15
 carbon tetrachloride/n-octacosane,353,0.58,15
 carbon tetrachloride/n-octacosane,373,0.59,15
 carbon tetrachloride/n-octacosane,393,0.58,15

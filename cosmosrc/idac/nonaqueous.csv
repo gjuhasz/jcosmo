@@ -5,6 +5,8 @@ ethanol/n-heptane,333,16.27,12,17.51,16.3,6.28,17.05,2.36,20.44
 ethanol/n-heptane,373,7.3,12,12.1,9.69,5.03,9.5,15.2,8.96
 ethanol/n-hexadecane,298,40,10,17.02,18.79,5.19,20.42,28.24,30.27
 ethanol/n-hexadecane,333,13.5,10,11.29,10.51,4.05,13.1,18.39,12.77
+ethanol/n-eicosane,333,12,10,9.64,8.97,3.45,11.93,16.96,11.21
+ethanol/n-eicosane,373,5.3,10,6.65,5.33,2.77,6.65,11.53,4.91
 n-propanol/n-heptane,333,16,11,14.48,13.54,4.63,13.82,17.46,17.76
 n-propanol/n-heptane,353,8.95,11,11.97,10.36,4.37,10.59,14.31,11.76
 n-butanol/n-heptane,298,37.1,10,18.14,19.98,5.74,17.58,21.51,36.2
@@ -41,10 +43,20 @@ n-hexadecane/ethanol,298,77,10,46.65,47.15,38.34,109.54,170.93,65.89
 n-hexadecane/ethanol,323,46,10,40.8,38.72,31.71,91.23,150.25,50.97
 n-hexadecane/ethanol,343,33.5,10,35.62,32.75,27.39,71.78,135.35,37.9
 n-hexadecane/ethanol,363,27.5,10,32.88,27.52,23.78,50.48,121.9,25.89
+n-eicosane/ethanol,323,70,10,70.17,65.78,51.43,234.83,464.99,100.23
+n-eicosane/ethanol,343,52,10,61.42,53.52,42.92,174.73,408.82,69.51
+n-eicosane/ethanol,363,40,10,53.78,43.17,36.07,113.19,359.3,43.41
 n-heptane/n-propanol,333,6.34,11,5.78,5.62,2.74,6.05,6.46,6.6
 n-heptane/n-propanol,353,5.89,11,5.53,5.25,2.76,5.47,6.19,5.9
 n-heptane/n-butanol,353,5.13,11,4.12,3.94,3.34,4.02,4.36,4.4
 n-heptane/n-butanol,373,4.76,11,3.95,3.7,3.19,3.6,4.2,4.01
+n-pentane/n-heptane,293.15,1,"Satoru Kato, 2002"
+n-pentane/n-octane,293.15,0.97,"Satoru Kato, 2002"
+n-pentane/n-dodecane,280.15,0.97,"Satoru Kato, 2002"
+n-pentane/n-dodecane,298.15,0.941,"Satoru Kato, 2002"
+n-hexane/n-heptane,293.15,1,"Satoru Kato, 2002"
+n-hexane/n-dodecane,280.15,0.995,"Satoru Kato, 2002"
+n-hexane/n-dodecane,298.15,0.988,"Satoru Kato, 2002"
 n-hexane/chloroform,320,1.79,15
 n-hexane/chloroform,332,1.66,15
 n-hexane/carbon tetrachloride,293,1.33,15
@@ -121,6 +133,9 @@ n-nonane/phenol,321,26.79,15
 1-decene/DMF,293,27.19,7
 1-decene/DMF,313,23.1,7
 1-decene/DMF,333,17.8,7
+1-dodecene/DMF,293,45.2,7
+1-dodecene/DMF,313,38.9,7
+1-dodecene/DMF,333,29.4,7
 chloroform/n-hexane,301,1.58,15
 chloroform/n-hexane,315,1.53,15
 chloroform/n-hexane,332,1.48,15
@@ -130,6 +145,15 @@ chloroform/n-octane,293,1.43,15
 chloroform/n-hexadecane,293,1.1,15
 chloroform/n-hexadecane,303,1.06,15
 chloroform/n-hexadecane,313,1.01,15
+chloroform/n-octadecane,303,1,15
+chloroform/n-octadecane,313,0.97,15
+chloroform/n-octadecane,323,0.93,15
+chloroform/n-eicosane,326,0.89,15
+chloroform/n-eicosane,347,0.83,15
+chloroform/n-eicosane,367,0.8,15
+chloroform/n-tetracosane,324,0.76,15
+chloroform/n-tetracosane,343,0.73,15
+chloroform/n-tetracosane,353,0.72,15
 carbon tetrachloride/n-hexane,301,1.2,15
 carbon tetrachloride/n-hexane,315,1.2,15
 carbon tetrachloride/n-hexane,332,1.19,15
@@ -141,6 +165,16 @@ carbon tetrachloride/n-hexadecane,313,0.8,15
 carbon tetrachloride/n-hexadecane,320,0.8,15
 carbon tetrachloride/n-hexadecane,327,0.78,15
 carbon tetrachloride/n-hexadecane,333,0.78,15
+carbon tetrachloride/n-octadecane,303,0.77,15
+carbon tetrachloride/n-octadecane,313,0.76,15
+carbon tetrachloride/n-octadecane,323,0.75,15
+carbon tetrachloride/n-eicosane,329,0.77,15
+carbon tetrachloride/n-eicosane,338,0.75,15
+carbon tetrachloride/n-eicosane,348,0.74,15
+carbon tetrachloride/n-tetracosane,324,0.65,15
+carbon tetrachloride/n-tetracosane,333,0.63,15
+carbon tetrachloride/n-tetracosane,343,0.62,15
+carbon tetrachloride/n-tetracosane,353,0.61,15
 carbon tetrachloride/n-octacosane,353,0.58,15
 carbon tetrachloride/n-octacosane,373,0.59,15
 carbon tetrachloride/n-octacosane,393,0.58,15
@@ -171,18 +205,74 @@ benzene/n-hexadecane,323,0.99,15
 benzene/n-hexadecane,333,0.89,15
 benzene/n-hexadecane,343,0.62,15
 benzene/n-hexadecane,363,0.59,15
+benzene/n-octadecane,303,1,15
+benzene/n-octadecane,305,1,15
+benzene/n-octadecane,308,0.99,15
+benzene/n-octadecane,313,0.96,15
+benzene/n-octadecane,323,0.93,15
+benzene/n-octadecane,333,0.91,15
+benzene/n-octadecane,353,0.83,15
+benzene/n-eicosane,326,0.9,15
+benzene/n-eicosane,347,0.85,15
+benzene/n-eicosane,367,0.82,15
+benzene/n-docosane,323,0.82,15
+benzene/n-docosane,333,0.8,15
+benzene/n-docosane,341,0.78,15
+benzene/n-tetracosane,323,0.78,15
+benzene/n-tetracosane,328,0.77,15
+benzene/n-tetracosane,333,0.76,15
+benzene/n-tetracosane,338,0.75,15
+benzene/n-tetracosane,349,0.75,15
+benzene/n-tetracosane,357,0.73,15
 benzene/n-octacosane,323,0.71,15
 benzene/n-octacosane,338,0.68,15
 benzene/n-octacosane,348,0.66,15
 benzene/n-octacosane,353,0.65,15
 benzene/n-octacosane,373,0.63,15
+benzene/n-triacontane,349,0.63,15
+benzene/n-triacontane,357,0.61,15
+benzene/n-dotriacontane,323,0.64,15
+benzene/n-dotriacontane,348,0.6,15
+benzene/n-hexatriacontane,349,0.56,15
+benzene/n-hexatriacontane,353,0.55,15
+benzene/n-hexatriacontane,357,0.54,15
 toluene/n-hexadecane,312,1.05,15
 toluene/n-hexadecane,317,1.04,15
 toluene/n-hexadecane,333,0.9,15
 toluene/n-hexadecane,343,0.65,15
 toluene/n-hexadecane,363,0.62,15
+toluene/n-octadecane,303,0.9,15
+toluene/n-octadecane,313,0.92,15
+toluene/n-octadecane,323,0.9,15
+toluene/n-octadecane,333,0.89,15
+toluene/n-eicosane,326,0.89,15
+toluene/n-eicosane,347,0.86,15
+toluene/n-eicosane,367,0.85,15
+toluene/n-tetracosane,334,0.81,15
+toluene/n-tetracosane,344,0.77,15
+toluene/n-tetracosane,349,0.76,15
+toluene/n-tetracosane,353,0.76,15
+toluene/n-tetracosane,355,0.76,15
+toluene/n-tetracosane,357,0.76,15
+toluene/n-tetracosane,361,0.76,15
 toluene/n-octacosane,353,0.67,15
 toluene/n-octacosane,373,0.67,15
+toluene/n-triacontane,349,0.64,15
+toluene/n-triacontane,353,0.64,15
+toluene/n-triacontane,357,0.64,15
+toluene/n-triacontane,361,0.63,15
+toluene/n-hexatriacontane,349,0.58,15
+toluene/n-hexatriacontane,353,0.56,15
+toluene/n-hexatriacontane,357,0.56,15
+toluene/n-hexatriacontane,361,0.56,15
+acetic acid/n-heptane,298,11.03,6
+acetic acid/n-heptane,318,12.18,6
+propionic acid/n-heptane,298,11.94,6
+propionic acid/n-heptane,318,10.13,6
+acetic acid/cyclohexane,298,21.59,6
+acetic acid/cyclohexane,318,22.38,6
+propionic acid/cyclohexane,298,13,5
+propionic acid/cyclohexane,318,12.33,6
 cyclohexane/ethanol,298,9.5,10
 cyclohexane/ethanol,323,6.8,10,7.01,6.88,6.42,5.87,7.78,8.17
 cyclohexane/ethanol,363,6.4,10,5.5,6.11,5.8,4.77,7.23,5.45
@@ -233,6 +323,12 @@ cyclopentene/DMF,333,4,7
 cyclohexene/DMF,293,6,7
 cyclohexene/DMF,313,5.3,7
 cyclohexene/DMF,333,4.9,7
+cycloheptene/DMF,293,7.8,7
+cycloheptene/DMF,313,7,7
+cycloheptene/DMF,333,5.6,7
+cyclooctene/DMF,293,10.6,7
+cyclooctene/DMF,313,8.5,7
+cyclooctene/DMF,333,6.8,7
 acetone/methanol,298,2.03,10
 acetone/methanol,333,1.82,10
 acetone/methanol,373,1.66,10
