@@ -1,0 +1,23 @@
+
+In order to edit the database use the tool "SQuirreL SQL Client"
+
+ - Download the "Jar install version" and select Derby Plugin
+ 
+ - Go to "Drivers" tab, select the "Apache Derby Embedded" and click on the "pencil" button
+  - On "Extra class Path" click on "Add" and select the "derby.jar" file from the JCOSMO lib directory
+  - With the "derby" path select click on "List Drivers" and then select the "EmbeddedDriver" as the "Class Name"
+  - Click OK.
+  
+  
+ - Cread a new "Alias"
+   - Name the alias with "Thermolab"
+   - Choose the driver "Apache Derby Embedded"
+   - URL: "jdbc:derby:/path/to/cosmodb"
+   - Connect to the alias
+ 
+ - With the database connected and opened
+  - Browse to APP->TABLE and edit the tables
+  
+  
+ NOTES:
+  - You should be careful with small numbers when working with SQuirrel (for instance, 1e-7 is shown as 0)
