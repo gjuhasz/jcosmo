@@ -1,16 +1,16 @@
 System,T,GammaInf,Ref
 acetaldehyde/water,298,4.23,10
-propanal/water,298,16.5,10
-butanal/water,298,60.7,10
-n-pentanal/water,298,204,8
+n-propionaldehyde/water,298,16.5,10
+n-butyraldehyde/water,298,60.7,10
+valeraldehyde/water,298,204,8
 1-hexanal/water,298,1100,10
 1-heptanal/water,298,3000,10
 1-nonanal/water,299,67000,10
 "Acetaldehyde/water","298.15","3.94","DOI 10.1007/s10822-006-9079-6",
-"Butanal/water","298.15","48.42","DOI 10.1007/s10822-006-9079-6",
+"n-butyraldehyde/water","298.15","48.42","DOI 10.1007/s10822-006-9079-6",
 "1-Heptanal/water","298.15","4188.09","DOI 10.1007/s10822-006-9079-6",
 "1-Hexanal/water","298.15","812.41","DOI 10.1007/s10822-006-9079-6",
 "1-Nonanal/water","298.15","75357.6","DOI 10.1007/s10822-006-9079-6",
 "1-Octanal/water","298.15","8266.78","DOI 10.1007/s10822-006-9079-6",
-"n-Pentanal/water","298.15","219.2","DOI 10.1007/s10822-006-9079-6",
-"Propanal/water","298.15","12.94","DOI 10.1007/s10822-006-9079-6",
+"valeraldehyde/water","298.15","219.2","DOI 10.1007/s10822-006-9079-6",
+"n-propionaldehyde/water","298.15","12.94","DOI 10.1007/s10822-006-9079-6",
