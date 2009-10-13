@@ -1,8 +1,8 @@
 System,T(K),GammaInf,Ref
-n-hexane/DMF,293,19.11,7
-n-hexane/DMF,333,12,7
-n-octane/DMF,293,32.78,7
-n-octane/DMF,333,18.39,7
-n-nonane/DMF,293,38.98,7
-n-nonane/DMF,333,23.1,7
-n-decane/DMF,333,24.8,7
+"n-hexane/n,n-dimethylformamide",293,19.11,7
+"n-hexane/n,n-dimethylformamide",333,12,7
+"n-octane/n,n-dimethylformamide",293,32.78,7
+"n-octane/n,n-dimethylformamide",333,18.39,7
+"n-nonane/n,n-dimethylformamide",293,38.98,7
+"n-nonane/n,n-dimethylformamide",333,23.1,7
+"n-decane/n,n-dimethylformamide",333,24.8,7

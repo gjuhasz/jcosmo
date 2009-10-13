@@ -1,25 +1,25 @@
 System,T,GammaInf,Ref
 acetone/water,298,7.8,10
-2-butanone/water,298,26.2,10
-2-pentanone/water,298,93.7,9,"Fixed with DOI 10.1007/s10822-006-9079-6"
+"methyl ethyl ketone/water",298,26.2,10
+"methyl n-propyl ketone/water",298,93.7,9,"Fixed with DOI 10.1007/s10822-006-9079-6"
 2-heptanone/water,298,1460,8
 2-octanone/water,298,6350,8
-2-nonanone/water,290,21000,8
-"2,4-Dimethyl-3-pentanone/water","298.15","1107.65","DOI 10.1007/s10822-006-9079-6",
-"2,6-Dimethyl-4-heptanone/water","298.15","8777.97","DOI 10.1007/s10822-006-9079-6",
-"2-Butanone/water","298.15","25.53","DOI 10.1007/s10822-006-9079-6",
+"methyl n-heptyl ketone/water",290,21000,8
+"diisopropyl ketone/water","298.15","1107.65","DOI 10.1007/s10822-006-9079-6",
+"diisobutyl ketone/water","298.15","8777.97","DOI 10.1007/s10822-006-9079-6",
+"methyl ethyl ketone/water","298.15","25.53","DOI 10.1007/s10822-006-9079-6",
 "2-Heptanone/water","298.15","1394.09","DOI 10.1007/s10822-006-9079-6",
 "2-Hexanone/water","298.15","354.25","DOI 10.1007/s10822-006-9079-6",
-"2-Methyl-3-pentanone/water","298.15","361.41","DOI 10.1007/s10822-006-9079-6",
-"2-Nonanone/water","298.15","16317.61","DOI 10.1007/s10822-006-9079-6",
-"2-Pentanone/water","298.15","93.69","DOI 10.1007/s10822-006-9079-6",
-"3,3-Dimethyl-2-butanone/water","298.15","287.15","DOI 10.1007/s10822-006-9079-6",
+"ethyl isopropyl ketone/water","298.15","361.41","DOI 10.1007/s10822-006-9079-6",
+"methyl n-heptyl ketone/water","298.15","16317.61","DOI 10.1007/s10822-006-9079-6",
+"methyl n-propyl ketone/water","298.15","93.69","DOI 10.1007/s10822-006-9079-6",
+"methyl tert-butyl ketone/water","298.15","287.15","DOI 10.1007/s10822-006-9079-6",
 "3-Hexanone/water","298.15","411.58","DOI 10.1007/s10822-006-9079-6",
-"3-Methyl-2-Butanone/water","298.15","83.93","DOI 10.1007/s10822-006-9079-6",
-"3-Methyl-2-pentanone/water","298.15","259.82","DOI 10.1007/s10822-006-9079-6",
-"3-Pentanone/water","298.15","106.7","DOI 10.1007/s10822-006-9079-6",
+"methyl isopropyl ketone/water","298.15","83.93","DOI 10.1007/s10822-006-9079-6",
+"Methyl isobutyl ketone/water","298.15","259.82","DOI 10.1007/s10822-006-9079-6",
+"diethyl ketone/water","298.15","106.7","DOI 10.1007/s10822-006-9079-6",
 "4-Heptanone/water","298.15","1652.43","DOI 10.1007/s10822-006-9079-6",
-"4-Methyl-2-pentanone/water","298.15","292.95","DOI 10.1007/s10822-006-9079-6",
+"methyl isobutyl ketone/water","298.15","292.95","DOI 10.1007/s10822-006-9079-6",
 "5-Methyl-2-Hexanone/water","298.15","1525.38","DOI 10.1007/s10822-006-9079-6",
 "5-Nonanone/water","298.15","21590.31","DOI 10.1007/s10822-006-9079-6",
 "Acetone/water","298.15","7.03","DOI 10.1007/s10822-006-9079-6",

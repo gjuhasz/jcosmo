@@ -62,13 +62,13 @@ n-hexane/chloroform,332,1.66,15
 n-hexane/carbon tetrachloride,293,1.33,15
 n-heptane/carbon tetrachloride,328,1.27,15
 n-heptane/carbon tetrachloride,349,1.15,15
-n-hexane/DMF,293,19.11,7
-n-hexane/DMF,333,12,7
-n-octane/DMF,293,32.78,7
-n-octane/DMF,333,18.39,7
-n-nonane/DMF,293,38.98,7
-n-nonane/DMF,333,23.1,7
-n-decane/DMF,333,24.8,7
+"n-hexane/n,n-dimethylformamide",293,19.11,7
+"n-hexane/n,n-dimethylformamide",333,12,7
+"n-octane/n,n-dimethylformamide",293,32.78,7
+"n-octane/n,n-dimethylformamide",333,18.39,7
+"n-nonane/n,n-dimethylformamide",293,38.98,7
+"n-nonane/n,n-dimethylformamide",333,23.1,7
+"n-decane/n,n-dimethylformamide",333,24.8,7
 n-heptane/acetic acid,298,23.5,6
 n-heptane/acetic acid,318,20.49,6
 n-heptane/propionic acid,298,6.27,6
@@ -85,15 +85,15 @@ n-heptane/acetone,333,4.6,10,5.76,5.38,6.91,5.89,6.46,5.16
 n-heptane/acetone,363,3.6,10,5.15,4.38,6.09,4.65,7.38,4.05
 n-octane/acetone,308,8.91,1,7.31,7.47,9.12,9.13,12.36,7.44
 n-octane/acetone,318,7.74,1,6.98,6.85,8.65,8.19,11.65,6.7
-n-pentane/2-butanone,298,3.66,10,3.38,3.41,3.71,6.42,3.35648148148148e-05,3.86
-n-pentane/2-butanone,333,2.99,10,3.06,2.92,3.36,2.83,3.31,3.22
-n-pentane/2-butanone,363,2.67,10,2.87,2.6,3.11,2.47,3.06,2.81
-n-heptane/2-butanone,298,4.35,10,4.57,4.51388888888889e-05,5.18,4.87,5.46,4.92
-n-heptane/2-butanone,333,3.46,10,4.04,3.77,4.53,3.79,4.74,3.86
-n-heptane/2-butanone,363,2.87,10,3.68,3.23,4.09,3.16,4.26,3.22
-n-decane/2-butanone,298,6.04,10,6.41,6.53,7.61,7.93,9.5,7.02
-n-decane/2-butanone,333,3.95,10,5.42,4.94,6.34,5,7.83,5.03
-n-decane/2-butanone,363,3.16,10,4.77,3.99,5.51,4.39,6.77,3.92
+"n-pentane/methyl ethyl ketone",298,3.66,10,3.38,3.41,3.71,6.42,3.35648148148148e-05,3.86
+"n-pentane/methyl ethyl ketone",333,2.99,10,3.06,2.92,3.36,2.83,3.31,3.22
+"n-pentane/methyl ethyl ketone",363,2.67,10,2.87,2.6,3.11,2.47,3.06,2.81
+"n-heptane/methyl ethyl ketone",298,4.35,10,4.57,4.51388888888889e-05,5.18,4.87,5.46,4.92
+"n-heptane/methyl ethyl ketone",333,3.46,10,4.04,3.77,4.53,3.79,4.74,3.86
+"n-heptane/methyl ethyl ketone",363,2.87,10,3.68,3.23,4.09,3.16,4.26,3.22
+"n-decane/methyl ethyl ketone",298,6.04,10,6.41,6.53,7.61,7.93,9.5,7.02
+"n-decane/methyl ethyl ketone",333,3.95,10,5.42,4.94,6.34,5,7.83,5.03
+"n-decane/methyl ethyl ketone",363,3.16,10,4.77,3.99,5.51,4.39,6.77,3.92
 n-pentane/phenol,298,12.7,15
 n-pentane/phenol,307,12,15
 n-pentane/phenol,323,10.9,15
@@ -118,24 +118,24 @@ n-octane/phenol,358,15.1,15
 n-octane/phenol,373,14.15,15
 n-nonane/phenol,313,28.19,15
 n-nonane/phenol,321,26.79,15
-2-pentene/DMF,293,7,7
-2-pentene/DMF,313,6.3,7
-2-pentene/DMF,333,5.7,7
-1-hexene/DMF,293,9.6,7
-1-hexene/DMF,313,7.7,7
-1-hexene/DMF,333,6.7,7
-1-heptene/DMF,293,12.2,7
-1-heptene/DMF,313,8.9,7
-1-heptene/DMF,333,8.1,7
-1-octene/DMF,293,15.5,7
-1-octene/DMF,313,12.6,7
-1-octene/DMF,333,10.2,7
-1-decene/DMF,293,27.19,7
-1-decene/DMF,313,23.1,7
-1-decene/DMF,333,17.8,7
-1-dodecene/DMF,293,45.2,7
-1-dodecene/DMF,313,38.9,7
-1-dodecene/DMF,333,29.4,7
+"cis-2-pentene/n,n-dimethylformamide",293,7,7
+"cis-2-pentene/n,n-dimethylformamide",313,6.3,7
+"cis-2-pentene/n,n-dimethylformamide",333,5.7,7
+"1-hexene/n,n-dimethylformamide",293,9.6,7
+"1-hexene/n,n-dimethylformamide",313,7.7,7
+"1-hexene/n,n-dimethylformamide",333,6.7,7
+"1-heptene/n,n-dimethylformamide",293,12.2,7
+"1-heptene/n,n-dimethylformamide",313,8.9,7
+"1-heptene/n,n-dimethylformamide",333,8.1,7
+"1-octene/n,n-dimethylformamide",293,15.5,7
+"1-octene/n,n-dimethylformamide",313,12.6,7
+"1-octene/n,n-dimethylformamide",333,10.2,7
+"1-decene/n,n-dimethylformamide",293,27.19,7
+"1-decene/n,n-dimethylformamide",313,23.1,7
+"1-decene/n,n-dimethylformamide",333,17.8,7
+"1-dodecene/n,n-dimethylformamide",293,45.2,7
+"1-dodecene/n,n-dimethylformamide",313,38.9,7
+"1-dodecene/n,n-dimethylformamide",333,29.4,7
 chloroform/n-hexane,301,1.58,15
 chloroform/n-hexane,315,1.53,15
 chloroform/n-hexane,332,1.48,15
@@ -178,17 +178,17 @@ carbon tetrachloride/n-tetracosane,353,0.61,15
 carbon tetrachloride/n-octacosane,353,0.58,15
 carbon tetrachloride/n-octacosane,373,0.59,15
 carbon tetrachloride/n-octacosane,393,0.58,15
-DMF/n-hexane,303,32.62,7
-DMF/n-hexane,313,27.19,7
-DMF/n-heptane,333,17.3,7
-DMF/n-octane,313,17.8,7
-DMF/n-octane,333,14.4,7
-DMF/n-nonane,313,16.69,7
-DMF/n-nonane,333,13.69,7
-DMF/n-decane,313,15.09,7
-DMF/n-decane,333,12.59,7
-DMF/n-undecane,313,14.3,7
-DMF/n-undecane,333,11.6,7
+"n,n-dimethylformamide/n-hexane",303,32.62,7
+"n,n-dimethylformamide/n-hexane",313,27.19,7
+"n,n-dimethylformamide/n-heptane",333,17.3,7
+"n,n-dimethylformamide/n-octane",313,17.8,7
+"n,n-dimethylformamide/n-octane",333,14.4,7
+"n,n-dimethylformamide/n-nonane",313,16.69,7
+"n,n-dimethylformamide/n-nonane",333,13.69,7
+"n,n-dimethylformamide/n-decane",313,15.09,7
+"n,n-dimethylformamide/n-decane",333,12.59,7
+"n,n-dimethylformamide/n-undecane",313,14.3,7
+"n,n-dimethylformamide/n-undecane",333,11.6,7
 benzene/n-heptane,331,1.37,15
 benzene/n-heptane,350,1.33,15
 benzene/n-heptane,366,1.27,15
@@ -265,14 +265,6 @@ toluene/n-hexatriacontane,349,0.58,15
 toluene/n-hexatriacontane,353,0.56,15
 toluene/n-hexatriacontane,357,0.56,15
 toluene/n-hexatriacontane,361,0.56,15
-acetic acid/n-heptane,298,11.03,6
-acetic acid/n-heptane,318,12.18,6
-propionic acid/n-heptane,298,11.94,6
-propionic acid/n-heptane,318,10.13,6
-acetic acid/cyclohexane,298,21.59,6
-acetic acid/cyclohexane,318,22.38,6
-propionic acid/cyclohexane,298,13,5
-propionic acid/cyclohexane,318,12.33,6
 cyclohexane/ethanol,298,9.5,10
 cyclohexane/ethanol,323,6.8,10,7.01,6.88,6.42,5.87,7.78,8.17
 cyclohexane/ethanol,363,6.4,10,5.5,6.11,5.8,4.77,7.23,5.45
@@ -284,7 +276,7 @@ cyclohexane/carbon tetrachloride,318,1.11,15
 cyclohexane/carbon tetrachloride,330,1.1,15
 cyclohexane/carbon tetrachloride,341,1.09,15
 cyclohexane/carbon tetrachloride,346,1.1,15
-cyclohexane/DMF,333,19.09,7
+"cyclohexane/n,n-dimethylformamide",333,19.09,7
 cyclohexane/acetic acid,298,21.83,6
 cyclohexane/acetic acid,318,18.09,6
 cyclohexane/propionic acid,298,5.14,5
@@ -317,27 +309,27 @@ ethylcyclohexane/phenol,328,12.28,15
 ethylcyclohexane/phenol,343,10.64,15
 ethylcyclohexane/phenol,358,9.79,15
 ethylcyclohexane/phenol,373,9.03,15
-cyclopentene/DMF,298,4.5,7
-cyclopentene/DMF,313,4.2,7
-cyclopentene/DMF,333,4,7
-cyclohexene/DMF,293,6,7
-cyclohexene/DMF,313,5.3,7
-cyclohexene/DMF,333,4.9,7
-cycloheptene/DMF,293,7.8,7
-cycloheptene/DMF,313,7,7
-cycloheptene/DMF,333,5.6,7
-cyclooctene/DMF,293,10.6,7
-cyclooctene/DMF,313,8.5,7
-cyclooctene/DMF,333,6.8,7
+"cyclopentene/n,n-dimethylformamide",298,4.5,7
+"cyclopentene/n,n-dimethylformamide",313,4.2,7
+"cyclopentene/n,n-dimethylformamide",333,4,7
+"cyclohexene/n,n-dimethylformamide",293,6,7
+"cyclohexene/n,n-dimethylformamide",313,5.3,7
+"cyclohexene/n,n-dimethylformamide",333,4.9,7
+"cycloheptene/n,n-dimethylformamide",293,7.8,7
+"cycloheptene/n,n-dimethylformamide",313,7,7
+"cycloheptene/n,n-dimethylformamide",333,5.6,7
+"cyclooctene/n,n-dimethylformamide",293,10.6,7
+"cyclooctene/n,n-dimethylformamide",313,8.5,7
+"cyclooctene/n,n-dimethylformamide",333,6.8,7
 acetone/methanol,298,2.03,10
 acetone/methanol,333,1.82,10
 acetone/methanol,373,1.66,10
-2-butanone/methanol,298,2.36,10
-2-butanone/methanol,333,2.13,10
-2-butanone/methanol,373,1.96,10
-3-pentanone/methanol,298,3.27,10
-3-pentanone/methanol,333,2.8,10
-3-pentanone/methanol,373,2.45,10
+"methyl ethyl ketone/methanol",298,2.36,10
+"methyl ethyl ketone/methanol",333,2.13,10
+"methyl ethyl ketone/methanol",373,1.96,10
+"diethyl ketone/methanol",298,3.27,10
+"diethyl ketone/methanol",333,2.8,10
+"diethyl ketone/methanol",373,2.45,10
 3-heptanone/methanol,298,5.59,10
 3-heptanone/methanol,333,4.41,10
 3-heptanone/methanol,373,3.59,10
@@ -350,16 +342,16 @@ acetone/n-butanol,298,2.52,10
 acetone/1-octanol,298,2.58,10
 acetone/1-octanol,333,1.84,10
 acetone/1-octanol,373,1.41,10
-2-butanone/ethanol,298,2.62,10
-2-butanone/n-butanol,298,1.98,10
-2-butanone/n-butanol,333,1.64,10
-2-butanone/n-butanol,373,1.42,10
-2-butanone/1-octanol,298,2.3,10
-2-butanone/1-octanol,333,1.78,10
-2-butanone/1-octanol,373,1.46,10
-3-pentanone/1-octanol,298,2.12,10
-3-pentanone/1-octanol,333,1.56,10
-3-pentanone/1-octanol,373,1.24,10
+"methyl ethyl ketone/ethanol",298,2.62,10
+"methyl ethyl ketone/n-butanol",298,1.98,10
+"methyl ethyl ketone/n-butanol",333,1.64,10
+"methyl ethyl ketone/n-butanol",373,1.42,10
+"methyl ethyl ketone/1-octanol",298,2.3,10
+"methyl ethyl ketone/1-octanol",333,1.78,10
+"methyl ethyl ketone/1-octanol",373,1.46,10
+"diethyl ketone/1-octanol",298,2.12,10
+"diethyl ketone/1-octanol",333,1.56,10
+"diethyl ketone/1-octanol",373,1.24,10
 3-heptanone/n-butanol,298,2.67,10
 3-heptanone/n-butanol,333,2.09,10
 3-heptanone/n-butanol,373,1.72,10
@@ -377,18 +369,18 @@ acetone/n-decane,313,3.1,10,3.21,2.59,3.45,2.6,3.64,2.19907407407407e-05,
 acetone/n-hexadecane,298,6.1,10,3.67,3.35,3.99,4.18,4.63,3.99,
 acetone/n-hexadecane,333,4.2,10,2.91,2.5,3.15,2.98,3.76,2.89,
 acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
-2-butanone/n-hexane,298,5,10,5.36,4.88,5.72,4.51388888888889e-05,4.81,5.54,
-2-butanone/n-hexane,333,3.7,10,4.33,3.75,4.6,3.42,3.99,4.15,
-2-butanone/n-hexane,373,2.8,10,3.58,2.95,3.79,2.6,3.38,3.18,
-2-butanone/n-heptane,298,4.8,10,5.14,4.51388888888889e-05,5.49,4.52,4.73,5.18,
-2-butanone/n-heptane,333,3.5,10,4.15,3.6,4.41,3.34,3.92,3.88,
-2-butanone/n-heptane,373,2.6,10,3.44,2.83,3.35648148148148e-05,2.55,3.32,3,
-2-butanone/n-decane,298,4.8,10,4.46,4.07,4.76,4.19,4.44,4.47,
-2-butanone/n-decane,333,3.5,10,3.35648148148148e-05,3.12,3.83,3.1,3.68,3.35,
-2-butanone/n-decane,373,2.8,10,2.98,2.45,3.15,2.35,3.11,2.57,
-2-butanone/n-hexadecane,298,4.2,10,3.41,3.1,3.64,3.62,3.89,3.62,
-2-butanone/n-hexadecane,333,2.9,10,2.75,2.38,2.92,2.68,3.23,2.71,
-2-butanone/n-hexadecane,373,2.3,10,2.27,1.87,2.41,2.04,2.73,2.08,
-3-pentanone/n-heptane,298,3.7,10,2.77,2.58,2.85,3.59,2.52,3.48,
-3-pentanone/n-heptane,333,2.9,10,2.4,2.17,2.47,2.76,2.23,2.77,
-3-pentanone/n-heptane,373,2.3,10,2.12,1.87,2.18,2.19,2.01,2.25,
+"methyl ethyl ketone/n-hexane",298,5,10,5.36,4.88,5.72,4.51388888888889e-05,4.81,5.54,
+"methyl ethyl ketone/n-hexane",333,3.7,10,4.33,3.75,4.6,3.42,3.99,4.15,
+"methyl ethyl ketone/n-hexane",373,2.8,10,3.58,2.95,3.79,2.6,3.38,3.18,
+"methyl ethyl ketone/n-heptane",298,4.8,10,5.14,4.51388888888889e-05,5.49,4.52,4.73,5.18,
+"methyl ethyl ketone/n-heptane",333,3.5,10,4.15,3.6,4.41,3.34,3.92,3.88,
+"methyl ethyl ketone/n-heptane",373,2.6,10,3.44,2.83,3.35648148148148e-05,2.55,3.32,3,
+"methyl ethyl ketone/n-decane",298,4.8,10,4.46,4.07,4.76,4.19,4.44,4.47,
+"methyl ethyl ketone/n-decane",333,3.5,10,3.35648148148148e-05,3.12,3.83,3.1,3.68,3.35,
+"methyl ethyl ketone/n-decane",373,2.8,10,2.98,2.45,3.15,2.35,3.11,2.57,
+"methyl ethyl ketone/n-hexadecane",298,4.2,10,3.41,3.1,3.64,3.62,3.89,3.62,
+"methyl ethyl ketone/n-hexadecane",333,2.9,10,2.75,2.38,2.92,2.68,3.23,2.71,
+"methyl ethyl ketone/n-hexadecane",373,2.3,10,2.27,1.87,2.41,2.04,2.73,2.08,
+"diethyl ketone/n-heptane",298,3.7,10,2.77,2.58,2.85,3.59,2.52,3.48,
+"diethyl ketone/n-heptane",333,2.9,10,2.4,2.17,2.47,2.76,2.23,2.77,
+"diethyl ketone/n-heptane",373,2.3,10,2.12,1.87,2.18,2.19,2.01,2.25,
