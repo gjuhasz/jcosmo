@@ -1,5 +1,5 @@
 
-babel = Builder(action = 'babel $SOURCE -o mopin -xf keys.cosmo $TARGET',
+babel = Builder(action = 'babel -h $SOURCE -o mopin -xf keys.cosmo $TARGET',
                      suffix = '.mop', single_source=True)
 
 mopac = Builder(action = 'mopac $SOURCE', suffix = '.cos', single_source=True)
