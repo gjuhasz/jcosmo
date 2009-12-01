@@ -104,9 +104,9 @@ public class SigmaProfileGenerator {
 			break;
 		case MOPAC:
 			averageCharges();
-//			simpleSorting();
+			simpleSorting();
 //			normalSorting(SIGMA);
-			normalSorting(SIGMANEW);
+//			normalSorting(SIGMANEW);
 			break;
 		}
 	}
