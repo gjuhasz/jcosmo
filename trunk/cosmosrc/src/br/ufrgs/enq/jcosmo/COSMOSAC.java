@@ -329,6 +329,12 @@ public class COSMOSAC {
 				else
 					hb = Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
 				
+				// New HB from Paul M. Mathias, Shiang-Tai Lin, Yuhua Song, Chau-Chyun Chen, Stanley I. Sandler
+				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
+//				double sigmaHB = 0.022;
+//				hb = Math.max(0.0, Math.abs(SIGMADON - SIGMAACC) - sigmaHB);
+//				hb *= hb;
+				
 				deltaW[m][n] += cHB * hb;
 			}
 		}
