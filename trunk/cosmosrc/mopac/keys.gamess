@@ -1,0 +1,17 @@
+ $contrl scftyp=rhf $end
+
+! One of the following
+ $contrl dfttyp=b3lyp $end
+! $contrl mplevl=2 $end
+
+ $system timlim=10000 mwords=20 $end
+ $SCF DIRSCF=.TRUE. $end
+ $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
+
+! One of the following
+ $guess guess=huckel $end
+
+! Run COSMO on an already optimized geometry
+ $contrl runtyp=energy maxit=100 $end
+ $COSGMS EPSI=999 rsolv=1.2 delsc=1.2 $end
+
