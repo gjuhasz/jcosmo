@@ -1,15 +1,48 @@
 
-babel = Builder(action = 'babel -h $SOURCE -o mopin -xf keys.cosmo $TARGET',
+# www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
+
+import os
+env = Environment()
+
+env['ENV']['USER'] = os.environ['USER']
+env['ENV']['HOME'] = os.environ['HOME']
+
+# Mopac stuff
+babelmop = Builder(action = 'babel -h $SOURCE -o mopin -xf keys.cosmo $TARGET',
                      suffix = '.mop', single_source=True)
-
 mopac = Builder(action = 'mopac $SOURCE', suffix = '.cos', single_source=True)
-
-env = Environment(BUILDERS = {'Babel' : babel})
+env.Append(BUILDERS = {'BabelMop' : babelmop})
 env.Append(BUILDERS = {'Mopac' : mopac})
 
-mops = env.Babel(Glob('*.mol'))
-env.Depends(mops, 'keys.cosmo')
+# Gamess stuff
+babelgam = Builder(action = 'babel -h $SOURCE -o gamin -xf keys.gamess $TARGET',
+                     suffix = '.inp', single_source=True)
+# Gamess also produces a .dat file
+def gamess_targets(target, source, env):
+           target.append('$HOME/gamess/scr/$TARGET.dat')
+           return target, source
+gamess = Builder(action = os.environ['HOME'] + '/gamess/rungms $SOURCE > $TARGET', suffix = '.gout',
+	single_source=True) # , emitter = gamess_targets)
+env.Append(BUILDERS = {'BabelGam' : babelgam})
+env.Append(BUILDERS = {'Gamess' : gamess})
 
-env.Mopac(mops)
+# Build all files for Mopac
+mops = env.BabelMop(Glob('*.mol'))
+env.Depends(mops, 'keys.cosmo')
+mopacBuild = env.Mopac(mops)
+env.Alias('mopac', mopacBuild)
+env.Default('mopac')
+
+# Build all files for Gamess
+# Delete all DAT files, otherwise gamess will stop
+delAction = Delete(Glob(os.environ['HOME'] + '/gamess/scr/*.dat'))
+Execute(delAction)
+# Convert mol files to gamess input
+inps = env.BabelGam(Glob('*.mol'))
+env.Depends(inps, 'keys.gamess')
+# env.Depends(inps, delAction)
+# process files with gamess
+gamessBuild = env.Gamess(inps)
+Alias('gamess', gamessBuild)
 
 
