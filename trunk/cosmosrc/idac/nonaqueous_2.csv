@@ -50,13 +50,6 @@ n-heptane/n-propanol,333,6.34,11,5.78,5.62,2.74,6.05,6.46,6.6
 n-heptane/n-propanol,353,5.89,11,5.53,5.25,2.76,5.47,6.19,5.9
 n-heptane/n-butanol,353,5.13,11,4.12,3.94,3.34,4.02,4.36,4.4
 n-heptane/n-butanol,373,4.76,11,3.95,3.7,3.19,3.6,4.2,4.01
-n-pentane/n-heptane,293.15,1,"Satoru Kato, 2002"
-n-pentane/n-octane,293.15,0.97,"Satoru Kato, 2002"
-n-pentane/n-dodecane,280.15,0.97,"Satoru Kato, 2002"
-n-pentane/n-dodecane,298.15,0.941,"Satoru Kato, 2002"
-n-hexane/n-heptane,293.15,1,"Satoru Kato, 2002"
-n-hexane/n-dodecane,280.15,0.995,"Satoru Kato, 2002"
-n-hexane/n-dodecane,298.15,0.988,"Satoru Kato, 2002"
 n-hexane/chloroform,320,1.79,15
 n-hexane/chloroform,332,1.66,15
 n-hexane/carbon tetrachloride,293,1.33,15
@@ -69,10 +62,6 @@ n-heptane/carbon tetrachloride,349,1.15,15
 "n-nonane/n,n-dimethylformamide",293,38.98,7
 "n-nonane/n,n-dimethylformamide",333,23.1,7
 "n-decane/n,n-dimethylformamide",333,24.8,7
-n-heptane/acetic acid,298,23.5,6
-n-heptane/acetic acid,318,20.49,6
-n-heptane/propionic acid,298,6.27,6
-n-heptane/propionic acid,318,6.75,6
 n-hexane/acetone,298,6.62,1,5.67,5.95,6.77,6.55,7.81,6.11
 n-hexane/acetone,303,6.19,1,5.65,5.75,6.8287037037037e-05,6.26,7.98611111111111e-05,5.85
 n-hexane/acetone,308,6.06,1,5.46,5.55,6.49,5.99,7.44,5.61
@@ -275,10 +264,6 @@ cyclohexane/carbon tetrachloride,330,1.1,15
 cyclohexane/carbon tetrachloride,341,1.09,15
 cyclohexane/carbon tetrachloride,346,1.1,15
 "cyclohexane/n,n-dimethylformamide",333,19.09,7
-cyclohexane/acetic acid,298,21.83,6
-cyclohexane/acetic acid,318,18.09,6
-cyclohexane/propionic acid,298,5.14,5
-cyclohexane/propionic acid,318,4.58,5
 cyclohexane/phenol,298,8.71,15
 cyclohexane/phenol,303,7.67,15
 cyclohexane/phenol,323,7.2,15
@@ -319,40 +304,6 @@ ethylcyclohexane/phenol,373,9.03,15
 "cyclooctene/n,n-dimethylformamide",293,10.6,7
 "cyclooctene/n,n-dimethylformamide",313,8.5,7
 "cyclooctene/n,n-dimethylformamide",333,6.8,7
-acetone/methanol,298,2.03,10
-acetone/methanol,333,1.82,10
-acetone/methanol,373,1.66,10
-"methyl ethyl ketone/methanol",298,2.36,10
-"methyl ethyl ketone/methanol",333,2.13,10
-"methyl ethyl ketone/methanol",373,1.96,10
-"diethyl ketone/methanol",298,3.27,10
-"diethyl ketone/methanol",333,2.8,10
-"diethyl ketone/methanol",373,2.45,10
-3-heptanone/methanol,298,5.59,10
-3-heptanone/methanol,333,4.41,10
-3-heptanone/methanol,373,3.59,10
-5-nonanone/methanol,333,7.2,10
-5-nonanone/methanol,373,5.2,10
-acetone/ethanol,298,2.32,10
-acetone/ethanol,305,2.14,10
-acetone/ethanol,321,1.96,10
-acetone/n-butanol,298,2.52,10
-acetone/1-octanol,298,2.58,10
-acetone/1-octanol,333,1.84,10
-acetone/1-octanol,373,1.41,10
-"methyl ethyl ketone/ethanol",298,2.62,10
-"methyl ethyl ketone/n-butanol",298,1.98,10
-"methyl ethyl ketone/n-butanol",333,1.64,10
-"methyl ethyl ketone/n-butanol",373,1.42,10
-"methyl ethyl ketone/1-octanol",298,2.3,10
-"methyl ethyl ketone/1-octanol",333,1.78,10
-"methyl ethyl ketone/1-octanol",373,1.46,10
-"diethyl ketone/1-octanol",298,2.12,10
-"diethyl ketone/1-octanol",333,1.56,10
-"diethyl ketone/1-octanol",373,1.24,10
-3-heptanone/n-butanol,298,2.67,10
-3-heptanone/n-butanol,333,2.09,10
-3-heptanone/n-butanol,373,1.72,10
 acetone/n-hexane,298,6.68,1,6.28,5.74,6.84,5.62,6.01,6.32,
 acetone/n-hexane,303,6.38,1,6.05,5.49,6.59,5.33,5.82,6,
 acetone/n-hexane,313,5.78,1,5.65,5.02,6.13,4.81,5.47,5.45,
