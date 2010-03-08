@@ -47,6 +47,7 @@ public class SigmaProfileGenerator {
 	private static final double CHARGE_LOWER = -0.025;
 	protected static final double AU_ANGSTRON = 0.529177249;
 
+	int[] atom,elem;
 	double[] x, y, z, area, SIGMA, SIGMANEW;
 	double SP[], CHGDEN[];
 	
@@ -99,8 +100,8 @@ public class SigmaProfileGenerator {
 		switch (type) {
 		case GAMESS:
 			averageCharges();
-//			simpleSorting();
-			normalSorting(SIGMANEW);
+			simpleSorting();
+//			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
 			averageCharges();
@@ -197,6 +198,8 @@ public class SigmaProfileGenerator {
 		if(cosmoSegments==0)
 			throw new Exception("File " + filename + " does not have SEGMENTS information");
 
+		atom = new int[cosmoSegments];
+		elem = new int[cosmoSegments];
 		x = new double[cosmoSegments];
 		y = new double[cosmoSegments];
 		z = new double[cosmoSegments];
@@ -205,8 +208,10 @@ public class SigmaProfileGenerator {
 
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.nextInt(); // segment id
-			input.nextInt(); // atom
-			input.nextInt(); // elem
+//			input.nextInt(); // atom
+			atom[i] = input.nextInt();
+//			input.nextInt(); // elem
+			elem[i] = input.nextInt(); // O=8, N=7, H=1
 //			x[i] = input.nextDouble()*AU_ANGSTRON;
 //			y[i] = input.nextDouble()*AU_ANGSTRON;
 //			z[i] = input.nextDouble()*AU_ANGSTRON;
@@ -256,7 +261,7 @@ public class SigmaProfileGenerator {
 	}
 	
 
-// from Sandler, 2007
+// from Wang, Sandler, 2007 - using Aeff = 7.25, Reff = sqrt(Aeff/PI)
 	void averageCharges2(int sigmaPoints) {
 		SIGMANEW = new double[x.length];
 		
@@ -338,5 +343,18 @@ public class SigmaProfileGenerator {
 	 */
 	public double getVolume(){
 		return volume;
+	}
+	
+	// for SigmaH.java
+	public int[] getAtom() {
+		return atom;
+	}
+
+	public int[] getElem() {
+		return elem;
+	}
+
+	public double[] getSIGMA() {
+		return SIGMA;
 	}
 }

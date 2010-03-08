@@ -73,18 +73,25 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 
 	public COSMOSACEstimation() throws Exception {
 		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
-		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
+//		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
 //		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
 //		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
 //		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
-		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
+//		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
 //		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
-		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));
+//		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));		
 		
+		addParameter(new EstimatedParameter("AEffPrime", 7.5));
+//		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
+//		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
+		addParameter(new EstimatedParameter("Anorm", 24.15));
+//		addParameter(new EstimatedParameter("CHB", 42700.0));
+//		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
+		addParameter(new EstimatedParameter("Epsilon", 6.396454154279051));	
 		
-		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSACGAMESS.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
 
@@ -100,8 +107,10 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 //				experiments.add(exp);
 //			}
 //		}
+		
+		//as misturas que tem "//" depois não entram na estimação
 
-		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Alcohol-Water_2.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alkene-Water.csv", modelClass));
@@ -114,12 +123,12 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/CycloAlkene-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Ether-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));//
 		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/VinylHalide-Water.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
 		
-//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));//
 				
 		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
 		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
@@ -150,7 +159,10 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		
 		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
 		
-//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));//
+		
+//		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass));//
+//		experiments.add(new IDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass));//
 		
 		addAllMeasurements();
 	}

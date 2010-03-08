@@ -47,7 +47,7 @@ public class COSMOSAC {
 //	public static final double AEFFPRIME = 7.25; // accordingly to Shu Wang and Stanley I. Sandler Ind. Eng. Chem. Res. 2007
 	double aEffPrime = AEFFPRIME;
 
-	static final double RGAS = 0.001987;
+	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
 	public static final double ANORM = 79.53;
 
@@ -109,6 +109,21 @@ public class COSMOSAC {
 	 * @see #setParameters(double[], double[], double[][])
 	 */
 	public COSMOSAC(){
+//		setAEffPrime(6.086291186781933);
+////		setCoord(7.5);
+////		setVnorm(66.69);
+//		setAnorm(47.66256304151264);
+//		setCHB(52617.407884971944);
+////		setSigmaHB(0.0084);
+//		setEpsilon(3.9865033155201153);
+		
+//		setAEffPrime(6.258897706113918);
+////		setCoord(7.5);
+////		setVnorm(66.69);
+//		setAnorm(47.50343497605057);
+//		setCHB(57433.575129782264);
+////		setSigmaHB(0.0084);
+//		setEpsilon(3.879161863613822);
 	}
 
 	public double getEpsilon() {
