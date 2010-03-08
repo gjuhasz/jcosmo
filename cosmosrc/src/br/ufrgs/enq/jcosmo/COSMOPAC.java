@@ -88,23 +88,42 @@ public class COSMOPAC extends COSMOSAC {
 //		setSigmaHB(0.0064);
 //		setEpsilon(7.399713408532802);//3.715212187255123
 		
-		//** Aarticle 
-		setAEffPrime(6.5);
-//		setCoord(10.0);
-//		setVnorm(66.69);
-		setAnorm(27.25);
-		setCHB(53920.0);
-		setSigmaHB(0.0064);
-		setEpsilon(7.395);
-		
-		// teste RMS=0.5536787472192798
-//		setAEffPrime(7.0);
+		//** Article1 
+//		setAEffPrime(6.5);
 ////		setCoord(10.0);
 ////		setVnorm(66.69);
-//		setAnorm(30.61019362439002);//6.766426644846354
-//		setCHB(45064.750662825354);//22997.66254830905
+//		setAnorm(27.25);
+//		setCHB(53920.0);
 //		setSigmaHB(0.0064);
-//		setEpsilon(12.233500508453352);//14.634406910081982
+//		setEpsilon(7.395);
+		
+//		//** Aarticle2 RMS=0.5536787472192798
+//		setAEffPrime(7.6);
+////		setCoord(10.0);
+////		setVnorm(66.69);
+//		setAnorm(22.33);
+//		setCHB(54420.0);
+//		setSigmaHB(0.0064);
+////		setEpsilon(3.667);
+		
+		//** Aarticle3 RMS=0.6416224763232018
+////		setAEffPrime(7.5);
+////		setCoord(10.0);
+////		setVnorm(66.69);
+//		setAnorm(22.43);
+//		setCHB(54778.0);
+//		setSigmaHB(0.0064);
+////		setEpsilon(3.667);
+		
+		//** Article4 RMS=0.5880605501590166
+		setAEffPrime(6.2);
+//		setCoord(10.0);
+//		setVnorm(66.69);
+		setAnorm(28.20);
+		setCHB(42700.0);
+		setSigmaHB(0.0064);
+		setEpsilon(13.139);//+-24.359508118522637
+		
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
