@@ -101,7 +101,7 @@ public class SigmaProfileGenerator {
 		case GAMESS:
 			averageCharges();
 			simpleSorting();
-//			normalSorting(SIGMANEW);
+//			normalSorting(SIGMA);
 			break;
 		case MOPAC:
 			averageCharges();
@@ -133,8 +133,13 @@ public class SigmaProfileGenerator {
 		input.useLocale(Locale.US);
 
 		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
+		// volume information on "VOLUME INSIDE CONSTS:"
 		int cosmoSegments = 0;
 		while(input.hasNext()){
+			if(volume==0 && input.next().equals("VOLUME") && input.next().equals("INSIDE") &&
+					input.next().equals("CONSTS:")){
+				volume = input.nextDouble();
+			}
 			if(input.next().equals("NUMBER") && input.next().equals("OF") &&
 					input.next().equals("SURFACE") && input.next().equals("SEGMENTS") &&
 					input.next().equals("IS")){

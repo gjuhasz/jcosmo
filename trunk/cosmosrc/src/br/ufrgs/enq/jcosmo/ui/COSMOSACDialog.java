@@ -87,6 +87,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	JLabel lnGammaInf2Label;
 
 	XYPlot plot;
+	XYPlot plotSegGamma;
 	XYPlot plot2;
 	ChartPanel chartPanel;
 
@@ -97,13 +98,20 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double cavityVolume[] = new double[2];
 	double [] z = new double[2];
 	double [] lnGamma = new double[2];
-	COSMOSAC cosmosac = new COSMOSAC();
+	COSMOSAC cosmosac;
 
 	@SuppressWarnings("deprecation")
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		
+		
+		cosmosac = new COSMOSAC();
+//		cosmosac = new COSMOPAC();
+//		cosmosac = new COSMOSAC_G();
+		
+//		cosmosac.setSigmaHB(0.02);
 
 		db = COSMOSACDataBase.getInstance();
 
@@ -243,6 +251,12 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		r2.setUseFillPaint(true);
 //		r2.setBaseFillPaint(Color.white);
 		r2.setBaseShapesVisible(false);
+		
+		JFreeChart chartSegGamma = ChartFactory.createXYLineChart(null, 
+				"sigma", "Segment Gamma", null, PlotOrientation.VERTICAL, true, true, false);
+		plotSegGamma = (XYPlot) chartSegGamma.getPlot();
+		plotSegGamma.getDomainAxis().setAutoRange(false);
+		plotSegGamma.getDomainAxis().setRange(new Range(-0.025, 0.025));
 
 		JPanel south = new JPanel();
 		south.setLayout(new FlowLayout());
@@ -258,7 +272,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		JPanel aba1 = new JPanel(new BorderLayout());
 		aba1.add(northAba1, BorderLayout.NORTH);
-		aba1.add(chartPanel = new ChartPanel(chart), BorderLayout.CENTER);
+		aba1.add(chartPanel = new ChartPanel(chart), BorderLayout.LINE_START);
+		aba1.add(chartPanel = new ChartPanel(chartSegGamma), BorderLayout.LINE_END);
 		aba1.add(south, BorderLayout.SOUTH);
 
 		JPanel aba2 = new JPanel(new BorderLayout());
@@ -302,36 +317,30 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			return;
 		}
 
-		COSMOSACCompound c1, c2;
+		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
-			c1 = db.getComp((String)listModel.getElementAt(0));
-			c2 = db.getComp((String)listModel.getElementAt(1));
-		} catch (SQLException e1) {
+			comps[0] = db.getComp((String)listModel.getElementAt(0));
+			comps[1] = db.getComp((String)listModel.getElementAt(1));
+			cosmosac.setComponents(comps);
+		} catch (Exception e1) {
 			e1.printStackTrace();
 			return;
 		}
 
-		if(c1 == null || c2 == null)
+		if(comps[0] == null || comps[1] == null)
 			return;
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
-
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+//		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
 
 		cosmosac.setTemperature(T);
 
 		// testing several compositions
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		int n = 20;
-		XYSeries lnGamma1 = new XYSeries(c1.name);
-		XYSeries lnGamma2 = new XYSeries(c2.name);
+		XYSeries lnGamma1 = new XYSeries(comps[0].name);
+		XYSeries lnGamma2 = new XYSeries(comps[1].name);
 		XYSeries ge_RT = new XYSeries("gE/RT");
 
 		for(int i=0; i<=n; ++i){
@@ -357,6 +366,29 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		dataset.addSeries(ge_RT);
 
 		plot.setDataset(dataset);
+
+		
+		// now the segment gamma
+		dataset = new XYSeriesCollection();
+		double [][]seggamma = cosmosac.getPureSegmentGamma(); 
+
+		n = comps[0].charge.length;
+		XYSeries g1= new XYSeries(comps[0].name);
+		XYSeries g2= new XYSeries(comps[1].name);
+		XYSeries g1s= new XYSeries(comps[0].name + " * sigma");
+		XYSeries g2s= new XYSeries(comps[1].name + " * sigma");
+
+		for(int j=0; j<n; ++j){
+			g1.add(comps[0].charge[j], Math.log(seggamma[0][j]) );	
+			g2.add(comps[1].charge[j], Math.log(seggamma[1][j]) );
+			g1s.add(comps[0].charge[j], comps[0].sigma[j]*(Math.log(seggamma[1][j])-Math.log(seggamma[0][j])) );	
+			g2s.add(comps[1].charge[j], comps[1].sigma[j]*(Math.log(seggamma[0][j])-Math.log(seggamma[1][j])) );
+		}
+		dataset.addSeries(g1);
+		dataset.addSeries(g2);
+		dataset.addSeries(g1s);
+		dataset.addSeries(g2s);
+		plotSegGamma.setDataset(dataset);
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}

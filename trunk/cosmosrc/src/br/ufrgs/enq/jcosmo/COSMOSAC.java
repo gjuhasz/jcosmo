@@ -104,6 +104,7 @@ public class COSMOSAC {
 
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
+	private double averageACOSMO;
 
 	/**
 	 * @see #setParameters(double[], double[], double[][])
@@ -162,6 +163,19 @@ public class COSMOSAC {
 
 	public void setCoord(double coord) {
 		this.coord = coord;
+	}
+	
+	/**
+	 * @return the pure substance segment activity coefficient
+	 */
+	public double[][] getPureSegmentGamma(){
+		return SEGGAMMAPR;
+	}
+	/**
+	 * @return the mixture segment activity coefficient
+	 */
+	public double[] getMixtureSegmentGamma(){
+		return SEGGAMMA;
 	}
 
 	/**
@@ -267,16 +281,16 @@ public class COSMOSAC {
 			this.z[i] = z[i];
 
 		// CALCULATE THE MIXTURE SIGMA PROFILE
-		double denom = 0;
+		averageACOSMO = 0.0;
 		for (int i = 0; i < ncomps; i++) {
-			denom += z[i]*ACOSMO[i];
+			averageACOSMO += z[i]*ACOSMO[i];
 		}
 		for(int m=0; m<compseg; ++m){
 			double numer = 0;
 			for (int i = 0; i < ncomps; i++) {
 				numer += z[i]*sigma[i][m]; 
 			}
-			PROFILE[m] = numer/denom;
+			PROFILE[m] = numer/averageACOSMO;
 		}
 	}
 	
@@ -424,7 +438,16 @@ public class COSMOSAC {
 			// CALCULATION OF GAMMAS
 			double lnGammaRestoration = 0.0;
 			for(int m=0; m<compseg; ++m){
-				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
+//				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
+				double lnMixSeg = Math.log(SEGGAMMA[m]);
+				double lnMixPure = Math.log(SEGGAMMAPR[i][m]);
+				
+				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(lnMixSeg - lnMixPure);
+				
+				// TODO: here we subtract SEGGAMMAPR regardless if the mixture has a probability of having
+				// something in this charge, check better this fact
+//				lnGammaRestoration += (PROFILE[m]*averageACOSMO/aEffPrime)*lnMixSeg;
+//				lnGammaRestoration -= (sigma[i][m]/aEffPrime)*lnMixPure;
 			}
 			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
 		}
