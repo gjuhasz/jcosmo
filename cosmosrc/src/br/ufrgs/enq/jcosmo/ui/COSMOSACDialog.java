@@ -106,13 +106,6 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		
-		
-		cosmosac = new COSMOSAC();
-//		cosmosac = new COSMOPAC();
-//		cosmosac = new COSMOSAC_G();
-		
-//		cosmosac.setSigmaHB(0.02);
-
 		db = COSMOSACDataBase.getInstance();
 
 		JPanel north = new JPanel(new GridLayout(0,2));
@@ -185,7 +178,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		JCheckBox ignoreSGButton = new JCheckBox("Ignore SG");
 		ignoreSGButton.setToolTipText("Toogles the ignore flag for the Staverman-Guggenheim term");
-		ignoreSGButton.setSelected(cosmosac.isIgnoreSG());
+		ignoreSGButton.setSelected(false);
 		ignoreSGButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cosmosac.setIgnoreSG(((JCheckBox)e.getSource()).isSelected());
@@ -291,11 +284,23 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		//		cosmosac.setAnorm(41.56058649432742);
 		//		cosmosac.setCHB(65330.19484947528);
 		//		cosmosac.setSigmaHB(0.008292411048046008);
-
+		
 		//Display the window.
 		setSize(500, 600);
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+		
+		cosmosac = new COSMOSAC();
+//		cosmosac = new COSMOPAC();
+//		cosmosac = new COSMOSAC_G();
+		
+//		cosmosac.setSigmaHB(0.012);
+//		cosmosac.setAEffPrime(COSMOSAC.AEFFPRIME*0.5);
+		
+		// test for a mixture
+//		addList("water");
+//		addList("sec-butylamine");
 	}
 
 	private void rebuildChart(){

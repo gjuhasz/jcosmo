@@ -362,7 +362,7 @@ public class COSMOSAC {
 				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
 //				double sigmaHB = 0.022;
 //				hb = Math.max(0.0, Math.abs(SIGMADON - SIGMAACC) - sigmaHB);
-//				hb *= hb;
+//				hb = -hb*hb;
 				
 				deltaW[m][n] += cHB * hb;
 			}
