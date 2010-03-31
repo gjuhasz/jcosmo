@@ -19,9 +19,9 @@ babelgam = Builder(action = 'babel -h $SOURCE -o gamin -xf keys.gamess $TARGET',
                      suffix = '.inp', single_source=True)
 # Gamess also produces a .dat file
 def gamess_targets(target, source, env):
-           target.append('$HOME/gamess/scr/$TARGET.dat')
+           target.append('$HOME/src/gamess07/$TARGET.dat')
            return target, source
-gamess = Builder(action = os.environ['HOME'] + '/gamess/rungms $SOURCE > $TARGET', suffix = '.gout',
+gamess = Builder(action = os.environ['HOME'] + '/src/gamess07/rungms $SOURCE > $TARGET', suffix = '.gout',
 	single_source=True) # , emitter = gamess_targets)
 env.Append(BUILDERS = {'BabelGam' : babelgam})
 env.Append(BUILDERS = {'Gamess' : gamess})
@@ -35,7 +35,7 @@ env.Default('mopac')
 
 # Build all files for Gamess
 # Delete all DAT files, otherwise gamess will stop
-delAction = Delete(Glob(os.environ['HOME'] + '/gamess/scr/*.dat'))
+delAction = Delete(Glob(os.environ['HOME'] + '/src/gamess07/tmp/*.dat'))
 Execute(delAction)
 # Convert mol files to gamess input
 inps = env.BabelGam(Glob('*.mol'))
