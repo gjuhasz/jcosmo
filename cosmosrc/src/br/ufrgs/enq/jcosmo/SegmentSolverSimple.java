@@ -21,6 +21,7 @@ public class SegmentSolverSimple implements ISegmentSolver {
 		
 		while(true){
 			for (int m = 0; m < compseg; m++) {
+//			for (int m = compseg-1; m >= 0; m--) {
 				double SUMMATION = 0.0;
 				for(int n = 0; n < compseg; n++) {
 					SUMMATION += PROFILE[n]*factor* SEGGAMMA[n] * expDeltaW_RT[m][n];
