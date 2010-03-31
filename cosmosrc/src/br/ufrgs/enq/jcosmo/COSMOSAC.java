@@ -63,6 +63,8 @@ public class COSMOSAC {
 
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
+	
+	double geometricHB = 0;
 
 	double epsilon = EPSILON;
 	double eo = EO;
@@ -96,7 +98,9 @@ public class COSMOSAC {
 	double [][] sigma;
 	double [] charge;
 	double deltaW[][];
-	double expDeltaW_RT[][];
+	double deltaW_HB[][];
+	double expDeltaWPure[][][];
+	double expDeltaW[][];
 	double SEGGAMMA[];
 	double SEGGAMMAPR[][];
 	
@@ -110,21 +114,6 @@ public class COSMOSAC {
 	 * @see #setParameters(double[], double[], double[][])
 	 */
 	public COSMOSAC(){
-//		setAEffPrime(6.086291186781933);
-////		setCoord(7.5);
-////		setVnorm(66.69);
-//		setAnorm(47.66256304151264);
-//		setCHB(52617.407884971944);
-////		setSigmaHB(0.0084);
-//		setEpsilon(3.9865033155201153);
-		
-//		setAEffPrime(6.258897706113918);
-////		setCoord(7.5);
-////		setVnorm(66.69);
-//		setAnorm(47.50343497605057);
-//		setCHB(57433.575129782264);
-////		setSigmaHB(0.0084);
-//		setEpsilon(3.879161863613822);
 	}
 
 	public double getEpsilon() {
@@ -236,8 +225,9 @@ public class COSMOSAC {
 		z = new double[ncomps];
 		for (int i = 0; i < ncomps; i++)
 			z[i] = 1.0/ncomps;
-
+		
 		parametersChanged();
+		setComposition(z);
 	}
 	
 	/**
@@ -254,17 +244,41 @@ public class COSMOSAC {
 	public void setTemperature(double T){
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
-
-		// Update the exp of deltaW
+		
+		double histericHB_Mix = geometricHB/averageACOSMO;
+		
+		double hbfactor = 0;
 		for (int m = 0; m < compseg; m++) {
 			for(int n = 0; n < compseg; n++) {
-				expDeltaW_RT[m][n] =  Math.exp(-deltaW[m][n] * inv_RT);
+
+				// pure expDeltaW
+				for (int i = 0; i < ncomps; i++) {
+					hbfactor = (1 + Math.tanh( 1 * (sigma[i][n] - geometricHB)))/2;
+					
+//					if(sigma[i][m]>histericHB || sigma[i][n]>histericHB){
+//					if(sigma[i][n]>histericHB){
+//						hbfactor = 1;
+//					}
+					
+					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+				}
+				
+				// mixture expDeltaW
+//				hbfactor = 0;
+////				if(PROFILE[m]>histericHB_Mix || PROFILE[n]>histericHB_Mix)
+//				if(PROFILE[n]>histericHB_Mix)
+//					hbfactor = 1;
+				
+				hbfactor = (1 + Math.tanh( 1*averageACOSMO * (PROFILE[n] - histericHB_Mix)))/2;
+				
+				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+				
 			}
 		}
-
+		
 		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent)
 		for(int i=0; i<ncomps; ++i){
-			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i], expDeltaW_RT, TOLERANCE);
+			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaWPure[i], TOLERANCE);
 		}
 	}
 	
@@ -292,6 +306,9 @@ public class COSMOSAC {
 			}
 			PROFILE[m] = numer/averageACOSMO;
 		}
+		
+		// update the profiles which depend on the composition
+		setTemperature(this.T);
 	}
 	
 	public double[] getComposition(){
@@ -311,8 +328,10 @@ public class COSMOSAC {
 		ACOSMO = new double[ncomps];
 		PROFILE = new double[compseg];
 		deltaW = new double[compseg][compseg];
-		expDeltaW_RT = new double[compseg][compseg];
-
+		deltaW_HB = new double[compseg][compseg];
+		expDeltaW = new double[compseg][compseg];
+		expDeltaWPure = new double[ncomps][compseg][compseg];
+		
 		SEGGAMMA = new double[compseg];
 		SEGGAMMAPR = new double[ncomps][compseg];
 //		segSolver = new SegmentSolverNewton();
@@ -350,6 +369,7 @@ public class COSMOSAC {
 				double sigmaHb2 = 2*sigmaHB*sigmaHB;
 				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
 				
+				// Hydrogen Bond effect:
 				double hb = 0.0;
 				if(sigmaGaussian)
 					hb =
@@ -363,8 +383,8 @@ public class COSMOSAC {
 //				double sigmaHB = 0.022;
 //				hb = Math.max(0.0, Math.abs(SIGMADON - SIGMAACC) - sigmaHB);
 //				hb = -hb*hb;
-				
-				deltaW[m][n] += cHB * hb;
+
+				deltaW_HB[m][n] = cHB*hb;
 			}
 		}
 
@@ -408,7 +428,15 @@ public class COSMOSAC {
 	 */
 	public void activityCoefficientLn(double[] lnGama, int start){
 		// Solve for the SEGGAMMA of the mixture
-		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW_RT, TOLERANCE);
+		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
+		
+//		for (int m = 0; m < SEGGAMMA.length; m++) {
+//			SEGGAMMA[m] = 0;
+//			for (int i = 0; i < ncomps; i++) {
+//				SEGGAMMA[m] += Math.log(SEGGAMMAPR[i][m]) * z[i];
+//			}
+//			SEGGAMMA[m] = Math.exp(SEGGAMMA[m]);
+//		}
 
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
@@ -443,11 +471,6 @@ public class COSMOSAC {
 				double lnMixPure = Math.log(SEGGAMMAPR[i][m]);
 				
 				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(lnMixSeg - lnMixPure);
-				
-				// TODO: here we subtract SEGGAMMAPR regardless if the mixture has a probability of having
-				// something in this charge, check better this fact
-//				lnGammaRestoration += (PROFILE[m]*averageACOSMO/aEffPrime)*lnMixSeg;
-//				lnGammaRestoration -= (sigma[i][m]/aEffPrime)*lnMixPure;
 			}
 			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
 		}
@@ -503,5 +526,13 @@ public class COSMOSAC {
 
 	public void setSigmaHB(double sigmaHB) {
 		this.sigmaHB = sigmaHB;
+	}
+
+	public double getGeometricHB() {
+		return geometricHB;
+	}
+
+	public void setGeometricHB(double geometricHB) {
+		this.geometricHB = geometricHB;
 	}
 }

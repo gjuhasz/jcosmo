@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -75,6 +76,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	private static final String ABOUT = "about";
 	
 	private JTextField temperature;
+	private JTextField geometricHB;
+	private JTextField sigmaHB;
 
 	COSMOSACDataBase db;
 
@@ -107,6 +110,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 		
 		db = COSMOSACDataBase.getInstance();
+		cosmosac = new COSMOSAC();
 
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);
@@ -194,6 +198,12 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		northAba1.add(new JLabel("Temperature [K]"));
 		northAba1.add(temperature = new JTextField(10));
 		temperature.setText("298");
+		northAba1.add(new JLabel("Geometric HB"));
+		northAba1.add(geometricHB = new JTextField(10));
+		geometricHB.setText(Double.toString(cosmosac.getGeometricHB()));
+		northAba1.add(new JLabel("Sigma HB"));
+		northAba1.add(sigmaHB = new JTextField(10));
+		sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
 		northAba1.add(ignoreSGButton);
 		northAba1.add(calcButton);
 		northAba2.add(new JLabel(""));
@@ -235,22 +245,13 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		plot2.setDomainGridlinePaint(Color.white);
 		plot2.setRangeGridlinePaint(Color.white);
 
-		XYSplineRenderer r2 = new XYSplineRenderer();
-		BasicStroke stroke = new BasicStroke(2.5f);
-		r2.setStroke(stroke);
+		plot2.getRenderer().setSeriesStroke(0, new BasicStroke(2.5f));
+		plot2.getRenderer().setSeriesStroke(1, new BasicStroke(2.5f));
 
-		plot2.setRenderer(r2);
-//		XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot2.getRenderer();
-//		r2.setUseFillPaint(true);
-//		r2.setBaseFillPaint(Color.white);
-		r2.setBaseShapesVisible(false);
-		
 		JFreeChart chartSegGamma = ChartFactory.createXYLineChart(null, 
 				"sigma", "Segment Gamma", null, PlotOrientation.VERTICAL, true, true, false);
 		plotSegGamma = (XYPlot) chartSegGamma.getPlot();
-		plotSegGamma.getDomainAxis().setAutoRange(false);
-		plotSegGamma.getDomainAxis().setRange(new Range(-0.025, 0.025));
-
+		
 		JPanel south = new JPanel();
 		south.setLayout(new FlowLayout());
 		south.add(new JLabel("<html>ln &gamma;<sup>&infin;</sup><sub>1</sub>:</html>"));
@@ -290,17 +291,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
-		
-		cosmosac = new COSMOSAC();
-//		cosmosac = new COSMOPAC();
-//		cosmosac = new COSMOSAC_G();
-		
-//		cosmosac.setSigmaHB(0.012);
-//		cosmosac.setAEffPrime(COSMOSAC.AEFFPRIME*0.5);
-		
 		// test for a mixture
 //		addList("water");
 //		addList("sec-butylamine");
+//		removeButton.setEnabled(true);
 	}
 
 	private void rebuildChart(){
@@ -321,6 +315,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 					"Error", JOptionPane.OK_OPTION);
 			return;
 		}
+		cosmosac.setGeometricHB(Double.parseDouble(geometricHB.getText()));
+		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
 
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
@@ -394,6 +390,22 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		dataset.addSeries(g1s);
 		dataset.addSeries(g2s);
 		plotSegGamma.setDataset(dataset);
+		
+		// adjust the plot properties
+		plotSegGamma.getDomainAxis().setAutoRange(false);
+		plotSegGamma.getDomainAxis().setRange(new Range(-0.025, 0.025));
+//		float dash[] =  {0.0f, 2.0f};
+		XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plotSegGamma.getRenderer();
+		r.setSeriesStroke(0, new BasicStroke(2.5f));
+		r.setSeriesStroke(1, new BasicStroke(2.5f));
+//		r.setSeriesStroke(2, new BasicStroke(2.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+//				10.0f, dash, 0.0f));
+//		r.setSeriesStroke(3, new BasicStroke(2.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+//				10.0f, dash, 0.0f));
+		r.setSeriesPaint(0, Color.RED);
+		r.setSeriesPaint(1, Color.BLUE);
+		r.setSeriesPaint(2, Color.RED);
+		r.setSeriesPaint(3, Color.BLUE);
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
