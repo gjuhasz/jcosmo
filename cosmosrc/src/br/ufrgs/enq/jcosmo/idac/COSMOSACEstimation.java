@@ -74,11 +74,11 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	public COSMOSACEstimation() throws Exception {
 		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
 //		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
-//		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
-//		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
-//		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
+		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
+		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
+		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
 //		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
-//		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
+		addParameter(new EstimatedParameter("SigmaHB", 0.022));
 //		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));		
 		
 		addParameter(new EstimatedParameter("AEffPrime", 7.5));
@@ -197,17 +197,24 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		}
 		
 		solver.estimate(est);
-		double[] errors = solver.guessParametersErrors(est);
-		double[][] cov = solver.getCovariances(est);
 		
 		System.out.println("\nSolution RMS=" + solver.getRMS(est));
 		
 		System.out.println("\nEstimated values:");
 		for (int j = 0; j < pars.length; j++) {
 			EstimatedParameter p = pars[j];
-			System.out.println(p.getName() + "= " + p.getEstimate() + " +- " + errors[j]);
+			System.out.println(p.getName() + "= " + p.getEstimate());
 		}
 		
+		double[] errors = solver.guessParametersErrors(est);
+		double[][] cov = solver.getCovariances(est);
+
+		System.out.println("\nEstimated values and errors:");
+		for (int j = 0; j < pars.length; j++) {
+			EstimatedParameter p = pars[j];
+			System.out.println(p.getName() + "= " + p.getEstimate() + " +- " + errors[j]);
+		}
+
 		System.out.println("\nCovariance Matrix:");
 		for (int i = 0; i < cov.length; i++) {
 			for (int j = 0; j < cov[i].length; j++) {

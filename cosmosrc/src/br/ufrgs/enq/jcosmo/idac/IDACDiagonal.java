@@ -195,15 +195,15 @@ public class IDACDiagonal extends JFrame {
 		dataset2.addSeries(diag);
 		
 		XYSeriesCollection dataset3 = new XYSeriesCollection();
-		XYSeries erroPos = new XYSeries("20%");
-		erroPos.add(-2, -2*1.2);
-		erroPos.add(26, 26*1.2);
+		XYSeries erroPos = new XYSeries("-1 ln unit");
+		erroPos.add(-2, -1);
+		erroPos.add(26, 27);
 		dataset3.addSeries(erroPos);
 		
 		XYSeriesCollection dataset4 = new XYSeriesCollection();
-		XYSeries erroNeg = new XYSeries("20%");
-		erroNeg.add(-2, -2*0.8);
-		erroNeg.add(26, 26*0.8);
+		XYSeries erroNeg = new XYSeries("+1 ln unit");
+		erroNeg.add(-2, -3);
+		erroNeg.add(26, 25);
 		dataset4.addSeries(erroNeg);
 		
 		plot.setDataset(i+1, dataset2);

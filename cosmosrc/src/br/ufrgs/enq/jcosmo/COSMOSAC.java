@@ -114,6 +114,13 @@ public class COSMOSAC {
 	 * @see #setParameters(double[], double[], double[][])
 	 */
 	public COSMOSAC(){
+		// some test settings
+		setAEffPrime(7.5248869786271655);
+//		setCHB(65428.07847373141);
+		setSigmaHB(0.011);
+		setGeometricHB(1.2);
+		setEpsilon(5.7605104560476015);
+		setIgnoreSG(true);
 	}
 
 	public double getEpsilon() {
@@ -245,38 +252,31 @@ public class COSMOSAC {
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
 		
-		double histericHB_Mix = geometricHB/averageACOSMO;
+		double geometricHB_Mix = geometricHB/averageACOSMO;
 		
-		double hbfactor = 0;
+		double hbfactor = 1;
+		double tanhscale = 1;
 		for (int m = 0; m < compseg; m++) {
 			for(int n = 0; n < compseg; n++) {
 
 				// pure expDeltaW
 				for (int i = 0; i < ncomps; i++) {
-					hbfactor = (1 + Math.tanh( 1 * (sigma[i][n] - geometricHB)))/2;
-					
-//					if(sigma[i][m]>histericHB || sigma[i][n]>histericHB){
-//					if(sigma[i][n]>histericHB){
-//						hbfactor = 1;
-//					}
+					if(geometricHB>0.0)
+						hbfactor = (1 + Math.tanh( tanhscale * (sigma[i][n] - geometricHB)))/2;
 					
 					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
 				}
 				
 				// mixture expDeltaW
-//				hbfactor = 0;
-////				if(PROFILE[m]>histericHB_Mix || PROFILE[n]>histericHB_Mix)
-//				if(PROFILE[n]>histericHB_Mix)
-//					hbfactor = 1;
-				
-				hbfactor = (1 + Math.tanh( 1*averageACOSMO * (PROFILE[n] - histericHB_Mix)))/2;
+				if(geometricHB>0.0)
+					hbfactor = (1 + Math.tanh( tanhscale*averageACOSMO * (PROFILE[n] - geometricHB_Mix)))/2;
 				
 				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
 				
 			}
 		}
 		
-		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent)
+		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent only)
 		for(int i=0; i<ncomps; ++i){
 			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaWPure[i], TOLERANCE);
 		}
@@ -392,7 +392,7 @@ public class COSMOSAC {
 		for(int i=0; i<ncomps; ++i){
 			RNORM[i] = VCOSMO[i]/vnorm;
 			QNORM[i] = ACOSMO[i]/anorm;
-			li[i] = (coord/2.0)*((RNORM[i]-QNORM[i])-(RNORM[i]-1.0));
+			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
 		}
 	}
 
@@ -430,14 +430,6 @@ public class COSMOSAC {
 		// Solve for the SEGGAMMA of the mixture
 		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
 		
-//		for (int m = 0; m < SEGGAMMA.length; m++) {
-//			SEGGAMMA[m] = 0;
-//			for (int i = 0; i < ncomps; i++) {
-//				SEGGAMMA[m] += Math.log(SEGGAMMAPR[i][m]) * z[i];
-//			}
-//			SEGGAMMA[m] = Math.exp(SEGGAMMA[m]);
-//		}
-
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
 		double BOTPHI = 0;

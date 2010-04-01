@@ -44,13 +44,14 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			SigmaProfileGenerator s = null;
 			String name = comps[i].name.replace(' ','_');
+			String extension = ".gout";
 			
 			try {
 				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-						"mopac/" + name + ".gout");												
+						"mopac/" + name + extension);												
 			} catch (Exception e) {
 				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-						"mopac/" + name.replace('-','_') + ".gout");
+						"mopac/" + name.replace('-','_') + extension);
 			}
 			
 			this.charge = s.getChargeDensity();

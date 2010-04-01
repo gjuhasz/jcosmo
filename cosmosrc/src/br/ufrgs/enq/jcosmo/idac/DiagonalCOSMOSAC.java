@@ -13,6 +13,7 @@ public class DiagonalCOSMOSAC {
 
 	public static void main (String[] args) throws Exception{
 		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOPAC.class.getName();
 		
 		IDACDiagonal dig = new IDACDiagonal();
 		
@@ -34,8 +35,8 @@ public class DiagonalCOSMOSAC {
 		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water.csv", modelClass);		
-				
+		dig.addIDACExperiments("idac/Water.csv", modelClass);
+		
 		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
 
@@ -49,7 +50,7 @@ public class DiagonalCOSMOSAC {
 		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
 		
 		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
+		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);//
 		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
 		
 		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
@@ -58,15 +59,14 @@ public class DiagonalCOSMOSAC {
 		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
 		
-		dig.addIDACExperiments("idac/CycloAlkene-Amine.csv", modelClass);
-
 		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
 		
-		dig.addIDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass);
-		
 		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
+		
+		// or just the families
+//		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 		
 		dig.showPlot();
 	}
