@@ -392,7 +392,7 @@ public class COSMOSAC {
 		for(int i=0; i<ncomps; ++i){
 			RNORM[i] = VCOSMO[i]/vnorm;
 			QNORM[i] = ACOSMO[i]/anorm;
-			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
+			li[i] = (coord/2.0)*((RNORM[i]-QNORM[i])-(RNORM[i]-1.0));
 		}
 	}
 
