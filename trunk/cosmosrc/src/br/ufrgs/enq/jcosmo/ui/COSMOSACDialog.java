@@ -60,9 +60,11 @@ import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -77,7 +79,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	
 	private JTextField temperature;
 	private JTextField geometricHB;
-	private JTextField sigmaHB;
+	private JTextField sigmaHB, chargeHB, aeffPrime, epsilon, anorm;
 
 	COSMOSACDataBase db;
 
@@ -111,10 +113,17 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		
 		db = COSMOSACDataBase.getInstance();
 		cosmosac = new COSMOSAC();
+//		cosmosac = new COSMOPAC();
+		
+		// some test settings
+		cosmosac.setCHB(45580.0);
+		cosmosac.setSigmaHB(0.01);
+		cosmosac.setAEffPrime(5);
+		cosmosac.setGeometricHB(1.22);
 
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);
-		JPanel northAba1 = new JPanel(new GridLayout(0,2));
+		JPanel northAba1 = new JPanel(new GridLayout(0,4));
 		JPanel northAba2 = new JPanel(new GridLayout(0,2));
 
 		//Where the GUI is created:
@@ -204,6 +213,19 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		northAba1.add(new JLabel("Sigma HB"));
 		northAba1.add(sigmaHB = new JTextField(10));
 		sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
+		northAba1.add(new JLabel("Charge HB"));
+		northAba1.add(chargeHB = new JTextField(10));
+		chargeHB.setText(Double.toString(cosmosac.getCHB()));
+		northAba1.add(new JLabel("AEff Prime"));
+		northAba1.add(aeffPrime = new JTextField(10));
+		aeffPrime.setText(Double.toString(cosmosac.getAEffPrime()));
+		northAba1.add(new JLabel("Epsilon"));
+		northAba1.add(epsilon = new JTextField(10));
+		epsilon.setText(Double.toString(cosmosac.getEpsilon()));
+		northAba1.add(new JLabel("Anorm"));
+		northAba1.add(anorm = new JTextField(10));
+		anorm.setText(Double.toString(cosmosac.getAnorm()));
+		
 		northAba1.add(ignoreSGButton);
 		northAba1.add(calcButton);
 		northAba2.add(new JLabel(""));
@@ -266,8 +288,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		JPanel aba1 = new JPanel(new BorderLayout());
 		aba1.add(northAba1, BorderLayout.NORTH);
-		aba1.add(chartPanel = new ChartPanel(chart), BorderLayout.LINE_START);
-		aba1.add(chartPanel = new ChartPanel(chartSegGamma), BorderLayout.LINE_END);
+		JPanel chartsPanel = new JPanel(new GridLayout(0,2));
+		aba1.add(chartsPanel, BorderLayout.CENTER);
+		chartsPanel.add(new ChartPanel(chart));
+		chartsPanel.add(new ChartPanel(chartSegGamma));
 		aba1.add(south, BorderLayout.SOUTH);
 
 		JPanel aba2 = new JPanel(new BorderLayout());
@@ -287,14 +311,14 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		//		cosmosac.setSigmaHB(0.008292411048046008);
 		
 		//Display the window.
-		setSize(500, 600);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setVisible(true);
 
 		// test for a mixture
-//		addList("water");
-//		addList("sec-butylamine");
-//		removeButton.setEnabled(true);
+		addList("water");
+		addList("sec-butylamine");
+		removeButton.setEnabled(true);		
 	}
 
 	private void rebuildChart(){
@@ -317,6 +341,11 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		}
 		cosmosac.setGeometricHB(Double.parseDouble(geometricHB.getText()));
 		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
+		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
+		cosmosac.setAEffPrime(Double.parseDouble(aeffPrime.getText()));
+		cosmosac.setEpsilon(Double.parseDouble(epsilon.getText()));
+		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
+		cosmosac.parametersChanged();
 
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
