@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,16 +54,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
-import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -105,7 +101,6 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double [] lnGamma = new double[2];
 	COSMOSAC cosmosac;
 
-	@SuppressWarnings("deprecation")
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -115,12 +110,6 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		cosmosac = new COSMOSAC();
 //		cosmosac = new COSMOPAC();
 		
-		// some test settings
-		cosmosac.setCHB(45580.0);
-		cosmosac.setSigmaHB(0.01);
-		cosmosac.setAEffPrime(5);
-		cosmosac.setGeometricHB(1.22);
-
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);
 		JPanel northAba1 = new JPanel(new GridLayout(0,4));
@@ -191,7 +180,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		JCheckBox ignoreSGButton = new JCheckBox("Ignore SG");
 		ignoreSGButton.setToolTipText("Toogles the ignore flag for the Staverman-Guggenheim term");
-		ignoreSGButton.setSelected(false);
+		ignoreSGButton.setSelected(cosmosac.isIgnoreSG());
 		ignoreSGButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cosmosac.setIgnoreSG(((JCheckBox)e.getSource()).isSelected());
@@ -427,10 +416,13 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plotSegGamma.getRenderer();
 		r.setSeriesStroke(0, new BasicStroke(2.5f));
 		r.setSeriesStroke(1, new BasicStroke(2.5f));
-//		r.setSeriesStroke(2, new BasicStroke(2.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-//				10.0f, dash, 0.0f));
-//		r.setSeriesStroke(3, new BasicStroke(2.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-//				10.0f, dash, 0.0f));
+		BasicStroke dashed = new BasicStroke(
+				2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+				1.0f, new float[] {6.0f, 6.0f}, 0.0f
+		);
+
+		r.setSeriesStroke(2, dashed);
+		r.setSeriesStroke(3, dashed);
 		r.setSeriesPaint(0, Color.RED);
 		r.setSeriesPaint(1, Color.BLUE);
 		r.setSeriesPaint(2, Color.RED);

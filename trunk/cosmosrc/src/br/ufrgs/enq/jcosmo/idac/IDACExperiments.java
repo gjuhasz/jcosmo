@@ -24,7 +24,6 @@ public class IDACExperiments {
 
 	private String modelClass;
 	private int NP;
-	private boolean leastSquares;
 	
 	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
 
@@ -33,7 +32,6 @@ public class IDACExperiments {
 	
 	public IDACExperiments(String filename, String modelClass, boolean leastSquares) throws Exception {
 		this.filename = filename;
-		this.leastSquares = leastSquares;
 		this.modelClass = modelClass;
 		
 		loadContents();
@@ -134,17 +132,8 @@ public class IDACExperiments {
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
 			
-//			double gammaCalc = Math.exp(lnGamma[0]);
 			double lngammaInf = Math.log(gammaInf);
-			double rd = (lngammaInf - lnGamma[0]);
-//			double rd = gammaInf - gammaCalc;
-			if(leastSquares)
-				rd = rd*rd;
-			else
-//				rd = Math.abs(rd);
-				rd = Math.abs(rd)/(Math.abs(lngammaInf)+0.01);
-//				rd = Math.abs(rd)/gammaInf;
-//				rd = Math.abs(rd)/Math.min(gammaInf, gammaCalc);
+			double rd = Math.abs(lngammaInf - lnGamma[0]);
 			
 			AARD += rd;
 			++NP;
