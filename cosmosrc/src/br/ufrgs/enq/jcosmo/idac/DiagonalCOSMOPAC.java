@@ -15,7 +15,7 @@ public class DiagonalCOSMOPAC {
 		
 		IDACDiagonal dig = new IDACDiagonal();
 		dig.setTitle("IDAC for COSMOPAC");
-//		dig.setUseAll(false);
+		dig.setUseAll(false);
 		
 		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);

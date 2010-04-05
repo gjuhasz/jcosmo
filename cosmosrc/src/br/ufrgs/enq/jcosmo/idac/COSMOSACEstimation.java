@@ -47,7 +47,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		public double getTheoreticalValue() {
 			for(EstimatedParameter p : getUnboundParameters()){
 				if(p.getName().equals("AEffPrime"))
-					model.setAEffPrime(p.getEstimate());
+					model.setAEff(p.getEstimate());
 				else if(p.getName().equals("Coord"))
 					model.setCoord(p.getEstimate());
 				else if(p.getName().equals("Vnorm"))
@@ -58,8 +58,8 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 					model.setCHB(p.getEstimate());
 				else if(p.getName().equals("SigmaHB"))
 					model.setSigmaHB(p.getEstimate());
-				else if(p.getName().equals("Epsilon"))
-					model.setEpsilon(p.getEstimate());
+				else if(p.getName().equals("Fpol"))
+					model.setFpol(p.getEstimate());
 			}
 			model.parametersChanged();
 			model.setTemperature(model.getT());
@@ -79,7 +79,6 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
 //		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
 		addParameter(new EstimatedParameter("SigmaHB", 0.022));
-//		addParameter(new EstimatedParameter("Epsilon", COSMOSAC.EPSILON));		
 		
 		addParameter(new EstimatedParameter("AEffPrime", 7.5));
 //		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
@@ -87,7 +86,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		addParameter(new EstimatedParameter("Anorm", 24.15));
 //		addParameter(new EstimatedParameter("CHB", 42700.0));
 //		addParameter(new EstimatedParameter("SigmaHB", COSMOSAC.SIGMAHB));
-		addParameter(new EstimatedParameter("Epsilon", 6.396454154279051));	
+		addParameter(new EstimatedParameter("Fpol", 0.69));	
 		
 //		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSACGAMESS.class.getName();

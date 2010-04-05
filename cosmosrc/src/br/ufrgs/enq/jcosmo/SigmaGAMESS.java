@@ -53,7 +53,8 @@ public class SigmaGAMESS {
 				System.out.print("Enter with the GAMESS LOG FILE: ");
 				filename = in.nextLine();
 			}
-			SigmaProfileGenerator a = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS, filename, nseg);
+			SigmaProfileGenerator a = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS, nseg);
+			a.parseFile(filename);
 			a.printProfile(System.out);
 		} catch (Exception e) {
 			e.printStackTrace();

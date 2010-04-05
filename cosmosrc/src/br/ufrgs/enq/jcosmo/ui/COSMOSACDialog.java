@@ -54,6 +54,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -61,6 +62,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -74,8 +76,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	private static final String ABOUT = "about";
 	
 	private JTextField temperature;
-	private JTextField geometricHB;
-	private JTextField sigmaHB, chargeHB, aeffPrime, epsilon, anorm;
+	private JTextField sigmaHB, sigmaHBUpper, chargeHB, resCorr, fpol, anorm;
 
 	COSMOSACDataBase db;
 
@@ -89,8 +90,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 	XYPlot plot;
 	XYPlot plotSegGamma;
-	XYPlot plot2;
+	XYPlot sigmaProfilePlot;
 	ChartPanel chartPanel;
+	
+	XYStepRenderer stepRenderer = new XYStepRenderer();
 
 	JButton removeButton;
 	
@@ -101,12 +104,14 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double [] lnGamma = new double[2];
 	COSMOSAC cosmosac;
 
+	@SuppressWarnings("deprecation")
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		
 		db = COSMOSACDataBase.getInstance();
+//		cosmosac = new COSMOSAC_G();
 		cosmosac = new COSMOSAC();
 //		cosmosac = new COSMOPAC();
 		
@@ -167,14 +172,14 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		calcButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rebuildChart();
-				rebuildChart2();
+				rebuildSigmaProfiles();
 			}
 		});
 
 		JButton refreshButton = new JButton("Refresh");
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				rebuildChart2();
+				rebuildSigmaProfiles();
 			}
 		});
 
@@ -196,21 +201,24 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		northAba1.add(new JLabel("Temperature [K]"));
 		northAba1.add(temperature = new JTextField(10));
 		temperature.setText("298");
-		northAba1.add(new JLabel("Geometric HB"));
-		northAba1.add(geometricHB = new JTextField(10));
-		geometricHB.setText(Double.toString(cosmosac.getGeometricHB()));
+
 		northAba1.add(new JLabel("Sigma HB"));
 		northAba1.add(sigmaHB = new JTextField(10));
 		sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
+
+		northAba1.add(new JLabel("Sigma HB Upper"));
+		northAba1.add(sigmaHBUpper = new JTextField(10));
+		sigmaHBUpper.setText(Double.toString(cosmosac.getSigmaHBUpper()));
+
 		northAba1.add(new JLabel("Charge HB"));
 		northAba1.add(chargeHB = new JTextField(10));
 		chargeHB.setText(Double.toString(cosmosac.getCHB()));
-		northAba1.add(new JLabel("AEff Prime"));
-		northAba1.add(aeffPrime = new JTextField(10));
-		aeffPrime.setText(Double.toString(cosmosac.getAEffPrime()));
-		northAba1.add(new JLabel("Epsilon"));
-		northAba1.add(epsilon = new JTextField(10));
-		epsilon.setText(Double.toString(cosmosac.getEpsilon()));
+		northAba1.add(new JLabel("resCorr"));
+		northAba1.add(resCorr = new JTextField(10));
+		resCorr.setText(Double.toString(cosmosac.getResCorr()));
+		northAba1.add(new JLabel("fpol"));
+		northAba1.add(fpol = new JTextField(10));
+		fpol.setText(Double.toString(cosmosac.getFpol()));
 		northAba1.add(new JLabel("Anorm"));
 		northAba1.add(anorm = new JTextField(10));
 		anorm.setText(Double.toString(cosmosac.getAnorm()));
@@ -246,18 +254,15 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		r.setBaseFillPaint(Color.white);
 		r.setBaseShapesVisible(true);
 
-		JFreeChart chart2 = ChartFactory.createXYLineChart(null, 
+		JFreeChart sigmaProfileChart = ChartFactory.createXYLineChart(null, 
 				"sigma", "P^x", null, PlotOrientation.VERTICAL, true, true, false);
-		plot2 = (XYPlot) chart2.getPlot();
-		plot2.getDomainAxis().setAutoRange(false);
-		plot2.getDomainAxis().setRange(new Range(-0.025, 0.025));
+		sigmaProfilePlot = sigmaProfileChart.getXYPlot();
+		sigmaProfilePlot.getDomainAxis().setAutoRange(false);
+		sigmaProfilePlot.getDomainAxis().setRange(new Range(-0.025, 0.025));
 
-		plot2.setBackgroundPaint(Color.lightGray);
-		plot2.setDomainGridlinePaint(Color.white);
-		plot2.setRangeGridlinePaint(Color.white);
-
-		plot2.getRenderer().setSeriesStroke(0, new BasicStroke(2.5f));
-		plot2.getRenderer().setSeriesStroke(1, new BasicStroke(2.5f));
+//		sigmaProfilePlot.setBackgroundPaint(Color.lightGray);
+//		sigmaProfilePlot.setDomainGridlinePaint(Color.white);
+//		sigmaProfilePlot.setRangeGridlinePaint(Color.white);
 
 		JFreeChart chartSegGamma = ChartFactory.createXYLineChart(null, 
 				"sigma", "Segment Gamma", null, PlotOrientation.VERTICAL, true, true, false);
@@ -285,7 +290,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		JPanel aba2 = new JPanel(new BorderLayout());
 		aba2.add(northAba2, BorderLayout.NORTH);
-		aba2.add(chartPanel = new ChartPanel(chart2), BorderLayout.CENTER);
+		aba2.add(chartPanel = new ChartPanel(sigmaProfileChart), BorderLayout.CENTER);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("gamma",aba1);
@@ -307,7 +312,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		// test for a mixture
 		addList("water");
 		addList("sec-butylamine");
-		removeButton.setEnabled(true);		
+//		addList("hydrogen-fluoride");
+		removeButton.setEnabled(true);
 	}
 
 	private void rebuildChart(){
@@ -328,11 +334,11 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 					"Error", JOptionPane.OK_OPTION);
 			return;
 		}
-		cosmosac.setGeometricHB(Double.parseDouble(geometricHB.getText()));
 		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
+		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
 		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
-		cosmosac.setAEffPrime(Double.parseDouble(aeffPrime.getText()));
-		cosmosac.setEpsilon(Double.parseDouble(epsilon.getText()));
+		cosmosac.setResCorr(Double.parseDouble(resCorr.getText()));
+		cosmosac.setFpol(Double.parseDouble(fpol.getText()));
 		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
 		cosmosac.parametersChanged();
 
@@ -412,7 +418,6 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		// adjust the plot properties
 		plotSegGamma.getDomainAxis().setAutoRange(false);
 		plotSegGamma.getDomainAxis().setRange(new Range(-0.025, 0.025));
-//		float dash[] =  {0.0f, 2.0f};
 		XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plotSegGamma.getRenderer();
 		r.setSeriesStroke(0, new BasicStroke(2.5f));
 		r.setSeriesStroke(1, new BasicStroke(2.5f));
@@ -427,11 +432,13 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		r.setSeriesPaint(1, Color.BLUE);
 		r.setSeriesPaint(2, Color.RED);
 		r.setSeriesPaint(3, Color.BLUE);
-
+//		plotSegGamma.setRenderer(stepRenderer);
+//		plotSegGamma.setRenderer(3, stepRenderer);
+		
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
-	private void rebuildChart2(){
+	private void rebuildSigmaProfiles(){
 		if (listModel.getSize()==0){
 			if (err == true){ 
 				err = false;
@@ -455,6 +462,16 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 				e1.printStackTrace();
 				return;
 			}
+		}
+		
+		try {
+			cosmosac.setComponents(c);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (int i=0; i<num; i++){
 
 			if(c[i] == null)
 				return;
@@ -472,8 +489,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			}
 
 			dataset.addSeries(comp);
-			plot2.setDataset(dataset);
+			sigmaProfilePlot.setRenderer(i, stepRenderer);
+			sigmaProfilePlot.getRenderer().setSeriesStroke(i, new BasicStroke(2.5f));
 		}
+		sigmaProfilePlot.setDataset(dataset);
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}

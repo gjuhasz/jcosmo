@@ -34,11 +34,32 @@ public class COSMOPAC extends COSMOSAC {
 	}
 	
 	public COSMOPAC() {
-//		Adjusted by IDAC
-		setAEffPrime(4.61572265625);
-		setCHB(19483.69);
-		setSigmaHB(0.00309);
-		setGeometricHB(0.41645838);
+		// article results
+		setResCorr(1);
+		setCHB(42700.7265672813);
+		setSigmaHB(0.0064);
+		setFpol(0.89);
+		setIgnoreSG(false);
+		setAnorm(28.2);
+		setVnorm(66.69);		
+		
+		// IDAC with all systems but amines, COST:0.8571275046208601
+//		setResCorr(1.2842353414911);
+//		setCHB(34885.92041721593);
+//		setSigmaHB(0.006301647263400562);
+//		setFpol(0.6972135620369986);
+//		setIgnoreSG(false);
+//		setAnorm(31.417236647369027);
+//		setVnorm(66.69);
+		
+		// only alcohol-water COST:0.7177266186444141
+		setResCorr(1);
+		setCHB(CHB);
+		setSigmaHB(sigmaHB);
+		setFpol(FPOL);
+		setIgnoreSG(false);
+		setAnorm(29);
+		setVnorm(VNORM);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -47,22 +68,21 @@ public class COSMOPAC extends COSMOSAC {
 		this.VCOSMO = new double[ncomps];
 		this.sigma = new double[ncomps][];
 
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC);
 		for (int i = 0; i < comps.length; i++) {
-			SigmaProfileGenerator s = null;
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
-			FileType type = SigmaProfileGenerator.FileType.MOPAC;
 			
 			try {
-				s = new SigmaProfileGenerator(type, "mopac/" + name + extension);												
+				s.parseFile("mopac/" + name + extension);												
 			} catch (Exception e) {
-				s = new SigmaProfileGenerator(type, "mopac/" + name.replace('-','_') + extension);
+				s.parseFile("mopac/" + name.replace('-','_') + extension);
 			}
 			
-			this.charge = s.getChargeDensity();
-			this.VCOSMO[i] = s.getVolume();
-			this.sigma[i] = s.getSigmaProfile();
+			this.charge = comps[i].charge = s.getChargeDensity();
+			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
+			this.sigma[i] = comps[i].sigma = s.getSigmaProfile();
 		}
 		this.compseg = charge.length;
 		this.T = 300;

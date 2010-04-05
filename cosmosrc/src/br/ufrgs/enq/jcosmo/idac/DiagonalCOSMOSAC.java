@@ -1,5 +1,6 @@
 package br.ufrgs.enq.jcosmo.idac;
 
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 
 /**
@@ -31,7 +32,7 @@ public class DiagonalCOSMOSAC {
 		dig.addIDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkene-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Ether-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Ether-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
@@ -42,20 +43,20 @@ public class DiagonalCOSMOSAC {
 
 		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
-		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-Ketone.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
 		
-		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
 		
 		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);//
+//		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);//
 		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
 		
 		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
+//		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
 		

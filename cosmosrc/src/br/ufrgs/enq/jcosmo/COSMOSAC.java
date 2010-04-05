@@ -21,6 +21,7 @@ package br.ufrgs.enq.jcosmo;
 
 
 
+
 /**
  * COSMO-SAC activity model.
  * 
@@ -43,9 +44,12 @@ package br.ufrgs.enq.jcosmo;
 public class COSMOSAC {
 
 	static final double EO = 2.395e-4;
-	public static final double AEFFPRIME = 7.5;
-//	public static final double AEFFPRIME = 7.25; // accordingly to Shu Wang and Stanley I. Sandler Ind. Eng. Chem. Res. 2007
-	double aEffPrime = AEFFPRIME;
+	public static final double AEFF = 7.25; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
+	public static final double FPOL = 0.6917; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
+	
+	double aEff = AEFF;
+	double fpol = FPOL;
+	double resCorr = 1;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
@@ -54,9 +58,6 @@ public class COSMOSAC {
 	double vnorm = VNORM;
 	double anorm = ANORM;
 
-	// (LIN AND SANDLER USE A CONSTANT FPOL WHICH YEILDS EPS=3.68)
-	public static final double EPSILON = 3.667;
-
 	/** Default coordination number (KLAMT USED 7.2) */
 	public static final double COORD = 10.0;
 	double coord = COORD;
@@ -64,11 +65,9 @@ public class COSMOSAC {
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
 	
-	double geometricHB = 0;
-
-	double epsilon = EPSILON;
 	double eo = EO;
 	double sigmaHB = SIGMAHB;
+	double sigmaHBUpper = 0.026;
 	double cHB = CHB;
 
 	boolean sigmaGaussian = false;
@@ -109,39 +108,46 @@ public class COSMOSAC {
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
 	private double averageACOSMO;
+	private COSMOSACCompound[] comps;
 
 	/**
 	 * @see #setParameters(double[], double[], double[][])
 	 */
 	public COSMOSAC(){
-		// some test settings
-		setAEffPrime(7.5248869786271655);
-//		setCHB(65428.07847373141);
-		setSigmaHB(0.011);
-		setGeometricHB(1.2);
-		setEpsilon(5.7605104560476015);
-		setIgnoreSG(true);
+		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
+		setResCorr(1.1495842571017678);
+		setCHB(84309.60094136275);
+		setSigmaHB(0.0071967046136033035);
+		setFpol(0.5448510600327106);
+		setIgnoreSG(false);
+		
+		// IDAC COST:0.3835742283036457, CUTOFF HB, all available IDAC without water as solute and amines
+		setResCorr(1.1280385832644837);
+		setCHB(84514.517941592);
+		setSigmaHB(0.00806375458669691);
+		setFpol(0.6123714287684722);
+		setIgnoreSG(false);
+		
+		// IDAC COST:0.4678206879613273, CUTOFF HB, all available IDAC without amines
+		setResCorr(1.1005080125594833);
+		setCHB(28264.09497378838);
+		setSigmaHB(0.003704052715633107);
+		setFpol(0.36276856497307225);
+		setIgnoreSG(false);
+		setAnorm(59.294986026637545);
+		setVnorm(66.69);
 	}
 
-	public double getEpsilon() {
-		return epsilon;
-	}
-
-
-	public void setEpsilon(double epsilon) {
-		this.epsilon = epsilon;
-	}
-	
 	public void setSigmaGaussian(boolean sigmaGaussian){
 		this.sigmaGaussian = sigmaGaussian;
 	}
 	
 
-	public double getAEffPrime() {
-		return aEffPrime;
+	public double getAEff() {
+		return aEff;
 	}
-	public void setAEffPrime(double aEffPrime) {
-		this.aEffPrime = aEffPrime;
+	public void setAEff(double aEff) {
+		this.aEff = aEff;
 	}
 	
 	public double getEo() {
@@ -215,6 +221,7 @@ public class COSMOSAC {
 	 */
 	public void setComponents(COSMOSACCompound []comps) throws Exception{
 		
+		this.comps = comps;
 		this.ncomps = comps.length;
 		this.charge = comps[0].charge;
 		this.compseg = charge.length;
@@ -237,6 +244,10 @@ public class COSMOSAC {
 		setComposition(z);
 	}
 	
+	public COSMOSACCompound[] getComps(){
+		return comps;
+	}
+	
 	/**
 	 * @return the cavity volume vector
 	 */
@@ -252,27 +263,18 @@ public class COSMOSAC {
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
 		
-		double geometricHB_Mix = geometricHB/averageACOSMO;
 		
 		double hbfactor = 1;
-		double tanhscale = 1;
 		for (int m = 0; m < compseg; m++) {
 			for(int n = 0; n < compseg; n++) {
 
 				// pure expDeltaW
 				for (int i = 0; i < ncomps; i++) {
-					if(geometricHB>0.0)
-						hbfactor = (1 + Math.tanh( tanhscale * (sigma[i][n] - geometricHB)))/2;
-					
 					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
 				}
 				
 				// mixture expDeltaW
-				if(geometricHB>0.0)
-					hbfactor = (1 + Math.tanh( tanhscale*averageACOSMO * (PROFILE[n] - geometricHB_Mix)))/2;
-				
 				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
-				
 			}
 		}
 		
@@ -321,8 +323,8 @@ public class COSMOSAC {
 	 * or temperature.
 	 */
 	public void parametersChanged(){
-		double alpha = 0.3*Math.pow(aEffPrime, 1.5)/eo;
-		double fpol = (epsilon-1.0)/(epsilon+0.5);
+		double alpha = 0.3*Math.pow(aEff, 1.5)/eo;
+		
 		alphaPrime = fpol*alpha;
 
 		ACOSMO = new double[ncomps];
@@ -350,20 +352,16 @@ public class COSMOSAC {
 			}
 		}
 
-		double SIGMAACC = 0, SIGMADON = 0;
 		double chargemn = 0;
 		for(int m=0; m<compseg; ++m){
 			// initialize all SEGGAMMA (reused between calculations)
 			SEGGAMMA[m] = 1.0;
 
 			for(int n=0; n<compseg; ++n){
+				int ACC = n, DON = m;
 				if(charge[m]>=charge[n]){
-					SIGMAACC = charge[m];
-					SIGMADON = charge[n];
-				}
-				else {
-					SIGMADON = charge[m];
-					SIGMAACC = charge[n];
+					ACC = m;
+					DON = n;
 				}
 				chargemn = charge[m]+charge[n];
 				double sigmaHb2 = 2*sigmaHB*sigmaHB;
@@ -373,16 +371,43 @@ public class COSMOSAC {
 				double hb = 0.0;
 				if(sigmaGaussian)
 					hb =
-						(1-Math.exp(-SIGMAACC*SIGMAACC/sigmaHb2)) * Math.max(0.0, SIGMAACC) *
-						(1-Math.exp(-SIGMADON*SIGMADON/sigmaHb2)) * Math.min(0.0, SIGMADON);
-				else
-					hb = Math.max(0.0, SIGMAACC - sigmaHB)*Math.min(0.0, SIGMADON + sigmaHB);
+						(1-Math.exp(-charge[ACC]*charge[ACC]/sigmaHb2)) * Math.max(0.0, charge[ACC]) *
+						(1-Math.exp(-charge[DON]*charge[DON]/sigmaHb2)) * Math.min(0.0, charge[DON]);
+				else{
+					double probACC = 1, probDON = 1;
+					
+//					double sigmaDelta = (sigmaHBUpper - sigmaHB);
+//						
+//					double accMean = sigmaHB + sigmaDelta/2;
+//					// acceptor probability
+//					probACC = 1-Math.exp(-(charge[ACC]-accMean)*(charge[ACC]-accMean)/(3*sigmaDelta));
+//
+//					// donnor probability
+//					double donMean = -sigmaHB - sigmaDelta/2;
+//					// acceptor probability
+//					probDON = 1-Math.exp(-(charge[DON]-donMean)*(charge[DON]-donMean)/(3*sigmaDelta));
+
+					// if(SIGMAACC<sigmaHBUpper && SIGMADON>-sigmaHBUpper)
+					hb = probACC*probDON*Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+				}
 				
 				// New HB from Paul M. Mathias, Shiang-Tai Lin, Yuhua Song, Chau-Chyun Chen, Stanley I. Sandler
 				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
-//				double sigmaHB = 0.022;
-//				hb = Math.max(0.0, Math.abs(SIGMADON - SIGMAACC) - sigmaHB);
-//				hb = -hb*hb;
+//				double sigmaHB = 0.018;
+//				hb = 0;
+//				if(SIGMAACC>0.0065 && SIGMADON<-0.0065){
+//					hb = Math.max(0.0, Math.abs(SIGMAACC - SIGMADON) - sigmaHB);
+//					hb = -hb*hb;
+//				}
+				
+				// Electrostatic HB
+//				hb = Math.min(0, charge[ACC] * charge[DON]);
+//				hb = -1e3*hb*hb;
+////				// cut if the bond is too strong (possible limits for HB)
+//				if(-hb*cHB > 12)
+//					hb = 0;
+//				if(-hb*cHB < 0.5)
+//					hb = 0;
 
 				deltaW_HB[m][n] = cHB*hb;
 			}
@@ -462,9 +487,9 @@ public class COSMOSAC {
 				double lnMixSeg = Math.log(SEGGAMMA[m]);
 				double lnMixPure = Math.log(SEGGAMMAPR[i][m]);
 				
-				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(lnMixSeg - lnMixPure);
+				lnGammaRestoration += (sigma[i][m]/aEff)*(lnMixSeg - lnMixPure);
 			}
-			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
+			lnGama[i+start] = resCorr*lnGammaRestoration + lnGammaSG;
 		}
 	}
 
@@ -514,17 +539,28 @@ public class COSMOSAC {
 	public double getSigmaHB() {
 		return sigmaHB;
 	}
-
-
 	public void setSigmaHB(double sigmaHB) {
 		this.sigmaHB = sigmaHB;
 	}
 
-	public double getGeometricHB() {
-		return geometricHB;
+	public double getSigmaHBUpper() {
+		return sigmaHBUpper;
 	}
-
-	public void setGeometricHB(double geometricHB) {
-		this.geometricHB = geometricHB;
+	public void setSigmaHBUpper(double sigmaHBUpper) {
+		this.sigmaHBUpper = sigmaHBUpper;
+	}
+	
+	public double getFpol() {
+		return fpol;
+	}
+	public void setFpol(double fpol) {
+		this.fpol = fpol;
+	}
+	
+	public double getResCorr() {
+		return resCorr;
+	}
+	public void setResCorr(double resCorr) {
+		this.resCorr = resCorr;
 	}
 }
