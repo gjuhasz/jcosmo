@@ -43,7 +43,9 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
  *
  */
 public class SigmaProfileGenerator {
-	private static final double RAV = 0.81764200000000;
+	/** Default averaging radius */
+	public static final double RAV = 0.81764200000000;
+	
 	private static final double CHARGE_LOWER = -0.025;
 	protected static final double AU_ANGSTRON = 0.529177249;
 
@@ -53,6 +55,7 @@ public class SigmaProfileGenerator {
 	
 	double increment;
 	double volume;
+	double rav = RAV;
 	
 	public enum FileType {
 		GAMESS,
@@ -60,24 +63,45 @@ public class SigmaProfileGenerator {
 	};
 	
 	FileType type;
+	private int sigmaPoints;
 
 	/**
-	 * Creates the sigma profile given a COSMO/GAMESS output file with the default number of segments (51).
+	 * Creates the sigma profile given a COSMO/GAMESS output file with the default number of segments (51)
+	 * and default averaging radius.
 	 */
-	public SigmaProfileGenerator(FileType type, String fileName) throws Exception {
-		this(type, fileName, 51);
+	public SigmaProfileGenerator(FileType type) throws Exception {
+		this(type, RAV, 51);
 	}
-
+	
+	/**
+	 * Creates the sigma profile given a COSMO/GAMESS output and the number of segments,
+	 * default averaging radius is used.
+	 */
+	public SigmaProfileGenerator(FileType type, int sigmaPoints) throws Exception {
+		this(type, RAV, sigmaPoints);
+	}
+	
 	/**
 	 * Creates the sigma profile given a COSMO/GAMESS output file.
 	 * 
 	 * @param fileName the COSMO/GAMESS output file
+	 * @param rav averaging radius
 	 * @param sigmaPoints the number of elements on the resulting profile (usually 51)
+	 */
+	public SigmaProfileGenerator(FileType type, double rav, int sigmaPoints) {
+		this.type = type;
+		this.rav = rav;
+		this.sigmaPoints = sigmaPoints;
+	}
+
+
+	/**
+	 * Parses the given file to determine the sigma profile given a COSMO/GAMESS output file.
+	 * 
+	 * @param fileName the COSMO/GAMESS output file
 	 * @throws Exception if there is a problem when reading the file
 	 */
-	public SigmaProfileGenerator(FileType type, String fileName, int sigmaPoints) throws Exception {
-		this.type = type;
-		
+	public void parseFile(String fileName) throws Exception {
 		switch (type) {
 		case GAMESS:
 			readSegmentChargesGAMESS(fileName);
@@ -99,9 +123,9 @@ public class SigmaProfileGenerator {
 		
 		switch (type) {
 		case GAMESS:
-			averageCharges();
-			simpleSorting();
-//			normalSorting(SIGMA);
+			averageCharges2();
+//			simpleSorting();
+			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
 			averageCharges();
@@ -157,10 +181,11 @@ public class SigmaProfileGenerator {
 		z = new double[cosmoSegments];
 		area = new double[cosmoSegments];
 		SIGMA = new double[cosmoSegments];
+		atom = new int[cosmoSegments];
 
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.nextInt(); // segment id
-			input.nextInt(); // atom
+			atom[i] = input.nextInt(); // atom
 			x[i] = input.nextDouble()*AU_ANGSTRON;
 			y[i] = input.nextDouble()*AU_ANGSTRON;
 			z[i] = input.nextDouble()*AU_ANGSTRON;
@@ -213,7 +238,6 @@ public class SigmaProfileGenerator {
 
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.nextInt(); // segment id
-//			input.nextInt(); // atom
 			atom[i] = input.nextInt();
 //			input.nextInt(); // elem
 			elem[i] = input.nextInt(); // O=8, N=7, H=1
@@ -236,7 +260,7 @@ public class SigmaProfileGenerator {
 	void averageCharges() {
 		SIGMANEW = new double[x.length];
 
-		double RAV2 = RAV*RAV;
+		double RAV2 = rav*rav;
 
 		// BEGIN AVERAGING SURFACE CHARGES
 		for(int J=0; J<x.length; ++J){
@@ -245,6 +269,10 @@ public class SigmaProfileGenerator {
 
 			for(int K=0; K<x.length; ++K){
 				double RADK2 = area[K]/Math.PI;
+				
+				// only the same atom is averaged
+//				if(atom!=null && atom[J]!=atom[K])
+//					continue;
 				
 				double deltax = x[K]-x[J];
 				double deltay = y[K]-y[J];
@@ -266,12 +294,12 @@ public class SigmaProfileGenerator {
 	}
 	
 
-// from Wang, Sandler, 2007 - using Aeff = 7.25, Reff = sqrt(Aeff/PI)
-	void averageCharges2(int sigmaPoints) {
+// from Wang, Sandler, 2007 - using Aeff = 7.25
+	void averageCharges2() {
 		SIGMANEW = new double[x.length];
 		
 		double Fdecay = 3.57;
-		double Reff = 1.52;
+		double Reff = rav;
 		double Reff2 = Reff*Reff;
 
 		// BEGIN AVERAGING SURFACE CHARGES

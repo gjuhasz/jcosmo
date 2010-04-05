@@ -55,7 +55,8 @@ public class SigmaMOPAC {
 				filename = in.nextLine();
 			}
 			SigmaProfileGenerator a =
-				new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC, filename, nseg);
+				new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC, nseg);
+			a.parseFile(filename);
 			a.printProfile(System.out);
 		} catch (Exception e) {
 			e.printStackTrace();

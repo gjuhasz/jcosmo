@@ -41,22 +41,21 @@ public class COSMOSAC_G extends COSMOSAC {
 		this.VCOSMO = new double[ncomps];
 		this.sigma = new double[ncomps][];
 
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
+				SigmaProfileGenerator.RAV, 51);
 		for (int i = 0; i < comps.length; i++) {
-			SigmaProfileGenerator s = null;
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
 			
 			try {
-				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-						"mopac/" + name + extension);												
+				s.parseFile("mopac/" + name + extension);												
 			} catch (Exception e) {
-				s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-						"mopac/" + name.replace('-','_') + extension);
+				s.parseFile("mopac/" + name.replace('-','_') + extension);
 			}
 			
-			this.charge = s.getChargeDensity();
-			this.VCOSMO[i] = s.getVolume();
-			this.sigma[i] = s.getSigmaProfile();
+			this.charge = comps[i].charge = s.getChargeDensity();
+			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
+			this.sigma[i] = comps[i].sigma = s.getSigmaProfile();
 		}
 		this.compseg = charge.length;
 		this.T = 300;

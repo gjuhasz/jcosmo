@@ -29,7 +29,12 @@ public class IDACExperiments {
 
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
+
+	private boolean printGammas = false;
 	
+	public void setPrintGammas(boolean printGammas) {
+		this.printGammas = printGammas;
+	}
 	public IDACExperiments(String filename, String modelClass, boolean leastSquares) throws Exception {
 		this.filename = filename;
 		this.modelClass = modelClass;
@@ -102,7 +107,13 @@ public class IDACExperiments {
 				}
 			}
 			
-			model.setComponents(comps);
+			try{
+				model.setComponents(comps);
+			}
+			catch (Exception e) {
+				System.err.println(e.toString());
+				continue;
+			}
 			model.setTemperature(T);
 			model.setComposition(z);
 			
@@ -114,7 +125,6 @@ public class IDACExperiments {
 	}
 	
 	public void calcDeviations() throws Exception{
-		
 		double z[] = new double[2];
 		double lnGamma[] = new double[2];
 		double T;
@@ -134,6 +144,11 @@ public class IDACExperiments {
 			
 			double lngammaInf = Math.log(gammaInf);
 			double rd = Math.abs(lngammaInf - lnGamma[0]);
+			
+			if(printGammas){
+				System.out.println(model.getComps()[0].name + '/' + model.getComps()[1].name
+						+ '\t' + gammaInf + '\t' + Math.exp(lnGamma[0]));
+			}
 			
 			AARD += rd;
 			++NP;
