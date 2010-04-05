@@ -3,15 +3,17 @@
 <project default="jcosmodist" basedir=".">
 	
  <property name="version" value="1.1.1" />
- 	
+ 
+ <!--
  <property name="launch4j.dir" location="/usr/local/share/java/launch4j" />
  <taskdef name="launch4j"
 	    classname="net.sf.launch4j.ant.Launch4jTask"
 	    classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
+	        -->
 	
  <target name="jcosmodist" >
- 	<launch4j configFile="dist/jcosmol4j.xml" />
+ 	<!-- <launch4j configFile="dist/jcosmol4j.xml" /> -->
  	
  	<delete file="jcosmo.jar"/>
  	<!-- TODO: uncompressed jar file because Derby becomes extremely slow if compressed -->
