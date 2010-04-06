@@ -119,7 +119,7 @@ public class COSMOSAC {
 	/**
 	 * @see #setComponents(COSMOSACCompound[])
 	 */
-	public COSMOSAC(int numberOfSegments){
+	COSMOSAC(int numberOfSegments){
 		this.nsegments = numberOfSegments;
 		
 		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
