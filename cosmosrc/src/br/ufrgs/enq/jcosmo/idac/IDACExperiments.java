@@ -29,6 +29,7 @@ public class IDACExperiments {
 
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
+	List<Boolean> valid = new ArrayList<Boolean>();
 
 	private boolean printGammas = false;
 	
@@ -47,6 +48,9 @@ public class IDACExperiments {
 	
 	public List<COSMOSAC> getModels() {
 		return models;
+	}
+	public List<Boolean> getValid() {
+		return valid;
 	}
 	public List<Double> getMeasures() {
 		return gammaInfs;
@@ -87,6 +91,7 @@ public class IDACExperiments {
 				continue;
 			}
 			
+			boolean valid = true;
 			COSMOSACCompound comps[] = new COSMOSACCompound[2];
 			if (modelClass == COSMOPAC.class.getName()){
 				comps[0] = db.getComp("water");
@@ -99,11 +104,11 @@ public class IDACExperiments {
 				comps[1] = db.getComp(compNames[1].replace(' ', '-'));
 				if(comps[0] == null){
 					System.err.println("Component " + compNames[0] + " not found, it will be ignored.");
-					continue;
+					valid = false;
 				}
 				if(comps[1] == null){
 					System.err.println("Component " + compNames[1] + " not found, it will be ignored.");
-					continue;
+					valid = false;
 				}
 			}
 			
@@ -112,14 +117,17 @@ public class IDACExperiments {
 			}
 			catch (Exception e) {
 				System.err.println(e.toString());
-				continue;
+				valid = false;
 			}
-			model.setTemperature(T);
-			model.setComposition(z);
+			if(valid){
+				model.setTemperature(T);
+				model.setComposition(z);
+			}
 			
 			models.add(model);
 			temperatures.add(T);
 			gammaInfs.add(gammaInf);
+			this.valid.add(valid);
 		}
 		reader.close();
 	}
@@ -134,9 +142,17 @@ public class IDACExperiments {
 		AARD = 0;
 		NP = 0;
 		for (int i = 0; i < models.size(); i++) {
+			boolean valid = this.valid.get(i);
 			COSMOSAC model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
+			
+			if(!valid){
+				if(printGammas){
+					System.out.println("ignored" + '\t' + gammaInf + '\t' + "-");
+				}
+				continue;
+			}
 			
 			model.setTemperature(T);
 			model.setComposition(z);
