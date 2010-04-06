@@ -123,9 +123,9 @@ public class SigmaProfileGenerator {
 		
 		switch (type) {
 		case GAMESS:
-			averageCharges2();
-//			simpleSorting();
-			normalSorting(SIGMANEW);
+			averageCharges();
+			simpleSorting();
+//			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
 			averageCharges();
