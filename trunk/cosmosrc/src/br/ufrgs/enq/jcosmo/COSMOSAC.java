@@ -84,7 +84,7 @@ public class COSMOSAC {
 	/** The number of compounds in the mixture */
 	int ncomps;
 	/** The number of independent segments to be considered by the model */ 
-	int nsegments = 51;
+	int nsegments;
 
 	/// Cavity volume for each substance
 	double [] VCOSMO;
