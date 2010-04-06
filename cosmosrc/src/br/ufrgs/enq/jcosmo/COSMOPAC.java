@@ -38,31 +38,23 @@ public class COSMOPAC extends COSMOSAC {
 		setResCorr(1);
 		setCHB(42700.7265672813);
 		setSigmaHB(0.0064);
-		setFpol(0.89);
+		setFpol(FPOL);
 		setIgnoreSG(false);
 		setAnorm(28.2);
 		setVnorm(66.69);		
 		
-		// IDAC with all systems but amines, COST:0.8571275046208601
-//		setResCorr(1.2842353414911);
-//		setCHB(34885.92041721593);
-//		setSigmaHB(0.006301647263400562);
-//		setFpol(0.6972135620369986);
+		// IDAC with all systems but amines, COST:
+//		setResCorr(1);
+//		setCHB(CHB);
+//		setSigmaHB(sigmaHB);
+//		setFpol(FPOL);
 //		setIgnoreSG(false);
-//		setAnorm(31.417236647369027);
-//		setVnorm(66.69);
-		
-		// only alcohol-water COST:0.7177266186444141
-		setResCorr(1);
-		setCHB(CHB);
-		setSigmaHB(sigmaHB);
-		setFpol(FPOL);
-		setIgnoreSG(false);
-		setAnorm(29);
-		setVnorm(VNORM);
+//		setAnorm(ANORM);
+//		setVnorm(VNORM);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
+		this.comps = comps;		
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];

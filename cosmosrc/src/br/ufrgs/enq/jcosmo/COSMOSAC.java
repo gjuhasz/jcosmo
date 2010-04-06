@@ -108,7 +108,7 @@ public class COSMOSAC {
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
 	private double averageACOSMO;
-	private COSMOSACCompound[] comps;
+	COSMOSACCompound[] comps;
 
 	/**
 	 * @see #setParameters(double[], double[], double[][])
