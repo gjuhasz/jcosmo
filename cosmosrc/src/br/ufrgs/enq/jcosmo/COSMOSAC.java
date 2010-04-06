@@ -70,6 +70,7 @@ public class COSMOSAC {
 	double sigmaHBUpper = 0.026;
 	double cHB = CHB;
 
+	private static double SIGMA_BOUND = 0.025;
 	boolean sigmaGaussian = false;
 	
 	double alphaPrime;
@@ -80,9 +81,10 @@ public class COSMOSAC {
 	protected double inv_RT;
 	protected double[] z;
 
-	// The number of components
+	/** The number of compounds in the mixture */
 	int ncomps;
-	int compseg;
+	/** The number of independent segments to be considered by the model */ 
+	int nsegments = 51;
 
 	/// Cavity volume for each substance
 	double [] VCOSMO;
@@ -94,7 +96,7 @@ public class COSMOSAC {
 
 	double [] PROFILE;
 
-	double [][] sigma;
+	double [][] area;
 	double [] charge;
 	double deltaW[][];
 	double deltaW_HB[][];
@@ -110,10 +112,16 @@ public class COSMOSAC {
 	private double averageACOSMO;
 	COSMOSACCompound[] comps;
 
-	/**
-	 * @see #setParameters(double[], double[], double[][])
-	 */
 	public COSMOSAC(){
+		this(51);
+	}
+	
+	/**
+	 * @see #setComponents(COSMOSACCompound[])
+	 */
+	public COSMOSAC(int numberOfSegments){
+		this.nsegments = numberOfSegments;
+		
 		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
 		setResCorr(1.1495842571017678);
 		setCHB(84309.60094136275);
@@ -142,7 +150,6 @@ public class COSMOSAC {
 		this.sigmaGaussian = sigmaGaussian;
 	}
 	
-
 	public double getAEff() {
 		return aEff;
 	}
@@ -179,59 +186,37 @@ public class COSMOSAC {
 	public double[] getMixtureSegmentGamma(){
 		return SEGGAMMA;
 	}
-
-	/**
-	 * Creates a new COSMO-SAC object given the cavity volumes and sigma profiles.
-	 * 
-	 * Multi-compound mixtures are supported.
-	 * 
-	 * If {@link #charge} has length nseg then {@link #sigma} should have dimension
-	 * of [ncomps][nseg], were ncomps is the number of components in mixture.
-	 * 
-	 * @param cavityVolume the cavity volume for each compound, length [ncomp]
-	 * @param charge the charge density, length [nseg]
-	 * @param sigma the scaled sigma profile, dimensions [ncomp][nseg]
-	 */
-	public void setParameters(double []cavityVolume, double []charge, double [][] sigma){
-		assert cavityVolume.length == sigma.length;
-
-		this.ncomps = cavityVolume.length;
-		this.compseg = charge.length;
-		this.VCOSMO = cavityVolume;
-		this.charge = charge;
-		this.sigma = sigma;
-
-		this.T = 300;
-
-		z = new double[ncomps];
-		for (int i = 0; i < ncomps; i++)
-			z[i] = 1.0/ncomps;
-
-		parametersChanged();
-	}
 	
 	/**
-	 * Creates a new COSMO-SAC object given the compounds.
+	 * Set the compound list for the model calculations.
 	 * 
-	 * The user can use either this function or {@link #setParameters(double[], double[], double[][])}.
-	 * Multi-compound mixtures are supported.
+	 * <p>This function modifies the compound charge and area to match
+	 * with the number of segments selected in the model.
 	 * 
 	 * @throws Exception 
 	 * 
 	 */
 	public void setComponents(COSMOSACCompound []comps) throws Exception{
-		
 		this.comps = comps;
 		this.ncomps = comps.length;
-		this.charge = comps[0].charge;
-		this.compseg = charge.length;
+		
+		this.charge = new double[nsegments];
+		double increment = (SIGMA_BOUND*2)/(nsegments-1);
+		for (int i = 0; i < nsegments; i++) {
+			charge[i] = -SIGMA_BOUND + increment*(double)i;
+		}
 
 		this.VCOSMO = new double[ncomps];		
-		this.sigma = new double[ncomps][];
+		this.area = new double[ncomps][nsegments];
 
 		for (int i = 0; i < comps.length; i++) {
 			this.VCOSMO[i] = comps[i].Vcosmo;
-			this.sigma[i] = comps[i].sigma;
+			this.area[i] = comps[i].area;
+			
+			// Sort the compound area and charge and overwrite the compound data
+//			simpleSorting(this.area[i], comps[i].charge, comps[i].area);
+//			comps[i].area = this.area[i];
+//			comps[i].charge = this.charge;
 		}
 
 		this.T = 300;
@@ -243,6 +228,42 @@ public class COSMOSAC {
 		parametersChanged();
 		setComposition(z);
 	}
+	
+	/**
+	 * Sorts a given sigma profile to match the model charge discretization.
+	 * 
+	 * @param sortedArea will contain the resulting sorted area
+	 * @param unsortedSigma the compound unsorted charge list
+	 * @param unsortedArea the unsorted area of each charge
+	 */
+	void simpleSorting(double sortedArea[], double unsortedSigma[], double[]unsortedArea){
+		double increment = (SIGMA_BOUND*2)/(double)(nsegments-1);
+		double unsortedIncrement = unsortedSigma[1]-unsortedSigma[0];
+
+		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
+		for (int J = 0; J < unsortedSigma.length; J++) {
+			// out of the bounds
+			if(unsortedSigma[J]<=-SIGMA_BOUND){
+				sortedArea[0] += unsortedArea[J]*unsortedIncrement/increment;
+				continue;
+			}
+			if(unsortedSigma[J]>=SIGMA_BOUND){
+				sortedArea[sortedArea.length-1] += unsortedArea[J]*unsortedIncrement/increment;
+				continue;
+			}
+			
+			int pos = (int)((unsortedSigma[J]-charge[0])/increment);
+			// Each point represents the center of an interval, so we distribute it
+			// in the two adjacent points
+			double unsortedStart = unsortedSigma[J]-unsortedIncrement/2;
+			double unsortedEnd = unsortedSigma[J]+unsortedIncrement/2;
+			double posEnd = charge[pos]+increment/2;
+			
+			sortedArea[pos]+= unsortedArea[J]/increment * Math.max(0, posEnd - unsortedStart);
+			sortedArea[pos+1]+= unsortedArea[J]/increment * Math.max(0, unsortedEnd - posEnd);
+		}
+	}
+
 	
 	public COSMOSACCompound[] getComps(){
 		return comps;
@@ -265,8 +286,8 @@ public class COSMOSAC {
 		
 		
 		double hbfactor = 1;
-		for (int m = 0; m < compseg; m++) {
-			for(int n = 0; n < compseg; n++) {
+		for (int m = 0; m < nsegments; m++) {
+			for(int n = 0; n < nsegments; n++) {
 
 				// pure expDeltaW
 				for (int i = 0; i < ncomps; i++) {
@@ -280,7 +301,7 @@ public class COSMOSAC {
 		
 		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent only)
 		for(int i=0; i<ncomps; ++i){
-			segSolver.solve(sigma[i], 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaWPure[i], TOLERANCE);
+			segSolver.solve(area[i], 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaWPure[i], TOLERANCE);
 		}
 	}
 	
@@ -301,10 +322,10 @@ public class COSMOSAC {
 		for (int i = 0; i < ncomps; i++) {
 			averageACOSMO += z[i]*ACOSMO[i];
 		}
-		for(int m=0; m<compseg; ++m){
+		for(int m=0; m<nsegments; ++m){
 			double numer = 0;
 			for (int i = 0; i < ncomps; i++) {
-				numer += z[i]*sigma[i][m]; 
+				numer += z[i]*area[i][m]; 
 			}
 			PROFILE[m] = numer/averageACOSMO;
 		}
@@ -328,14 +349,14 @@ public class COSMOSAC {
 		alphaPrime = fpol*alpha;
 
 		ACOSMO = new double[ncomps];
-		PROFILE = new double[compseg];
-		deltaW = new double[compseg][compseg];
-		deltaW_HB = new double[compseg][compseg];
-		expDeltaW = new double[compseg][compseg];
-		expDeltaWPure = new double[ncomps][compseg][compseg];
+		PROFILE = new double[nsegments];
+		deltaW = new double[nsegments][nsegments];
+		deltaW_HB = new double[nsegments][nsegments];
+		expDeltaW = new double[nsegments][nsegments];
+		expDeltaWPure = new double[ncomps][nsegments][nsegments];
 		
-		SEGGAMMA = new double[compseg];
-		SEGGAMMAPR = new double[ncomps][compseg];
+		SEGGAMMA = new double[nsegments];
+		SEGGAMMAPR = new double[ncomps][nsegments];
 //		segSolver = new SegmentSolverNewton();
 		segSolver = new SegmentSolverSimple();
 		
@@ -344,35 +365,46 @@ public class COSMOSAC {
 		li = new double[ncomps];
 		for(int i=0; i<ncomps; ++i){
 			ACOSMO[i] = 0;
-			for (int m = 0; m < sigma[i].length; m++) {
-				ACOSMO[i] += sigma[i][m];
+			for (int m = 0; m < area[i].length; m++) {
+				ACOSMO[i] += area[i][m];
 
 				// initialize all SEGGAMMAPR (reused between calculations)
 				SEGGAMMAPR[i][m] = 1.0;
 			}
 		}
-
+		// some more composition independent properties
+		for(int i=0; i<ncomps; ++i){
+			RNORM[i] = VCOSMO[i]/vnorm;
+			QNORM[i] = ACOSMO[i]/anorm;
+			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
+		}
+		
+		calculeDeltaW();
+	}
+	
+	protected void calculeDeltaW(){
 		double chargemn = 0;
-		for(int m=0; m<compseg; ++m){
+		for(int m=0; m<nsegments; ++m){
 			// initialize all SEGGAMMA (reused between calculations)
 			SEGGAMMA[m] = 1.0;
 
-			for(int n=0; n<compseg; ++n){
+			for(int n=0; n<nsegments; ++n){
 				int ACC = n, DON = m;
 				if(charge[m]>=charge[n]){
 					ACC = m;
 					DON = n;
 				}
 				chargemn = charge[m]+charge[n];
-				double sigmaHb2 = 2*sigmaHB*sigmaHB;
 				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
 				
 				// Hydrogen Bond effect:
 				double hb = 0.0;
-				if(sigmaGaussian)
+				if(sigmaGaussian){
+					double sigmaHb2 = 2*sigmaHB*sigmaHB;
 					hb =
 						(1-Math.exp(-charge[ACC]*charge[ACC]/sigmaHb2)) * Math.max(0.0, charge[ACC]) *
 						(1-Math.exp(-charge[DON]*charge[DON]/sigmaHb2)) * Math.min(0.0, charge[DON]);
+				}
 				else{
 					double probACC = 1, probDON = 1;
 					
@@ -411,13 +443,6 @@ public class COSMOSAC {
 
 				deltaW_HB[m][n] = cHB*hb;
 			}
-		}
-
-		// some more composition independent properties
-		for(int i=0; i<ncomps; ++i){
-			RNORM[i] = VCOSMO[i]/vnorm;
-			QNORM[i] = ACOSMO[i]/anorm;
-			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
 		}
 	}
 
@@ -482,12 +507,12 @@ public class COSMOSAC {
 
 			// CALCULATION OF GAMMAS
 			double lnGammaRestoration = 0.0;
-			for(int m=0; m<compseg; ++m){
+			for(int m=0; m<nsegments; ++m){
 //				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
 				double lnMixSeg = Math.log(SEGGAMMA[m]);
 				double lnMixPure = Math.log(SEGGAMMAPR[i][m]);
 				
-				lnGammaRestoration += (sigma[i][m]/aEff)*(lnMixSeg - lnMixPure);
+				lnGammaRestoration += (area[i][m]/aEff)*(lnMixSeg - lnMixPure);
 			}
 			lnGama[i+start] = resCorr*lnGammaRestoration + lnGammaSG;
 		}

@@ -30,22 +30,12 @@ public class DatabaseTest extends TestCase {
 		double T =330.15;
 
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1 = db.getComp("Methyl-Acetate");
-		COSMOSACCompound c2 = db.getComp("Water");
-
-		assertEquals(c1.charge.length, c1.sigma.length);
-		assertEquals(c1.sigma.length, c2.sigma.length);
-
-		double cavityVolume[] = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
+		COSMOSACCompound c[] = new COSMOSACCompound[2];
+		c[0] = db.getComp("Methyl-Acetate");
+		c[1] = db.getComp("Water");
 
 		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
 
@@ -75,22 +65,12 @@ public class DatabaseTest extends TestCase {
 		double T = 50 + 273.15;
 
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1 = db.getComp("chloroform");
-		COSMOSACCompound c2 = db.getComp("1,4-dioxane");
-
-		assertEquals(c1.charge.length, c1.sigma.length);
-		assertEquals(c1.sigma.length, c2.sigma.length);
-
-		double cavityVolume[] = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
+		COSMOSACCompound c[] = new COSMOSACCompound[2];
+		c[0] = db.getComp("chloroform");
+		c[1] = db.getComp("1,4-dioxane");
 
 		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
 
@@ -126,22 +106,12 @@ public class DatabaseTest extends TestCase {
 		double T = 50 + 273.15;
 
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1 = db.getComp("Methyl-Ethyl-Ketone");
-		COSMOSACCompound c2 = db.getComp("Toluene");
-
-		assertEquals(c1.charge.length, c1.sigma.length);
-		assertEquals(c1.sigma.length, c2.sigma.length);
-
-		double cavityVolume[] = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
+		COSMOSACCompound c[] = new COSMOSACCompound[2];
+		c[0] = db.getComp("Methyl-Ethyl-Ketone");
+		c[1] = db.getComp("Toluene");
 
 		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
 
@@ -172,22 +142,12 @@ public class DatabaseTest extends TestCase {
 		double T = 50 + 273.15;
 
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1 = db.getComp("Benzene");
-		COSMOSACCompound c2 = db.getComp("2,2,4-trimethylpentane");
-
-		assertEquals(c1.charge.length, c1.sigma.length);
-		assertEquals(c1.sigma.length, c2.sigma.length);
-
-		double cavityVolume[] = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
+		COSMOSACCompound c[] = new COSMOSACCompound[2];
+		c[0] = db.getComp("Benzene");
+		c[1] = db.getComp("2,2,4-trimethylpentane");
 
 		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
+		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
 

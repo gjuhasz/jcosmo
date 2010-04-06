@@ -125,13 +125,10 @@ public class SigmaProfileGenerator {
 		case GAMESS:
 			averageCharges();
 			simpleSorting();
-//			normalSorting(SIGMANEW);
 			break;
 		case MOPAC:
 			averageCharges();
 			simpleSorting();
-//			normalSorting(SIGMA);
-//			normalSorting(SIGMANEW);
 			break;
 		}
 	}
@@ -331,32 +328,11 @@ public class SigmaProfileGenerator {
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < SIGMANEW.length; J++) {
 			int TMP = (int)((SIGMANEW[J]-CHGDEN[0])/increment);
+			
+			// Each point represents the center of an interval, so we distribute it
+			// in the two adjacent points
 			SP[TMP]+= area[J]*(CHGDEN[TMP+1]-SIGMANEW[J])/increment;
 			SP[TMP+1]+= area[J]*(SIGMANEW[J]-CHGDEN[TMP])/increment;
-		}
-	}
-
-	void normalSorting(double [] SIGMANEW) throws MathException {
-
-		double stdDev = increment/3;
-
-//		stdDev = Math.sqrt(org.apache.commons.math.stat.StatUtils.variance(SIGMANEW));
-//		stdDev /= 6;
-
-		// BEGIN AVERAGING SURFACE CHARGES
-		for(int J=0; J<SIGMANEW.length; ++J){
-			double mean = SIGMANEW[J];
-			NormalDistribution dist = new NormalDistributionImpl(mean, stdDev);
-			double Ais = area[J];
-			double cumProb = 0;
-			for (int i = 0; i < SP.length; i++) {
-				double prob = 0;
-				if(Math.abs(CHGDEN[i]-mean)< 6*stdDev){
-					prob = dist.cumulativeProbability(CHGDEN[i]+increment/2);
-					SP[i] += (prob-cumProb)*Ais;
-					cumProb = prob;
-				}
-			}
 		}
 	}
 

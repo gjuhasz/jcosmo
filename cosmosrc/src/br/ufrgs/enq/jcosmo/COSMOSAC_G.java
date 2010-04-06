@@ -30,19 +30,22 @@ public class COSMOSAC_G extends COSMOSAC {
 	public String toString(){
 		return "COSMO-SAC(GAMESS)";
 	}
-	
+
+	public COSMOSAC_G(int numberOfSegments) {
+		super(numberOfSegments);
+	}
+
 	public COSMOSAC_G() {
-		// TODO: needs a reparametrization based on experiments (VLE, LLE, etc)!!
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];
-		this.sigma = new double[ncomps][];
+		this.area = new double[ncomps][];
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-				SigmaProfileGenerator.RAV, 51);
+				SigmaProfileGenerator.RAV, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
@@ -55,9 +58,8 @@ public class COSMOSAC_G extends COSMOSAC {
 			
 			this.charge = comps[i].charge = s.getChargeDensity();
 			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
-			this.sigma[i] = comps[i].sigma = s.getSigmaProfile();
+			this.area[i] = comps[i].area = s.getSigmaProfile();
 		}
-		this.compseg = charge.length;
 		this.T = 300;
 
 		z = new double[ncomps];

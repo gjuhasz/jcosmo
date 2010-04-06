@@ -62,7 +62,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
-import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -104,14 +103,13 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double [] lnGamma = new double[2];
 	COSMOSAC cosmosac;
 
-	@SuppressWarnings("deprecation")
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		
 		db = COSMOSACDataBase.getInstance();
-//		cosmosac = new COSMOSAC_G();
+//		cosmosac = new COSMOSAC_G(21);
 		cosmosac = new COSMOSAC();
 //		cosmosac = new COSMOPAC();
 		
@@ -334,13 +332,6 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 					"Error", JOptionPane.OK_OPTION);
 			return;
 		}
-		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
-		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
-		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
-		cosmosac.setResCorr(Double.parseDouble(resCorr.getText()));
-		cosmosac.setFpol(Double.parseDouble(fpol.getText()));
-		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
-		cosmosac.parametersChanged();
 
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
@@ -351,9 +342,16 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			e1.printStackTrace();
 			return;
 		}
-
 		if(comps[0] == null || comps[1] == null)
 			return;
+
+		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
+		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
+		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
+		cosmosac.setResCorr(Double.parseDouble(resCorr.getText()));
+		cosmosac.setFpol(Double.parseDouble(fpol.getText()));
+		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
+		cosmosac.parametersChanged();
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -406,8 +404,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		for(int j=0; j<n; ++j){
 			g1.add(comps[0].charge[j], Math.log(seggamma[0][j]) );	
 			g2.add(comps[1].charge[j], Math.log(seggamma[1][j]) );
-			g1s.add(comps[0].charge[j], comps[0].sigma[j]*(Math.log(seggamma[1][j])-Math.log(seggamma[0][j])) );	
-			g2s.add(comps[1].charge[j], comps[1].sigma[j]*(Math.log(seggamma[0][j])-Math.log(seggamma[1][j])) );
+			g1s.add(comps[0].charge[j], comps[0].area[j]*(Math.log(seggamma[1][j])-Math.log(seggamma[0][j])) );	
+			g2s.add(comps[1].charge[j], comps[1].area[j]*(Math.log(seggamma[0][j])-Math.log(seggamma[1][j])) );
 		}
 		dataset.addSeries(g1);
 		dataset.addSeries(g2);
@@ -451,7 +449,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		int num = listModel.getSize();
 		COSMOSACCompound[] c = new COSMOSACCompound[num];
-		double [][] sigma = new double[num][];
+		double [][] area = new double[num][];
 		double [][] charge = new double[num][];
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -478,14 +476,16 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			sigma[i] = c[i].sigma;			
+			area[i] = c[i].area;			
 			charge[i] = c[i].charge;
 
 			int n = charge[0].length;
 			XYSeries comp= new XYSeries(c[i].name);
 
-			for(int j=0; j<n; ++j){
-				comp.add(charge[i][j], sigma[i][j]);	
+			// charges represent the center of the segments
+			comp.add(charge[i][0], area[i][0]);
+			for(int j=1; j<n; ++j){
+				comp.add(charge[i][j]-(charge[i][j]-charge[i][j-1])/2, area[i][j]);
 			}
 
 			dataset.addSeries(comp);

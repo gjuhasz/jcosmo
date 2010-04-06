@@ -34,7 +34,7 @@ public class COSMOSACCompound {
 	public String name, formula, CAS, family, preOptTool;
 	public double Vcosmo, T, lnPvap;
 	public double []charge;
-	public double []sigma;
+	public double []area;
 	
 	public String toString(){
 		return name + ' ' + formula + ' ' + CAS;
