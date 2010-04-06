@@ -58,9 +58,9 @@ public class COSMOPAC extends COSMOSAC {
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];
-		this.sigma = new double[ncomps][];
+		this.area = new double[ncomps][];
 
-		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC);
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			String name = comps[i].name.replace(' ','_');
@@ -74,9 +74,8 @@ public class COSMOPAC extends COSMOSAC {
 			
 			this.charge = comps[i].charge = s.getChargeDensity();
 			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
-			this.sigma[i] = comps[i].sigma = s.getSigmaProfile();
+			this.area[i] = comps[i].area = s.getSigmaProfile();
 		}
-		this.compseg = charge.length;
 		this.T = 300;
 
 		z = new double[ncomps];

@@ -189,7 +189,7 @@ public class COSMOSACDataBase
 		
 		int chargelength = res.getInt(1);
 		c.charge = new double[chargelength];
-		c.sigma = new double[chargelength];
+		c.area = new double[chargelength];
 
 		query = "SELECT charge, sigma from SIGMAPROFILE where CompID = " + c.ID;
 		executeQuery(query);
@@ -204,7 +204,7 @@ public class COSMOSACDataBase
 		for (int i = 0; i < chargelength; i++) {
 			res.next();
 			c.charge[i] = res.getDouble(1);
-			c.sigma[i] = res.getDouble(2);
+			c.area[i] = res.getDouble(2);
 		}
 		return c;
 	}

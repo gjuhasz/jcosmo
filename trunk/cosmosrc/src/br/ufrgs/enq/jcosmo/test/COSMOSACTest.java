@@ -36,28 +36,20 @@ public class COSMOSACTest {
 
 		double T =330.15;
 		
+		COSMOSAC cosmosac = new COSMOSAC();
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c1;
-		COSMOSACCompound c2;
+		COSMOSACCompound c[] = new COSMOSACCompound[2];
 		try {
-			c1 = db.getComp("methyl-acetate");
-			c2 = db.getComp("water");
-		} catch (SQLException e) {
+			c[0] = db.getComp("methyl-acetate");
+			c[1] = db.getComp("water");
+			
+			cosmosac.setComponents(c);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
 		}
 
-		double[] cavityVolume = new double[2];
-		cavityVolume[0] = c1.Vcosmo;
-		cavityVolume[1] = c2.Vcosmo;
-
-		double [][] sigma = new double[2][];
-		sigma[0] = c1.sigma;
-		sigma[1] = c2.sigma;
-
-		COSMOSAC cosmosac = new COSMOSAC();
-		cosmosac.setParameters(cavityVolume, c1.charge, sigma);
 		
 		cosmosac.setTemperature(T);
 		
