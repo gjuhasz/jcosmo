@@ -102,6 +102,8 @@ public class SigmaProfileGenerator {
 	 * @throws Exception if there is a problem when reading the file
 	 */
 	public void parseFile(String fileName) throws Exception {
+		// reset the volume
+		volume = 0.0;
 		switch (type) {
 		case GAMESS:
 			readSegmentChargesGAMESS(fileName);
