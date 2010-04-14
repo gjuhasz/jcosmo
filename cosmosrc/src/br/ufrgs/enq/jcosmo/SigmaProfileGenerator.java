@@ -24,10 +24,6 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.Scanner;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.NormalDistribution;
-import org.apache.commons.math.distribution.NormalDistributionImpl;
-
 /**
  * Create the sigma profile based on GAMESS LOG or MOPAC COS file.
  * 
@@ -59,7 +55,8 @@ public class SigmaProfileGenerator {
 	
 	public enum FileType {
 		GAMESS,
-		MOPAC
+		MOPAC,
+		GAMESS_PCM,
 	};
 	
 	FileType type;
@@ -108,6 +105,9 @@ public class SigmaProfileGenerator {
 		case GAMESS:
 			readSegmentChargesGAMESS(fileName);
 			break;
+		case GAMESS_PCM:
+			readSegmentChargesGAMESS_PCM(fileName);
+			break;
 		case MOPAC:
 			readSegmentChargesMOPAC(fileName);
 			break;
@@ -125,7 +125,9 @@ public class SigmaProfileGenerator {
 		
 		switch (type) {
 		case GAMESS:
-			averageCharges();
+		case GAMESS_PCM:
+//			averageCharges();
+			averageCharges2();
 			simpleSorting();
 			break;
 		case MOPAC:
@@ -196,6 +198,80 @@ public class SigmaProfileGenerator {
 		}
 		input.close();
 	}
+
+	void readSegmentChargesGAMESS_PCM(String filename) throws Exception{
+
+		Scanner input = new Scanner(new File(filename));
+		input.useLocale(Locale.US);
+
+		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
+		// volume information on "VOLUME INSIDE CONSTS:"
+		int cosmoSegments = 0;
+		while(input.hasNext()){
+			if(cosmoSegments==0 && input.next().equals("TOTAL") && input.next().equals("NUMBER") &&
+					input.next().equals("OF") && input.next().equals("TESSERAE=")){
+				cosmoSegments = input.nextInt();
+				
+				// SURFACE AREA=    48.69984417(A**2)    CAVITY VOLUME=     30.55382014 (A**3)
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				volume = input.nextDouble();
+				
+				input.nextLine();
+				input.nextLine();
+				input.nextLine();
+				break;
+			}
+			input.nextLine();
+		}
+
+		if(cosmoSegments==0)
+			throw new Exception("File " + filename + " does not have SEGMENTS information");
+
+		x = new double[cosmoSegments];
+		y = new double[cosmoSegments];
+		z = new double[cosmoSegments];
+		area = new double[cosmoSegments];
+		SIGMA = new double[cosmoSegments];
+		atom = new int[cosmoSegments];
+
+		
+		// first read the area information
+		for (int i = 0; i < cosmoSegments; i++) {
+			input.next(); // TESSERA
+			input.next(); // SFERA
+			area[i] = input.nextDouble()*AU_ANGSTRON*AU_ANGSTRON;
+			x[i] = input.nextDouble()*AU_ANGSTRON;
+			y[i] = input.nextDouble()*AU_ANGSTRON;
+			z[i] = input.nextDouble()*AU_ANGSTRON;
+
+			input.nextLine();
+		}
+		
+		
+		// then read the charge information
+		while(input.hasNext()){
+			if(input.next().equals("SFERA,TESSERA,X,Y,Z,CARICA")){
+				break;
+			}
+		}
+		for (int i = 0; i < cosmoSegments; i++) {
+			input.next(); // TESSERA
+			input.next(); // SFERA
+			input.next(); // x
+			input.next(); // y
+			input.next(); // z
+			SIGMA[i] = input.nextDouble()/area[i];
+
+			input.nextLine();
+		}
+		
+		input.close();
+	}
+
 	
 	void readSegmentChargesMOPAC(String filename) throws Exception{
 
