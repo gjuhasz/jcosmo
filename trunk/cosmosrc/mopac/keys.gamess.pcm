@@ -1,0 +1,15 @@
+ $contrl scftyp=rhf $end
+
+! One of the following
+ $contrl dfttyp=b3lyp $end
+! $contrl mplevl=2 $end
+
+ $system timlim=10000 mwords=20 $end
+ $SCF DIRSCF=.TRUE. $end
+ $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
+
+! One of the following
+ $guess guess=huckel $end
+
+! Run PCM on already optimized geometry
+ $pcm    solvnt=water eps=999.0 RSOLV=1.2 ifield=1 iprint=1 $end

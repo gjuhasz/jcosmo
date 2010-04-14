@@ -17,6 +17,8 @@ env.Append(BUILDERS = {'Mopac' : mopac})
 # Gamess stuff
 babelgam = Builder(action = 'babel -h $SOURCE -o gamin -xf keys.gamess $TARGET',
                      suffix = '.inp', single_source=True)
+babelgampcm = Builder(action = 'babel -h $SOURCE -o gamin -xf keys.gamess.pcm $TARGET',
+                     suffix = '.pcm.inp', single_source=True)
 # Gamess also produces a .dat file
 def gamess_targets(target, source, env):
            target.append('$HOME/src/gamess07/$TARGET.dat')
@@ -24,6 +26,7 @@ def gamess_targets(target, source, env):
 gamess = Builder(action = os.environ['HOME'] + '/src/gamess07/rungms $SOURCE > $TARGET', suffix = '.gout',
 	single_source=True) # , emitter = gamess_targets)
 env.Append(BUILDERS = {'BabelGam' : babelgam})
+env.Append(BUILDERS = {'BabelGamPCM' : babelgampcm})
 env.Append(BUILDERS = {'Gamess' : gamess})
 
 # Build all files for Mopac
@@ -37,6 +40,7 @@ env.Default('mopac')
 # Delete all DAT files, otherwise gamess will stop
 delAction = Delete(Glob(os.environ['HOME'] + '/src/gamess07/tmp/*.dat'))
 Execute(delAction)
+
 # Convert mol files to gamess input
 inps = env.BabelGam(Glob('*.mol'))
 env.Depends(inps, 'keys.gamess')
@@ -45,4 +49,11 @@ env.Depends(inps, 'keys.gamess')
 gamessBuild = env.Gamess(inps)
 Alias('gamess', gamessBuild)
 
+# Convert mol files to gamess input
+inps = env.BabelGamPCM(Glob('*.mol'))
+env.Depends(inps, 'keys.gamess.pcm')
+# env.Depends(inps, delAction)
+# process files with gamess
+gamessBuild = env.Gamess(inps)
+Alias('gamesspcm', gamessBuild)
 
