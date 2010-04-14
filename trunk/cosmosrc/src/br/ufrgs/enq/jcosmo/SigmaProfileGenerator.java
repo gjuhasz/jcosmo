@@ -29,8 +29,6 @@ import java.util.Scanner;
  * 
  * <p>This class will extract the segments information from the file
  * to construct the sigma profile as needed by {@link COSMOSAC}.
- * The log file can be passed directly to the constructor, it will look for the
- * segment information.
  * 
  * <p>This code is based on the FORTRAN code Sigma-average available at
  * http://www.design.che.vt.edu/COSMO/. 
@@ -46,8 +44,8 @@ public class SigmaProfileGenerator {
 	protected static final double AU_ANGSTRON = 0.529177249;
 
 	int[] atom,elem;
-	double[] x, y, z, area, SIGMA, SIGMANEW;
-	double SP[], CHGDEN[];
+	double[] x, y, z, area, SIGMA, sigmaAveraged;
+	double sortedArea[], CHGDEN[];
 	
 	double increment;
 	double volume;
@@ -115,11 +113,11 @@ public class SigmaProfileGenerator {
 		
 		increment = -(CHARGE_LOWER*2)/(double)(sigmaPoints-1);
 		// SETTING CHGDEN MATRIX
-		SP = new double[sigmaPoints];
+		sortedArea = new double[sigmaPoints];
 		CHGDEN = new double[sigmaPoints];
 
 		for (int J = 0; J < sigmaPoints; J++) {
-			SP[J]=0.0;
+			sortedArea[J]=0.0;
 			CHGDEN[J] = CHARGE_LOWER + increment*(double)J;
 		}
 		
@@ -138,15 +136,14 @@ public class SigmaProfileGenerator {
 	}
 
 	/**
-	 * @return the averaged sigma profile.
+	 * @return the averaged and sorted area as a function of the charge density (sigma profile).
 	 */
-	public double[] getSigmaProfile(){
-		return SP;
+	public double[] getSortedArea(){
+		return sortedArea;
 	}
 
 	/**
-	 * The charge density from 
-	 * @return
+	 * @return the charge density
 	 */
 	public double[] getChargeDensity(){
 		return CHGDEN;
@@ -333,7 +330,7 @@ public class SigmaProfileGenerator {
 
 // from Mullins, Liu, Ghaderi, Fast, 2008
 	void averageCharges() {
-		SIGMANEW = new double[x.length];
+		sigmaAveraged = new double[x.length];
 
 		double RAV2 = rav*rav;
 
@@ -364,14 +361,14 @@ public class SigmaProfileGenerator {
 //				num += SIGMA[K]*(RADK2 * REFF2)/(RADK2 + REFF2)*exp;
 //				den += (RADK2*REFF2)/(RADK2+REFF2)*exp;
 			}
-			SIGMANEW[J] = num/den;
+			sigmaAveraged[J] = num/den;
 		}
 	}
 	
 
 // from Wang, Sandler, 2007 - using Aeff = 7.25
 	void averageCharges2() {
-		SIGMANEW = new double[x.length];
+		sigmaAveraged = new double[x.length];
 		
 		double Fdecay = 3.57;
 		double Reff = rav;
@@ -398,19 +395,19 @@ public class SigmaProfileGenerator {
 				num += SIGMA[K]*temp;
 				den += temp;
 			}
-			SIGMANEW[J] = num/den;
+			sigmaAveraged[J] = num/den;
 		}
 	}
 	
 	void simpleSorting(){
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
-		for (int J = 0; J < SIGMANEW.length; J++) {
-			int TMP = (int)((SIGMANEW[J]-CHGDEN[0])/increment);
+		for (int J = 0; J < sigmaAveraged.length; J++) {
+			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
 			
 			// Each point represents the center of an interval, so we distribute it
 			// in the two adjacent points
-			SP[TMP]+= area[J]*(CHGDEN[TMP+1]-SIGMANEW[J])/increment;
-			SP[TMP+1]+= area[J]*(SIGMANEW[J]-CHGDEN[TMP])/increment;
+			sortedArea[TMP]+= area[J]*(CHGDEN[TMP+1]-sigmaAveraged[J])/increment;
+			sortedArea[TMP+1]+= area[J]*(sigmaAveraged[J]-CHGDEN[TMP])/increment;
 		}
 	}
 
@@ -420,8 +417,8 @@ public class SigmaProfileGenerator {
 	 */
 	public void printProfile(PrintStream out){
 		out.println("Sigma\tP(Sigma)");
-		for (int i = 0; i < SP.length; i++) {
-			out.println(CHGDEN[i] + "\t" + SP[i]);
+		for (int i = 0; i < sortedArea.length; i++) {
+			out.println(CHGDEN[i] + "\t" + sortedArea[i]);
 		}
 	}
 	
@@ -432,16 +429,11 @@ public class SigmaProfileGenerator {
 		return volume;
 	}
 	
-	// for SigmaH.java
 	public int[] getAtom() {
 		return atom;
 	}
 
 	public int[] getElem() {
 		return elem;
-	}
-
-	public double[] getSIGMA() {
-		return SIGMA;
 	}
 }

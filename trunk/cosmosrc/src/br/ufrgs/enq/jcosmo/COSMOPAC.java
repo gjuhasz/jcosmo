@@ -19,7 +19,6 @@
 
 package br.ufrgs.enq.jcosmo;
 
-import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
 
 
 /**
@@ -34,27 +33,28 @@ public class COSMOPAC extends COSMOSAC {
 	}
 	
 	public COSMOPAC() {
-		// article results
-		setResCorr(1);
-		setCHB(42700.7265672813);
-		setSigmaHB(0.0064);
-		setFpol(FPOL);
-		setIgnoreSG(false);
-		setAnorm(28.2);
-		setVnorm(66.69);		
-		
-		// IDAC with all systems but amines, COST:
+//		// article results
 //		setResCorr(1);
-//		setCHB(CHB);
-//		setSigmaHB(sigmaHB);
+//		setCHB(42700.7265672813);
+//		setSigmaHB(0.0064);
 //		setFpol(FPOL);
 //		setIgnoreSG(false);
-//		setAnorm(ANORM);
-//		setVnorm(VNORM);
+//		setAnorm(28.2);
+//		setVnorm(66.69);
+//		setAEff(7.5);
+		
+		// IDAC without amines, ketones, carb. ac., fixed fpol, COST:0.8458963845820218
+		setResCorr(1.3098268782036486);
+		setCHB(21364.2271780698);
+		setSigmaHB(0.004986596249972728);
+		setFpol(0.6917);
+		setIgnoreSG(false);
+		setAnorm(33.62478235458102);
+		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
-		this.comps = comps;		
+		this.comps = comps;
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];
@@ -72,9 +72,11 @@ public class COSMOPAC extends COSMOSAC {
 				s.parseFile("mopac/" + name.replace('-','_') + extension);
 			}
 			
-			this.charge = comps[i].charge = s.getChargeDensity();
+			comps[i].charge = s.getChargeDensity();
 			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
-			this.area[i] = comps[i].area = s.getSigmaProfile();
+			this.area[i] = comps[i].area = s.getSortedArea();
+			
+//			s.printProfile(System.out);
 		}
 		this.T = 300;
 

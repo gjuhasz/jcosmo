@@ -56,9 +56,9 @@ public class COSMOSAC_G extends COSMOSAC {
 				s.parseFile("mopac/" + name.replace('-','_') + extension);
 			}
 			
-			this.charge = comps[i].charge = s.getChargeDensity();
+			comps[i].charge = s.getChargeDensity();
 			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
-			this.area[i] = comps[i].area = s.getSigmaProfile();
+			this.area[i] = comps[i].area = s.getSortedArea();
 		}
 		this.T = 300;
 
