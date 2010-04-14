@@ -19,6 +19,8 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.io.PrintStream;
+
 
 /**
  * This class is basically a structure which holds compound data.
@@ -38,5 +40,16 @@ public class COSMOSACCompound {
 	
 	public String toString(){
 		return name + ' ' + formula + ' ' + CAS;
+	}
+	
+	/**
+	 * Prints the sigma profile to the given print stream
+	 * @param out the print stream where to print to
+	 */
+	public void printProfile(PrintStream out){
+		out.println("Sigma\tP(Sigma)");
+		for (int i = 0; i < area.length; i++) {
+			out.println(charge[i] + "\t" + area[i]);
+		}
 	}
 }

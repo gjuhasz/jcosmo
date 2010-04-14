@@ -59,6 +59,7 @@ import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
@@ -109,9 +110,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 		
 		db = COSMOSACDataBase.getInstance();
-//		cosmosac = new COSMOSAC_G(21);
-		cosmosac = new COSMOSAC();
-//		cosmosac = new COSMOPAC();
+//		cosmosac = new COSMOSAC_G();
+//		cosmosac = new COSMOSAC();
+		cosmosac = new COSMOPAC();
 		
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);

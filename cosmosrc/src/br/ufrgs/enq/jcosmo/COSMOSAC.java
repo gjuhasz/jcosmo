@@ -121,28 +121,52 @@ public class COSMOSAC {
 	 */
 	COSMOSAC(int numberOfSegments){
 		this.nsegments = numberOfSegments;
+		this.charge = new double[nsegments];
+		double increment = (SIGMA_BOUND*2)/(nsegments-1);
+		for (int i = 0; i < nsegments; i++) {
+			charge[i] = -SIGMA_BOUND + increment*(double)i;
+		}
 		
-		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
-		setResCorr(1.1495842571017678);
-		setCHB(84309.60094136275);
-		setSigmaHB(0.0071967046136033035);
-		setFpol(0.5448510600327106);
-		setIgnoreSG(false);
+//		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
+//		setResCorr(1.1495842571017678);
+//		setCHB(84309.60094136275);
+//		setSigmaHB(0.0071967046136033035);
+//		setFpol(0.5448510600327106);
+//		setIgnoreSG(false);
+//		
+//		// IDAC COST:0.3835742283036457, CUTOFF HB, all available IDAC without water as solute and amines
+//		setResCorr(1.1280385832644837);
+//		setCHB(84514.517941592);
+//		setSigmaHB(0.00806375458669691);
+//		setFpol(0.6123714287684722);
+//		setIgnoreSG(false);
+//		
+//		// IDAC COST:0.5022846030794819 NP:623, CUTOFF HB, all available IDAC but amines
+//		setResCorr(1.1466116315959618);
+//		setCHB(37236.75882313268);
+//		setSigmaHB(0.0031696732302331646);
+//		setFpol(0.030186686524868365);
+//		setIgnoreSG(false);
+//		setAnorm(68.28177228851187);
+//		setVnorm(66.69);
+//		setFpol(FPOL);
 		
-		// IDAC COST:0.3835742283036457, CUTOFF HB, all available IDAC without water as solute and amines
-		setResCorr(1.1280385832644837);
-		setCHB(84514.517941592);
-		setSigmaHB(0.00806375458669691);
-		setFpol(0.6123714287684722);
+		// IDAC COST:0.572460842572617 NP:623, CUTOFF HB, without resCorr all available IDAC but amines
+//		setResCorr(1);
+//		setCHB(37236.75882313268);
+//		setSigmaHB(0.0031696732302331646);
+//		setFpol(0.030186686524868365);
+//		setIgnoreSG(false);
+//		setAnorm(68.28177228851187);
+//		setVnorm(66.69);
+
+		// IDAC COST:0.5449980847647419 NP:623, CUTOFF HB, without fpol and all IDAC but amines, ketones, carbox., etc.
+		setResCorr(1.1166225104520564);
+		setCHB(25580.016958492393);
+		setSigmaHB(0.005949735966583021);
+		setFpol(0.6917);
 		setIgnoreSG(false);
-		
-		// IDAC COST:0.4678206879613273, CUTOFF HB, all available IDAC without amines
-		setResCorr(1.1005080125594833);
-		setCHB(28264.09497378838);
-		setSigmaHB(0.003704052715633107);
-		setFpol(0.36276856497307225);
-		setIgnoreSG(false);
-		setAnorm(59.294986026637545);
+		setAnorm(80.82815711911084);
 		setVnorm(66.69);
 	}
 
@@ -200,12 +224,6 @@ public class COSMOSAC {
 		this.comps = comps;
 		this.ncomps = comps.length;
 		
-		this.charge = new double[nsegments];
-		double increment = (SIGMA_BOUND*2)/(nsegments-1);
-		for (int i = 0; i < nsegments; i++) {
-			charge[i] = -SIGMA_BOUND + increment*(double)i;
-		}
-
 		this.VCOSMO = new double[ncomps];		
 		this.area = new double[ncomps][nsegments];
 
@@ -286,6 +304,7 @@ public class COSMOSAC {
 		
 		
 		double hbfactor = 1;
+//		System.out.println("expDeltaW_RT");
 		for (int m = 0; m < nsegments; m++) {
 			for(int n = 0; n < nsegments; n++) {
 
@@ -296,6 +315,8 @@ public class COSMOSAC {
 				
 				// mixture expDeltaW
 				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+				
+//				System.out.println(expDeltaW[m][n]);
 			}
 		}
 		

@@ -148,9 +148,9 @@ public class IDACExperiments {
 			double gammaInf = gammaInfs.get(i);
 			
 			if(!valid){
-				if(printGammas){
-					System.out.println("ignored" + '\t' + gammaInf + '\t' + "-");
-				}
+//				if(printGammas){
+//					System.out.println("ignored" + ',' + gammaInf + ',' + "-");
+//				}
 				continue;
 			}
 			
@@ -162,8 +162,9 @@ public class IDACExperiments {
 			double rd = Math.abs(lngammaInf - lnGamma[0]);
 			
 			if(printGammas){
-				System.out.println(model.getComps()[0].name + '/' + model.getComps()[1].name
-						+ '\t' + gammaInf + '\t' + Math.exp(lnGamma[0]));
+				System.out.println(
+//						model.getComps()[0].name + '/' + model.getComps()[1].name + ',' +
+						gammaInf + "," + Math.exp(lnGamma[0]));
 			}
 			
 			AARD += rd;
