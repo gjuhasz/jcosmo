@@ -261,7 +261,9 @@ public class SigmaProfileGenerator {
 			input.next(); // x
 			input.next(); // y
 			input.next(); // z
-			SIGMA[i] = input.nextDouble()/area[i];
+			SIGMA[i] = input.nextDouble();
+			if(area[i]>0.0)
+				SIGMA[i] /= area[i];
 
 			input.nextLine();
 		}

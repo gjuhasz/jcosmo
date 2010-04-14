@@ -63,6 +63,7 @@ import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.PCMSAC;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -111,8 +112,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		
 		db = COSMOSACDataBase.getInstance();
 //		cosmosac = new COSMOSAC_G();
-//		cosmosac = new COSMOSAC();
-		cosmosac = new COSMOPAC();
+		cosmosac = new COSMOSAC();
+//		cosmosac = new COSMOPAC();
+//		cosmosac = new PCMSAC();
 		
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);
