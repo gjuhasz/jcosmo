@@ -16,7 +16,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -154,10 +153,13 @@ public class IDACDiagonal extends JFrame {
 	}
 	
 	public void showPlot(){
-				
+	
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
 		XYPlot plot;
 		JFreeChart chart = ChartFactory.createXYLineChart(null, 
-				"Logarithm of Experimental IDAC", "Logarithm of Model IDAC", null, PlotOrientation.VERTICAL, true, true, false);
+				"Logarithm of Experimental IDAC", "Logarithm of Model IDAC", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 		plot = (XYPlot) chart.getPlot();		
 		plot.getDomainAxis().setRange(new Range(-2, 26));
 		plot.getRangeAxis().setRange(new Range(-2, 26));
@@ -165,49 +167,37 @@ public class IDACDiagonal extends JFrame {
 		plot.setBackgroundPaint(Color.black);
 	
 		XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plot.getRenderer();
-		XYSeriesCollection[] dataset = new XYSeriesCollection [points.size()];
 		int i;
 		for(i=0; i<points.size(); i++){
-			dataset[i] = new XYSeriesCollection();
-			dataset[i].addSeries(points.get(i));
-			plot.setDataset(i, dataset[i]);
-
+			dataset.addSeries(points.get(i));
 			r.setSeriesLinesVisible(i, false);
 			r.setSeriesShapesVisible(i, true);
 		}
 		
-		XYSeriesCollection dataset2 = new XYSeriesCollection();
-		XYSeries diag = new XYSeries(NP);
-		diag.add(-2, -2);
-		diag.add(26, 26);
-		dataset2.addSeries(diag);
-		
-		XYSeriesCollection dataset3 = new XYSeriesCollection();
-		XYSeries erroPos = new XYSeries("-1 ln unit");
-		erroPos.add(-2, -1);
-		erroPos.add(26, 27);
-		dataset3.addSeries(erroPos);
-		
-		XYSeriesCollection dataset4 = new XYSeriesCollection();
-		XYSeries erroNeg = new XYSeries("+1 ln unit");
-		erroNeg.add(-2, -3);
-		erroNeg.add(26, 25);
-		dataset4.addSeries(erroNeg);
-		
-		plot.setDataset(i+1, dataset2);
-		plot.setDataset(i+2, dataset3);
-		plot.setDataset(i+3, dataset4);
-		
 		BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
 				1.0f, new float[] { 10.0f, 6.0f }, 0.0f);
 		
-		r.setSeriesStroke(i+1, dashed);
-		r.setSeriesStroke(i+2, dashed);
-		r.setSeriesStroke(i+3, dashed);
-		r.setSeriesLinesVisible(i+1, true);
-		r.setSeriesLinesVisible(i+2, true);
-		r.setSeriesLinesVisible(i+3, true);
-				
+		XYSeries diag = new XYSeries(NP);
+		diag.add(-2, -2);
+		diag.add(26, 26);
+		dataset.addSeries(diag);
+		r.setSeriesStroke(i, dashed);
+		r.setSeriesLinesVisible(i++, true);
+		
+		XYSeries erroPos = new XYSeries("-1 ln unit");
+		erroPos.add(-2, -1);
+		erroPos.add(26, 27);
+		dataset.addSeries(erroPos);
+		r.setSeriesStroke(i, dashed);
+		r.setSeriesLinesVisible(i++, true);
+		
+		XYSeries erroNeg = new XYSeries("+1 ln unit");
+		erroNeg.add(-2, -3);
+		erroNeg.add(26, 25);
+		dataset.addSeries(erroNeg);
+		r.setSeriesStroke(i, dashed);
+		r.setSeriesLinesVisible(i++, true);
+		
 		ChartPanel chartPanel = new ChartPanel(chart);
 		JPanel jp = new JPanel(new BorderLayout());
 		jp.add(chartPanel);
