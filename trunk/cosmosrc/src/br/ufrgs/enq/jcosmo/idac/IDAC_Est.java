@@ -105,7 +105,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		int i=0;
 		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
 
-		pars[i++] = cosmo.getResCorr();
+		pars[i++] = cosmo.getBeta();
 //		pars[i++] = cosmo.getFpol();
 		pars[i++] = cosmo.getCHB();
 		pars[i++] = cosmo.getSigmaHB();
@@ -126,7 +126,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				COSMOSAC cosmo = exp.getModels().get(j);
 				
 				int i=0;
-				cosmo.setResCorr(pars[i++]);
+				cosmo.setBeta(pars[i++]);
 //				cosmo.setFpol(pars[i++]);
 				cosmo.setCHB(pars[i++]);
 				cosmo.setSigmaHB(pars[i++]);
@@ -179,7 +179,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		
 		// print a model friend version of the solution
 		COSMOSAC cosmo = est.experiments.get(0).getModels().get(0);
-		System.out.println("setResCorr(" + cosmo.getResCorr() + ");");
+		System.out.println("setResCorr(" + cosmo.getBeta() + ");");
 		System.out.println("setCHB(" + cosmo.getCHB() + ");");
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
@@ -231,7 +231,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		System.out.println();
 		
 		// print a model friend version of the solution
-		System.out.println("setResCorr(" + cosmo.getResCorr() + ");");
+		System.out.println("setResCorr(" + cosmo.getBeta() + ");");
 		System.out.println("setCHB(" + cosmo.getCHB() + ");");
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");

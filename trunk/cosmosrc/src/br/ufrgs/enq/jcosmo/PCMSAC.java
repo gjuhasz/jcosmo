@@ -33,9 +33,13 @@ public class PCMSAC extends COSMOSAC {
 
 	public PCMSAC(int numberOfSegments) {
 		super(numberOfSegments);
+		
+		setBeta(1.0);
+		setSigmaHB(0.010);
 	}
 
 	public PCMSAC() {
+		this(51);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

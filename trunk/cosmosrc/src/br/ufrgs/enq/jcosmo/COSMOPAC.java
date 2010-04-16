@@ -44,7 +44,7 @@ public class COSMOPAC extends COSMOSAC {
 //		setAEff(7.5);
 		
 		// IDAC without amines, ketones, carb. ac., fixed fpol, COST:0.8458963845820218
-		setResCorr(1.3098268782036486);
+		setBeta(1.3098268782036486);
 		setCHB(21364.2271780698);
 		setSigmaHB(0.004986596249972728);
 		setFpol(0.6917);

@@ -49,7 +49,7 @@ public class COSMOSAC {
 	
 	double aEff = AEFF;
 	double fpol = FPOL;
-	double resCorr = 1;
+	double beta = 1;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
@@ -116,6 +116,10 @@ public class COSMOSAC {
 		this(51);
 	}
 	
+	public String toString(){
+		return "COSMO-SAC(DMol3)";
+	}
+	
 	/**
 	 * @see #setComponents(COSMOSACCompound[])
 	 */
@@ -161,7 +165,7 @@ public class COSMOSAC {
 //		setVnorm(66.69);
 
 		// IDAC COST:0.5449980847647419 NP:623, CUTOFF HB, without fpol and all IDAC but amines, ketones, carbox., etc.
-		setResCorr(1.1166225104520564);
+		setBeta(1.1166225104520564);
 		setCHB(25580.016958492393);
 		setSigmaHB(0.005949735966583021);
 		setFpol(0.6917);
@@ -535,7 +539,7 @@ public class COSMOSAC {
 				
 				lnGammaRestoration += (area[i][m]/aEff)*(lnMixSeg - lnMixPure);
 			}
-			lnGama[i+start] = resCorr*lnGammaRestoration + lnGammaSG;
+			lnGama[i+start] = beta*lnGammaRestoration + lnGammaSG;
 		}
 	}
 
@@ -603,10 +607,10 @@ public class COSMOSAC {
 		this.fpol = fpol;
 	}
 	
-	public double getResCorr() {
-		return resCorr;
+	public double getBeta() {
+		return beta;
 	}
-	public void setResCorr(double resCorr) {
-		this.resCorr = resCorr;
+	public void setBeta(double beta) {
+		this.beta = beta;
 	}
 }
