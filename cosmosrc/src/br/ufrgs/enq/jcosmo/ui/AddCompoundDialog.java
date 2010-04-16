@@ -53,7 +53,7 @@ import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
  * @author renan, rafael
  *
  */
-public class AddClass extends JDialog {
+public class AddCompoundDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	JTextField componente;
@@ -63,7 +63,7 @@ public class AddClass extends JDialog {
 
 	private COSMOSACDialog dlg;
 
-	public AddClass(COSMOSACDialog parent) {
+	public AddCompoundDialog(COSMOSACDialog parent) {
 		super(parent, "Add compound...", true);
 		this.dlg = parent;
 		setLayout(new BorderLayout());
@@ -157,7 +157,7 @@ public class AddClass extends JDialog {
 				e1.printStackTrace();
 			}			
 			if (listModel.getSize()==0){
-				JOptionPane.showMessageDialog(AddClass.this, "No results.",
+				JOptionPane.showMessageDialog(AddCompoundDialog.this, "No results.",
 						"Error", JOptionPane.OK_OPTION);
 				okButton.setEnabled(false);
 				return;

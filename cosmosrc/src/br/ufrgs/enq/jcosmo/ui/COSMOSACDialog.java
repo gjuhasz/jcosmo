@@ -35,6 +35,7 @@ import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -47,6 +48,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -63,6 +65,7 @@ import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 
 /**
@@ -77,7 +80,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	private static final String ABOUT = "about";
 	
 	private JTextField temperature;
-	private JTextField sigmaHB, sigmaHBUpper, chargeHB, resCorr, fpol, anorm;
+	private JTextField sigmaHB, sigmaHBUpper, chargeHB, beta, fpol, anorm;
+	private JCheckBox ignoreSGButton;
 
 	COSMOSACDataBase db;
 
@@ -103,7 +107,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	double cavityVolume[] = new double[2];
 	double [] z = new double[2];
 	double [] lnGamma = new double[2];
-	COSMOSAC cosmosac;
+	
+	JComboBox modelBox;
 
 	public COSMOSACDialog() {
 		super("JCOSMO Simple");
@@ -111,10 +116,14 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 		
 		db = COSMOSACDataBase.getInstance();
-//		cosmosac = new COSMOSAC_G();
-		cosmosac = new COSMOSAC();
-//		cosmosac = new COSMOPAC();
-//		cosmosac = new PCMSAC();
+		
+		COSMOSAC models[] = new COSMOSAC[4];
+		models[0] = new COSMOSAC();
+		models[1] = new COSMOPAC();
+		models[2] = new COSMOSAC_G();
+		models[3] = new PCMSAC();
+		modelBox = new JComboBox(models);
+		modelBox.addActionListener(this);
 		
 		JPanel north = new JPanel(new GridLayout(0,2));
 		add(north, BorderLayout.NORTH);
@@ -156,19 +165,20 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		list = new JList(listModel);
 		list.setBorder(BorderFactory.createTitledBorder("compounds"));
 		list.setVisibleRowCount(2);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(list);		
 
 		JButton addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AddClass(COSMOSACDialog.this);
+				new AddCompoundDialog(COSMOSACDialog.this);
 			}
 		});
 
 		removeButton = new JButton("Remove");
-		removeButton.addActionListener((ActionListener) new Remove());
+		removeButton.addActionListener(this);
 		visibRemove(false);
-
+		
 		JButton calcButton = new JButton("Calculate");
 		calcButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -184,18 +194,14 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			}
 		});
 
-		JCheckBox ignoreSGButton = new JCheckBox("Ignore SG");
+		ignoreSGButton = new JCheckBox("Ignore SG");
 		ignoreSGButton.setToolTipText("Toogles the ignore flag for the Staverman-Guggenheim term");
-		ignoreSGButton.setSelected(cosmosac.isIgnoreSG());
-		ignoreSGButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cosmosac.setIgnoreSG(((JCheckBox)e.getSource()).isSelected());
-			}
-		});
+		ignoreSGButton.addActionListener(this);
 
 		JPanel but = new JPanel(new GridLayout(0,1));
 		but.add(addButton, BorderLayout.EAST);
 		but.add(removeButton, BorderLayout.EAST);
+		but.add(modelBox);
 		north.add(listScrollPane);
 		north.add(but);
 		
@@ -205,24 +211,19 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		northAba1.add(new JLabel("Sigma HB"));
 		northAba1.add(sigmaHB = new JTextField(10));
-		sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
 
-		northAba1.add(new JLabel("Sigma HB Upper"));
-		northAba1.add(sigmaHBUpper = new JTextField(10));
-		sigmaHBUpper.setText(Double.toString(cosmosac.getSigmaHBUpper()));
+//		northAba1.add(new JLabel("Sigma HB Upper"));
+//		northAba1.add(sigmaHBUpper = new JTextField(10));
+//		sigmaHBUpper.setText(Double.toString(cosmosac.getSigmaHBUpper()));
 
 		northAba1.add(new JLabel("Charge HB"));
 		northAba1.add(chargeHB = new JTextField(10));
-		chargeHB.setText(Double.toString(cosmosac.getCHB()));
-		northAba1.add(new JLabel("resCorr"));
-		northAba1.add(resCorr = new JTextField(10));
-		resCorr.setText(Double.toString(cosmosac.getResCorr()));
+		northAba1.add(new JLabel("Beta"));
+		northAba1.add(beta = new JTextField(10));
 		northAba1.add(new JLabel("fpol"));
 		northAba1.add(fpol = new JTextField(10));
-		fpol.setText(Double.toString(cosmosac.getFpol()));
 		northAba1.add(new JLabel("Anorm"));
 		northAba1.add(anorm = new JTextField(10));
-		anorm.setText(Double.toString(cosmosac.getAnorm()));
 		
 		northAba1.add(ignoreSGButton);
 		northAba1.add(calcButton);
@@ -308,6 +309,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		//Display the window.
 		setSize(800, 600);
 		setLocationRelativeTo(null);
+		modelBox.setSelectedIndex(0);
 		setVisible(true);
 
 		// test for a mixture
@@ -336,6 +338,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			return;
 		}
 
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
 			comps[0] = db.getComp((String)listModel.getElementAt(0));
@@ -349,9 +352,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			return;
 
 		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
-		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
+//		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
 		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
-		cosmosac.setResCorr(Double.parseDouble(resCorr.getText()));
+		cosmosac.setBeta(Double.parseDouble(beta.getText()));
 		cosmosac.setFpol(Double.parseDouble(fpol.getText()));
 		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
 		cosmosac.parametersChanged();
@@ -465,6 +468,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			}
 		}
 		
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
 		try {
 			cosmosac.setComponents(c);
 		} catch (Exception e) {
@@ -500,8 +504,21 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
-	class Remove implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
+		if(modelBox == e.getSource()){
+			
+			chargeHB.setText(Double.toString(cosmosac.getCHB()));
+			ignoreSGButton.setSelected(cosmosac.isIgnoreSG());
+			sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
+			beta.setText(Double.toString(cosmosac.getBeta()));
+			fpol.setText(Double.toString(cosmosac.getFpol()));
+			anorm.setText(Double.toString(cosmosac.getAnorm()));
+		}
+		else if(ignoreSGButton == e.getSource()){
+			cosmosac.setIgnoreSG(ignoreSGButton.isSelected());
+		}
+		else if(removeButton == e.getSource()){
 			//This method can be called only if
 			//there's a valid selection
 			//so go ahead and remove whatever's selected.
@@ -523,10 +540,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 				list.ensureIndexIsVisible(index);
 			}
 		}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand() == QUIT){
+		else if(e.getActionCommand() == QUIT){
 			setVisible(false);
 			db.fini();
 			System.exit(0);
