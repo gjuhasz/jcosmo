@@ -34,8 +34,26 @@ public class PCMSAC extends COSMOSAC {
 	public PCMSAC(int numberOfSegments) {
 		super(numberOfSegments);
 		
+		setBeta(1);
+		setSigmaHB(0.02);
+		
+		// alcohol-water + water COST:0.4672116335560187
 		setBeta(1.0);
-		setSigmaHB(0.010);
+		setCHB(18592.777394896664);
+		setSigmaHB(0.012726877598985551);
+		setFpol(0.35422711430612874);
+		setIgnoreSG(false);
+		setAnorm(24.470211102619594);
+		setVnorm(66.69);
+		
+		// all IDAC COST:0.657490575262719
+		setBeta(1.0);
+		setCHB(45611.478357208674);
+		setSigmaHB(0.0020111097044760917);
+		setFpol(-0.2351557748422603);
+		setIgnoreSG(false);
+		setAnorm(30.550065238783525);
+		setVnorm(66.69);
 	}
 
 	public PCMSAC() {
