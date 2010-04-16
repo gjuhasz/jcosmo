@@ -49,7 +49,6 @@ public class IDACDiagonal extends JFrame {
 	
 	List<XYSeries> points = new ArrayList<XYSeries>();
 	List<Color> color = new ArrayList<Color>();
-//	static XYSeries point = new XYSeries(" ");
 	
 	public void addIDACExperiments(String filename, String modelClass, Color cor) throws Exception {
 		this.modelClass = modelClass;
@@ -154,7 +153,6 @@ public class IDACDiagonal extends JFrame {
 		points.add(point);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void showPlot(){
 				
 		XYPlot plot;
@@ -165,28 +163,18 @@ public class IDACDiagonal extends JFrame {
 		plot.getRangeAxis().setRange(new Range(-2, 26));
 		
 		plot.setBackgroundPaint(Color.black);
-//		plot.setOutlinePaint(Color.black);
-//		plot.setDomainGridlinePaint(Color.white);
-//		plot.setRangeGridlinePaint(Color.white);
 	
+		XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plot.getRenderer();
 		XYSeriesCollection[] dataset = new XYSeriesCollection [points.size()];
 		int i;
 		for(i=0; i<points.size(); i++){
-			XYSplineRenderer r = new XYSplineRenderer();
-			r.setBaseLinesVisible(false);
 			dataset[i] = new XYSeriesCollection();
 			dataset[i].addSeries(points.get(i));
 			plot.setDataset(i, dataset[i]);
-//			r.setBaseFillPaint(color.get(i));
-			plot.setRenderer(i, r);
+
+			r.setSeriesLinesVisible(i, false);
+			r.setSeriesShapesVisible(i, true);
 		}
-		
-//		XYSeriesCollection dataset1 = new XYSeriesCollection();
-//		dataset1.addSeries(point);
-//		plot.setDataset(0, dataset1);
-//		XYSplineRenderer r1 = new XYSplineRenderer();
-//		r1.setBaseLinesVisible(false);
-//		plot.setRenderer(0, r1);
 		
 		XYSeriesCollection dataset2 = new XYSeriesCollection();
 		XYSeries diag = new XYSeries(NP);
@@ -209,15 +197,16 @@ public class IDACDiagonal extends JFrame {
 		plot.setDataset(i+1, dataset2);
 		plot.setDataset(i+2, dataset3);
 		plot.setDataset(i+3, dataset4);
-		XYSplineRenderer r2 = new XYSplineRenderer();
-		r2.setBaseShapesVisible(false);
-		plot.setRenderer(i+1, r2);
-		XYLineAndShapeRenderer r3 = new XYLineAndShapeRenderer();
-		r3.setBaseShapesVisible(false);
-		r3.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
-					1.0f, new float[] { 10.0f, 6.0f }, 0.0f));
-		plot.setRenderer(i+2, r3);
-		plot.setRenderer(i+3, r3);
+		
+		BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
+				1.0f, new float[] { 10.0f, 6.0f }, 0.0f);
+		
+		r.setSeriesStroke(i+1, dashed);
+		r.setSeriesStroke(i+2, dashed);
+		r.setSeriesStroke(i+3, dashed);
+		r.setSeriesLinesVisible(i+1, true);
+		r.setSeriesLinesVisible(i+2, true);
+		r.setSeriesLinesVisible(i+3, true);
 				
 		ChartPanel chartPanel = new ChartPanel(chart);
 		JPanel jp = new JPanel(new BorderLayout());

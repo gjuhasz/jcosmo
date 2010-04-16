@@ -452,9 +452,9 @@ public class COSMOSAC {
 				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
 //				double sigmaHB = 0.018;
 //				hb = 0;
-//				if(SIGMAACC>0.0065 && SIGMADON<-0.0065){
-//					hb = Math.max(0.0, Math.abs(SIGMAACC - SIGMADON) - sigmaHB);
-//					hb = -hb*hb;
+//				if(charge[ACC]>0 && charge[DON]<0){
+//					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
+//					hb = -(hb*hb);
 //				}
 				
 				// Electrostatic HB

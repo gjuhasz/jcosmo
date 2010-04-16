@@ -2,7 +2,7 @@
 
 <project default="jcosmodist" basedir=".">
 	
- <property name="version" value="1.1.1" />
+ <property name="version" value="1.2.0" />
  
  <!--
  <property name="launch4j.dir" location="/usr/local/share/java/launch4j" />
