@@ -4,8 +4,6 @@
 import os
 env = Environment()
 
-env.VariantDir('.build', '.', duplicate=0)
-
 env['ENV']['USER'] = os.environ['USER']
 env['ENV']['HOME'] = os.environ['HOME']
 
