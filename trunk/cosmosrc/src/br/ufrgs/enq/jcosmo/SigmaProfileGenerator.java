@@ -124,13 +124,14 @@ public class SigmaProfileGenerator {
 		switch (type) {
 		case GAMESS:
 		case GAMESS_PCM:
-//			averageCharges();
-			averageCharges2();
-			simpleSorting();
+//			simpleSorting(SIGMA);
+			averageCharges();
+//			averageCharges2();
+			simpleSorting(sigmaAveraged);
 			break;
 		case MOPAC:
 			averageCharges();
-			simpleSorting();
+			simpleSorting(sigmaAveraged);
 			break;
 		}
 	}
@@ -401,10 +402,19 @@ public class SigmaProfileGenerator {
 		}
 	}
 	
-	void simpleSorting(){
+	void simpleSorting(double sigmaAveraged[]){
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
 			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
+			
+			if(TMP<0){
+				sortedArea[0] += area[J];
+				continue;
+			}
+			else if(TMP > (sortedArea.length-1)){
+				sortedArea[sortedArea.length-1] += area[J];
+				continue;
+			}
 			
 			// Each point represents the center of an interval, so we distribute it
 			// in the two adjacent points
