@@ -33,9 +33,19 @@ public class COSMOSAC_G extends COSMOSAC {
 
 	public COSMOSAC_G(int numberOfSegments) {
 		super(numberOfSegments);
+		
+		setBeta(1.4141655544216012);
+		setCHB(21856.59194516772);
+		setSigmaHB(0.0033588530289351158);
+		setFpol(0.17960975053558242);
+		setIgnoreSG(false);
+		setCoord(19.621223483264043);
+		setAnorm(77.08098812555656);
+		setVnorm(66.69);
 	}
 
 	public COSMOSAC_G() {
+		this(51);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

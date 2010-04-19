@@ -10,9 +10,11 @@ import org.apache.commons.math.optimization.DirectSearchOptimizer;
 import org.apache.commons.math.optimization.NelderMead;
 import org.apache.commons.math.optimization.PointCostPair;
 
+import br.ufrgs.enq.direct.DiRect;
 import br.ufrgs.enq.direct.ObjectiveFunction;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 
 public class IDAC_Est implements CostFunction, ObjectiveFunction {
@@ -27,14 +29,14 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 		experiments = new ArrayList<IDACExperiments>();
 
-//		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkene-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkyne-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/ArylHalide-Water.csv", modelClass));
+////		experiments.add(new IDACExperiments("idac/ArylHalide-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
 ////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
@@ -42,7 +44,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 ////		experiments.add(new IDACExperiments("idac/Ether-Water.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
 //		
 //		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
@@ -58,7 +60,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		
 //		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
 ////		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass)); //
-//		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
 //		
 ////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass)); //
 ////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-CycloAlkane.csv", modelClass)); //
@@ -68,15 +70,15 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 ////		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass)); //
 ////		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
-
-//		experiments.add(new IDACExperiments("idac/CycloAlkene-Amine.csv", modelClass)); //
+//
+////		experiments.add(new IDACExperiments("idac/CycloAlkene-Amine.csv", modelClass)); //
 //
 //		experiments.add(new IDACExperiments("idac/Ketone-Alcohol.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
-		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -101,16 +103,17 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 4;
+		return 6;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
 
-//		pars[i++] = cosmo.getBeta();
+		pars[i++] = cosmo.getBeta();
 		pars[i++] = cosmo.getFpol();
 		pars[i++] = cosmo.getCHB();
 		pars[i++] = cosmo.getSigmaHB();
+		pars[i++] = cosmo.getCoord();
 		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
@@ -128,10 +131,11 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				COSMOSAC cosmo = exp.getModels().get(j);
 				
 				int i=0;
-//				cosmo.setBeta(pars[i++]);
+				cosmo.setBeta(pars[i++]);
 				cosmo.setFpol(pars[i++]);
 				cosmo.setCHB(pars[i++]);
 				cosmo.setSigmaHB(pars[i++]);
+				cosmo.setCoord(pars[i++]);
 				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
@@ -166,7 +170,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 			for (int i = 0; i < pair.length; i++) {
 				sum += Math.abs(pair[0].getCost() - pair[i].getCost());
 			}
-			return sum/pair[0].getCost() < 1e-3;
+			return sum/pair[0].getCost() < 1e-5;
 		}
 	}
 
@@ -186,6 +190,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
+		System.out.println("setCoord(" + cosmo.getCoord() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
 		System.out.println("setVnorm(" + cosmo.getVnorm() + ");");
 
@@ -238,6 +243,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
+		System.out.println("setCoord(" + cosmo.getCoord() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
 		System.out.println("setVnorm(" + cosmo.getVnorm() + ");");
 	}

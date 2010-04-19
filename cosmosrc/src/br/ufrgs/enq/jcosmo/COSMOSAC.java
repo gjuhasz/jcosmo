@@ -71,7 +71,6 @@ public class COSMOSAC {
 	double cHB = CHB;
 
 	private static double SIGMA_BOUND = 0.025;
-	boolean sigmaGaussian = false;
 	
 	double alphaPrime;
 
@@ -174,10 +173,6 @@ public class COSMOSAC {
 		setVnorm(66.69);
 	}
 
-	public void setSigmaGaussian(boolean sigmaGaussian){
-		this.sigmaGaussian = sigmaGaussian;
-	}
-	
 	public double getAEff() {
 		return aEff;
 	}
@@ -306,6 +301,8 @@ public class COSMOSAC {
 		this.T = T;
 		this.inv_RT = 1.0 / (RGAS * T);
 		
+		// update this for T dependent HB
+		calculeDeltaW_HB();
 		
 		double hbfactor = 1;
 //		System.out.println("expDeltaW_RT");
@@ -405,6 +402,7 @@ public class COSMOSAC {
 		}
 		
 		calculeDeltaW();
+		calculeDeltaW_HB();
 	}
 	
 	protected void calculeDeltaW(){
@@ -414,59 +412,29 @@ public class COSMOSAC {
 			SEGGAMMA[m] = 1.0;
 
 			for(int n=0; n<nsegments; ++n){
+				chargemn = charge[m]+charge[n];
+				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
+			}
+		}
+	}
+	
+	protected void calculeDeltaW_HB(){
+		for(int m=0; m<nsegments; ++m){
+
+			for(int n=0; n<nsegments; ++n){
 				int ACC = n, DON = m;
 				if(charge[m]>=charge[n]){
 					ACC = m;
 					DON = n;
 				}
-				chargemn = charge[m]+charge[n];
-				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
-				
 				// Hydrogen Bond effect:
-				double hb = 0.0;
-				if(sigmaGaussian){
-					double sigmaHb2 = 2*sigmaHB*sigmaHB;
-					hb =
-						(1-Math.exp(-charge[ACC]*charge[ACC]/sigmaHb2)) * Math.max(0.0, charge[ACC]) *
-						(1-Math.exp(-charge[DON]*charge[DON]/sigmaHb2)) * Math.min(0.0, charge[DON]);
-				}
-				else{
-					double probACC = 1, probDON = 1;
-					
-//					double sigmaDelta = (sigmaHBUpper - sigmaHB);
-//						
-//					double accMean = sigmaHB + sigmaDelta/2;
-//					// acceptor probability
-//					probACC = 1-Math.exp(-(charge[ACC]-accMean)*(charge[ACC]-accMean)/(3*sigmaDelta));
-//
-//					// donnor probability
-//					double donMean = -sigmaHB - sigmaDelta/2;
-//					// acceptor probability
-//					probDON = 1-Math.exp(-(charge[DON]-donMean)*(charge[DON]-donMean)/(3*sigmaDelta));
-
-					// if(SIGMAACC<sigmaHBUpper && SIGMADON>-sigmaHBUpper)
-					hb = probACC*probDON*Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
-				}
+				double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
 				
-				// New HB from Paul M. Mathias, Shiang-Tai Lin, Yuhua Song, Chau-Chyun Chen, Stanley I. Sandler
-				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
-//				double sigmaHB = 0.018;
-//				hb = 0;
-//				if(charge[ACC]>0 && charge[DON]<0){
-//					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
-//					hb = -(hb*hb);
-//				}
-				
-				// Electrostatic HB
-//				hb = Math.min(0, charge[ACC] * charge[DON]);
-//				hb = -1e3*hb*hb;
-////				// cut if the bond is too strong (possible limits for HB)
-//				if(-hb*cHB > 12)
-//					hb = 0;
-//				if(-hb*cHB < 0.5)
-//					hb = 0;
+				// Klamt, Fluid Phase Equilib. 2000
+//				double cHBT_c = 1.5;
+				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
 
-				deltaW_HB[m][n] = cHB*hb;
+				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}
 		}
 	}
