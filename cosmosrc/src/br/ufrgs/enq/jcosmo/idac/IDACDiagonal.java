@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,14 +14,15 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
@@ -33,7 +35,7 @@ import com.csvreader.CsvReader;
  * @author rafael e renan
  *
  */
-public class IDACDiagonal extends JFrame {
+public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 	private static final long serialVersionUID = 1L;
 
 	private String modelClass;
@@ -47,6 +49,8 @@ public class IDACDiagonal extends JFrame {
 	List<Double> temperatures = new ArrayList<Double>();
 	
 	List<XYSeries> points = new ArrayList<XYSeries>();
+	List<List<String>> tps = new Vector<List<String>>();
+
 	List<Color> color = new ArrayList<Color>();
 	
 	public void addIDACExperiments(String filename, String modelClass, Color cor) throws Exception {
@@ -93,7 +97,7 @@ public class IDACDiagonal extends JFrame {
 			}
 			
 			COSMOSACCompound comps[] = new COSMOSACCompound[2];
-			if (modelClass == COSMOPAC.class.getName() & useAll==true){
+			if (modelClass != COSMOSAC.class.getName() & useAll==true){
 				comps[0] = db.getComp("water");
 				comps[0].name = compNames[0].toUpperCase();
 				comps[1] = db.getComp("water");
@@ -136,7 +140,8 @@ public class IDACDiagonal extends JFrame {
 		// infinite dilution activity calculation
 		z[0] = 0; z[1] = 1-z[0];
 		File file = new File(filename);
-		XYSeries point = new XYSeries(file.getName().substring(0, file.getName().lastIndexOf('.')));
+		XYSeries point = new XYSeries(file.getName().substring(0, file.getName().lastIndexOf('.')), false);
+		List<String> tpNames = new Vector<String>();
 		
 		for (int i = start; i < models.size(); i++) {
 			COSMOSAC model = models.get(i);
@@ -148,8 +153,11 @@ public class IDACDiagonal extends JFrame {
 			model.activityCoefficientLn(lnGamma, 0);
 						
 			point.add(Math.log(gammaInf), lnGamma[0]);
+			tpNames.add(model.getComps()[0].name + "/" + model.getComps()[1].name +
+					", T=" + T + ", " + gammaInf +  " (" + Math.log(gammaInf) + ", " + lnGamma[0] + ")");
 		}
 		points.add(point);
+		tps.add(tpNames);
 	}
 	
 	public void showPlot(){
@@ -172,6 +180,7 @@ public class IDACDiagonal extends JFrame {
 			dataset.addSeries(points.get(i));
 			r.setSeriesLinesVisible(i, false);
 			r.setSeriesShapesVisible(i, true);
+			r.setSeriesToolTipGenerator(i, this);
 		}
 		
 		BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
@@ -210,5 +219,9 @@ public class IDACDiagonal extends JFrame {
 	
 	public void setUseAll(Boolean useAll) {
 		this.useAll = useAll;
+	}
+
+	public String generateToolTip(XYDataset dataset, int series, int item) {
+		return tps.get(series).get(item);
 	}
 }
