@@ -166,7 +166,8 @@ public class COSMOSACDataBase
 		
 		// The result should be exactly on row length
 		if(!res.next()){
-			return null;
+			c.name = name;
+			return c;
 		}
 		
 		c.ID = res.getInt("ID");

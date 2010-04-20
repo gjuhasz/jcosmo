@@ -34,7 +34,7 @@ public class PCMSAC extends COSMOSAC {
 	}
 	
 	// Store already loaded compounds
-	static HashMap<String, COSMOSACCompound> compList = new HashMap<String, COSMOSACCompound>();  
+	static HashMap<String, COSMOSACCompound> compList;  
 
 	public PCMSAC(int numberOfSegments) {
 		super(numberOfSegments);
@@ -51,14 +51,53 @@ public class PCMSAC extends COSMOSAC {
 		setVnorm(66.69);
 		
 		
-		// delta HB only a small subset COST:0.4686047788338226 NP:106
-		setBeta(2.315692083990375);
-		setCHB(3109.542519003334);
-		setSigmaHB(0.011500675324712325);
-		setFpol(0.6461642756815558);
+		// delta HB only a small subset COST:0.39132272581177113 NP:163
+		setBeta(1.5964708030478103);
+		setCHB(1996.1201800255446);
+		setSigmaHB(0.010166006038485578);
+		setSigmaHB2(2.0322754257416418);
+		setSigmaHB3(0.0);
+		setFpol(0.6917);
 		setIgnoreSG(false);
-		setCoord(0.0797380264399844);
-		setAnorm(145.1060693551804);
+		setCoord(10.0);
+		setAnorm(166.57659724842748);
+		setVnorm(66.69);
+
+		// only non-aqueous COST:0.4223700007983835 NP:227
+		setBeta(2.1162691139604073);
+		setCHB(959.0481495067659);
+		setSigmaHB(0.016984297869683283);
+		setSigmaHB2(2.6228348657791436);
+		setSigmaHB3(0.0);
+		setFpol(0.6917);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(134.64167457551045);
+		setVnorm(66.69);
+		
+		
+		// no C=O systems, COST:0.47509022374529086 NP:297
+		setBeta(1.753295948035097);
+		setCHB(1481.5019472726462);
+		setSigmaHB(0.011150936306303545);
+		setSigmaHB2(1.8584613097892642);
+		setSigmaHB3(0.0);
+		setFpol(0.6917);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(161.17891465949677);
+		setVnorm(66.69);
+
+		// HB by Mathias et al., no C=O systems, COST:0.47509022374529086 NP:297
+		setBeta(1.5234406641968752);
+		setCHB(11300.23978050745);
+		setSigmaHB(0.009174267674010202);
+		setSigmaHB2(1.3106640483180576);
+		setSigmaHB3(0.0);
+		setFpol(0.8206299888489879);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(379.1061606496285);
 		setVnorm(66.69);
 	}
 
@@ -82,17 +121,19 @@ public class PCMSAC extends COSMOSAC {
 				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
 //				double sigmaHB = 0.018;
 				hb = 0;
-				if(charge[ACC]>sigmaHB/3 && charge[DON]<sigmaHB/3 && Math.abs(charge[ACC] - charge[DON]) > sigmaHB){
-//					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
-					hb = Math.abs(charge[ACC] - charge[DON]);
-					hb = -(hb*hb);
+				if(charge[ACC]>sigmaHB/sigmaHB2 && charge[DON]<sigmaHB/sigmaHB2
+						&& Math.abs(charge[ACC] - charge[DON]) > sigmaHB){
+					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
+//					hb = Math.abs(charge[ACC] - charge[DON]);
+					hb = (hb*hb);
+					hb = Math.min(cHB*sigmaHB3, hb);
 				}
 				
 				// Klamt, Fluid Phase Equilib. 2000
 //				double cHBT_c = 1.5;
 				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
 
-				deltaW_HB[m][n] = cHB*cHBT* hb;
+				deltaW_HB[m][n] = -cHB*cHBT*hb;
 			}
 		}
 	}
@@ -104,6 +145,9 @@ public class PCMSAC extends COSMOSAC {
 
 		this.VCOSMO = new double[ncomps];
 		this.area = new double[ncomps][];
+		
+		if(compList==null)
+			compList = new HashMap<String, COSMOSACCompound>();
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM,
 				SigmaProfileGenerator.RAV,

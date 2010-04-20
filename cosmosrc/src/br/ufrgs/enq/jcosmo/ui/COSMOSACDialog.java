@@ -80,7 +80,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	private static final String ABOUT = "about";
 	
 	private JTextField temperature;
-	private JTextField sigmaHB, sigmaHBUpper, chargeHB, beta, fpol, anorm;
+	private JTextField sigmaHB, sigmaHB2, sigmaHB3, chargeHB, beta, fpol, anorm;
 	private JCheckBox ignoreSGButton;
 
 	COSMOSACDataBase db;
@@ -211,10 +211,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		northAba1.add(new JLabel("Sigma HB"));
 		northAba1.add(sigmaHB = new JTextField(10));
-
-//		northAba1.add(new JLabel("Sigma HB Upper"));
-//		northAba1.add(sigmaHBUpper = new JTextField(10));
-//		sigmaHBUpper.setText(Double.toString(cosmosac.getSigmaHBUpper()));
+		northAba1.add(new JLabel("Sigma HB2"));
+		northAba1.add(sigmaHB2 = new JTextField(10));
+		northAba1.add(new JLabel("Sigma HB3"));
+		northAba1.add(sigmaHB3 = new JTextField(10));
 
 		northAba1.add(new JLabel("Charge HB"));
 		northAba1.add(chargeHB = new JTextField(10));
@@ -313,9 +313,15 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setVisible(true);
 
 		// test for a mixture
-		addList("water");
-		addList("sec-butylamine");
+//		addList("water");
+//		addList("sec-butylamine");
 //		addList("hydrogen-fluoride");
+//		addList("ACETONE");
+//		addList("METHANOL");
+//		addList("ACETONE.opt");
+//		addList("METHANOL.opt");
+		addList("METHYL-ETHYL-KETONE");
+		addList("ETHANOL");
 		removeButton.setEnabled(true);
 	}
 
@@ -352,6 +358,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			return;
 
 		cosmosac.setSigmaHB(Double.parseDouble(sigmaHB.getText()));
+		cosmosac.setSigmaHB2(Double.parseDouble(sigmaHB2.getText()));
+		cosmosac.setSigmaHB3(Double.parseDouble(sigmaHB3.getText()));
 //		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
 		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
 		cosmosac.setBeta(Double.parseDouble(beta.getText()));
@@ -511,6 +519,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			chargeHB.setText(Double.toString(cosmosac.getCHB()));
 			ignoreSGButton.setSelected(cosmosac.isIgnoreSG());
 			sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
+			sigmaHB2.setText(Double.toString(cosmosac.getSigmaHB2()));
+			sigmaHB3.setText(Double.toString(cosmosac.getSigmaHB3()));
 			beta.setText(Double.toString(cosmosac.getBeta()));
 			fpol.setText(Double.toString(cosmosac.getFpol()));
 			anorm.setText(Double.toString(cosmosac.getAnorm()));
