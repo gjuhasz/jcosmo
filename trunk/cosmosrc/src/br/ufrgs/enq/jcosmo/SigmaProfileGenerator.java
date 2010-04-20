@@ -130,7 +130,9 @@ public class SigmaProfileGenerator {
 			simpleSorting(sigmaAveraged);
 			break;
 		case MOPAC:
+//			simpleSorting(SIGMA);
 			averageCharges();
+//			averageCharges2();
 			simpleSorting(sigmaAveraged);
 			break;
 		}
@@ -255,6 +257,7 @@ public class SigmaProfileGenerator {
 			if(input.next().equals("SFERA,TESSERA,X,Y,Z,CARICA")){
 				break;
 			}
+			input.nextLine();
 		}
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.next(); // TESSERA

@@ -67,7 +67,8 @@ public class COSMOSAC {
 	
 	double eo = EO;
 	double sigmaHB = SIGMAHB;
-	double sigmaHBUpper = 0.026;
+	double sigmaHB2 = 0;
+	double sigmaHB3 = 0;
 	double cHB = CHB;
 
 	private static double SIGMA_BOUND = 0.025;
@@ -560,13 +561,19 @@ public class COSMOSAC {
 	public void setSigmaHB(double sigmaHB) {
 		this.sigmaHB = sigmaHB;
 	}
+	public double getSigmaHB2() {
+		return sigmaHB2;
+	}
+	public void setSigmaHB2(double sigmaHB) {
+		this.sigmaHB2 = sigmaHB;
+	}
+	public double getSigmaHB3() {
+		return sigmaHB3;
+	}
+	public void setSigmaHB3(double sigmaHB) {
+		this.sigmaHB3 = sigmaHB;
+	}
 
-	public double getSigmaHBUpper() {
-		return sigmaHBUpper;
-	}
-	public void setSigmaHBUpper(double sigmaHBUpper) {
-		this.sigmaHBUpper = sigmaHBUpper;
-	}
 	
 	public double getFpol() {
 		return fpol;
