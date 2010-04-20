@@ -1,6 +1,8 @@
 
 # www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
 
+# Use "nohup" to run from ssh and keep running after logout
+
 import os
 env = Environment()
 
