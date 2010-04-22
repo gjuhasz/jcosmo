@@ -1,0 +1,78 @@
+
+# www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
+
+# Use "nohup" to run from ssh and keep running after logout
+
+import os
+env = Environment()
+
+env['ENV']['USER'] = os.environ['USER']
+env['ENV']['HOME'] = os.environ['HOME']
+
+# Mopac stuff
+mol2mop = Builder(action = 'babel -h $SOURCE -o mopin -xf keys.cosmo $TARGET',
+                     suffix = '.mop', single_source=True)
+mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
+env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
+env.Append(BUILDERS = {'Mopac' : mopac})
+
+# Geometry optimization stuff
+mol2d2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
+                     suffix = '.mop', single_source=True)
+mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
+                     suffix = '.optmol', single_source=True)
+env.Append(BUILDERS = {'Mol2D2Mop' : mol2d2mop})
+env.Append(BUILDERS = {'Mop2Mol' : mop2mol})
+
+# Gamess stuff
+babelgam = Builder(action = 'babel -h -i mol $SOURCE -o gamin -xf keys.gamess $TARGET',
+                     suffix = '.inp', single_source=True)
+babelgampcm = Builder(action = 'babel -h -i mol $SOURCE -o gamin -xf keys.gamess.pcm $TARGET',
+                     suffix = '.pcm.inp', single_source=True)
+# Gamess also produces a .dat file
+def gamess_targets(target, source, env):
+           target.append('$HOME/src/gamess07/$TARGET.dat')
+           return target, source
+gamess = Builder(action = os.environ['HOME'] + '/src/gamess07/rungms $SOURCE > $TARGET', suffix = '.gout',
+	single_source=True) # , emitter = gamess_targets)
+env.Append(BUILDERS = {'BabelGam' : babelgam})
+env.Append(BUILDERS = {'BabelGamPCM' : babelgampcm})
+env.Append(BUILDERS = {'Gamess' : gamess})
+
+# Build all files for Mopac
+mops = env.Mol2Mop(Glob('*.mol'))
+env.Depends(mops, 'keys.cosmo')
+mopacBuild = env.Mopac(mops)
+env.Alias('mopac', mopacBuild)
+env.Default('mopac')
+
+# Optimize all .2dmol files
+mol2d = env.Mol2D2Mop(Glob('*.2dmol'))
+env.Depends(mops, 'keys_geom_opt.txt')
+mopacOpt = env.Mopac(mol2d)
+optMol = env.Mop2Mol(mopacOpt);
+env.Alias('geom', optMol)
+
+# Build all files for Gamess
+# Delete all DAT files, otherwise gamess will stop
+delAction = Delete(Glob(os.environ['HOME'] + '/src/gamess07/tmp/*.dat'))
+Execute(delAction)
+
+# Convert mol files to gamess input
+inps = env.BabelGam(Glob('*.mol'))
+inps += env.BabelGam(Glob('*.optmol'))
+env.Depends(inps, 'keys.gamess')
+# env.Depends(inps, delAction)
+# process files with gamess
+gamessBuild = env.Gamess(inps)
+Alias('gamess', gamessBuild)
+
+# Convert mol files to gamess input
+inps = env.BabelGamPCM(Glob('*.mol'))
+inps += env.BabelGamPCM(Glob('*.optmol'))
+env.Depends(inps, 'keys.gamess.pcm')
+# env.Depends(inps, delAction)
+# process files with gamess
+gamessBuild = env.Gamess(inps)
+Alias('gamesspcm', gamessBuild)
+
