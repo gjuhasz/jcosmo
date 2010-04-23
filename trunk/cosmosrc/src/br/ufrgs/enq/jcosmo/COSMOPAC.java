@@ -61,7 +61,7 @@ public class COSMOPAC extends COSMOSAC {
 		this.area = new double[ncomps][];
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
-				SigmaProfileGenerator.RAV, nsegments);
+				SigmaProfileGenerator.RAV*0.4, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			String name = comps[i].name.replace(' ','_');
