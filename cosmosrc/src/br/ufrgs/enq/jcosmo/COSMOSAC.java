@@ -68,7 +68,7 @@ public class COSMOSAC {
 	double eo = EO;
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = 0;
-	double sigmaHB3 = 0;
+	double sigmaHB3 = 1;
 	double cHB = CHB;
 
 	private static double SIGMA_BOUND = 0.025;
@@ -435,6 +435,8 @@ public class COSMOSAC {
 //				double cHBT_c = 1.5;
 				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
 
+				hb = -Math.pow(Math.abs(hb), sigmaHB3);
+				
 				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}
 		}

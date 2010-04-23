@@ -90,7 +90,7 @@ public class PCMSAC extends COSMOSAC {
 
 		// HB by Mathias et al., no C=O systems, COST:0.47509022374529086 NP:297
 		setBeta(1.5234406641968752);
-		setCHB(11300.23978050745);
+		setCHB(0); // 11300.23978050745);
 		setSigmaHB(0.009174267674010202);
 		setSigmaHB2(1.3106640483180576);
 		setSigmaHB3(0.0);
@@ -99,10 +99,39 @@ public class PCMSAC extends COSMOSAC {
 		setCoord(10.0);
 		setAnorm(379.1061606496285);
 		setVnorm(66.69);
+		
+		
+//		setBeta(1.1369859135033609);
+//		setCHB(9404.605578007056);
+//		setSigmaHB(0.0018593390566600753);
+//		setSigmaHB2(1.377417265739591);
+//		setSigmaHB3(0.0);
+//		setFpol(0.36713956332545267);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(41.205946835254665);
+//		setVnorm(66.69);
 	}
 
 	public PCMSAC() {
 		this(51);
+	}
+	
+	
+	protected void calculeDeltaW(){
+		double chargemn = 0;
+		// polarizability corrections
+		double fm = 1;
+		double fn = 1;
+		for(int m=0; m<nsegments; ++m){
+			// initialize all SEGGAMMA (reused between calculations)
+			SEGGAMMA[m] = 1.0;
+
+			for(int n=0; n<nsegments; ++n){
+				chargemn = charge[m]*fm+charge[n]*fn;
+				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
+			}
+		}
 	}
 	
 	protected void calculeDeltaW_HB(){
@@ -121,12 +150,11 @@ public class PCMSAC extends COSMOSAC {
 				// AIChE Annual Meeting Indianapolis, IN, 3-8 November 2002
 //				double sigmaHB = 0.018;
 				hb = 0;
-				if(charge[ACC]>sigmaHB/sigmaHB2 && charge[DON]<sigmaHB/sigmaHB2
-						&& Math.abs(charge[ACC] - charge[DON]) > sigmaHB){
+				if(charge[ACC]>Math.abs(sigmaHB/sigmaHB2) && charge[DON]<-Math.abs(sigmaHB/sigmaHB2)
+						&& Math.abs(charge[ACC] - charge[DON]) > Math.abs(sigmaHB)){
 					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
 //					hb = Math.abs(charge[ACC] - charge[DON]);
 					hb = (hb*hb);
-					hb = Math.min(cHB*sigmaHB3, hb);
 				}
 				
 				// Klamt, Fluid Phase Equilib. 2000
@@ -164,11 +192,12 @@ public class PCMSAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".pcm.gout";
+			String folder = "moltest/";
 			
 			try {
-				s.parseFile("mopac/" + name + extension);												
+				s.parseFile(folder + name + extension);												
 			} catch (Exception e) {
-				s.parseFile("mopac/" + name.replace('-','_') + extension);
+				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			
 			comps[i].charge = s.getChargeDensity();

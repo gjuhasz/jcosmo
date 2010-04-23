@@ -6,15 +6,14 @@
 
  $system timlim=10000 mwords=20 $end
  $SCF DIRSCF=.TRUE. $end
-! $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
-! $basis gbasis=N311 $end
 
+! GBASIS:
 ! STO-2G
- $basis  gbasis=sto ngauss=2 $end 
+! $basis  gbasis=sto ngauss=2 $end 
 ! STO-3G
 ! $basis  gbasis=sto ngauss=3 $end 
 ! 6-31+G(2d,p)
-! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=2 NPFUNC=1 DIFFSP=.T. $END 
+ $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=2 NPFUNC=1 DIFFSP=.T. $END 
 ! 6-31G(d) = 6-31G*
 ! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=1 $END
 ! 3-21G

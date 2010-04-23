@@ -42,6 +42,8 @@ public class COSMOSAC_G extends COSMOSAC {
 		setCoord(19.621223483264043);
 		setAnorm(77.08098812555656);
 		setVnorm(66.69);
+		
+		setFpol(FPOL);
 	}
 
 	public COSMOSAC_G() {
@@ -59,11 +61,12 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
+			String folder = "moltest/";
 			
 			try {
-				s.parseFile("mopac/" + name + extension);												
+				s.parseFile(folder + name + extension);												
 			} catch (Exception e) {
-				s.parseFile("mopac/" + name.replace('-','_') + extension);
+				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
