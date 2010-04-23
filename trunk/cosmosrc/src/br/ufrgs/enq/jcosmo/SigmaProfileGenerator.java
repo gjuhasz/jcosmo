@@ -144,7 +144,24 @@ public class SigmaProfileGenerator {
 	public double[] getSortedArea(){
 		return sortedArea;
 	}
-
+	
+	/**
+	 * This function returns the averaged charge density, but not yet sorted as the sigma-profile.
+	 * <p>In order to get the areas for these charges use {@link #getOriginalArea()}
+	 * 
+	 * @return the averaged charge density
+	 */
+	public double[] getAveragedChargeDensity(){
+		return sigmaAveraged;
+	}
+	
+	/**
+	 * @return the charges area in the original form (unsorted).
+	 */
+	public double[] getOriginalArea(){
+		return sortedArea;
+	}
+	
 	/**
 	 * @return the charge density
 	 */
@@ -334,7 +351,10 @@ public class SigmaProfileGenerator {
 		input.close();
 	}
 
-// from Mullins, Liu, Ghaderi, Fast, 2008
+	/**
+	 * Average the charges accordingly to a standard averaging radius.
+	 * <p>The averaging equation used is as in Mullins, Liu, Ghaderi, Fast, 2008.
+	 */
 	void averageCharges() {
 		sigmaAveraged = new double[x.length];
 
@@ -371,8 +391,10 @@ public class SigmaProfileGenerator {
 		}
 	}
 	
-
-// from Wang, Sandler, 2007 - using Aeff = 7.25
+	/**
+	 * Average the charges accordingly to a standard averaging radius.
+	 * <p>The averaging equation used here is as in Wang, Sandler, 2007.
+	 */
 	void averageCharges2() {
 		sigmaAveraged = new double[x.length];
 		
@@ -405,6 +427,12 @@ public class SigmaProfileGenerator {
 		}
 	}
 	
+	/**
+	 * Sort the areas accordingly to the given charges.
+	 * <p>This is needed to fit into the standard sigma discretization.
+	 * 
+	 * @param sigmaAveraged the areas to be sorted
+	 */
 	void simpleSorting(double sigmaAveraged[]){
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
