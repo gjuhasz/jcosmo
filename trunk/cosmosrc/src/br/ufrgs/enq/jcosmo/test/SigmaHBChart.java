@@ -19,7 +19,12 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
+import br.ufrgs.enq.jcosmo.ui.SigmaProfilePanel;
 
 /**
  * Test for multiple sigma descriptors.
@@ -27,44 +32,58 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
  * @author rafael
  *
  */
-public class SigmaDescriptors {
+public class SigmaHBChart {
 
 	public static void main(String[] args) throws Exception {
 		
-//		String name = "ACETONE";
+		JFrame dlg = new JFrame();
+		dlg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		dlg.setLayout(new BorderLayout());
+		
+		String name = "ACETONE";
 //		String name = "METHANE";
 //		String name = "ETHANOL";
 //		String name = "METHANOL";
-		String name = "WATER";
-		
+//		String name = "WATER";
+
 		String folder = "moltest/";
 		String extension = ".pcm.gout";
 		
-		String fileName = folder + name + extension;
+		SigmaProfilePanel chart = new SigmaProfilePanel(name);
+		dlg.add(chart, BorderLayout.CENTER);
 		
+		String fileName = folder + name + extension;		
 		SigmaProfileGenerator sigmaParser;
-		
 		sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM);
 		
 		
 		sigmaParser.parseFile(fileName, SigmaProfileGenerator.RAV);
-		double[] sigma1 = sigmaParser.getAveragedChargeDensity();
 		
-		sigmaParser.parseFile(fileName, SigmaProfileGenerator.RAV*2);
-		double[] sigma2 = sigmaParser.getAveragedChargeDensity();
-		
-		double fcorr = 0.816;
-//		double fcorr = COSMOSAC.FPOL;
-
-		
-		double[] area = sigmaParser.getOriginalArea();
+		double sigma[] = sigmaParser.getAveragedChargeDensity();
+		double area[] = sigmaParser.getOriginalArea();
 		int[] elem = sigmaParser.getElem();
-		int[] atom = sigmaParser.getAtom();
-
-		System.out.println("Atom, Elemnt, Area, Sigma(RAV), Sigma(RAV*2), SigmaT");
-		for (int i = 0; i < area.length; i++) {
-			System.out.println(atom[i] + ", " + elem[i] + ", " + area[i] + ", " +
-					sigma1[i] + ", " + sigma2[i] + ", " + 1000*Math.abs(sigma2[i]-fcorr*sigma1[i]));
+		
+		sigmaParser.simpleSorting(area, sigma);
+		chart.addProfile("Sigma", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+		
+		double[] areaHB = new double[area.length];
+		
+		for (int m = 0; m < area.length; m++) {
+			if(elem[m]==1 || elem[m]==7 || elem[m]==8){
+				areaHB[m] = area[m];
+				area[m] = 0;
+			}
 		}
+
+		sigmaParser.simpleSorting(area, sigma);
+		chart.addProfile("Sigma No HB", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+		
+		sigmaParser.simpleSorting(areaHB, sigma);
+		chart.addProfile("Sigma HB", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+		
+		dlg.setSize(600, 400);
+		dlg.setLocationRelativeTo(null);
+		dlg.setVisible(true);
+		
 	}
 }

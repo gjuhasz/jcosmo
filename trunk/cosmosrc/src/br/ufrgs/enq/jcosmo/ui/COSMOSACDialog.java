@@ -316,12 +316,12 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		addList("water");
 //		addList("sec-butylamine");
 //		addList("hydrogen-fluoride");
-//		addList("ACETONE");
-//		addList("METHANOL");
+		addList("ACETONE");
+		addList("METHANOL");
 //		addList("ACETONE.opt");
 //		addList("METHANOL.opt");
-		addList("METHYL-ETHYL-KETONE");
-		addList("ETHANOL");
+//		addList("METHYL-ETHYL-KETONE");
+//		addList("ETHANOL");
 		removeButton.setEnabled(true);
 	}
 

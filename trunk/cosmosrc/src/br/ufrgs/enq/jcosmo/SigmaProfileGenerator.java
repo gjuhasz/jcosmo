@@ -126,11 +126,9 @@ public class SigmaProfileGenerator {
 		
 		increment = -(CHARGE_LOWER*2)/(double)(sigmaPoints-1);
 		// SETTING CHGDEN MATRIX
-		sortedArea = new double[sigmaPoints];
 		CHGDEN = new double[sigmaPoints];
 
 		for (int J = 0; J < sigmaPoints; J++) {
-			sortedArea[J]=0.0;
 			CHGDEN[J] = CHARGE_LOWER + increment*(double)J;
 		}
 		
@@ -140,13 +138,13 @@ public class SigmaProfileGenerator {
 //			simpleSorting(SIGMA);
 			averageCharges();
 //			averageCharges2();
-			simpleSorting(sigmaAveraged);
+			simpleSorting(area, sigmaAveraged);
 			break;
 		case MOPAC:
 //			simpleSorting(SIGMA);
 			averageCharges();
 //			averageCharges2();
-			simpleSorting(sigmaAveraged);
+			simpleSorting(area, sigmaAveraged);
 			break;
 		}
 	}
@@ -482,7 +480,9 @@ public class SigmaProfileGenerator {
 	 * 
 	 * @param sigmaAveraged the areas to be sorted
 	 */
-	public void simpleSorting(double sigmaAveraged[]){
+	public void simpleSorting(double []area, double sigmaAveraged[]){
+		sortedArea = new double[sigmaPoints];
+		
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
 			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
