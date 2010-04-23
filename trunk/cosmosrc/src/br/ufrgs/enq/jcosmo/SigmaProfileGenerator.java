@@ -21,6 +21,8 @@ package br.ufrgs.enq.jcosmo;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -88,12 +90,23 @@ public class SigmaProfileGenerator {
 		this.rav = rav;
 		this.sigmaPoints = sigmaPoints;
 	}
+	
+	/**
+	 * Parse the given file name considering the given averaging radius
+	 * @param fileName the MOPAC/GAMESS output file
+	 * @param rav the averaging radius
+	 * @throws Exception if there is a problem when reading the file
+	 */
+	public void parseFile(String fileName, double rav) throws Exception{
+		this.rav = rav;
+		parseFile(fileName);
+	}
 
 
 	/**
 	 * Parses the given file to determine the sigma profile given a COSMO/GAMESS output file.
 	 * 
-	 * @param fileName the COSMO/GAMESS output file
+	 * @param fileName the MOPAC/GAMESS output file
 	 * @throws Exception if there is a problem when reading the file
 	 */
 	public void parseFile(String fileName) throws Exception {
@@ -159,7 +172,7 @@ public class SigmaProfileGenerator {
 	 * @return the charges area in the original form (unsorted).
 	 */
 	public double[] getOriginalArea(){
-		return sortedArea;
+		return area;
 	}
 	
 	/**
@@ -173,6 +186,22 @@ public class SigmaProfileGenerator {
 
 		Scanner input = new Scanner(new File(filename));
 		input.useLocale(Locale.US);
+		
+		// discovering which the atoms-element map
+		List<Integer> atoms = new ArrayList<Integer>();
+		while(input.hasNext()){
+			if(volume==0 && input.next().equals("CHARGE") && input.next().equals("X")){
+				input.nextLine();
+				
+				while(!input.next().equals("INTERNUCLEAR")){
+					atoms.add((int)input.nextDouble());
+					input.nextLine();
+				}
+			}
+			input.nextLine();
+			if(atoms.size()!=0)
+				break;
+		}
 
 		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
 		// volume information on "VOLUME INSIDE CONSTS:"
@@ -200,10 +229,12 @@ public class SigmaProfileGenerator {
 		area = new double[cosmoSegments];
 		SIGMA = new double[cosmoSegments];
 		atom = new int[cosmoSegments];
+		elem = new int[cosmoSegments];
 
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.nextInt(); // segment id
-			atom[i] = input.nextInt(); // atom
+			atom[i] = input.nextInt();
+			elem[i] = atoms.get(atom[i]-1);
 			x[i] = input.nextDouble()*AU_ANGSTRON;
 			y[i] = input.nextDouble()*AU_ANGSTRON;
 			z[i] = input.nextDouble()*AU_ANGSTRON;
@@ -220,6 +251,22 @@ public class SigmaProfileGenerator {
 
 		Scanner input = new Scanner(new File(filename));
 		input.useLocale(Locale.US);
+		
+		// discovering which the atoms-element map
+		List<Integer> atoms = new ArrayList<Integer>();
+		while(input.hasNext()){
+			if(volume==0 && input.next().equals("CHARGE") && input.next().equals("X")){
+				input.nextLine();
+				
+				while(!input.next().equals("INTERNUCLEAR")){
+					atoms.add((int)input.nextDouble());
+					input.nextLine();
+				}
+			}
+			input.nextLine();
+			if(atoms.size()!=0)
+				break;
+		}
 
 		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
 		// volume information on "VOLUME INSIDE CONSTS:"
@@ -254,12 +301,14 @@ public class SigmaProfileGenerator {
 		area = new double[cosmoSegments];
 		SIGMA = new double[cosmoSegments];
 		atom = new int[cosmoSegments];
-
+		elem = new int[cosmoSegments];
 		
 		// first read the area information
 		for (int i = 0; i < cosmoSegments; i++) {
 			input.next(); // TESSERA
-			input.next(); // SFERA
+			atom[i] = input.nextInt(); // SFERA is the atom
+			elem[i] = atoms.get(atom[i]-1);
+
 			area[i] = input.nextDouble()*AU_ANGSTRON*AU_ANGSTRON;
 			x[i] = input.nextDouble()*AU_ANGSTRON;
 			y[i] = input.nextDouble()*AU_ANGSTRON;
@@ -433,7 +482,7 @@ public class SigmaProfileGenerator {
 	 * 
 	 * @param sigmaAveraged the areas to be sorted
 	 */
-	void simpleSorting(double sigmaAveraged[]){
+	public void simpleSorting(double sigmaAveraged[]){
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
 			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
@@ -448,9 +497,16 @@ public class SigmaProfileGenerator {
 			}
 			
 			// Each point represents the center of an interval, so we distribute it
-			// in the two adjacent points
-			sortedArea[TMP]+= area[J]*(CHGDEN[TMP+1]-sigmaAveraged[J])/increment;
-			sortedArea[TMP+1]+= area[J]*(sigmaAveraged[J]-CHGDEN[TMP])/increment;
+			// in the two adjacent points (** this can create charges higher than the
+			// higher charge in the unsorted profile **)
+//			sortedArea[TMP]+= area[J]*(CHGDEN[TMP+1]-sigmaAveraged[J])/increment;
+//			sortedArea[TMP+1]+= area[J]*(sigmaAveraged[J]-CHGDEN[TMP])/increment;
+			
+			// Charges are simply put into a range 
+			if(sigmaAveraged[J]-CHGDEN[TMP] > increment/2)
+				sortedArea[TMP+1]+= area[J];
+			else
+				sortedArea[TMP]+= area[J];
 		}
 	}
 
@@ -472,10 +528,19 @@ public class SigmaProfileGenerator {
 		return volume;
 	}
 	
+	/**
+	 * @return the atom list for the unsorted profiles (first atom is 1).
+	 */
 	public int[] getAtom() {
 		return atom;
 	}
 
+	/**
+	 * Returns the chemical element list for the unsorted profiles.
+	 * <p>Elements are given by their atomic charge.
+	 * 
+	 * @return the chemical element list for the unsorted profiles.
+	 */
 	public int[] getElem() {
 		return elem;
 	}
