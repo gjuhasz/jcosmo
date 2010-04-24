@@ -19,8 +19,8 @@
 
 package br.ufrgs.enq.jcosmo.ui;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JPanel;
 
@@ -29,10 +29,11 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.Range;
+import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * Dialog for building charts of the activity coefficient using COSMO-SAC model.
@@ -44,27 +45,32 @@ public class SigmaProfilePanel extends JPanel {
 
 	XYPlot sigmaProfilePlot;
 	JFreeChart sigmaProfileChart;
-	XYSeriesCollection dataset = new XYSeriesCollection();
+	DefaultTableXYDataset dataset = new DefaultTableXYDataset();
 	
-	XYStepRenderer stepRenderer = new XYStepRenderer();
+	XYItemRenderer stepRenderer;
 	
 	boolean err = false;
 
-	private BasicStroke dashed;
+//	private BasicStroke dashed;
 
 	public SigmaProfilePanel(String title) {
 		setLayout(new BorderLayout());
 
-		sigmaProfileChart = ChartFactory.createXYLineChart(title, 
+//		sigmaProfileChart = ChartFactory.createXYLineChart(title, 
+//				"sigma", "P^x", dataset, PlotOrientation.VERTICAL, true, true, false);
+		sigmaProfileChart = ChartFactory.createStackedXYAreaChart(title, 
 				"sigma", "P^x", dataset, PlotOrientation.VERTICAL, true, true, false);
+		
 		sigmaProfilePlot = sigmaProfileChart.getXYPlot();
 		sigmaProfilePlot.getDomainAxis().setAutoRange(false);
 		sigmaProfilePlot.getDomainAxis().setRange(new Range(-0.025, 0.025));
+		sigmaProfilePlot.setBackgroundPaint(Color.WHITE);
 		
 		add(new ChartPanel(sigmaProfileChart), BorderLayout.CENTER);
-		
-		dashed = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
-				1.0f, new float[] { 10.0f, 6.0f }, 0.0f);
+
+		stepRenderer = new XYStepRenderer();
+//		dashed = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,  
+//				1.0f, new float[] { 10.0f, 6.0f }, 0.0f);
 		
 //		sigmaProfilePlot.setBackgroundPaint(Color.lightGray);
 //		sigmaProfilePlot.setDomainGridlinePaint(Color.white);
@@ -82,7 +88,7 @@ public class SigmaProfilePanel extends JPanel {
 
 	public void addProfile(String label, double[] sigma, double[] area, boolean dashed){
 		int n = sigma.length;
-		XYSeries comp= new XYSeries(label);
+		XYSeries comp= new XYSeries(label, false, false);
 
 		// charges represent the center of the segments
 		comp.add(sigma[0], area[0]);
@@ -90,10 +96,14 @@ public class SigmaProfilePanel extends JPanel {
 			comp.add(sigma[j]-(sigma[j]-sigma[j-1])/2, area[j]);
 		}
 		dataset.addSeries(comp);
-		sigmaProfilePlot.setRenderer(dataset.getSeriesCount()-1, stepRenderer);
-		if(dashed)
-			sigmaProfilePlot.getRenderer().setSeriesStroke(dataset.getSeriesCount()-1, this.dashed);
-		else
-			sigmaProfilePlot.getRenderer().setSeriesStroke(dataset.getSeriesCount()-1, new BasicStroke(2.5f));
+		int series = dataset.getSeriesCount()-1;
+		int start = 80, delta = 60;
+		sigmaProfilePlot.getRenderer().setSeriesPaint(series, new Color(start+delta*series, start+delta*series, start+delta*series));
+
+//		sigmaProfilePlot.setRenderer(dataset.getSeriesCount()-1, stepRenderer);
+//		if(dashed)
+//			sigmaProfilePlot.getRenderer().setSeriesStroke(dataset.getSeriesCount()-1, this.dashed);
+//		else
+//			sigmaProfilePlot.getRenderer().setSeriesStroke(dataset.getSeriesCount()-1, new BasicStroke(2.5f));
 	}
 }
