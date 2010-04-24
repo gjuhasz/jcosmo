@@ -93,7 +93,8 @@ public class SigmaProfilePanel extends JPanel {
 		// charges represent the center of the segments
 		comp.add(sigma[0], area[0]);
 		for(int j=1; j<n; ++j){
-			comp.add(sigma[j]-(sigma[j]-sigma[j-1])/2, area[j]);
+//			comp.add(sigma[j]-(sigma[j]-sigma[j-1])/2, area[j]);
+			comp.add(sigma[j], area[j]);
 		}
 		dataset.addSeries(comp);
 		int series = dataset.getSeriesCount()-1;
