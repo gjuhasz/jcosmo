@@ -40,10 +40,24 @@ public class SigmaHBChart {
 		dlg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		dlg.setLayout(new BorderLayout());
 		
-		String name = "ACETONE";
-//		String name = "METHANE";
-//		String name = "ETHANOL";
+//		String name = "ACETONE";
+//		String name = "METHYL_ETHYL_KETONE";
+//		String name = "CHLOROFORM";
+		
+//		String name = "BENZENE";
+//		String name = "PHENOL";
+		
 //		String name = "METHANOL";
+//		String name = "ETHANOL";
+//		String name = "N-PENTANOL";
+
+//		String name = "N,N-DIMETHYLFORMAMIDE";
+		
+		String name = "ACETIC_ACID";
+		
+//		String name = "METHANE";
+//		String name = "N-PENTANE";
+		
 //		String name = "WATER";
 
 		String folder = "moltest/";
@@ -63,23 +77,20 @@ public class SigmaHBChart {
 		double area[] = sigmaParser.getOriginalArea();
 		int[] elem = sigmaParser.getElem();
 		
-		sigmaParser.simpleSorting(area, sigma);
-		chart.addProfile("Sigma", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-		
 		double[] areaHB = new double[area.length];
 		
 		for (int m = 0; m < area.length; m++) {
-			if(elem[m]==1 || elem[m]==7 || elem[m]==8){
+			if(elem[m]==1 || elem[m]==7 || elem[m]==8 || elem[m]==17){
 				areaHB[m] = area[m];
 				area[m] = 0;
 			}
 		}
 
 		sigmaParser.simpleSorting(area, sigma);
-		chart.addProfile("Sigma No HB", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+		chart.addProfile("Sigma Others", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 		
 		sigmaParser.simpleSorting(areaHB, sigma);
-		chart.addProfile("Sigma HB", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+		chart.addProfile("Sigma H, N, O, Cl", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 		
 		dlg.setSize(600, 400);
 		dlg.setLocationRelativeTo(null);

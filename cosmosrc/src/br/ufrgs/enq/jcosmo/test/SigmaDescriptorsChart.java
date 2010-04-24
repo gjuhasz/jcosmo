@@ -41,13 +41,29 @@ public class SigmaDescriptorsChart {
 		dlg.setLayout(new BorderLayout());
 		
 //		String name = "ACETONE";
-//		String name = "METHANE";
+//		String name = "METHYL_ETHYL_KETONE";
+		String name = "CHLOROFORM";
+		
+//		String name = "BENZENE";
+//		String name = "PHENOL";
+		
+//		String name = "METHANOL";
 //		String name = "ETHANOL";
-		String name = "METHANOL";
+//		String name = "N-PENTANOL";
+
+//		String name = "N,N-DIMETHYLFORMAMIDE";
+		
+//		String name = "ACETIC_ACID";
+		
+//		String name = "METHANE";
+//		String name = "N-PENTANE";
+		
 //		String name = "WATER";
 		
 		String folder = "moltest/";
+//		String extension = ".cos";
 		String extension = ".pcm.gout";
+//		String extension = ".gout";
 		
 		SigmaProfilePanel chart = new SigmaProfilePanel(name);
 		dlg.add(chart, BorderLayout.CENTER);
@@ -56,7 +72,9 @@ public class SigmaDescriptorsChart {
 		
 		SigmaProfileGenerator sigmaParser;
 		
+//		sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC);
 		sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM);
+//		sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS);
 		
 		sigmaParser.parseFile(fileName, SigmaProfileGenerator.RAV);
 		double[] sigma1 = sigmaParser.getAveragedChargeDensity();
@@ -72,16 +90,15 @@ public class SigmaDescriptorsChart {
 		double[] sigmaT = new double[area.length];
 		
 		sigmaParser.simpleSorting(area, sigma1);
-		chart.addProfile("full profile", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea(), true);
+//		chart.addProfile("full profile", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea(), true);
 
-		System.out.println("Atom, Elemnt, Area, Sigma(RAV), Sigma(RAV*2), SigmaT");
 		for (int m = 0; m < area.length; m++) {
 //			sigmaT[m] = 1000*(sigma2[m]-fcorr*sigma1[m]);
 			sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
 		}
 		
 //		double []sT = {-4, -1, 0, 1, 4};
-		double []sT = {0, 1, 2, 4};
+		double []sT = {0, 1, 2, 3};
 		double[] areaT = new double[area.length];
 		for (int i = 0; i < sT.length-1; i++) {
 			
