@@ -28,7 +28,7 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
  * @author rafael
  *
  */
-public class SigmaDescriptors {
+public class SigmaDescriptorsTest {
 
 	public static void main(String[] args) throws Exception {
 		

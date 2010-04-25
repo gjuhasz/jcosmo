@@ -17,7 +17,7 @@
  * along with JCosmo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package br.ufrgs.enq.jcosmo.test;
+package br.ufrgs.enq.jcosmo.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -37,7 +37,6 @@ import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
-import br.ufrgs.enq.jcosmo.ui.SigmaProfilePanel;
 
 /**
  * Test for multiple sigma descriptors.
@@ -45,7 +44,7 @@ import br.ufrgs.enq.jcosmo.ui.SigmaProfilePanel;
  * @author rafael
  *
  */
-public class SigmaDescriptorsChart {
+public class SigmaDescriptors {
 
 	public static void main(String[] args) throws Exception {
 
@@ -53,7 +52,7 @@ public class SigmaDescriptorsChart {
 		dlg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		dlg.setLayout(new BorderLayout());
 
-		final SigmaProfilePanel chart = new SigmaProfilePanel();
+		final SigmaProfileAreaPanel chart = new SigmaProfileAreaPanel();
 		dlg.add(chart, BorderLayout.CENTER);
 
 		final JTextField nameField = new JTextField("METHANOL", 20);
