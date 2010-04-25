@@ -1,0 +1,36 @@
+
+# www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
+
+# Use "nohup" to run from ssh and keep running after logout
+
+import os
+env = Environment()
+
+env['ENV']['USER'] = os.environ['USER']
+env['ENV']['HOME'] = os.environ['HOME']
+
+# Mopac stuff
+mol2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.cosmo $TARGET',
+                     suffix = '.mop', single_source=True)
+mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
+mopacopt = Builder(action = 'mopac $SOURCE', suffix = 'out', single_source=True)
+env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
+env.Append(BUILDERS = {'Mopac' : mopac})
+env.Append(BUILDERS = {'MopacOpt' : mopacopt})
+
+# Geometry optimization stuff
+mol2d2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
+                     suffix = '.mop', single_source=True)
+mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
+                     suffix = '.mol', single_source=True)
+env.Append(BUILDERS = {'Mol2D2Mop' : mol2d2mop})
+env.Append(BUILDERS = {'Mop2Mol' : mop2mol})
+
+# Optimize all .2dmol files
+mol2d = env.Mol2D2Mop(Glob('*.2dmol'))
+env.Depends(mol2d, 'keys_geom_opt.txt')
+mopacOpt = env.MopacOpt(mol2d)
+optMol = env.Mop2Mol(mopacOpt);
+env.Alias('geom', optMol)
+env.Default('geom')
+

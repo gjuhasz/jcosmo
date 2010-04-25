@@ -41,6 +41,7 @@ env.Append(BUILDERS = {'Gamess' : gamess})
 
 # Build all files for Mopac
 mops = env.Mol2Mop(Glob('*.mol'))
+# mops += env.BabelGam(Glob('*.optmol'))
 env.Depends(mops, 'keys.cosmo')
 mopacBuild = env.Mopac(mops)
 env.Alias('mopac', mopacBuild)
