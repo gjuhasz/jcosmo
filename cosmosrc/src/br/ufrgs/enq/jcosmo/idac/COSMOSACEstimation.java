@@ -46,9 +46,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 		@Override
 		public double getTheoreticalValue() {
 			for(EstimatedParameter p : getUnboundParameters()){
-				if(p.getName().equals("AEffPrime"))
-					model.setAEff(p.getEstimate());
-				else if(p.getName().equals("Coord"))
+				if(p.getName().equals("Coord"))
 					model.setCoord(p.getEstimate());
 				else if(p.getName().equals("Vnorm"))
 					model.setVnorm(p.getEstimate());

@@ -43,11 +43,12 @@ package br.ufrgs.enq.jcosmo;
  */
 public class COSMOSAC {
 
-	static final double EO = 2.395e-4;
-	public static final double AEFF = 7.25; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
+	static final double E0 = 2.395e-4;
 	public static final double FPOL = 0.6917; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
-	
-	double aEff = AEFF;
+	/** Default averaging radius */
+	public static final double RAV = 0.81764200000000;
+
+	double rav = RAV;
 	double fpol = FPOL;
 	double beta = 1;
 
@@ -65,7 +66,6 @@ public class COSMOSAC {
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
 	
-	double eo = EO;
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = 0;
 	double sigmaHB3 = 1;
@@ -174,21 +174,13 @@ public class COSMOSAC {
 		setVnorm(66.69);
 	}
 
-	public double getAEff() {
-		return aEff;
+	public double getRav() {
+		return rav;
 	}
-	public void setAEff(double aEff) {
-		this.aEff = aEff;
+	public void setRav(double rav) {
+		this.rav = rav;
 	}
 	
-	public double getEo() {
-		return eo;
-	}
-	public void setEo(double eo) {
-		this.eo = eo;
-	}
-
-
 	public double getCoord() {
 		return coord;
 	}
@@ -367,7 +359,9 @@ public class COSMOSAC {
 	 * or temperature.
 	 */
 	public void parametersChanged(){
-		double alpha = 0.3*Math.pow(aEff, 1.5)/eo;
+		double aEff = Math.PI*rav*rav;
+		aEff = 7.5;
+		double alpha = 0.3*Math.pow(aEff, 1.5)/E0;
 		
 		alphaPrime = fpol*alpha;
 
@@ -435,7 +429,7 @@ public class COSMOSAC {
 //				double cHBT_c = 1.5;
 				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
 
-				hb = -Math.pow(Math.abs(hb), sigmaHB3);
+				hb = -hb*hb;
 				
 				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}
@@ -483,6 +477,9 @@ public class COSMOSAC {
 			BOTTHETA += z[i]*QNORM[i];
 			BOTPHI += z[i]*RNORM[i];
 		}
+		
+		double aEff = Math.PI*rav*rav;
+		aEff = 7.5;
 
 		double sum_zi_li = 0;
 		for(int i=0; i<ncomps; ++i)

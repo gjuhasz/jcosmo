@@ -44,6 +44,17 @@ public class COSMOSAC_G extends COSMOSAC {
 		setVnorm(66.69);
 		
 		setFpol(FPOL);
+		
+		setBeta(1.4141655544216012);
+		setCHB(21856.59194516772);
+		setSigmaHB(0.0033588530289351158);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.6917);
+		setIgnoreSG(false);
+		setCoord(19.621223483264043);
+		setAnorm(77.08098812555656);
+		setVnorm(66.69);
 	}
 
 	public COSMOSAC_G() {
@@ -57,7 +68,7 @@ public class COSMOSAC_G extends COSMOSAC {
 		this.area = new double[ncomps][];
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
-				SigmaProfileGenerator.RAV, nsegments);
+				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";

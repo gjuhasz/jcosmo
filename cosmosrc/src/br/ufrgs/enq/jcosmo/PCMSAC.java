@@ -88,29 +88,19 @@ public class PCMSAC extends COSMOSAC {
 		setAnorm(161.17891465949677);
 		setVnorm(66.69);
 
-		// HB by Mathias et al., no C=O systems, COST:0.47509022374529086 NP:297
-		setBeta(1.5234406641968752);
-		setCHB(0); // 11300.23978050745);
-		setSigmaHB(0.009174267674010202);
-		setSigmaHB2(1.3106640483180576);
+		// Estimation of Fpol, Coord and Anorm for a very small subset:
+//		idac/Alkane-Alkane.csv AARD:0.011508424352655757 NP:3
+//		idac/Aromatic-Alkane.csv AARD:0.019907065297353543 NP:6
+		setBeta(1);
+		setCHB(0.0);
+		setSigmaHB(0.0080);
+		setSigmaHB2(2.0);
 		setSigmaHB3(0.0);
-		setFpol(0.8206299888489879);
+		setFpol(0.7);
 		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(379.1061606496285);
+		setCoord(7.5);
+		setAnorm(80.0);
 		setVnorm(66.69);
-		
-		
-//		setBeta(1.1369859135033609);
-//		setCHB(9404.605578007056);
-//		setSigmaHB(0.0018593390566600753);
-//		setSigmaHB2(1.377417265739591);
-//		setSigmaHB3(0.0);
-//		setFpol(0.36713956332545267);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(41.205946835254665);
-//		setVnorm(66.69);
 	}
 
 	public PCMSAC() {
@@ -152,8 +142,8 @@ public class PCMSAC extends COSMOSAC {
 				hb = 0;
 				if(charge[ACC]>Math.abs(sigmaHB/sigmaHB2) && charge[DON]<-Math.abs(sigmaHB/sigmaHB2)
 						&& Math.abs(charge[ACC] - charge[DON]) > Math.abs(sigmaHB)){
-					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
-//					hb = Math.abs(charge[ACC] - charge[DON]);
+//					hb = Math.max(0.0, Math.abs(charge[ACC] - charge[DON]) - sigmaHB);
+					hb = Math.abs(charge[ACC] - charge[DON]);
 					hb = (hb*hb);
 				}
 				
@@ -178,8 +168,7 @@ public class PCMSAC extends COSMOSAC {
 			compList = new HashMap<String, COSMOSACCompound>();
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM,
-				SigmaProfileGenerator.RAV,
-				nsegments);
+				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			COSMOSACCompound c2 = compList.get(comps[i].name);

@@ -19,6 +19,7 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
 
 /**
@@ -47,10 +48,10 @@ public class SigmaDescriptors {
 		sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM);
 		
 		
-		sigmaParser.parseFile(fileName, SigmaProfileGenerator.RAV);
+		sigmaParser.parseFile(fileName, COSMOSAC.RAV);
 		double[] sigma1 = sigmaParser.getAveragedChargeDensity();
 		
-		sigmaParser.parseFile(fileName, SigmaProfileGenerator.RAV*2);
+		sigmaParser.parseFile(fileName, COSMOSAC.RAV*2);
 		double[] sigma2 = sigmaParser.getAveragedChargeDensity();
 		
 		double fcorr = 0.816;

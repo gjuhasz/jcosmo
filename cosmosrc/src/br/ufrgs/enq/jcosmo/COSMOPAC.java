@@ -33,6 +33,10 @@ public class COSMOPAC extends COSMOSAC {
 	}
 	
 	public COSMOPAC() {
+		
+		// we use another averaging radius
+		this.rav = COSMOSAC.RAV*1.1;
+		
 //		// article results
 //		setResCorr(1);
 //		setCHB(42700.7265672813);
@@ -43,13 +47,22 @@ public class COSMOPAC extends COSMOSAC {
 //		setVnorm(66.69);
 //		setAEff(7.5);
 		
-		// IDAC without amines, ketones, carb. ac., fixed fpol, COST:0.8458963845820218
-		setBeta(1.3098268782036486);
-		setCHB(21364.2271780698);
+		// Only non-HB and low polarizability (RAV*1.1),  COST:0.08096689998854072
+//		idac/Alkane-Alkane.csv AARD:0.07719095226428561 NP:7
+//		idac/Alkane-AlkylHalide.csv AARD:0.21358093090737124 NP:5
+//		idac/Alkane-Ketone.csv AARD:0.11663264840429993 NP:21
+//		idac/AlkylHalide-Alkane.csv AARD:0.09508975499887927 NP:35
+//		idac/Aromatic-Alkane.csv AARD:0.041880708942964404 NP:46
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
+		setBeta(1.6513070950256865);
+		setCHB(0.0);
 		setSigmaHB(0.004986596249972728);
-		setFpol(0.6917);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.6900883503832824);
 		setIgnoreSG(false);
-		setAnorm(33.62478235458102);
+		setCoord(10.0);
+		setAnorm(51.404961223433276);
 		setVnorm(66.69);
 	}
 
@@ -61,7 +74,7 @@ public class COSMOPAC extends COSMOSAC {
 		this.area = new double[ncomps][];
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
-				SigmaProfileGenerator.RAV*0.4, nsegments);
+				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			String name = comps[i].name.replace(' ','_');
