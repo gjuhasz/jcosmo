@@ -39,14 +39,14 @@ import org.jfree.ui.RectangleInsets;
  *  
  * @author Rafael de Pelegrini Soares
  */
-public class SigmaProfilePanel extends JPanel {
+public class SigmaProfileAreaPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	XYPlot sigmaProfilePlot;
 	JFreeChart sigmaProfileChart;
 	DefaultTableXYDataset dataset = new DefaultTableXYDataset();
 	
-	public SigmaProfilePanel() {
+	public SigmaProfileAreaPanel() {
 		setLayout(new BorderLayout());
 
 		sigmaProfileChart = ChartFactory.createStackedXYAreaChart(null, 
