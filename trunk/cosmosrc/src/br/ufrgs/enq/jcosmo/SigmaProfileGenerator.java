@@ -39,8 +39,6 @@ import java.util.Scanner;
  *
  */
 public class SigmaProfileGenerator {
-	/** Default averaging radius */
-	public static final double RAV = 0.81764200000000;
 	
 	private static final double CHARGE_LOWER = -0.025;
 	protected static final double AU_ANGSTRON = 0.529177249;
@@ -51,7 +49,7 @@ public class SigmaProfileGenerator {
 	
 	double increment;
 	double volume;
-	double rav = RAV;
+	double rav;
 	
 	public enum FileType {
 		GAMESS,
@@ -66,16 +64,16 @@ public class SigmaProfileGenerator {
 	 * Creates the sigma profile given a COSMO/GAMESS output file with the default number of segments (51)
 	 * and default averaging radius.
 	 */
-	public SigmaProfileGenerator(FileType type) throws Exception {
-		this(type, RAV, 51);
+	public SigmaProfileGenerator(FileType type) {
+		this(type, COSMOSAC.RAV, 51);
 	}
 	
 	/**
 	 * Creates the sigma profile given a COSMO/GAMESS output and the number of segments,
 	 * default averaging radius is used.
 	 */
-	public SigmaProfileGenerator(FileType type, int sigmaPoints) throws Exception {
-		this(type, RAV, sigmaPoints);
+	public SigmaProfileGenerator(FileType type, int sigmaPoints) {
+		this(type, COSMOSAC.RAV, sigmaPoints);
 	}
 	
 	/**
