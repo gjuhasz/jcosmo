@@ -18,14 +18,6 @@ env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
 env.Append(BUILDERS = {'Mopac' : mopac})
 env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
-# Geometry optimization stuff
-mol2d2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
-                     suffix = '.optmop', single_source=True)
-mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
-                     suffix = '.optmol', single_source=True)
-env.Append(BUILDERS = {'Mol2D2Mop' : mol2d2mop})
-env.Append(BUILDERS = {'Mop2Mol' : mop2mol})
-
 # Gamess stuff
 babelgam = Builder(action = 'babel -h -i mol $SOURCE -o gamin -xf keys.gamess $TARGET',
                      suffix = '.inp', single_source=True)
@@ -48,13 +40,6 @@ env.Depends(mops, 'keys.cosmo')
 mopacBuild = env.Mopac(mops)
 env.Alias('mopac', mopacBuild)
 env.Default('mopac')
-
-# Optimize all .2dmol files
-mol2d = env.Mol2D2Mop(Glob('*.2dmol'))
-env.Depends(mops, 'keys_geom_opt.txt')
-mopacOpt = env.MopacOpt(mol2d)
-optMol = env.Mop2Mol(mopacOpt);
-env.Alias('geom', optMol)
 
 # Build all files for Gamess
 # Delete all DAT files, otherwise gamess will stop
