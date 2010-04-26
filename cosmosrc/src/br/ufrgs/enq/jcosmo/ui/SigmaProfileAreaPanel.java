@@ -21,6 +21,7 @@ package br.ufrgs.enq.jcosmo.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JPanel;
 
@@ -35,7 +36,12 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.ui.RectangleInsets;
 
 /**
- * Dialog for building charts of the activity coefficient using COSMO-SAC model.
+ * Panel for sigma profile charts.
+ * 
+ * <p>This will create a stacked area plot for pure substances.
+ * The {@link #addProfile(String, double[], double[])} adds a new descriptor for
+ * the sigma profile. The multiple descriptors added are then stacked to form the
+ * sigma profile.
  *  
  * @author Rafael de Pelegrini Soares
  */
@@ -57,19 +63,45 @@ public class SigmaProfileAreaPanel extends JPanel {
 		sigmaProfilePlot.getDomainAxis().setRange(new Range(-0.025, 0.025));
 		sigmaProfilePlot.setBackgroundPaint(Color.WHITE);
 		
-		sigmaProfilePlot.setAxisOffset(new RectangleInsets(0, 0, 0, 16));
+		sigmaProfilePlot.setAxisOffset(new RectangleInsets(8, 0, 0, 16));
+		sigmaProfilePlot.setDomainGridlinesVisible(false);
+		sigmaProfilePlot.setRangeGridlinesVisible(false);
+		
+		Font font = new Font("DeJaVu Serif", Font.BOLD, 16);
+		Font fontMini = new Font("DeJaVu Serif", 0, 12);
+		
+		sigmaProfilePlot.getDomainAxis().setLabelFont(font);
+		sigmaProfilePlot.getRangeAxis().setLabelFont(font);
+		sigmaProfilePlot.getDomainAxis().setTickLabelFont(fontMini);
+		sigmaProfilePlot.getRangeAxis().setTickLabelFont(fontMini);
+		
 		sigmaProfilePlot.getDomainAxis().setAxisLinePaint(Color.BLACK);
-		sigmaProfilePlot.getRangeAxis().setAxisLinePaint(Color.BLACK);
 		sigmaProfilePlot.getDomainAxis().setTickMarkPaint(Color.BLACK);
+		sigmaProfilePlot.getDomainAxis().setTickMarkInsideLength(4);
+		sigmaProfilePlot.getDomainAxis().setTickMarkOutsideLength(0);
+
+		sigmaProfilePlot.getRangeAxis().setAxisLinePaint(Color.BLACK);
 		sigmaProfilePlot.getRangeAxis().setTickMarkPaint(Color.BLACK);
+		sigmaProfilePlot.getRangeAxis().setTickMarkInsideLength(4);
+		sigmaProfilePlot.getRangeAxis().setTickMarkOutsideLength(0);
+		
 		
 		add(new ChartPanel(sigmaProfileChart), BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Remove all current profiles previouslly added.
+	 */
 	public void clearProfiles(){
 		dataset.removeAllSeries();
 	}
 	
+	/**
+	 * Adds a new descriptor profile
+	 * @param label the descriptor label
+	 * @param sigma the sigma (ordered)
+	 * @param area the area for each sigma
+	 */
 	public void addProfile(String label, double[] sigma, double[] area){
 		int n = sigma.length;
 		XYSeries comp= new XYSeries(label, false, false);
