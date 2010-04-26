@@ -56,7 +56,7 @@ public class COSMOPAC extends COSMOSAC {
 //		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
 		setBeta(1.6513070950256865);
 		setCHB(0.0);
-		setSigmaHB(0.004986596249972728);
+		setSigmaHB(0.006);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setFpol(0.6900883503832824);
@@ -64,6 +64,11 @@ public class COSMOPAC extends COSMOSAC {
 		setCoord(10.0);
 		setAnorm(51.404961223433276);
 		setVnorm(66.69);
+		
+		
+		// now adjusting the HB terms with all nonaqueous
+//		setCHB(9.392658327026367E8);
+//		setSigmaHB(0.020400000000000012);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
