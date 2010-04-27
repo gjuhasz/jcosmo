@@ -11,7 +11,7 @@ import org.apache.commons.math.estimation.SimpleEstimationProblem;
 import org.apache.commons.math.estimation.WeightedMeasurement;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 
 public class COSMOSACEstimation extends SimpleEstimationProblem {
 	
@@ -19,10 +19,10 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	
 	@SuppressWarnings("serial")
 	class Measure extends WeightedMeasurement {
-		COSMOSAC model;
+		COSMOPACM model;
 		double lnGamma[] = new double[2];
 		
-		public Measure(double value, COSMOSAC model) {
+		public Measure(double value, COSMOPACM model) {
 			super(1.0/(Math.abs(value) + 1e-2), value);
 //			super(1.0, value);
 			this.model = model;
@@ -72,9 +72,9 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	public COSMOSACEstimation() throws Exception {
 		// add the estimated parameters    ("Name",      default value,      fixed (do not estimate) )
 //		addParameter(new EstimatedParameter("AEffPrime", COSMOSAC.AEFFPRIME));
-		addParameter(new EstimatedParameter("Coord", COSMOSAC.COORD));
-		addParameter(new EstimatedParameter("Vnorm", COSMOSAC.VNORM));
-		addParameter(new EstimatedParameter("Anorm", COSMOSAC.ANORM));
+		addParameter(new EstimatedParameter("Coord", COSMOPACM.COORD));
+		addParameter(new EstimatedParameter("Vnorm", COSMOPACM.VNORM));
+		addParameter(new EstimatedParameter("Anorm", COSMOPACM.ANORM));
 //		addParameter(new EstimatedParameter("CHB", COSMOSAC.CHB));
 		addParameter(new EstimatedParameter("SigmaHB", 0.022));
 		
@@ -167,7 +167,7 @@ public class COSMOSACEstimation extends SimpleEstimationProblem {
 	void addAllMeasurements(){
 		for(IDACExperiments e : experiments){
 			List<Double> measures = e.getMeasures();
-			List<COSMOSAC> models = e.getModels();
+			List<COSMOPACM> models = e.getModels();
 			for (int i = 0; i < measures.size(); i++) {
 				addMeasurement(new Measure(Math.log(measures.get(i)), models.get(i)));
 			}

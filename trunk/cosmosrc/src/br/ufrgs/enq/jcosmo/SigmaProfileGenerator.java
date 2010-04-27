@@ -30,7 +30,7 @@ import java.util.Scanner;
  * Create the sigma profile based on GAMESS LOG or MOPAC COS file.
  * 
  * <p>This class will extract the segments information from the file
- * to construct the sigma profile as needed by {@link COSMOSAC}.
+ * to construct the sigma profile as needed by {@link COSMOPACM}.
  * 
  * <p>This code is based on the FORTRAN code Sigma-average available at
  * http://www.design.che.vt.edu/COSMO/. 
@@ -65,7 +65,7 @@ public class SigmaProfileGenerator {
 	 * and default averaging radius.
 	 */
 	public SigmaProfileGenerator(FileType type) {
-		this(type, COSMOSAC.RAV, 51);
+		this(type, COSMOPACM.RAV, 51);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class SigmaProfileGenerator {
 	 * default averaging radius is used.
 	 */
 	public SigmaProfileGenerator(FileType type, int sigmaPoints) {
-		this(type, COSMOSAC.RAV, sigmaPoints);
+		this(type, COSMOPACM.RAV, sigmaPoints);
 	}
 	
 	/**
@@ -134,13 +134,13 @@ public class SigmaProfileGenerator {
 		case GAMESS:
 		case GAMESS_PCM:
 //			simpleSorting(SIGMA);
-			averageCharges();
+			averageCharges(rav);
 //			averageCharges2();
 			simpleSorting(area, sigmaAveraged);
 			break;
 		case MOPAC:
 //			simpleSorting(SIGMA);
-			averageCharges();
+			averageCharges(rav);
 //			averageCharges2();
 			simpleSorting(area, sigmaAveraged);
 			break;
@@ -400,7 +400,7 @@ public class SigmaProfileGenerator {
 	 * Average the charges accordingly to a standard averaging radius.
 	 * <p>The averaging equation used is as in Mullins, Liu, Ghaderi, Fast, 2008.
 	 */
-	void averageCharges() {
+	void averageCharges(double rav) {
 		sigmaAveraged = new double[x.length];
 
 		double RAV2 = rav*rav;

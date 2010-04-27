@@ -27,12 +27,13 @@ package br.ufrgs.enq.jcosmo;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPAC extends COSMOPACM {
+public class COSMOPACMulti extends COSMOSACMulti {
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
-	public COSMOPAC() {
+	public COSMOPACMulti(int numberOfSegments, int numberOfDescriptors) {
+		super(numberOfSegments, numberOfDescriptors);
 		
 		// we use another averaging radius
 		this.rav = COSMOPACM.RAV*1.1;
@@ -76,7 +77,6 @@ public class COSMOPAC extends COSMOPACM {
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];
-		this.area = new double[ncomps][];
 
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
 				this.rav, nsegments);
@@ -93,7 +93,42 @@ public class COSMOPAC extends COSMOPACM {
 			
 			comps[i].charge = s.getChargeDensity();
 			this.VCOSMO[i] = comps[i].Vcosmo = s.getVolume();
-			this.area[i] = comps[i].area = s.getSortedArea();
+			
+			// the multi-area
+			double[] sigma1 = s.getAveragedChargeDensity();
+
+			s.averageCharges(rav*2);
+			double[] sigma2 = s.getAveragedChargeDensity();
+
+			// value from Klamt (COSMO-RS refinement)
+			double fcorr = 0.816;
+
+			double[] area = s.getOriginalArea();
+			double[] area2 = new double[area.length];
+			double[] sigmaT = new double[area.length];
+
+			s.simpleSorting(area, sigma1);
+
+			for (int m = 0; m < area.length; m++) {
+				//					sigmaT[m] = 1000*(sigma2[m]-fcorr*sigma1[m]);
+				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+			}
+			
+			// only 2 dimensions
+			comps[i].areaMulti = new double[2][];
+			
+			double tLimit = 1.25;
+			for (int m = 0; m < area.length; m++) {
+				if(sigmaT[m]>tLimit){
+					area2[m] = area[m];
+					area[m] = 0;
+				}
+			}
+			
+			s.simpleSorting(area, sigma1);
+			comps[i].areaMulti[0] = s.getSortedArea();
+			s.simpleSorting(area2, sigma1);
+			comps[i].areaMulti[1] = s.getSortedArea();
 			
 //			s.printProfile(System.out);
 		}

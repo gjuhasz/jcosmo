@@ -38,6 +38,9 @@ public class COSMOSACCompound {
 	public double []charge;
 	public double []area;
 	
+	/** Area for multiple domain profiles */
+	public double [][]areaMulti;
+	
 	public String toString(){
 		return name + ' ' + formula + ' ' + CAS;
 	}

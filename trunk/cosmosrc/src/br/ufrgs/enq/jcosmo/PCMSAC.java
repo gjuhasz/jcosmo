@@ -28,7 +28,7 @@ import java.util.HashMap;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class PCMSAC extends COSMOSAC {
+public class PCMSAC extends COSMOPACM {
 	public String toString(){
 		return "PCM-SAC";
 	}

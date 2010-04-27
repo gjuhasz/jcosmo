@@ -19,7 +19,7 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
@@ -34,7 +34,7 @@ public class GamessTests {
 		comps[0] = db.getComp("ethyl-acetate");
 		comps[1] = db.getComp("water");
 		
-		COSMOSAC cosmosac = new COSMOSAC_G();
+		COSMOPACM cosmosac = new COSMOSAC_G();
 //		COSMOSAC cosmosac = new COSMOSAC();
 		
 //		cosmosac.setSigmaHB(COSMOSAC.SIGMAHB);

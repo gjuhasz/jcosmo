@@ -19,37 +19,33 @@
 
 package br.ufrgs.enq.jcosmo.test;
 
-import java.sql.SQLException;
-
-import br.ufrgs.enq.jcosmo.COSMOPACM;
+import br.ufrgs.enq.jcosmo.COSMOPACMulti;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
-import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 /**
  * This program mimics the original FORTRAN code from VT-2005
  * @author rafael
  *
  */
-public class COSMOSACTest {
+public class COSMOPACMultiTest {
 
 	public static void main(String[] args) {
 
 		double T =330.15;
 		
-		COSMOPACM cosmosac = new COSMOPACM();
-		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		COSMOSACCompound c[] = new COSMOSACCompound[2];
-		try {
-			c[0] = db.getComp("methyl-acetate");
-			c[1] = db.getComp("water");
+		COSMOPACMulti cosmosac = new COSMOPACMulti(51, 2);
+		
+		COSMOSACCompound comps[] = new COSMOSACCompound[2];
+		comps[0] = new COSMOSACCompound();
+		comps[0].name = "METHYL-ACETATE";
+		comps[1] = new COSMOSACCompound();
+		comps[1].name = "WATER";
 			
-			cosmosac.setComponents(c);
+		try {
+			cosmosac.setComponents(comps);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
 		}
-
 		
 		cosmosac.setTemperature(T);
 		
