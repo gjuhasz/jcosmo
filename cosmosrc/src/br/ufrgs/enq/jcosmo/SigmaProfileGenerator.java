@@ -30,7 +30,7 @@ import java.util.Scanner;
  * Create the sigma profile based on GAMESS LOG or MOPAC COS file.
  * 
  * <p>This class will extract the segments information from the file
- * to construct the sigma profile as needed by {@link COSMOPACM}.
+ * to construct the sigma profile as needed by {@link COSMOSAC}.
  * 
  * <p>This code is based on the FORTRAN code Sigma-average available at
  * http://www.design.che.vt.edu/COSMO/. 
@@ -65,7 +65,7 @@ public class SigmaProfileGenerator {
 	 * and default averaging radius.
 	 */
 	public SigmaProfileGenerator(FileType type) {
-		this(type, COSMOPACM.RAV, 51);
+		this(type, COSMOSAC.RAV, 51);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class SigmaProfileGenerator {
 	 * default averaging radius is used.
 	 */
 	public SigmaProfileGenerator(FileType type, int sigmaPoints) {
-		this(type, COSMOPACM.RAV, sigmaPoints);
+		this(type, COSMOSAC.RAV, sigmaPoints);
 	}
 	
 	/**

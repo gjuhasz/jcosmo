@@ -37,7 +37,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOPACM;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -58,7 +58,7 @@ public class VLEdiagrams extends JFrame {
 		comps[0] = db.getComp("ethanol");
 		comps[1] = db.getComp("toluene");		
 		
-		COSMOPACM cosmosac = new COSMOPACM();
+		COSMOSAC cosmosac = new COSMOSAC();
 		cosmosac.setComponents(comps);
 
 		cosmosac.setTemperature(T+273.15);
@@ -147,7 +147,7 @@ public class VLEdiagrams extends JFrame {
 		comps[0] = db.getComp("methanol");
 		comps[1] = db.getComp("methyl-acetate");		
 		
-		COSMOPACM cosmosac = new COSMOPACM();
+		COSMOSAC cosmosac = new COSMOSAC();
 		cosmosac.setComponents(comps);
 
 		cosmosac.setTemperature(T+273.15);
@@ -244,7 +244,7 @@ public class VLEdiagrams extends JFrame {
 		comps[0] = db.getComp("ethanol");
 		comps[1] = db.getComp("toluene");		
 		
-		COSMOPACM cosmosac = new COSMOPAC();
+		COSMOSAC cosmosac = new COSMOPAC();
 		cosmosac.setComponents(comps);
 
 		cosmosac.setTemperature(T+273.15);
@@ -333,7 +333,7 @@ public class VLEdiagrams extends JFrame {
 		comps[0] = db.getComp("methanol");
 		comps[1] = db.getComp("methyl-acetate");		
 		
-		COSMOPACM cosmosac = new COSMOPAC();
+		COSMOSAC cosmosac = new COSMOPAC();
 		cosmosac.setComponents(comps);
 
 		cosmosac.setTemperature(T+273.15);

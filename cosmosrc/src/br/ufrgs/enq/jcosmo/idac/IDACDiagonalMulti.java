@@ -26,6 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 
 import com.csvreader.CsvReader;
 
@@ -35,7 +36,7 @@ import com.csvreader.CsvReader;
  * @author rafael e renan
  *
  */
-public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
+public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 	private static final long serialVersionUID = 1L;
 
 	private String modelClass;
@@ -43,7 +44,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 	private int start;
 	private Boolean useAll=true;
 	
-	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
+	List<COSMOSACMulti> models = new ArrayList<COSMOSACMulti>();
 	
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
@@ -67,7 +68,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 	}
 	
 	public void loadContents(String filename) throws Exception{
-		COSMOSAC model = null;
+		COSMOSACMulti model = null;
 		
 		CsvReader reader = new CsvReader(filename);
 		
@@ -77,7 +78,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 		
 		while(reader.readRecord()){
-			model = (COSMOSAC) Class.forName(modelClass).newInstance();
+			model = (COSMOSACMulti) Class.forName(modelClass).newInstance();
 			
 			String mixtureString = reader.get(0);
 			double T, gammaInf;
@@ -144,7 +145,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		List<String> tpNames = new Vector<String>();
 		
 		for (int i = start; i < models.size(); i++) {
-			COSMOSAC model = models.get(i);
+			COSMOSACMulti model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
 			
@@ -213,7 +214,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		
 		add(jp, BorderLayout.CENTER);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400,500);
+		setSize(800,600);
 		setVisible(true);	
 	}
 	

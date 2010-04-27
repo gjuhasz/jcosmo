@@ -33,7 +33,7 @@ public class COSMOPACMultiTest {
 
 		double T =330.15;
 		
-		COSMOPACMulti cosmosac = new COSMOPACMulti(51, 2);
+		COSMOPACMulti cosmosac = new COSMOPACMulti();
 		
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		comps[0] = new COSMOSACCompound();

@@ -26,7 +26,7 @@ package br.ufrgs.enq.jcosmo;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOSAC_G extends COSMOPACM {
+public class COSMOSAC_G extends COSMOSAC {
 	public String toString(){
 		return "COSMO-SAC(GAMESS)";
 	}

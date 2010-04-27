@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
+import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 
 import com.csvreader.CsvReader;
 
@@ -16,7 +16,7 @@ import com.csvreader.CsvReader;
  * @author rafael e renan
  *
  */
-public class IDACExperiments {
+public class IDACExperimentsMulti {
 	
 	String filename;
 
@@ -25,7 +25,7 @@ public class IDACExperiments {
 	private String modelClass;
 	private int NP;
 	
-	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
+	List<COSMOSACMulti> models = new ArrayList<COSMOSACMulti>();
 
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
@@ -36,17 +36,17 @@ public class IDACExperiments {
 	public void setPrintGammas(boolean printGammas) {
 		this.printGammas = printGammas;
 	}
-	public IDACExperiments(String filename, String modelClass, boolean leastSquares) throws Exception {
+	public IDACExperimentsMulti(String filename, String modelClass, boolean leastSquares) throws Exception {
 		this.filename = filename;
 		this.modelClass = modelClass;
 		
 		loadContents();
 	}
-	public IDACExperiments(String filename, String modelClass) throws Exception {
+	public IDACExperimentsMulti(String filename, String modelClass) throws Exception {
 		this(filename, modelClass, false);
 	}
 	
-	public List<COSMOSAC> getModels() {
+	public List<COSMOSACMulti> getModels() {
 		return models;
 	}
 	public List<Boolean> getValid() {
@@ -58,7 +58,7 @@ public class IDACExperiments {
 
 	
 	public void loadContents() throws Exception{
-		COSMOSAC model = null;
+		COSMOSACMulti model = null;
 		
 		CsvReader reader = new CsvReader(filename);
 		
@@ -72,7 +72,7 @@ public class IDACExperiments {
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 		
 		while(reader.readRecord()){
-			model = (COSMOSAC) Class.forName(modelClass).newInstance();
+			model = (COSMOSACMulti) Class.forName(modelClass).newInstance();
 			
 			String mixtureString = reader.get(0);
 			double T, gammaInf;
@@ -143,7 +143,7 @@ public class IDACExperiments {
 		NP = 0;
 		for (int i = 0; i < models.size(); i++) {
 			boolean valid = this.valid.get(i);
-			COSMOSAC model = models.get(i);
+			COSMOSACMulti model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
 			

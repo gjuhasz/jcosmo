@@ -41,7 +41,7 @@ package br.ufrgs.enq.jcosmo;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPACM {
+public class COSMOSAC {
 
 	static final double E0 = 2.395e-4;
 	public static final double FPOL = 0.6917; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
@@ -112,7 +112,7 @@ public class COSMOPACM {
 	private double averageACOSMO;
 	COSMOSACCompound[] comps;
 
-	public COSMOPACM(){
+	public COSMOSAC(){
 		this(51);
 	}
 	
@@ -123,7 +123,7 @@ public class COSMOPACM {
 	/**
 	 * @see #setComponents(COSMOSACCompound[])
 	 */
-	COSMOPACM(int numberOfSegments){
+	COSMOSAC(int numberOfSegments){
 		this.nsegments = numberOfSegments;
 		this.charge = new double[nsegments];
 		double increment = (SIGMA_BOUND*2)/(nsegments-1);

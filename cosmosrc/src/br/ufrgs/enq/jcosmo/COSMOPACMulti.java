@@ -32,11 +32,11 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		return "COSMO-SAC(MOPAC)";
 	}
 	
-	public COSMOPACMulti(int numberOfSegments, int numberOfDescriptors) {
-		super(numberOfSegments, numberOfDescriptors);
+	public COSMOPACMulti(){
+		super(51, 3);
 		
 		// we use another averaging radius
-		this.rav = COSMOPACM.RAV*1.1;
+		this.rav = COSMOSAC.RAV*1.1;
 		
 //		// article results
 //		setResCorr(1);
@@ -67,9 +67,64 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setVnorm(66.69);
 		
 		
-		// now adjusting the HB terms with all nonaqueous
-//		setCHB(9.392658327026367E8);
-//		setSigmaHB(0.020400000000000012);
+		// now adjusting the HB with 3 descriptors, all nonaqueous, COST:0.4591648062037473 NP:325
+		setBeta(1.6513070950256865);
+		setBeta(1, 0.9698277112144933);
+		setBeta(2, 2.5773245598710877);
+		setCHB(132965.77713782096);
+		setCHB(1, 109115.48920332415);
+		setCHB(2, 78041.74607782175);
+		setSigmaHB(0.0055);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.6900883503832824);
+		setFpol(1, 0.6269643704378696);
+		setFpol(2, 0.8938514253981169);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(51.404961223433276);
+		setVnorm(66.69);
+		
+		setSigmaHB(0.0055);
+		setCHB(5e8);
+		
+		
+		setBeta(1.6513070950256865);
+		setBeta(1, 2.5966623022422692);
+		setBeta(2, 3.186655778007093);
+		setCHB(0.0);
+		setCHB(1, 0.0);
+		setCHB(2, 0.0);
+		setSigmaHB(0.0055);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.6900883503832824);
+		setFpol(1, 0.4430225813238091);
+		setFpol(2, 1.0318244680427964);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(51.404961223433276);
+		setVnorm(66.69);
+		
+		
+//		idac/Alcohol-Alkane.csv AARD:0.4982266327131054 NP:14
+//		idac/Ketone-Alcohol.csv AARD:0.2816430413805225 NP:34, COST:0.3448131635730743
+		setBeta(1.6513070950256865);
+		setBeta(1, 4.783547453257033);
+		setBeta(2, 0.7103895052380395);
+		setCHB(4.190793926262297E7);
+		setCHB(1, 4.190793926262297E7);
+		setCHB(2, 4.190793926262297E7);
+		setSigmaHB(0.0055);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.6900883503832824);
+		setFpol(1, 0.8244733229051346);
+		setFpol(2, 3.342358909084158);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(51.404961223433276);
+		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -105,6 +160,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 
 			double[] area = s.getOriginalArea();
 			double[] area2 = new double[area.length];
+			double[] area3 = new double[area.length];
 			double[] sigmaT = new double[area.length];
 
 			s.simpleSorting(area, sigma1);
@@ -115,12 +171,16 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			}
 			
 			// only 2 dimensions
-			comps[i].areaMulti = new double[2][];
+			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 1.25;
+			double tLimit = 2;
+			double tLimit2 = 3;
 			for (int m = 0; m < area.length; m++) {
 				if(sigmaT[m]>tLimit){
-					area2[m] = area[m];
+					if(sigmaT[m]>tLimit2)
+						area3[m] = area[m];
+					else
+						area2[m] = area[m];
 					area[m] = 0;
 				}
 			}
@@ -129,6 +189,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti[0] = s.getSortedArea();
 			s.simpleSorting(area2, sigma1);
 			comps[i].areaMulti[1] = s.getSortedArea();
+			s.simpleSorting(area3, sigma1);
+			comps[i].areaMulti[2] = s.getSortedArea();
 			
 //			s.printProfile(System.out);
 		}
@@ -139,5 +201,29 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			z[i] = 1.0/ncomps;
 
 		parametersChanged();
+	}
+	
+	protected void calculeDeltaW_HB(){
+		for (int d = 0; d < ndescriptors; d++) {
+			for(int m=0; m<nsegments; ++m){
+				for(int n=0; n<nsegments; ++n){
+					int ACC = n, DON = m;
+					if(charge[m]>=charge[n]){
+						ACC = m;
+						DON = n;
+					}
+					// Hydrogen Bond effect:
+					double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+
+					// Klamt, Fluid Phase Equilib. 2000
+					// double cHBT_c = 1.5;
+					double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
+
+					hb = -hb*hb;
+
+					deltaW_HB[d][m][n] = cHB[d]*cHBT* hb;
+				}
+			}
+		}
 	}
 }
