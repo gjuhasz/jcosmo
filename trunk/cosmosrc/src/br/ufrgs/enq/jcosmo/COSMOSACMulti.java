@@ -62,7 +62,7 @@ public class COSMOSACMulti {
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = 0;
 	double sigmaHB3 = 1;
-	double cHB = CHB;
+	double []cHB;
 
 	private static double SIGMA_BOUND = 0.025;
 	
@@ -105,7 +105,7 @@ public class COSMOSACMulti {
 	COSMOSACCompound[] comps;
 
 	public COSMOSACMulti(){
-		this(51, 1);
+		this(51, 2);
 	}
 	
 	public String toString(){
@@ -115,13 +115,14 @@ public class COSMOSACMulti {
 	/**
 	 * @see #setComponents(COSMOSACCompound[])
 	 */
-	COSMOSACMulti(int numberOfSegments, int numberOfDescriptors){
+	public COSMOSACMulti(int numberOfSegments, int numberOfDescriptors){
 		this.nsegments = numberOfSegments;
 		this.ndescriptors = numberOfDescriptors;
 		
 		this.charge = new double[nsegments];
 		this.beta = new double[ndescriptors];
 		this.fpol = new double[ndescriptors];
+		this.cHB = new double[ndescriptors];
 		
 		double increment = (SIGMA_BOUND*2)/(nsegments-1);
 		for (int i = 0; i < nsegments; i++) {
@@ -414,7 +415,7 @@ public class COSMOSACMulti {
 
 					hb = -hb*hb;
 
-					deltaW_HB[d][m][n] = cHB*cHBT* hb;
+					deltaW_HB[d][m][n] = cHB[d]*cHBT* hb;
 				}
 			}
 		}
@@ -531,12 +532,20 @@ public class COSMOSACMulti {
 
 
 	public double getCHB() {
-		return cHB;
+		return cHB[0];
+	}
+	public double getCHB(int i) {
+		return cHB[i];
 	}
 
 
 	public void setCHB(double chb) {
-		cHB = chb;
+		for (int i = 0; i < this.cHB.length; i++) {
+			this.cHB[i] = Math.abs(chb);
+		}
+	}
+	public void setCHB(int i, double chb) {
+		this.cHB[i] = Math.abs(chb);
 	}
 
 
@@ -563,6 +572,9 @@ public class COSMOSACMulti {
 	public double getFpol() {
 		return fpol[0];
 	}
+	public double getFpol(int i) {
+		return fpol[i];
+	}
 	public void setFpol(double fpol) {
 		for (int i = 0; i < this.fpol.length; i++) {
 			this.fpol[i] = fpol;
@@ -575,13 +587,15 @@ public class COSMOSACMulti {
 	 * @param fpol the value
 	 */
 	public void setFpol(int i, double fpol) {
-		this.fpol[i] = fpol + fpol*i*0.0;
+		this.fpol[i] = fpol;
 	}
 	
 	public double getBeta() {
 		return beta[0];
 	}
-	
+	public double getBeta(int i) {
+		return beta[i];
+	}	
 	/**
 	 * Set the beta value for all descriptors
 	 * @param beta the value
@@ -591,6 +605,7 @@ public class COSMOSACMulti {
 			this.beta[i] = beta;
 		}
 	}
+	
 	/**
 	 * Set the beta parameter for a given descriptor
 	 * @param i the descriptor

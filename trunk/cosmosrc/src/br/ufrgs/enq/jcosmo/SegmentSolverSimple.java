@@ -54,7 +54,9 @@ public class SegmentSolverSimple implements ISegmentSolver {
 				for (int m = 0; m < nsegments; m++) {
 					double SUMMATION = 0.0;
 					for(int n = 0; n < nsegments; n++) {
-						SUMMATION += PROFILE[d][n]*factor* SEGGAMMA[d][n] * expDeltaW_RT[d][m][n];
+						for (int d2 = 0; d2 < ndescriptors; d2++) {
+							SUMMATION += PROFILE[d2][n]*factor* SEGGAMMA[d2][n] * expDeltaW_RT[d2][m][n];
+						}
 					}
 					// substitute with the new value
 					SEGGAMMA[d][m] = 1.0/SUMMATION;
@@ -63,7 +65,7 @@ public class SegmentSolverSimple implements ISegmentSolver {
 			}
 			
 			double newnorm = blas.dnrm2(ndescriptors, normVector, 1);
-			if(Math.abs((norm - newnorm)/newnorm) <= tol || niter>maxiter)
+			if(Math.abs((norm - newnorm)/newnorm) <= tol*0.1 || niter>maxiter)
 				break;
 			norm = newnorm;
 

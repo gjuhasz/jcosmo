@@ -62,7 +62,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOPACM;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
@@ -117,8 +117,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		
 		db = COSMOSACDataBase.getInstance();
 		
-		COSMOPACM models[] = new COSMOPACM[4];
-		models[0] = new COSMOPACM();
+		COSMOSAC models[] = new COSMOSAC[4];
+		models[0] = new COSMOSAC();
 		models[1] = new COSMOPAC();
 		models[2] = new COSMOSAC_G();
 		models[3] = new PCMSAC();
@@ -344,7 +344,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			return;
 		}
 
-		COSMOPACM cosmosac = (COSMOPACM) modelBox.getSelectedItem();
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
 		try {
 			comps[0] = db.getComp((String)listModel.getElementAt(0));
@@ -476,7 +476,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			}
 		}
 		
-		COSMOPACM cosmosac = (COSMOPACM) modelBox.getSelectedItem();
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
 		try {
 			cosmosac.setComponents(c);
 		} catch (Exception e) {
@@ -513,7 +513,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		COSMOPACM cosmosac = (COSMOPACM) modelBox.getSelectedItem();
+		COSMOSAC cosmosac = (COSMOSAC) modelBox.getSelectedItem();
 		if(modelBox == e.getSource()){
 			
 			chargeHB.setText(Double.toString(cosmosac.getCHB()));

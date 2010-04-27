@@ -27,7 +27,7 @@ package br.ufrgs.enq.jcosmo;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPAC extends COSMOPACM {
+public class COSMOPAC extends COSMOSAC {
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
@@ -35,7 +35,7 @@ public class COSMOPAC extends COSMOPACM {
 	public COSMOPAC() {
 		
 		// we use another averaging radius
-		this.rav = COSMOPACM.RAV*1.1;
+		this.rav = COSMOSAC.RAV*1.1;
 		
 //		// article results
 //		setResCorr(1);

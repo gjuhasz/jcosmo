@@ -21,7 +21,7 @@ package br.ufrgs.enq.jcosmo.test;
 
 import java.sql.SQLException;
 
-import br.ufrgs.enq.jcosmo.COSMOPACM;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -36,7 +36,7 @@ public class COSMOSACTest {
 
 		double T =330.15;
 		
-		COSMOPACM cosmosac = new COSMOPACM();
+		COSMOSAC cosmosac = new COSMOSAC();
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 		COSMOSACCompound c[] = new COSMOSACCompound[2];
 		try {
