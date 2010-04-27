@@ -13,7 +13,7 @@ import org.apache.commons.math.optimization.PointCostPair;
 import br.ufrgs.enq.direct.DiRect;
 import br.ufrgs.enq.direct.ObjectiveFunction;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 
@@ -110,7 +110,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
-		COSMOSAC cosmo = (COSMOSAC) experiments.get(0).getModels().get(0);
+		COSMOPACM cosmo = (COSMOPACM) experiments.get(0).getModels().get(0);
 
 //		pars[i++] = cosmo.getBeta();
 //		pars[i++] = cosmo.getFpol();
@@ -133,7 +133,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				if(!exp.getValid().get(j))
 					continue;
 				
-				COSMOSAC cosmo = exp.getModels().get(j);
+				COSMOPACM cosmo = exp.getModels().get(j);
 				
 				int i=0;
 //				cosmo.setBeta(pars[i++]);
@@ -191,7 +191,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		}
 		
 		// print a model friend version of the solution
-		COSMOSAC cosmo = est.experiments.get(0).getModels().get(0);
+		COSMOPACM cosmo = est.experiments.get(0).getModels().get(0);
 		System.out.println("setBeta(" + cosmo.getBeta() + ");");
 		System.out.println("setCHB(" + cosmo.getCHB() + ");");
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");

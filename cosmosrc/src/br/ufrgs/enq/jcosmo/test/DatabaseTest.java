@@ -20,7 +20,7 @@
 package br.ufrgs.enq.jcosmo.test;
 
 import junit.framework.TestCase;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -34,7 +34,7 @@ public class DatabaseTest extends TestCase {
 		c[0] = db.getComp("Methyl-Acetate");
 		c[1] = db.getComp("Water");
 
-		COSMOSAC cosmosac = new COSMOSAC();
+		COSMOPACM cosmosac = new COSMOPACM();
 		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
@@ -69,7 +69,7 @@ public class DatabaseTest extends TestCase {
 		c[0] = db.getComp("chloroform");
 		c[1] = db.getComp("1,4-dioxane");
 
-		COSMOSAC cosmosac = new COSMOSAC();
+		COSMOPACM cosmosac = new COSMOPACM();
 		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
@@ -110,7 +110,7 @@ public class DatabaseTest extends TestCase {
 		c[0] = db.getComp("Methyl-Ethyl-Ketone");
 		c[1] = db.getComp("Toluene");
 
-		COSMOSAC cosmosac = new COSMOSAC();
+		COSMOPACM cosmosac = new COSMOPACM();
 		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);
@@ -146,7 +146,7 @@ public class DatabaseTest extends TestCase {
 		c[0] = db.getComp("Benzene");
 		c[1] = db.getComp("2,2,4-trimethylpentane");
 
-		COSMOSAC cosmosac = new COSMOSAC();
+		COSMOPACM cosmosac = new COSMOPACM();
 		cosmosac.setComponents(c);
 
 		cosmosac.setTemperature(T);

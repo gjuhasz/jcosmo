@@ -20,7 +20,7 @@
 package br.ufrgs.enq.jcosmo.test;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -34,8 +34,8 @@ public class ActivityTests {
 		comps[0] = db.getComp("propionic-acid");
 		comps[1] = db.getComp("cyclohexane");
 		
-		COSMOSAC cosmosac = new COSMOPAC();
-		cosmosac.setSigmaHB(COSMOSAC.SIGMAHB);
+		COSMOPACM cosmosac = new COSMOPAC();
+		cosmosac.setSigmaHB(COSMOPACM.SIGMAHB);
 		cosmosac.setComponents(comps);
 
 		cosmosac.setTemperature(298);

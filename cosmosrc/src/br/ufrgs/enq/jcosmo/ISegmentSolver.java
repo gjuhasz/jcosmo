@@ -12,12 +12,24 @@ public interface ISegmentSolver {
 	/**
 	 * Solve the segment activity function.
 	 * 
-	 * @param PROFILE
+	 * @param area
 	 * @param factor
 	 * @param SEGGAMMA the segment activity vector (should contain the solution on exit)
 	 * @param expDeltaW_RT
 	 * @param tol
 	 */
-	public void solve(double PROFILE[], double factor, double SEGGAMMA[], double expDeltaW_RT[][], double tol);
+	public void solve(double area[], double factor, double SEGGAMMA[], double expDeltaW_RT[][], double tol);
+
+	
+	/**
+	 * Solve the segment activity function.
+	 * 
+	 * @param area
+	 * @param factor
+	 * @param SEGGAMMA the segment activity vector (should contain the solution on exit)
+	 * @param expDeltaW_RT
+	 * @param tol
+	 */
+	public void solveMulti(double area[][], double factor, double SEGGAMMA[][], double expDeltaW_RT[][][], double tol);
 
 }

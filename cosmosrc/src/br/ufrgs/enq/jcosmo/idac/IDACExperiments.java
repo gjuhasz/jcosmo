@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -25,7 +25,7 @@ public class IDACExperiments {
 	private String modelClass;
 	private int NP;
 	
-	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
+	List<COSMOPACM> models = new ArrayList<COSMOPACM>();
 
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
@@ -46,7 +46,7 @@ public class IDACExperiments {
 		this(filename, modelClass, false);
 	}
 	
-	public List<COSMOSAC> getModels() {
+	public List<COSMOPACM> getModels() {
 		return models;
 	}
 	public List<Boolean> getValid() {
@@ -58,7 +58,7 @@ public class IDACExperiments {
 
 	
 	public void loadContents() throws Exception{
-		COSMOSAC model = null;
+		COSMOPACM model = null;
 		
 		CsvReader reader = new CsvReader(filename);
 		
@@ -72,7 +72,7 @@ public class IDACExperiments {
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 		
 		while(reader.readRecord()){
-			model = (COSMOSAC) Class.forName(modelClass).newInstance();
+			model = (COSMOPACM) Class.forName(modelClass).newInstance();
 			
 			String mixtureString = reader.get(0);
 			double T, gammaInf;
@@ -143,7 +143,7 @@ public class IDACExperiments {
 		NP = 0;
 		for (int i = 0; i < models.size(); i++) {
 			boolean valid = this.valid.get(i);
-			COSMOSAC model = models.get(i);
+			COSMOPACM model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
 			

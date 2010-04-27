@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
@@ -83,7 +83,7 @@ public class SigmaDescriptors {
 				String folder = "mopac/";
 				FileType type = SigmaProfileGenerator.FileType.MOPAC;
 				String extension = ".cos";
-				COSMOSAC model = null;
+				COSMOPACM model = null;
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();

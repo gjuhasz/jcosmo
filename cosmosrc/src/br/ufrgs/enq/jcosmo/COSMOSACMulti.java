@@ -23,25 +23,18 @@ package br.ufrgs.enq.jcosmo;
 
 
 /**
- * COSMO-SAC activity model.
+ * COSMO-SAC activity model with multiple descriptors.
  * 
- * This activity implementation uses the sigma profiles of pure components to calculate
- * the liquid-phase activity coefficients in a solution.
+ * This activity implementation uses multiple domain sigma profiles
+ * of pure components to calculate the liquid-phase activity coefficients in a solution.
  * <p>
- * This code is based on code available at http://www.design.che.vt.edu/COSMO/
- * <p>
- * There are several improvements on the code:
- * <ul>
- * <li>Code was translated for Java
- * <li>It can evaluate infinite dilution (x=0) activity coefficients (original code
- * had a bug and returned NaN for this case)
- * <li>There are some changes on the segment activity converging mechanism (much better performance)
- * </ul>
+ * This code was initially based on code available at http://www.design.che.vt.edu/COSMO/
+ * but currently only a very small portion of the original code remains.
  * 
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOSAC {
+public class COSMOSACMulti {
 
 	static final double E0 = 2.395e-4;
 	public static final double FPOL = 0.6917; // Ind. Eng. Chem. Res., Vol. 46, No. 22, 2007
@@ -49,8 +42,8 @@ public class COSMOSAC {
 	public static final double RAV = 0.81764200000000;
 
 	double rav = RAV;
-	double fpol = FPOL;
-	double beta = 1;
+	double []fpol;
+	double []beta;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
@@ -73,7 +66,7 @@ public class COSMOSAC {
 
 	private static double SIGMA_BOUND = 0.025;
 	
-	double alphaPrime;
+	double alpha;
 
 	private static final double TOLERANCE = 1e-6;
 
@@ -85,6 +78,8 @@ public class COSMOSAC {
 	int ncomps;
 	/** The number of independent segments to be considered by the model */ 
 	int nsegments;
+	/** The number of descriptors to be considered by the model */ 
+	int ndescriptors;
 
 	/// Cavity volume for each substance
 	double [] VCOSMO;
@@ -94,16 +89,13 @@ public class COSMOSAC {
 	double [] QNORM;
 	double [] li;
 
-	double [] PROFILE;
+	double [][] PROFILE;
 
-	double [][] area;
 	double [] charge;
-	double deltaW[][];
-	double deltaW_HB[][];
-	double expDeltaWPure[][][];
-	double expDeltaW[][];
-	double SEGGAMMA[];
-	double SEGGAMMAPR[][];
+	double deltaW_HB[][][];
+	double expDeltaW[][][];
+	double SEGGAMMA[][];
+	double SEGGAMMAPR[][][];
 	
 	ISegmentSolver segSolver;
 
@@ -112,20 +104,25 @@ public class COSMOSAC {
 	private double averageACOSMO;
 	COSMOSACCompound[] comps;
 
-	public COSMOSAC(){
-		this(51);
+	public COSMOSACMulti(){
+		this(51, 1);
 	}
 	
 	public String toString(){
-		return "COSMO-SAC(DMol3)";
+		return "COSMO-MSAC";
 	}
 	
 	/**
 	 * @see #setComponents(COSMOSACCompound[])
 	 */
-	COSMOSAC(int numberOfSegments){
+	COSMOSACMulti(int numberOfSegments, int numberOfDescriptors){
 		this.nsegments = numberOfSegments;
+		this.ndescriptors = numberOfDescriptors;
+		
 		this.charge = new double[nsegments];
+		this.beta = new double[ndescriptors];
+		this.fpol = new double[ndescriptors];
+		
 		double increment = (SIGMA_BOUND*2)/(nsegments-1);
 		for (int i = 0; i < nsegments; i++) {
 			charge[i] = -SIGMA_BOUND + increment*(double)i;
@@ -193,13 +190,13 @@ public class COSMOSAC {
 	/**
 	 * @return the pure substance segment activity coefficient
 	 */
-	public double[][] getPureSegmentGamma(){
+	public double[][][] getPureSegmentGamma(){
 		return SEGGAMMAPR;
 	}
 	/**
 	 * @return the mixture segment activity coefficient
 	 */
-	public double[] getMixtureSegmentGamma(){
+	public double[][] getMixtureSegmentGamma(){
 		return SEGGAMMA;
 	}
 	
@@ -217,11 +214,9 @@ public class COSMOSAC {
 		this.ncomps = comps.length;
 		
 		this.VCOSMO = new double[ncomps];		
-		this.area = new double[ncomps][nsegments];
 
 		for (int i = 0; i < comps.length; i++) {
 			this.VCOSMO[i] = comps[i].Vcosmo;
-			this.area[i] = comps[i].area;
 			
 			// Sort the compound area and charge and overwrite the compound data
 //			simpleSorting(this.area[i], comps[i].charge, comps[i].area);
@@ -301,22 +296,22 @@ public class COSMOSAC {
 //		System.out.println("expDeltaW_RT");
 		for (int m = 0; m < nsegments; m++) {
 			for(int n = 0; n < nsegments; n++) {
-
-				// pure expDeltaW
-				for (int i = 0; i < ncomps; i++) {
-					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+				double chargemn = charge[m]+charge[n];
+				
+				for (int d = 0; d < ndescriptors; d++) {
+					
+					double deltaWmn = (alpha*fpol[d]/2.0)*chargemn*chargemn;
+					
+					expDeltaW[d][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][m][n]) * inv_RT);
+				
+//					System.out.println(expDeltaW[d][m][n]);
 				}
-				
-				// mixture expDeltaW
-				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
-				
-//				System.out.println(expDeltaW[m][n]);
 			}
 		}
 		
 		// ITERATION FOR SEGMENT ACITIVITY COEF (PURE SPECIES) (temperature dependent only)
 		for(int i=0; i<ncomps; ++i){
-			segSolver.solve(area[i], 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaWPure[i], TOLERANCE);
+			segSolver.solveMulti(comps[i].areaMulti, 1.0/ACOSMO[i], SEGGAMMAPR[i],	expDeltaW, TOLERANCE);
 		}
 	}
 	
@@ -337,12 +332,14 @@ public class COSMOSAC {
 		for (int i = 0; i < ncomps; i++) {
 			averageACOSMO += z[i]*ACOSMO[i];
 		}
-		for(int m=0; m<nsegments; ++m){
-			double numer = 0;
-			for (int i = 0; i < ncomps; i++) {
-				numer += z[i]*area[i][m]; 
+		for(int d=0; d<ndescriptors; ++d){
+			for(int m=0; m<nsegments; ++m){
+				double numer = 0;
+				for (int i = 0; i < ncomps; i++) {
+					numer += z[i]*comps[i].areaMulti[d][m]; 
+				}
+				PROFILE[d][m] = numer/averageACOSMO;
 			}
-			PROFILE[m] = numer/averageACOSMO;
 		}
 		
 		// update the profiles which depend on the composition
@@ -361,19 +358,15 @@ public class COSMOSAC {
 	public void parametersChanged(){
 		double aEff = Math.PI*rav*rav;
 		aEff = 7.5;
-		double alpha = 0.3*Math.pow(aEff, 1.5)/E0;
-		
-		alphaPrime = fpol*alpha;
+		alpha = 0.3*Math.pow(aEff, 1.5)/E0;
 
 		ACOSMO = new double[ncomps];
-		PROFILE = new double[nsegments];
-		deltaW = new double[nsegments][nsegments];
-		deltaW_HB = new double[nsegments][nsegments];
-		expDeltaW = new double[nsegments][nsegments];
-		expDeltaWPure = new double[ncomps][nsegments][nsegments];
+		PROFILE = new double[ndescriptors][nsegments];
+		deltaW_HB = new double[ndescriptors][nsegments][nsegments];
+		expDeltaW = new double[ndescriptors][nsegments][nsegments];
 		
-		SEGGAMMA = new double[nsegments];
-		SEGGAMMAPR = new double[ncomps][nsegments];
+		SEGGAMMA = new double[ndescriptors][nsegments];
+		SEGGAMMAPR = new double[ncomps][ndescriptors][nsegments];
 //		segSolver = new SegmentSolverNewton();
 		segSolver = new SegmentSolverSimple();
 		
@@ -382,11 +375,15 @@ public class COSMOSAC {
 		li = new double[ncomps];
 		for(int i=0; i<ncomps; ++i){
 			ACOSMO[i] = 0;
-			for (int m = 0; m < area[i].length; m++) {
-				ACOSMO[i] += area[i][m];
+			for (int d = 0; d < ndescriptors; d++) {
+				for (int m = 0; m < nsegments; m++) {
+					ACOSMO[i] += comps[i].areaMulti[d][m];
 
-				// initialize all SEGGAMMAPR (reused between calculations)
-				SEGGAMMAPR[i][m] = 1.0;
+					// initialize all SEGGAMMAPR (reused between calculations)
+					SEGGAMMAPR[i][d][m] = 1.0;
+					// initialize all SEGGAMMA (reused between calculations)
+					SEGGAMMA[d][m] = 1.0;
+				}
 			}
 		}
 		// some more composition independent properties
@@ -396,42 +393,29 @@ public class COSMOSAC {
 			li[i] = (coord/2.0)*(RNORM[i]-QNORM[i])-(RNORM[i]-1.0);
 		}
 		
-		calculeDeltaW();
 		calculeDeltaW_HB();
 	}
 	
-	protected void calculeDeltaW(){
-		double chargemn = 0;
-		for(int m=0; m<nsegments; ++m){
-			// initialize all SEGGAMMA (reused between calculations)
-			SEGGAMMA[m] = 1.0;
-
-			for(int n=0; n<nsegments; ++n){
-				chargemn = charge[m]+charge[n];
-				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
-			}
-		}
-	}
-	
 	protected void calculeDeltaW_HB(){
-		for(int m=0; m<nsegments; ++m){
+		for (int d = 0; d < ndescriptors; d++) {
+			for(int m=0; m<nsegments; ++m){
+				for(int n=0; n<nsegments; ++n){
+					int ACC = n, DON = m;
+					if(charge[m]>=charge[n]){
+						ACC = m;
+						DON = n;
+					}
+					// Hydrogen Bond effect:
+					double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
 
-			for(int n=0; n<nsegments; ++n){
-				int ACC = n, DON = m;
-				if(charge[m]>=charge[n]){
-					ACC = m;
-					DON = n;
+					// Klamt, Fluid Phase Equilib. 2000
+					// double cHBT_c = 1.5;
+					double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
+
+					hb = -hb*hb;
+
+					deltaW_HB[d][m][n] = cHB*cHBT* hb;
 				}
-				// Hydrogen Bond effect:
-				double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
-				
-				// Klamt, Fluid Phase Equilib. 2000
-//				double cHBT_c = 1.5;
-				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
-
-				hb = -hb*hb;
-				
-				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}
 		}
 	}
@@ -468,7 +452,7 @@ public class COSMOSAC {
 	 */
 	public void activityCoefficientLn(double[] lnGama, int start){
 		// Solve for the SEGGAMMA of the mixture
-		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
+		segSolver.solveMulti(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
 		
 		// THE STAVERMAN-GUGGENHEIM EQUATION
 		double BOTTHETA = 0;
@@ -500,14 +484,16 @@ public class COSMOSAC {
 
 			// CALCULATION OF GAMMAS
 			double lnGammaRestoration = 0.0;
-			for(int m=0; m<nsegments; ++m){
-//				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
-				double lnMixSeg = Math.log(SEGGAMMA[m]);
-				double lnMixPure = Math.log(SEGGAMMAPR[i][m]);
-				
-				lnGammaRestoration += (area[i][m]/aEff)*(lnMixSeg - lnMixPure);
+			for (int d = 0; d < ndescriptors; d++) {
+				for(int m=0; m<nsegments; ++m){
+					//				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
+					double lnMixSeg = Math.log(SEGGAMMA[d][m]);
+					double lnMixPure = Math.log(SEGGAMMAPR[i][d][m]);
+
+					lnGammaRestoration += beta[d]*(comps[i].areaMulti[d][m]/aEff)*(lnMixSeg - lnMixPure);
+				}
 			}
-			lnGama[i+start] = beta*lnGammaRestoration + lnGammaSG;
+			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
 		}
 	}
 
@@ -575,16 +561,42 @@ public class COSMOSAC {
 
 	
 	public double getFpol() {
-		return fpol;
+		return fpol[0];
 	}
 	public void setFpol(double fpol) {
-		this.fpol = fpol;
+		for (int i = 0; i < this.fpol.length; i++) {
+			this.fpol[i] = fpol;
+		}
+	}
+	
+	/**
+	 * Set the fpol value for a given descriptor
+	 * @param i the descriptor
+	 * @param fpol the value
+	 */
+	public void setFpol(int i, double fpol) {
+		this.fpol[i] = fpol + fpol*i*0.0;
 	}
 	
 	public double getBeta() {
-		return beta;
+		return beta[0];
 	}
+	
+	/**
+	 * Set the beta value for all descriptors
+	 * @param beta the value
+	 */
 	public void setBeta(double beta) {
-		this.beta = beta;
+		for (int i = 0; i < this.beta.length; i++) {
+			this.beta[i] = beta;
+		}
+	}
+	/**
+	 * Set the beta parameter for a given descriptor
+	 * @param i the descriptor
+	 * @param beta the value
+	 */
+	public void setBeta(int i, double beta) {
+		this.beta[i] = beta;
 	}
 }

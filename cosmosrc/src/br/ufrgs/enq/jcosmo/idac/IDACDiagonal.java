@@ -23,7 +23,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPACM;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
@@ -43,7 +43,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 	private int start;
 	private Boolean useAll=true;
 	
-	List<COSMOSAC> models = new ArrayList<COSMOSAC>();
+	List<COSMOPACM> models = new ArrayList<COSMOPACM>();
 	
 	List<Double> gammaInfs = new ArrayList<Double>();
 	List<Double> temperatures = new ArrayList<Double>();
@@ -67,7 +67,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 	}
 	
 	public void loadContents(String filename) throws Exception{
-		COSMOSAC model = null;
+		COSMOPACM model = null;
 		
 		CsvReader reader = new CsvReader(filename);
 		
@@ -77,7 +77,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
 		
 		while(reader.readRecord()){
-			model = (COSMOSAC) Class.forName(modelClass).newInstance();
+			model = (COSMOPACM) Class.forName(modelClass).newInstance();
 			
 			String mixtureString = reader.get(0);
 			double T, gammaInf;
@@ -97,7 +97,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 			}
 			
 			COSMOSACCompound comps[] = new COSMOSACCompound[2];
-			if (modelClass != COSMOSAC.class.getName() & useAll==true){
+			if (modelClass != COSMOPACM.class.getName() & useAll==true){
 				comps[0] = db.getComp("water");
 				comps[0].name = compNames[0].toUpperCase();
 				comps[1] = db.getComp("water");
@@ -144,7 +144,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		List<String> tpNames = new Vector<String>();
 		
 		for (int i = start; i < models.size(); i++) {
-			COSMOSAC model = models.get(i);
+			COSMOPACM model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
 			
