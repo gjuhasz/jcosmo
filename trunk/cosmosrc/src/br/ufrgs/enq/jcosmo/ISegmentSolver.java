@@ -30,6 +30,6 @@ public interface ISegmentSolver {
 	 * @param expDeltaW_RT
 	 * @param tol
 	 */
-	public void solveMulti(double area[][], double factor, double SEGGAMMA[][], double expDeltaW_RT[][][], double tol);
+	public void solveMulti(double area[][], double factor, double SEGGAMMA[][], double expDeltaW_RT[][][][], double tol);
 
 }

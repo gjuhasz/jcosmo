@@ -39,7 +39,7 @@ public class SegmentSolverSimple implements ISegmentSolver {
 	}
 	
 	
-	public void solveMulti(double PROFILE[][], double factor, double SEGGAMMA[][], double expDeltaW_RT[][][], double tol){
+	public void solveMulti(double PROFILE[][], double factor, double SEGGAMMA[][], double expDeltaW_RT[][][][], double tol){
 		int ndescriptors = PROFILE.length;
 		int nsegments = PROFILE[0].length;
 		
@@ -55,7 +55,7 @@ public class SegmentSolverSimple implements ISegmentSolver {
 					double SUMMATION = 0.0;
 					for(int n = 0; n < nsegments; n++) {
 						for (int d2 = 0; d2 < ndescriptors; d2++) {
-							SUMMATION += PROFILE[d2][n]*factor* SEGGAMMA[d2][n] * expDeltaW_RT[d2][m][n];
+							SUMMATION += PROFILE[d2][n]*factor* SEGGAMMA[d2][n] * expDeltaW_RT[d][d2][m][n];
 						}
 					}
 					// substitute with the new value

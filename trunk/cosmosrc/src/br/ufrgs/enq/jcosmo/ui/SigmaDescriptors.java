@@ -89,7 +89,7 @@ public class SigmaDescriptors {
 					model = new COSMOPAC();
 				}
 				else if(fileType.getSelectedItem().equals("PCM-GAMESS")){
-					folder = "moltest/";
+					folder = "mopac/";
 					extension = ".pcm.gout";
 					type = SigmaProfileGenerator.FileType.GAMESS_PCM;
 					model = new PCMSAC();
@@ -129,7 +129,7 @@ public class SigmaDescriptors {
 							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
 						}
 
-						double []sT = {0, 1.5, 2, 4};
+						double []sT = {0, 1, 2, 4};
 						double[] areaT = new double[area.length];
 						for (int i = 0; i < sT.length; i++) {
 							double stLow = sT[i];

@@ -92,8 +92,8 @@ public class COSMOSACMulti {
 	double [][] PROFILE;
 
 	double [] charge;
-	double deltaW_HB[][][];
-	double expDeltaW[][][];
+	double deltaW_HB[][][][];
+	double expDeltaW[][][][];
 	double SEGGAMMA[][];
 	double SEGGAMMAPR[][][];
 	
@@ -301,11 +301,14 @@ public class COSMOSACMulti {
 				
 				for (int d = 0; d < ndescriptors; d++) {
 					
-					double deltaWmn = (alpha*fpol[d]/2.0)*chargemn*chargemn;
-					
-					expDeltaW[d][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][m][n]) * inv_RT);
-				
-//					System.out.println(expDeltaW[d][m][n]);
+					for (int d2 = 0; d2 < ndescriptors; d2++) {
+
+						double deltaWmn = (alpha*Math.sqrt(fpol[d]*fpol[d2])/2.0)*chargemn*chargemn;
+
+						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
+
+						// System.out.println(expDeltaW[d][d2][m][n]);
+					}
 				}
 			}
 		}
@@ -363,8 +366,8 @@ public class COSMOSACMulti {
 
 		ACOSMO = new double[ncomps];
 		PROFILE = new double[ndescriptors][nsegments];
-		deltaW_HB = new double[ndescriptors][nsegments][nsegments];
-		expDeltaW = new double[ndescriptors][nsegments][nsegments];
+		deltaW_HB = new double[ndescriptors][ndescriptors][nsegments][nsegments];
+		expDeltaW = new double[ndescriptors][ndescriptors][nsegments][nsegments];
 		
 		SEGGAMMA = new double[ndescriptors][nsegments];
 		SEGGAMMAPR = new double[ncomps][ndescriptors][nsegments];
@@ -398,24 +401,26 @@ public class COSMOSACMulti {
 	}
 	
 	protected void calculeDeltaW_HB(){
-		for (int d = 0; d < ndescriptors; d++) {
-			for(int m=0; m<nsegments; ++m){
-				for(int n=0; n<nsegments; ++n){
-					int ACC = n, DON = m;
-					if(charge[m]>=charge[n]){
-						ACC = m;
-						DON = n;
+		for(int d=0; d<ndescriptors; ++d){
+			for(int d2=0; d2<ndescriptors; ++d2){
+				for(int m=0; m<nsegments; ++m){
+					for(int n=0; n<nsegments; ++n){
+						int ACC = n, DON = m;
+						if(charge[m]>=charge[n]){
+							ACC = m;
+							DON = n;
+						}
+						// Hydrogen Bond effect:
+						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+
+						// Klamt, Fluid Phase Equilib. 2000
+						// double cHBT_c = 1.5;
+						double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
+						
+						hb = -Math.abs(hb);
+
+						deltaW_HB[d][d2][m][n] = Math.sqrt(cHB[d]*cHB[d2])*cHBT* hb;
 					}
-					// Hydrogen Bond effect:
-					double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
-
-					// Klamt, Fluid Phase Equilib. 2000
-					// double cHBT_c = 1.5;
-					double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
-
-					hb = -hb*hb;
-
-					deltaW_HB[d][m][n] = cHB[d]*cHBT* hb;
 				}
 			}
 		}
@@ -540,7 +545,7 @@ public class COSMOSACMulti {
 
 
 	public void setCHB(double chb) {
-		for (int i = 0; i < this.cHB.length; i++) {
+		for (int i = 0; i < this.fpol.length; i++) {
 			this.cHB[i] = Math.abs(chb);
 		}
 	}
@@ -553,7 +558,7 @@ public class COSMOSACMulti {
 		return sigmaHB;
 	}
 	public void setSigmaHB(double sigmaHB) {
-		this.sigmaHB = sigmaHB;
+		this.sigmaHB = Math.abs(sigmaHB);
 	}
 	public double getSigmaHB2() {
 		return sigmaHB2;

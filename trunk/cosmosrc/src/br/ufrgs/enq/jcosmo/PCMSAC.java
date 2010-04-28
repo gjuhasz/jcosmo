@@ -38,69 +38,29 @@ public class PCMSAC extends COSMOSAC {
 
 	public PCMSAC(int numberOfSegments) {
 		super(numberOfSegments);
+		
+		this.rav = RAV;
 
-		
-		// COST:0.5015689274373564, NP:521, all IDAC
-		// $PCMCAV ALPHA(1)=1.2, RSOLV=1.2
-		setBeta(1.4466214455291058);
-		setCHB(31161.034262510475);
-		setSigmaHB(0.0019266011890448748);
-		setFpol(FPOL);
-		setIgnoreSG(false);
-		setAnorm(49.26756101791564);
-		setVnorm(66.69);
-		
-		
-		// delta HB only a small subset COST:0.39132272581177113 NP:163
-		setBeta(1.5964708030478103);
-		setCHB(1996.1201800255446);
-		setSigmaHB(0.010166006038485578);
-		setSigmaHB2(2.0322754257416418);
-		setSigmaHB3(0.0);
-		setFpol(0.6917);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(166.57659724842748);
-		setVnorm(66.69);
-
-		// only non-aqueous COST:0.4223700007983835 NP:227
-		setBeta(2.1162691139604073);
-		setCHB(959.0481495067659);
-		setSigmaHB(0.016984297869683283);
-		setSigmaHB2(2.6228348657791436);
-		setSigmaHB3(0.0);
-		setFpol(0.6917);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(134.64167457551045);
-		setVnorm(66.69);
-		
-		
-		// no C=O systems, COST:0.47509022374529086 NP:297
-		setBeta(1.753295948035097);
-		setCHB(1481.5019472726462);
-		setSigmaHB(0.011150936306303545);
-		setSigmaHB2(1.8584613097892642);
-		setSigmaHB3(0.0);
-		setFpol(0.6917);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(161.17891465949677);
-		setVnorm(66.69);
-
-		// Estimation of Fpol, Coord and Anorm for a very small subset:
-//		idac/Alkane-Alkane.csv AARD:0.011508424352655757 NP:3
-//		idac/Aromatic-Alkane.csv AARD:0.019907065297353543 NP:6
-		setBeta(1);
+		// Estimation of Beta, Fpol, and Anorm: COST:0.08362529523602237, NP=109
+//		idac/Alkane-Alkane.csv AARD:0.10012005066331824 NP:7
+//		idac/Alkane-AlkylHalide.csv AARD:0.19950676462113945 NP:5
+//		idac/Alkane-Ketone.csv AARD:0.1317831643908708 NP:21
+//		idac/AlkylHalide-Alkane.csv AARD:0.10060078630976194 NP:32
+//		idac/Aromatic-Alkane.csv AARD:0.02434364712056599 NP:39
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.09614768531124265 NP:5
+		setBeta(1.5313645197328083);
 		setCHB(0.0);
-		setSigmaHB(0.0080);
-		setSigmaHB2(2.0);
-		setSigmaHB3(0.0);
-		setFpol(0.7);
+		setSigmaHB(0.005949735966583021);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.7323758674505356);
 		setIgnoreSG(false);
-		setCoord(7.5);
-		setAnorm(80.0);
+		setCoord(10.0);
+		setAnorm(361.45773761532666);
 		setVnorm(66.69);
+		
+		setSigmaHB(0.0085);
+		setCHB(80000);
 	}
 
 	public PCMSAC() {
@@ -124,7 +84,7 @@ public class PCMSAC extends COSMOSAC {
 		}
 	}
 	
-	protected void calculeDeltaW_HB(){
+	protected void calculeDeltaW_HB2(){
 		for(int m=0; m<nsegments; ++m){
 
 			for(int n=0; n<nsegments; ++n){
@@ -146,6 +106,11 @@ public class PCMSAC extends COSMOSAC {
 					hb = Math.abs(charge[ACC] - charge[DON]);
 					hb = (hb*hb);
 				}
+				
+//				if(charge[ACC]>0 && charge[DON]<0){
+//					hb = Math.abs(charge[ACC] - charge[DON]);
+//					hb = Math.pow(hb, sigmaHB3);
+//				}
 				
 				// Klamt, Fluid Phase Equilib. 2000
 //				double cHBT_c = 1.5;
@@ -181,7 +146,7 @@ public class PCMSAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".pcm.gout";
-			String folder = "moltest/";
+			String folder = "mopac/";
 			
 			try {
 				s.parseFile(folder + name + extension);												
