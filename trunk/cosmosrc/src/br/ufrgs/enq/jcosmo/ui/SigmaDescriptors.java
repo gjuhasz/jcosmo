@@ -125,17 +125,26 @@ public class SigmaDescriptors {
 						sigmaParser.simpleSorting(area, sigma1);
 
 						for (int m = 0; m < area.length; m++) {
-							//					sigmaT[m] = 1000*(sigma2[m]-fcorr*sigma1[m]);
-							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+							sigmaT[m] = 1000*(sigma2[m]-fcorr*sigma1[m]);
+//							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
 						}
-
-						double []sT = {0, 1, 2, 4};
+//						double []sT = {-1.5, 0, 1.5};
+						double []sT = {-1, 1};
 						double[] areaT = new double[area.length];
-						for (int i = 0; i < sT.length; i++) {
-							double stLow = sT[i];
-							double stUp = Double.MAX_VALUE;
-							if(i<sT.length-1)
+						for (int i = -1; i < sT.length; i++) {
+							double stLow, stUp;
+							if(i<0){
+								stLow = -Double.MAX_VALUE;
+								stUp = sT[0];
+							}
+							else if(i<sT.length-1){
+								stLow = sT[i];
 								stUp = sT[i+1];
+							}
+							else{
+								stLow = sT[i];
+								stUp = Double.MAX_VALUE;
+							}
 
 							for (int m = 0; m < area.length; m++) {
 								if(sigmaT[m]>=stLow && sigmaT[m]<stUp)
@@ -144,7 +153,9 @@ public class SigmaDescriptors {
 									areaT[m] = 0;
 							}
 							sigmaParser.simpleSorting(areaT, sigma1);
-							if(i<sT.length-1)
+							if(i==-1)
+								chart.addProfile("sT<" + stUp, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+							else if(i<sT.length-1)
 								chart.addProfile("sT=" + stLow + " to " + stUp, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 							else
 								chart.addProfile("sT>" + stLow, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
