@@ -429,7 +429,7 @@ public class COSMOSAC {
 //				double cHBT_c = 1.5;
 				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
 
-				hb = -hb*hb;
+				hb = -Math.abs(hb);
 				
 				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}

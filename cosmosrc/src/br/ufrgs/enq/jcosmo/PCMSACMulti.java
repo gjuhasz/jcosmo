@@ -19,6 +19,8 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.util.HashMap;
+
 
 
 /**
@@ -27,117 +29,97 @@ package br.ufrgs.enq.jcosmo;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPACMulti extends COSMOSACMulti {
+public class PCMSACMulti extends COSMOSACMulti {
+	// Store already loaded compounds
+	static HashMap<String, COSMOSACCompound> compList;  
+
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
-	public COSMOPACMulti(){
+	public PCMSACMulti(){
 		super(51, 3);
 		
-		// we use another averaging radius
-		this.rav = COSMOSAC.RAV*1.1;
+		this.rav = RAV;
 		
-//		// article results
-//		setResCorr(1);
-//		setCHB(42700.7265672813);
-//		setSigmaHB(0.0064);
-//		setFpol(FPOL);
-//		setIgnoreSG(false);
-//		setAnorm(28.2);
-//		setVnorm(66.69);
-//		setAEff(7.5);
-		
-		// Only non-HB and low polarizability (RAV*1.1),  COST:0.08096689998854072
-//		idac/Alkane-Alkane.csv AARD:0.07719095226428561 NP:7
-//		idac/Alkane-AlkylHalide.csv AARD:0.21358093090737124 NP:5
-//		idac/Alkane-Ketone.csv AARD:0.11663264840429993 NP:21
-//		idac/AlkylHalide-Alkane.csv AARD:0.09508975499887927 NP:35
-//		idac/Aromatic-Alkane.csv AARD:0.041880708942964404 NP:46
-//		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
-		setBeta(1.6513070950256865);
+		// Results for single-domain without HB
+		setBeta(1.5313645197328083);
 		setCHB(0.0);
-		setSigmaHB(0.006);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.6900883503832824);
+		setFpol(0.7323758674505356);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(51.404961223433276);
+		setAnorm(361.45773761532666);
 		setVnorm(66.69);
 		
-		
-		// now adjusting the HB with 3 descriptors, all nonaqueous, COST:0.4591648062037473 NP:325
-		setBeta(1.6513070950256865);
-		setBeta(1, 0.9698277112144933);
-		setBeta(2, 2.5773245598710877);
-		setCHB(132965.77713782096);
-		setSigmaHB(0.0055);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.6900883503832824);
-		setFpol(1, 0.6269643704378696);
-		setFpol(2, 0.8938514253981169);
+		// results with only 
+		setBeta(1.5313645197328083);
+//		setBeta(1, 4.5258695349368985);
+//		setBeta(2, 0.11097188871453148);
+		setFpol(0.7323758674505356);
+//		setFpol(1, 0.3829759018403384);
+//		setFpol(2, 564.152422356673);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(51.404961223433276);
+		setAnorm(361.45773761532666);
 		setVnorm(66.69);
 		
-		setSigmaHB(0.0055);
-		setCHB(5e8);
+//		setBeta(0, 2.151684613190274);
+//		setBeta(1, 2.846675352269272);
+//		setBeta(2, 1.093915115292504);
+//		setFpol(0, 0.6603110781125799);
+//		setFpol(1, 1.0575437973491533);
+//		setFpol(2, 1.001611743451837);
 		
-		
-		setBeta(1.6513070950256865);
-		setBeta(1, 2.5966623022422692);
-		setBeta(2, 3.186655778007093);
-		setCHB(0.0);
-		setSigmaHB(0.0055);
+		setBeta(1.6522265674626846);
+		setBeta(1, 1.6522265674626846);
+		setBeta(2, 1.6522265674626846);
+		setCHB(36.97335297330511);
+		setCHB(1, 11275.446145976268);
+		setCHB(2, 258171.92085283238);
+		setSigmaHB(0.0085);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.6900883503832824);
-		setFpol(1, 0.4430225813238091);
-		setFpol(2, 1.0318244680427964);
+		setFpol(0.6757162680146256);
+		setFpol(1, 0.02456359490938178);
+		setFpol(2, 0.6734395049672226);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(51.404961223433276);
-		setVnorm(66.69);
-		
-		
-//		idac/Alcohol-Alkane.csv AARD:0.4982266327131054 NP:14
-//		idac/Ketone-Alcohol.csv AARD:0.2816430413805225 NP:34, COST:0.3448131635730743
-		setBeta(1.6513070950256865);
-		setBeta(1, 4.783547453257033);
-		setBeta(2, 0.7103895052380395);
-		setCHB(4.190793926262297E7);
-		setSigmaHB(0.0055);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.6900883503832824);
-		setFpol(1, 0.8244733229051346);
-		setFpol(2, 3.342358909084158);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(51.404961223433276);
+		setAnorm(79.53);
 		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
+		
+		if(compList==null)
+			compList = new HashMap<String, COSMOSACCompound>();
+
 		this.comps = comps;
 		this.ncomps = comps.length;
 
 		this.VCOSMO = new double[ncomps];
 
-		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS_PCM,
 				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
+			COSMOSACCompound c2 = compList.get(comps[i].name);
+			if(c2!=null){
+				comps[i].charge = c2.charge;
+				this.VCOSMO[i] = comps[i].Vcosmo = c2.Vcosmo;
+				comps[i].area = c2.area;
+				comps[i].areaMulti = c2.areaMulti;
+				continue;
+			}
+			
 			String name = comps[i].name.replace(' ','_');
-			String extension = ".cos";
+			String extension = ".pcm.gout";
+			String folder = "mopac/";
+//			String folder = "moltest/";
 			
 			try {
-				s.parseFile("mopac/" + name + extension);												
+				s.parseFile(folder + name + extension);												
 			} catch (Exception e) {
-				s.parseFile("mopac/" + name.replace('-','_') + extension);
+				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
@@ -167,8 +149,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// only 2 dimensions
 			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 2;
-			double tLimit2 = 3;
+			double tLimit = 1;
+			double tLimit2 = 2;
 			for (int m = 0; m < area.length; m++) {
 				if(sigmaT[m]>tLimit){
 					if(sigmaT[m]>tLimit2)
@@ -185,6 +167,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti[1] = s.getSortedArea();
 			s.simpleSorting(area3, sigma1);
 			comps[i].areaMulti[2] = s.getSortedArea();
+			
+			compList.put(comps[i].name, comps[i]);
 			
 //			s.printProfile(System.out);
 		}
