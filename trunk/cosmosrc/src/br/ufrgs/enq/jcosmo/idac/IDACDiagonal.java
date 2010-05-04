@@ -213,7 +213,7 @@ public class IDACDiagonal extends JFrame implements XYToolTipGenerator{
 		
 		add(jp, BorderLayout.CENTER);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400,500);
+		setSize(800,600);
 		setVisible(true);	
 	}
 	
