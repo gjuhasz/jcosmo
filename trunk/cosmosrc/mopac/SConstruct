@@ -10,11 +10,17 @@ env['ENV']['USER'] = os.environ['USER']
 env['ENV']['HOME'] = os.environ['HOME']
 
 # Mopac stuff
-mol2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.cosmo $TARGET',
+mol2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.mopac $TARGET',
+                     suffix = '.mop', single_source=True)
+mol2mop_p1 = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.mopac+1 $TARGET',
+                     suffix = '.mop', single_source=True)
+mol2mop_m1 = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.mopac-1 $TARGET',
                      suffix = '.mop', single_source=True)
 mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
 mopacopt = Builder(action = 'mopac $SOURCE', suffix = '.optmop.out', single_source=True)
 env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
+env.Append(BUILDERS = {'Mol2Mop_p1' : mol2mop_p1})
+env.Append(BUILDERS = {'Mol2Mop_m1' : mol2mop_m1})
 env.Append(BUILDERS = {'Mopac' : mopac})
 env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
@@ -36,7 +42,7 @@ env.Append(BUILDERS = {'Gamess' : gamess})
 # Build all files for Mopac
 mops = env.Mol2Mop(Glob('*.mol'))
 mops+= env.Mol2Mop(Glob('*.optmol'))
-env.Depends(mops, 'keys.cosmo')
+env.Depends(mops, 'keys.mopac')
 mopacBuild = env.Mopac(mops)
 env.Alias('mopac', mopacBuild)
 env.Default('mopac')

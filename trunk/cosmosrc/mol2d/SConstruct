@@ -10,7 +10,7 @@ env['ENV']['USER'] = os.environ['USER']
 env['ENV']['HOME'] = os.environ['HOME']
 
 # Mopac stuff
-mol2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.cosmo $TARGET',
+mol2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.cosmo $TARGET',
                      suffix = '.mop', single_source=True)
 mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
 mopacopt = Builder(action = 'mopac $SOURCE', suffix = 'out', single_source=True)
@@ -19,7 +19,11 @@ env.Append(BUILDERS = {'Mopac' : mopac})
 env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
 # Geometry optimization stuff
-mol2d2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
+mol2d2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
+                     suffix = '.mop', single_source=True)
+mol2d2mop_p1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_p1.txt $TARGET',
+                     suffix = '.mop', single_source=True)
+mol2d2mop_m1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_m1.txt $TARGET',
                      suffix = '.mop', single_source=True)
 mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
                      suffix = '.mol', single_source=True)
