@@ -10,6 +10,9 @@
 ! $basis gbasis=sto $end
 ! $basis gbasis=N311 $end
 
+! Molecular charge
+ $contrl ICHARG=-1 $end
+
 ! One of the following
  $guess guess=huckel $end
 
