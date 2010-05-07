@@ -28,10 +28,14 @@ mol2d2mop_m1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt
 mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
                      suffix = '.mol', single_source=True)
 env.Append(BUILDERS = {'Mol2D2Mop' : mol2d2mop})
+env.Append(BUILDERS = {'Mol2D2MopP1' : mol2d2mop_p1})
+env.Append(BUILDERS = {'Mol2D2MopM1' : mol2d2mop_m1})
 env.Append(BUILDERS = {'Mop2Mol' : mop2mol})
 
 # Optimize all .2dmol files
 mol2d = env.Mol2D2Mop(Glob('*.2dmol'))
+mol2d+= env.Mol2D2MopP1(Glob('*.2dmol+1'))
+mol2d+= env.Mol2D2MopM1(Glob('*.2dmol-1'))
 env.Depends(mol2d, 'keys_geom_opt.txt')
 mopacOpt = env.MopacOpt(mol2d)
 optMol = env.Mop2Mol(mopacOpt);
