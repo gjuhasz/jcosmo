@@ -7,8 +7,9 @@
  $system timlim=10000 mwords=20 $end
  $SCF DIRSCF=.TRUE. $end
 ! $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
- $basis gbasis=N311 $end
-
+! $basis gbasis=N311 ngauss=6 $end
+ $basis  gbasis=sto ngauss=3 $end
+ 
 ! One of the following
  $guess guess=huckel $end
 
