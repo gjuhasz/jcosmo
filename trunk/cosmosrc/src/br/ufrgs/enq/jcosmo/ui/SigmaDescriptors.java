@@ -23,6 +23,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -55,7 +58,7 @@ public class SigmaDescriptors {
 		final SigmaProfileAreaPanel chart = new SigmaProfileAreaPanel();
 		dlg.add(chart, BorderLayout.CENTER);
 
-		final JTextField nameField = new JTextField("METHANOL", 20);
+		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 20);
 		String []fileTypeList = {"MOPAC", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
 		String []analysisTypeList = {"Polarizability", "Hydrogen-Bond"};
@@ -95,7 +98,7 @@ public class SigmaDescriptors {
 					model = new PCMSAC();
 				}
 				else if(fileType.getSelectedItem().equals("COSMO-GAMESS")){
-					folder = "moltest/";
+					folder = "mopac/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
@@ -113,11 +116,14 @@ public class SigmaDescriptors {
 						sigmaParser.parseFile(fileName, rav);
 						double[] sigma1 = sigmaParser.getAveragedChargeDensity();
 
-						sigmaParser.parseFile(fileName, rav*2);
+//						sigmaParser.parseFile(fileName, rav*2);
+						fileName = folder + nameField.getText() + ".low" + extension;
+						sigmaParser.parseFile(fileName, rav);
 						double[] sigma2 = sigmaParser.getAveragedChargeDensity();
 
 						// value from Klamt (COSMO-RS refinement)
 						double fcorr = 0.816;
+						fcorr = 0.8;
 
 						double[] area = sigmaParser.getOriginalArea();
 						double[] sigmaT = new double[area.length];
@@ -125,14 +131,16 @@ public class SigmaDescriptors {
 						sigmaParser.simpleSorting(area, sigma1);
 
 						for (int m = 0; m < area.length; m++) {
-							sigmaT[m] = 1000*(sigma2[m]-fcorr*sigma1[m]);
+							sigmaT[m] = 1000*(fcorr*sigma1[m] - sigma2[m]);
 //							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
 						}
 //						double []sT = {-1.5, 0, 1.5};
 						double []sT = {-1, 1};
+//						double []sT = {-1, 0.18, 0.18, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {
 							double stLow, stUp;
+							double partialArea = 0;
 							if(i<0){
 								stLow = -Double.MAX_VALUE;
 								stUp = sT[0];
@@ -147,18 +155,24 @@ public class SigmaDescriptors {
 							}
 
 							for (int m = 0; m < area.length; m++) {
-								if(sigmaT[m]>=stLow && sigmaT[m]<stUp)
+								if(sigmaT[m]>=stLow && sigmaT[m]<stUp){
 									areaT[m] = area[m];
+									partialArea += area[m];
+								}
 								else
 									areaT[m] = 0;
 							}
 							sigmaParser.simpleSorting(areaT, sigma1);
+							
+							DecimalFormat fm = new DecimalFormat();
+							fm.setMaximumFractionDigits(2);
+							String partial = String.format(" (%s)", fm.format(partialArea));
 							if(i==-1)
-								chart.addProfile("sT<" + stUp, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+								chart.addProfile("sT<" + stUp + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 							else if(i<sT.length-1)
-								chart.addProfile("sT=" + stLow + " to " + stUp, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+								chart.addProfile("sT=" + stLow + " to " + stUp + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 							else
-								chart.addProfile("sT>" + stLow, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+								chart.addProfile("sT>" + stLow + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						}
 					}
 					else{

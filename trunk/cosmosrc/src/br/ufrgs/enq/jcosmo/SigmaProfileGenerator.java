@@ -133,15 +133,10 @@ public class SigmaProfileGenerator {
 		switch (type) {
 		case GAMESS:
 		case GAMESS_PCM:
-//			simpleSorting(SIGMA);
-			averageCharges(rav);
-//			averageCharges2();
-			simpleSorting(area, sigmaAveraged);
-			break;
 		case MOPAC:
-//			simpleSorting(SIGMA);
+//			simpleSorting(area, SIGMA);
+			
 			averageCharges(rav);
-//			averageCharges2();
 			simpleSorting(area, sigmaAveraged);
 			break;
 		}
@@ -327,11 +322,16 @@ public class SigmaProfileGenerator {
 			input.next(); // x
 			input.next(); // y
 			input.next(); // z
-			SIGMA[i] = input.nextDouble();
+			try{
+				SIGMA[i] = input.nextDouble();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			if(area[i]>0.0)
 				SIGMA[i] /= area[i];
 
-			input.nextLine();
+//			input.nextLine();
 		}
 		
 		input.close();

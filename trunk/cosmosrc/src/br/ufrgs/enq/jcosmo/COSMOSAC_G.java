@@ -34,26 +34,42 @@ public class COSMOSAC_G extends COSMOSAC {
 	public COSMOSAC_G(int numberOfSegments) {
 		super(numberOfSegments);
 		
-		setBeta(1.4141655544216012);
-		setCHB(21856.59194516772);
-		setSigmaHB(0.0033588530289351158);
-		setFpol(0.17960975053558242);
-		setIgnoreSG(false);
-		setCoord(19.621223483264043);
-		setAnorm(77.08098812555656);
-		setVnorm(66.69);
-		
 		setFpol(FPOL);
-		
-		setBeta(1.4141655544216012);
-		setCHB(21856.59194516772);
-		setSigmaHB(0.0033588530289351158);
+		setCHB(0);
+		setAnorm(ANORM);
+		setCoord(COORD);
+
+//		Only non-HB elements, COST:0.0952035855018203 NP:50
+//		idac/Alkane-Alkane.csv AARD:0.027880685952315475 NP:3
+//		idac/Alkane-AlkylHalide.csv AARD:0.17044823778183177 NP:5
+//		idac/Alkane-Ketone.csv AARD:0.06669337926724342 NP:18
+//		idac/AlkylHalide-Alkane.csv AARD:0.17058206591526598 NP:13
+//		idac/Aromatic-Alkane.csv AARD:0.018372007393053225 NP:6
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.059203260051550174 NP:5
+		setBeta(4.056604339857187);
+		setCHB(0.0);
+		setSigmaHB(0.01);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.6917);
+		setFpol(0.29880411235834803);
 		setIgnoreSG(false);
-		setCoord(19.621223483264043);
-		setAnorm(77.08098812555656);
+		setCoord(7.2);
+		setAnorm(211.90488545095045);
+		setVnorm(66.69);
+		
+		// Only non-polar elements, COST:0.030874238243851344 NP:14
+//		idac/Alkane-Alkane.csv AARD:0.021590110507796408 NP:3
+//		idac/Aromatic-Alkane.csv AARD:0.011660070119536145 NP:6
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.05950148126335666 NP:5
+		setBeta(0.6720307269285903);
+		setCHB(0.0);
+		setSigmaHB(0.01);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.7508070397398836);
+		setIgnoreSG(false);
+		setCoord(7.2);
+		setAnorm(79.53);
 		setVnorm(66.69);
 	}
 
@@ -63,6 +79,7 @@ public class COSMOSAC_G extends COSMOSAC {
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
 		this.ncomps = comps.length;
+		this.comps = comps;
 
 		this.VCOSMO = new double[ncomps];
 		this.area = new double[ncomps][];
@@ -72,7 +89,7 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
-			String folder = "moltest/";
+			String folder = "mopac/";
 			
 			try {
 				s.parseFile(folder + name + extension);												

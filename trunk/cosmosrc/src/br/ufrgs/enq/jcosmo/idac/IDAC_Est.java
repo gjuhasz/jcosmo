@@ -23,9 +23,9 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 	public IDAC_Est() throws Exception {
 //		String modelClass = COSMOSAC.class.getName();
-//		String modelClass = COSMOSAC_G.class.getName();
+		String modelClass = COSMOSAC_G.class.getName();
 //		String modelClass = COSMOPAC.class.getName();
-		String modelClass = PCMSAC.class.getName();
+//		String modelClass = PCMSAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
 
@@ -54,7 +54,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass)); //
-		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass)); //
+//		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
 		
 //		experiments.add(new IDACExperiments("idac/Alkene-Amine.csv", modelClass)); //
@@ -106,7 +106,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 3;
+		return 2;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -119,7 +119,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -143,7 +143,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
+//				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables
