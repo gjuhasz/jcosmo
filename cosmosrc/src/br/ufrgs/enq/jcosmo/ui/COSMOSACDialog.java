@@ -313,7 +313,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setVisible(true);
 
 		// test for a mixture
-//		addList("water");
+		addList("WATER");
 //		addList("sec-butylamine");
 //		addList("hydrogen-fluoride");
 //		addList("ACETONE");
@@ -322,8 +322,11 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		addList("METHANOL.opt");
 //		addList("METHYL-ETHYL-KETONE");
 //		addList("ETHANOL");
-		addList("N-HEPTANE");
-		addList("PROPIONIC-ACID");
+//		addList("N-HEPTANE");
+//		addList("PROPIONIC-ACID");
+		addList("EMIM");
+		addList("NTF2");
+		addList("DCA");
 		removeButton.setEnabled(true);
 	}
 

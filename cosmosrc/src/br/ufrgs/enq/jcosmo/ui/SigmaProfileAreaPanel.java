@@ -115,7 +115,7 @@ public class SigmaProfileAreaPanel extends JPanel {
 		}
 		dataset.addSeries(comp);
 		int series = dataset.getSeriesCount()-1;
-		int start = 80, delta = 50;
+		int start = 80, delta = 40;
 		int rgb = start + delta*series;
 		sigmaProfilePlot.getRenderer().setSeriesPaint(series, new Color(rgb, rgb, rgb));
 	}
