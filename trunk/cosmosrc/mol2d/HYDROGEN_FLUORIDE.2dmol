@@ -1,6 +1,8 @@
-Hydrogen fluoride, ID: C7664393
-  NIST    10040208542D 1   1.00000     0.00000      
-Copyright by the U.S. Sec. Commerce on behalf of U.S.A. All rights reserved.
-  1  0  0     0  0              1 V2000
-    0.0000    0.0000    0.0000 F   0  0  0  0  0  0           0  0  0
+
+ OpenBabel05081018513D
+
+  2  1  0  0  0  0  0  0  0  0999 V2000
+   -8.7117    3.4320   -0.0000 F   0  0  0  0  0
+   -7.7715    3.4320   -0.0000 H   0  0  0  0  0
+  1  2  1  0  0  0
 M  END
