@@ -24,8 +24,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,7 +56,7 @@ public class SigmaDescriptors {
 		final SigmaProfileAreaPanel chart = new SigmaProfileAreaPanel();
 		dlg.add(chart, BorderLayout.CENTER);
 
-		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 20);
+		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
 		String []fileTypeList = {"MOPAC", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
 		String []analysisTypeList = {"Polarizability", "Hydrogen-Bond"};
@@ -98,7 +96,7 @@ public class SigmaDescriptors {
 					model = new PCMSAC();
 				}
 				else if(fileType.getSelectedItem().equals("COSMO-GAMESS")){
-					folder = "mopac/";
+					folder = "moltest/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
@@ -135,7 +133,7 @@ public class SigmaDescriptors {
 						}
 //						double []sT = {-1.5, 0, 1.5};
 //						double []sT = {0.4, 1};
-						double []sT = {0.3, 0.4, 1};
+						double []sT = {0.3, 0.4, 1.2};
 //						double []sT = {-1, 0.18, 0.18, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {
