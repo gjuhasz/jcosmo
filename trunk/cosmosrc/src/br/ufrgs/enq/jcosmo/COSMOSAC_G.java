@@ -91,7 +91,7 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
-			String folder = "mopac/";
+			String folder = "moltest/";
 			
 			try {
 				s.parseFile(folder + name + extension);												
