@@ -7,9 +7,7 @@
  $system timlim=10000 mwords=20 $end
  $SCF DIRSCF=.TRUE. $end
 ! $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
-! $basis gbasis=N311 ngauss=6 $end
- $basis  gbasis=sto ngauss=3 $end
-
+ $basis gbasis=N311 $end
 
 ! One of the following
  $guess guess=huckel $end
@@ -26,8 +24,7 @@
 ! value is given, all radii are scaled by the same
 ! (default is ALPHA(1)=1.2)
 ! H(1), C(6), N(7), O(8), Cl(17)
-! $PCMCAV ALPHA(1)=1.2 ALPHA(6)=1.2 ALPHA(7)=1.1 ALPHA(8)=1.2 ALPHA(17)=1.0 $end
- $PCMCAV ALPHA(1)=1.0 $end
+ $PCMCAV ALPHA(1)=1.2 ALPHA(6)=1.2 ALPHA(7)=1.1 ALPHA(8)=1.2 ALPHA(17)=1.0 $end
 
 ! 10:conductor-like PCM (C-PCM), -10:Iterative C-PCM,  3:IEF-PCM
  $pcm IEF=-10 $end
