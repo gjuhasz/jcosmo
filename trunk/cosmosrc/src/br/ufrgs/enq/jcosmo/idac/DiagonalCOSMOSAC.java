@@ -60,7 +60,7 @@ public class DiagonalCOSMOSAC {
 //		
 //		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
+		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
 //		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
 //		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
 //		

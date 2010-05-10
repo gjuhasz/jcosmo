@@ -20,6 +20,7 @@
 package br.ufrgs.enq.jcosmo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class SigmaProfileGenerator {
 	 * @param fileName the MOPAC/GAMESS output file
 	 * @throws Exception if there is a problem when reading the file
 	 */
-	public void parseFile(String fileName) throws Exception {
+	public void parseFile(String fileName) throws FileNotFoundException, Exception {
 		// reset the volume
 		volume = 0.0;
 		switch (type) {
@@ -173,7 +174,7 @@ public class SigmaProfileGenerator {
 		return CHGDEN;
 	}
 
-	void readSegmentChargesGAMESS(String filename) throws Exception{
+	void readSegmentChargesGAMESS(String filename) throws FileNotFoundException, Exception{
 
 		Scanner input = new Scanner(new File(filename));
 		input.useLocale(Locale.US);

@@ -57,10 +57,12 @@ public class COSMOSAC_G extends COSMOSAC {
 		setAnorm(211.90488545095045);
 		setVnorm(66.69);
 		
-		// Only non-polar elements, COST:0.030874238243851344 NP:14
-//		idac/Alkane-Alkane.csv AARD:0.021590110507796408 NP:3
-//		idac/Aromatic-Alkane.csv AARD:0.011660070119536145 NP:6
-//		idac/CycloAlkane-AlkylHalide.csv AARD:0.05950148126335666 NP:5
+		// Only non-polar elements, COST:0.08499795473312625 NP:32
+//		idac/Alkane-Alkane.csv AARD:0.02157167555584826 NP:3
+//		idac/Alkane-AlkylHalide.csv AARD:0.20398044102438556 NP:5
+//		idac/AlkylHalide-Alkane.csv AARD:0.09639315605035846 NP:13
+//		idac/Aromatic-Alkane.csv AARD:0.013181456097686173 NP:6
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.06062351088595813 NP:5
 		setBeta(0.6720307269285903);
 		setCHB(0.0);
 		setSigmaHB(0.01);
@@ -68,7 +70,7 @@ public class COSMOSAC_G extends COSMOSAC {
 		setSigmaHB3(1.0);
 		setFpol(0.7508070397398836);
 		setIgnoreSG(false);
-		setCoord(7.2);
+		setCoord(10);
 		setAnorm(79.53);
 		setVnorm(66.69);
 	}

@@ -123,7 +123,6 @@ public class SigmaDescriptors {
 
 						// value from Klamt (COSMO-RS refinement)
 						double fcorr = 0.816;
-						fcorr = 0.8;
 
 						double[] area = sigmaParser.getOriginalArea();
 						double[] sigmaT = new double[area.length];
@@ -131,11 +130,12 @@ public class SigmaDescriptors {
 						sigmaParser.simpleSorting(area, sigma1);
 
 						for (int m = 0; m < area.length; m++) {
-							sigmaT[m] = 1000*(fcorr*sigma1[m] - sigma2[m]);
-//							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+//							sigmaT[m] = 1000*(fcorr*sigma1[m] - sigma2[m]);
+							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
 						}
 //						double []sT = {-1.5, 0, 1.5};
-						double []sT = {-1, 1};
+//						double []sT = {0.4, 1};
+						double []sT = {0.3, 0.4, 1};
 //						double []sT = {-1, 0.18, 0.18, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {
