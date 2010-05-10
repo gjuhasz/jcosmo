@@ -19,6 +19,7 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 
@@ -89,7 +90,6 @@ public class PCMSACMulti extends COSMOSACMulti {
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
-		
 		if(compList==null)
 			compList = new HashMap<String, COSMOSACCompound>();
 
@@ -118,7 +118,7 @@ public class PCMSACMulti extends COSMOSACMulti {
 			
 			try {
 				s.parseFile(folder + name + extension);												
-			} catch (Exception e) {
+			} catch (FileNotFoundException e) {
 				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			

@@ -235,42 +235,6 @@ public class COSMOSACMulti {
 		setComposition(z);
 	}
 	
-	/**
-	 * Sorts a given sigma profile to match the model charge discretization.
-	 * 
-	 * @param sortedArea will contain the resulting sorted area
-	 * @param unsortedSigma the compound unsorted charge list
-	 * @param unsortedArea the unsorted area of each charge
-	 */
-	void simpleSorting(double sortedArea[], double unsortedSigma[], double[]unsortedArea){
-		double increment = (SIGMA_BOUND*2)/(double)(nsegments-1);
-		double unsortedIncrement = unsortedSigma[1]-unsortedSigma[0];
-
-		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
-		for (int J = 0; J < unsortedSigma.length; J++) {
-			// out of the bounds
-			if(unsortedSigma[J]<=-SIGMA_BOUND){
-				sortedArea[0] += unsortedArea[J]*unsortedIncrement/increment;
-				continue;
-			}
-			if(unsortedSigma[J]>=SIGMA_BOUND){
-				sortedArea[sortedArea.length-1] += unsortedArea[J]*unsortedIncrement/increment;
-				continue;
-			}
-			
-			int pos = (int)((unsortedSigma[J]-charge[0])/increment);
-			// Each point represents the center of an interval, so we distribute it
-			// in the two adjacent points
-			double unsortedStart = unsortedSigma[J]-unsortedIncrement/2;
-			double unsortedEnd = unsortedSigma[J]+unsortedIncrement/2;
-			double posEnd = charge[pos]+increment/2;
-			
-			sortedArea[pos]+= unsortedArea[J]/increment * Math.max(0, posEnd - unsortedStart);
-			sortedArea[pos+1]+= unsortedArea[J]/increment * Math.max(0, unsortedEnd - posEnd);
-		}
-	}
-
-	
 	public COSMOSACCompound[] getComps(){
 		return comps;
 	}
