@@ -62,8 +62,8 @@ public class SigmaDescriptorsTestLow {
 		double[] sigma2 = sigmaParser.getAveragedChargeDensity();
 		
 		
-		double fcorr = 0.816;
-//		double fcorr = 1;
+//		double fcorr = 0.816;
+		double fcorr = 0.9;
 //		double epsi = 0.5;
 //		double fcorr = 1 - (epsi - 1)/(epsi + 0.5);
 		

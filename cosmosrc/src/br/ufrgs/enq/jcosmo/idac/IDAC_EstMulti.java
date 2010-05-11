@@ -30,7 +30,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 
 		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Aldehyde-Water.csv", modelClass));
-//		experiments.add(new IDACExperimentsMulti("idac/Alkane-Water.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/Alkane-Water.csv", modelClass));
 ////		experiments.add(new IDACExperimentsMulti("idac/Alkene-Water.csv", modelClass));
 ////		experiments.add(new IDACExperimentsMulti("idac/Alkyne-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/AlkylHalide-Water.csv", modelClass));
@@ -75,7 +75,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //
 ////		experiments.add(new IDACExperimentsMulti("idac/CycloAlkene-Amine.csv", modelClass)); //
 //
-//		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alcohol.csv", modelClass)); //
+		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alcohol.csv", modelClass)); //
 		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
