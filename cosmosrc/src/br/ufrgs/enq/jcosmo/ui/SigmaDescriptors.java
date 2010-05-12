@@ -112,12 +112,14 @@ public class SigmaDescriptors {
 					// Polarizability analysis
 					if(analysisType.getSelectedIndex()==0){
 						sigmaParser.parseFile(fileName, rav);
-						double[] sigma1 = sigmaParser.getAveragedChargeDensity();
+						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
 
-//						sigmaParser.parseFile(fileName, rav*2);
-						fileName = folder + nameField.getText() + ".low" + extension;
-						sigmaParser.parseFile(fileName, rav);
-						double[] sigma2 = sigmaParser.getAveragedChargeDensity();
+						sigmaParser.parseFile(fileName, rav*2);
+						double[] sigmaRAV2 = sigmaParser.getAveragedChargeDensity();
+
+//						fileName = folder + nameField.getText() + ".low" + extension;
+//						sigmaParser.parseFile(fileName, rav);
+//						double[] sigmaRAV2 = sigmaParser.getAveragedChargeDensity();
 
 						// value from Klamt (COSMO-RS refinement)
 						double fcorr = 0.816;
@@ -126,15 +128,17 @@ public class SigmaDescriptors {
 						double[] area = sigmaParser.getOriginalArea();
 						double[] sigmaT = new double[area.length];
 
-						sigmaParser.simpleSorting(area, sigma1);
+						sigmaParser.simpleSorting(area, sigmaBase);
 
 						for (int m = 0; m < area.length; m++) {
 //							sigmaT[m] = 1000*(fcorr*sigma1[m] - sigma2[m]);
-							sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+							sigmaT[m] = 1000*Math.abs(sigmaRAV2[m]-fcorr*sigmaBase[m]);
 						}
 //						double []sT = {-2, 0, 2};
 //						double []sT = {0.4, 1};
-						double []sT = {0.7, 1, 2};
+//						double []sT = {0.7, 1, 2};
+//						double []sT = {1, 2, 2.5};
+						double []sT = {1, 1.5, 2};
 //						double []sT = {-1, 0.18, 0.18, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {
@@ -161,7 +165,7 @@ public class SigmaDescriptors {
 								else
 									areaT[m] = 0;
 							}
-							sigmaParser.simpleSorting(areaT, sigma1);
+							sigmaParser.simpleSorting(areaT, sigmaBase);
 							
 							DecimalFormat fm = new DecimalFormat();
 							fm.setMaximumFractionDigits(2);

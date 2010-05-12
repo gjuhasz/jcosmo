@@ -28,9 +28,9 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 
 		experiments = new ArrayList<IDACExperimentsMulti>();
 
-		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Aldehyde-Water.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/Alkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Alkane-Water.csv", modelClass));
 ////		experiments.add(new IDACExperimentsMulti("idac/Alkene-Water.csv", modelClass));
 ////		experiments.add(new IDACExperimentsMulti("idac/Alkyne-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/AlkylHalide-Water.csv", modelClass));
@@ -43,7 +43,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 ////		experiments.add(new IDACExperimentsMulti("idac/Ether-Water.csv", modelClass)); //
 ////		experiments.add(new IDACExperimentsMulti("idac/Ester-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Water.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/Water.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Water.csv", modelClass));
 		
 		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Alkane.csv", modelClass));
 		experiments.add(new IDACExperimentsMulti("idac/Alcohol-CycloAlkane.csv", modelClass));
@@ -59,7 +59,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/Alkene-Amine.csv", modelClass)); //
 ////		
 		experiments.add(new IDACExperimentsMulti("idac/AlkylHalide-Alkane.csv", modelClass));
-//		experiments.add(new IDACExperimentsMulti("idac/Amine-Alkane.csv", modelClass)); //
+		experiments.add(new IDACExperimentsMulti("idac/Amine-Alkane.csv", modelClass)); //
 		experiments.add(new IDACExperimentsMulti("idac/Aromatic-Alkane.csv", modelClass));
 //
 		experiments.add(new IDACExperimentsMulti("idac/CycloAlkane-Alcohol.csv", modelClass));
