@@ -22,7 +22,7 @@ public class DiagonalCOSMOSACMulti {
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkene-Water.csv", modelClass);
@@ -38,7 +38,7 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Water.csv", modelClass);
 //		
 		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
@@ -49,19 +49,19 @@ public class DiagonalCOSMOSACMulti {
 		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-Ketone.csv", modelClass);
 		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
-//		
-//		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
-////		
+		
+		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
+		
 		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
 		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
 		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
-////		
+		
 		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
 //		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
 		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
-//		
+		
 		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
 		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
 //		
