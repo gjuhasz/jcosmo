@@ -482,6 +482,8 @@ public class SigmaProfileGenerator {
 	public void simpleSorting(double []area, double sigmaAveraged[]){
 		sortedArea = new double[sigmaPoints];
 		
+		int last = sortedArea.length-1;
+		
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
 			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
@@ -490,8 +492,8 @@ public class SigmaProfileGenerator {
 				sortedArea[0] += area[J];
 				continue;
 			}
-			else if(TMP > (sortedArea.length-1)){
-				sortedArea[sortedArea.length-1] += area[J];
+			else if(TMP > last){
+				sortedArea[last] += area[J];
 				continue;
 			}
 			
@@ -503,7 +505,7 @@ public class SigmaProfileGenerator {
 			
 			// Charges are simply put into a range 
 			if(sigmaAveraged[J]-CHGDEN[TMP] > increment/2)
-				sortedArea[TMP+1]+= area[J];
+				sortedArea[Math.min(last, TMP+1)]+= area[J];
 			else
 				sortedArea[TMP]+= area[J];
 		}

@@ -56,15 +56,15 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 //		idac/CycloAlkane-Phenol.csv AARD:0.2351685077179408 NP:5
 //		idac/Ketone-Alcohol.csv AARD:0.33495840669380617 NP:7
 //		idac/Ketone-Alkane.csv AARD:0.07939862746498699 NP:8
-		setBeta(1.70);
-		setFpol(0.593594);
-		setFpol(1, 0.35376);
-		setFpol(2, 0.63424260);
+		setBeta(1.805216580498087);
+		setFpol(0.53759919833672);
+		setFpol(1, 0.5240924876831323);
+		setFpol(2, 0.653533925543);
 		setSigmaHB(0.008);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setCHB(0);
-		setCHB(2, 16693);
+		setCHB(2, 15958);
 		setIgnoreSG(false);
 		setCoord(10);
 		setAnorm(107.16496305);
@@ -99,9 +99,9 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			String folder = "moltest/";
 			
 			try {
-				s.parseFile(folder + name + extension);												
+				s.parseFile(folder + name + extension, rav);												
 			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extension);
+				s.parseFile(folder + name.replace('-','_') + extension, rav);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
@@ -112,10 +112,10 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 
 			String extensionLow = ".low" + extension;
 			try {
-				s.parseFile(folder + name + extensionLow);
+				s.parseFile(folder + name + extensionLow, rav);
 //				s.parseFile(folder + name + extension, rav*2);
 			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extensionLow);
+				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
 //				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
 			}
 			double[] sigma2 = s.getAveragedChargeDensity();

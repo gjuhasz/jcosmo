@@ -45,8 +45,8 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Water.csv", modelClass));
 		
-		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Alkane.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/Alcohol-CycloAlkane.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Alcohol-CycloAlkane.csv", modelClass));
 
 		experiments.add(new IDACExperimentsMulti("idac/Alkane-Alcohol.csv", modelClass));
 		experiments.add(new IDACExperimentsMulti("idac/Alkane-Alkane.csv", modelClass));
@@ -75,8 +75,8 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //
 ////		experiments.add(new IDACExperimentsMulti("idac/CycloAlkene-Amine.csv", modelClass)); //
 //
-		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alcohol.csv", modelClass)); //
-		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
+//		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alcohol.csv", modelClass)); //
+//		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
 //		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
@@ -104,7 +104,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 5;
+		return 4;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -118,7 +118,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		pars[i++] = cosmo.getFpol(2);
 //		pars[i++] = cosmo.getCHB(0);
 //		pars[i++] = cosmo.getCHB(1);
-		pars[i++] = cosmo.getCHB(2);
+//		pars[i++] = cosmo.getCHB(2);
 //		pars[i++] = cosmo.getSigmaHB();
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
@@ -148,7 +148,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 				cosmo.setFpol(2, pars[i++]);
 //				cosmo.setCHB(pars[i++]);
 //				cosmo.setCHB(1, pars[i++]);
-				cosmo.setCHB(2, pars[i++]);
+//				cosmo.setCHB(2, pars[i++]);
 //				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
