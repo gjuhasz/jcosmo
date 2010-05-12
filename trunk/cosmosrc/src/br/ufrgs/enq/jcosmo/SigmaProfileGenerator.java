@@ -96,7 +96,7 @@ public class SigmaProfileGenerator {
 	 * @param rav the averaging radius
 	 * @throws Exception if there is a problem when reading the file
 	 */
-	public void parseFile(String fileName, double rav) throws Exception{
+	public void parseFile(String fileName, double rav) throws FileNotFoundException, Exception {
 		this.rav = rav;
 		parseFile(fileName);
 	}
