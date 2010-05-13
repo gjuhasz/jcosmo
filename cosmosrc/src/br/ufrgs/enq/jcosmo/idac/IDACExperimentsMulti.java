@@ -116,6 +116,7 @@ public class IDACExperimentsMulti {
 				model.setComponents(comps);
 			}
 			catch (Exception e) {
+//				e.printStackTrace();
 				System.err.println(e.toString());
 				valid = false;
 			}

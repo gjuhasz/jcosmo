@@ -22,7 +22,7 @@ public class DiagonalCOSMOSACMulti {
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkene-Water.csv", modelClass);
@@ -38,8 +38,8 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-//		dig.addIDACExperiments("idac/Water.csv", modelClass);
-//		
+		dig.addIDACExperiments("idac/Water.csv", modelClass);
+		
 		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
 
