@@ -136,9 +136,9 @@ public class SigmaDescriptors {
 						}
 //						double []sT = {-2, 0, 2};
 //						double []sT = {0.4, 1};
-//						double []sT = {0.7, 1, 2};
+						double []sT = {0.7, 1, 2};
 //						double []sT = {1, 2, 2.5};
-						double []sT = {1, 1.5, 2};
+//						double []sT = {1, 1.5, 2};
 //						double []sT = {-1, 0.18, 0.18, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {

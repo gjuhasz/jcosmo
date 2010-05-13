@@ -40,33 +40,58 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 	public COSMOSAC_GMulti(){
 		super(51, 3);
 		
-		// COST:0.1974776564263834 NP:111
-//		idac/Alcohol-Alkane.csv AARD:0.32655062475976615 NP:10
-//		idac/Alcohol-CycloAlkane.csv AARD:0.32250821425094867 NP:15
-//		idac/Alkane-Alcohol.csv AARD:0.12881474043480728 NP:9
-//		idac/Alkane-Alkane.csv AARD:0.02129552686818885 NP:3
-//		idac/Alkane-AlkylHalide.csv AARD:0.15866138428457155 NP:2
-//		idac/Alkane-Ketone.csv AARD:0.13380342525878233 NP:12
-//		idac/Alkane-Phenol.csv AARD:0.10227286077191758 NP:22
-//		idac/AlkylHalide-Alkane.csv AARD:0.3711002026563018 NP:6
-//		idac/Amine-Alkane.csv AARD:NaN NP:0
-//		idac/Aromatic-Alkane.csv AARD:0.1565140462657024 NP:6
-//		idac/CycloAlkane-Alcohol.csv AARD:0.18358899730050174 NP:6
-//		idac/CycloAlkane-AlkylHalide.csv AARD:NaN NP:0
-//		idac/CycloAlkane-Phenol.csv AARD:0.2351685077179408 NP:5
-//		idac/Ketone-Alcohol.csv AARD:0.33495840669380617 NP:7
-//		idac/Ketone-Alkane.csv AARD:0.07939862746498699 NP:8
-		setBeta(1.805216580498087);
-		setFpol(0.53759919833672);
-		setFpol(1, 0.5240924876831323);
-		setFpol(2, 0.653533925543);
-		setSigmaHB(0.008);
+		// NONAQUEOUS, COST:0.2736488469786023 NP:167
+//		idac/Alcohol-Alkane.csv AARD:0.3239770780689189 NP:10
+//		idac/Alcohol-CycloAlkane.csv AARD:0.31659960715621416 NP:15
+//		idac/Alkane-Alcohol.csv AARD:0.12249019700050272 NP:9
+//		idac/Alkane-Alkane.csv AARD:0.021363199212819123 NP:3
+//		idac/Alkane-AlkylHalide.csv AARD:0.28308602663247073 NP:5
+//		idac/Alkane-Amine.csv AARD:0.31007765605690885 NP:4
+//		idac/Alkane-CarboxilicAcid.csv AARD:NaN NP:0
+//		idac/Alkane-Ketone.csv AARD:0.2026584124991165 NP:18
+//		idac/Alkane-Phenol.csv AARD:0.13640569891573637 NP:22
+//		idac/Alkene-Amine.csv AARD:0.22498699148647958 NP:3
+//		idac/AlkylHalide-Alkane.csv AARD:0.3535428023306032 NP:13
+//		idac/Amine-Alkane.csv AARD:0.6165306940215931 NP:5
+//		idac/Aromatic-Alkane.csv AARD:0.1232432229575623 NP:6
+//		idac/CycloAlkane-Alcohol.csv AARD:0.1432363420945877 NP:6
+//		idac/CycloAlkane-AlkylHalide.csv AARD:0.029828597244639533 NP:5
+//		idac/CycloAlkane-Amine.csv AARD:0.18564250391234083 NP:1
+//		idac/CycloAlkane-CarboxilicAcid.csv AARD:0.7034224039183667 NP:2
+//		idac/CycloAlkane-Phenol.csv AARD:0.14393537997518346 NP:5
+//		idac/CarboxilicAcid-Alkane.csv AARD:2.558912369738963 NP:2
+//		idac/CarboxilicAcid-CycloAlkane.csv AARD:2.128247009122318 NP:2
+//		idac/CycloAlkene-Amine.csv AARD:0.010337077996353564 NP:3
+//		idac/Ketone-Alcohol.csv AARD:0.2906249588540736 NP:14
+//		idac/Ketone-Alkane.csv AARD:0.09654562496685164 NP:14
+		setBeta(1.704710195);
+		setFpol(0.49456570084204576);
+		setFpol(1, 0.11917051421257);
+		setFpol(2, 0.57751444534);
+		setSigmaHB(0.0048793);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setCHB(0);
-		setCHB(2, 15958);
+		setCHB(2, 12318.276);
 		setIgnoreSG(false);
 		setCoord(10);
+		setAnorm(107.16496305);
+		setVnorm(66.69);
+		
+		// COST:0.44667417604299436 NP:206
+		setBeta(0.8234057258502678);
+		setBeta(1, 0.8234057258502678);
+		setBeta(2, 0.8234057258502678);
+		setCHB(0.0);
+		setCHB(1, 0.0);
+		setCHB(2, 11658.463520632726);
+		setSigmaHB(0.0080);
+		setSigmaHB2(0.0);
+		setFpol(1.590397183396032);
+		setFpol(1, 0.26171380795455323);
+		setFpol(2, 0.43386856060593726);
+		setIgnoreSG(false);
+		setCoord(10.0);
 		setAnorm(107.16496305);
 		setVnorm(66.69);
 	}
@@ -136,7 +161,7 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			// only 2 dimensions
 			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 1; // so that METHANE is entirely on the first category
+			double tLimit = 0.7; // so that METHANE is entirely on the first category
 			double tLimit2 = 2;
 			for (int m = 0; m < area.length; m++) {
 				if(sigmaT[m]>tLimit){
@@ -150,7 +175,11 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			
 			
 			// now a new filter for area3 and area2
-			s.parseFile(folder + name + extension, rav*2);
+			try {
+				s.parseFile(folder + name + extension, rav*2);												
+			} catch (FileNotFoundException e) {
+				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
+			}
 			sigma2 = s.getAveragedChargeDensity();
 			for (int m = 0; m < area.length; m++) {
 				double sT2 = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);

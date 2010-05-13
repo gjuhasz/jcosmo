@@ -10,20 +10,15 @@ env['ENV']['USER'] = os.environ['USER']
 env['ENV']['HOME'] = os.environ['HOME']
 
 # Mopac stuff
-mol2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.cosmo $TARGET',
-                     suffix = '.mop', single_source=True)
 mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
-mopacopt = Builder(action = 'mopac $SOURCE', suffix = 'out', single_source=True)
-env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
 env.Append(BUILDERS = {'Mopac' : mopac})
-env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
-# Geometry optimization stuff
-mol2d2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt.txt $TARGET',
+# MOPAC Geometry optimization stuff
+mol2d2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt.mopac $TARGET',
                      suffix = '.mop', single_source=True)
-mol2d2mop_p1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_p1.txt $TARGET',
+mol2d2mop_p1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_p1.mopac $TARGET',
                      suffix = '.mop', single_source=True)
-mol2d2mop_m1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_m1.txt $TARGET',
+mol2d2mop_m1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_m1.mopac $TARGET',
                      suffix = '.mop', single_source=True)
 mop2mol = Builder(action = 'babel -i mopout $SOURCE -o mol $TARGET',
                      suffix = '.mol', single_source=True)
@@ -32,13 +27,34 @@ env.Append(BUILDERS = {'Mol2D2MopP1' : mol2d2mop_p1})
 env.Append(BUILDERS = {'Mol2D2MopM1' : mol2d2mop_m1})
 env.Append(BUILDERS = {'Mop2Mol' : mop2mol})
 
-# Optimize all .2dmol files
+# Gamess also produces a .dat file
+def gamess_targets(target, source, env):
+           target.append('$HOME/src/gamess07/$TARGET.dat')
+           return target, source
+gamess = Builder(action = os.environ['HOME'] + '/src/gamess07/rungms $SOURCE > $TARGET', suffix = '.gout',
+	single_source=True) # , emitter = gamess_targets)
+# GAMESS Geometry optimization stuff
+babelgam = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys_geom_opt.gamess $TARGET',
+                     suffix = '.inp', single_source=True)
+env.Append(BUILDERS = {'BabelGam' : babelgam})
+env.Append(BUILDERS = {'Gamess' : gamess})
+
+
+# Optimize all .2dmol files with MOPAC
 mol2d = env.Mol2D2Mop(Glob('*.2dmol'))
 mol2d+= env.Mol2D2MopP1(Glob('*.2dmol+1'))
 mol2d+= env.Mol2D2MopM1(Glob('*.2dmol-1'))
-env.Depends(mol2d, 'keys_geom_opt.txt')
-mopacOpt = env.MopacOpt(mol2d)
+env.Depends(mol2d, 'keys_geom_opt.mopac')
+mopacOpt = env.Mopac(mol2d)
 optMol = env.Mop2Mol(mopacOpt);
-env.Alias('geom', optMol)
-env.Default('geom')
+env.Alias('mopac', optMol)
+env.Default('mopac')
 
+# Optimize all .2dmol files with GAMESS
+mol2d = env.BabelGam(Glob('*.2dmol'))
+#mol2d+= env.BabelGam_p1(Glob('*.2dmol+1'))
+#mol2d+= env.BabelGam_m1(Glob('*.2dmol-1'))
+env.Depends(mol2d, 'keys_geom_opt.gamess')
+opt = env.Gamess(mol2d)
+#optMol = env.Mop2Mol(mopacOpt);
+env.Alias('gamess', opt)
