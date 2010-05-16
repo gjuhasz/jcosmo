@@ -58,8 +58,8 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		
 //		experiments.add(new IDACExperimentsMulti("idac/Alkene-Amine.csv", modelClass)); //
 ////		
-		experiments.add(new IDACExperimentsMulti("idac/AlkylHalide-Alkane.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/Amine-Alkane.csv", modelClass)); //
+//		experiments.add(new IDACExperimentsMulti("idac/AlkylHalide-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Amine-Alkane.csv", modelClass)); //
 		experiments.add(new IDACExperimentsMulti("idac/Aromatic-Alkane.csv", modelClass));
 //
 		experiments.add(new IDACExperimentsMulti("idac/CycloAlkane-Alcohol.csv", modelClass));
@@ -248,14 +248,18 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		System.out.println("setBeta(1, " + cosmo.getBeta(1) + ");");
 		System.out.println("setBeta(2, " + cosmo.getBeta(2) + ");");
 		System.out.println("setCHB(" + cosmo.getCHB() + ");");
-		System.out.println("setCHB(1, " + cosmo.getCHB(1) + ");");
-		System.out.println("setCHB(2, " + cosmo.getCHB(2) + ");");
+		System.out.println("setCHB(0, 0, " + cosmo.getCHB(0,0) + ");");
+		System.out.println("setCHB(0, 1, " + cosmo.getCHB(0,1) + ");");
+		System.out.println("setCHB(0, 2, " + cosmo.getCHB(0,2) + ");");
+		System.out.println("setCHB(1, 1, " + cosmo.getCHB(1,1) + ");");
+		System.out.println("setCHB(1, 2, " + cosmo.getCHB(1,2) + ");");
+		System.out.println("setCHB(2, 2, " + cosmo.getCHB(2,2) + ");");
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setSigmaHB2(" + cosmo.getSigmaHB2() + ");");
 //		System.out.println("setSigmaHB3(" + cosmo.getSigmaHB3() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
 		System.out.println("setFpol(1, " + cosmo.getFpol(1) + ");");
-//		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
+		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
 		System.out.println("setCoord(" + cosmo.getCoord() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");

@@ -29,7 +29,7 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
  * @author rafael
  *
  */
-public class SigmaDescriptorsTestLow {
+public class SigmaDescriptorsTestNear {
 
 	public static void main(String[] args) throws Exception {
 		
@@ -57,7 +57,7 @@ public class SigmaDescriptorsTestLow {
 		sigmaParser.parseFile(fileName, COSMOSAC.RAV);
 		double[] sigma1 = sigmaParser.getAveragedChargeDensity();
 		
-		fileName = folder + name + ".low" + extension;
+		fileName = folder + name + ".near" + extension;
 		sigmaParser.parseFile(fileName, COSMOSAC.RAV);
 		double[] sigma2 = sigmaParser.getAveragedChargeDensity();
 		
@@ -74,8 +74,8 @@ public class SigmaDescriptorsTestLow {
 		System.out.println("Atom, Elemnt, Area, Sigma, SigmaLow, SigmaT");
 		for (int i = 0; i < area.length; i++) {
 			System.out.println(atom[i] + ", " + elem[i] + ", " + area[i] + ", " +
-//					sigma1[i] + ", " + sigma2[i] + ", " + 1000*(sigma2[i]-fcorr*sigma1[i]));
-					sigma1[i] + ", " + sigma2[i] + ", " + (sigma1[i]/sigma2[i]-1.38));
+					sigma1[i] + ", " + sigma2[i] + ", " + 1000*(fcorr*sigma2[i]-sigma1[i]));
+//					sigma1[i] + ", " + sigma2[i] + ", " + (sigma2[i]/sigma1[i]));
 		}
 	}
 }

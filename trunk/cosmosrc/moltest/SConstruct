@@ -12,8 +12,10 @@ env['ENV']['HOME'] = os.environ['HOME']
 # Mopac stuff
 mol2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.mopac $TARGET',
                      suffix = '.mop', single_source=True)
-mol2mop_low = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys.mopac.low $TARGET',
+mol2mop_low = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.mopac.low $TARGET',
                      suffix = '.low.mop', single_source=True)
+mol2mop_near = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.mopac.near $TARGET',
+                     suffix = '.near.mop', single_source=True)
 mol2mop_p1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.mopac_p1 $TARGET',
                      suffix = '.mop', single_source=True)
 mol2mop_m1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.mopac_m1 $TARGET',
@@ -22,16 +24,19 @@ mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
 mopacopt = Builder(action = 'mopac $SOURCE', suffix = '.optmop.out', single_source=True)
 env.Append(BUILDERS = {'Mol2Mop' : mol2mop})
 env.Append(BUILDERS = {'Mol2Mop_low' : mol2mop_low})
+env.Append(BUILDERS = {'Mol2Mop_near' : mol2mop_near})
 env.Append(BUILDERS = {'Mol2Mop_p1' : mol2mop_p1})
 env.Append(BUILDERS = {'Mol2Mop_m1' : mol2mop_m1})
 env.Append(BUILDERS = {'Mopac' : mopac})
 env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
 # Gamess stuff
-babelgam = Builder(action = 'babel -h -i mol $SOURCE -o gamin -xf keys.gamess $TARGET',
+babelgam = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess $TARGET',
                      suffix = '.inp', single_source=True)
-babelgam_low = Builder(action = 'babel -h -i mol $SOURCE -o gamin -xf keys.gamess.low $TARGET',
+babelgam_low = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess.low $TARGET',
                      suffix = 'low.inp', single_source=True)
+babelgam_near = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess.near $TARGET',
+                     suffix = 'near.inp', single_source=True)
 babelgam_p1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess_p1 $TARGET',
                      suffix = '.inp', single_source=True)
 babelgam_m1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess_m1 $TARGET',
@@ -50,6 +55,7 @@ gamess = Builder(action = os.environ['HOME'] + '/src/gamess07/rungms $SOURCE > $
 	single_source=True) # , emitter = gamess_targets)
 env.Append(BUILDERS = {'BabelGam' : babelgam})
 env.Append(BUILDERS = {'BabelGam_low' : babelgam_low})
+env.Append(BUILDERS = {'BabelGam_near' : babelgam_near})
 env.Append(BUILDERS = {'BabelGam_m1' : babelgam_m1})
 env.Append(BUILDERS = {'BabelGam_p1' : babelgam_p1})
 env.Append(BUILDERS = {'BabelGamPCM' : babelgampcm})
@@ -60,6 +66,7 @@ env.Append(BUILDERS = {'Gamess' : gamess})
 # Build all files for Mopac
 mops = env.Mol2Mop(Glob('*.mol'))
 mops+= env.Mol2Mop_low(Glob('*.mol'))
+mops+= env.Mol2Mop_near(Glob('*.mol'))
 mops+= env.Mol2Mop(Glob('*.optmol'))
 mops+= env.Mol2Mop_p1(Glob('*.mol+1'))
 mops+= env.Mol2Mop_m1(Glob('*.mol-1'))
@@ -76,6 +83,7 @@ Execute(delAction)
 # Convert mol files to gamess input
 inps = env.BabelGam(Glob('*.mol'))
 inps += env.BabelGam_low(Glob('*.mol'))
+inps += env.BabelGam_near(Glob('*.mol'))
 inps += env.BabelGam_m1(Glob('*.mol-1'))
 inps += env.BabelGam_p1(Glob('*.mol+1'))
 env.Depends(inps, 'keys.gamess')
