@@ -75,8 +75,8 @@ public class PCMSACMulti extends COSMOSACMulti {
 		setBeta(1, 1.6522265674626846);
 		setBeta(2, 1.6522265674626846);
 		setCHB(36.97335297330511);
-		setCHB(1, 11275.446145976268);
-		setCHB(2, 258171.92085283238);
+//		setCHB(1, 11275.446145976268);
+//		setCHB(2, 258171.92085283238);
 		setSigmaHB(0.0085);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);

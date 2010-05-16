@@ -62,7 +62,7 @@ public class COSMOSACMulti {
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = 0;
 	double sigmaHB3 = 1;
-	double []cHB;
+	double [][]cHB;
 
 	private static double SIGMA_BOUND = 0.025;
 	
@@ -122,7 +122,7 @@ public class COSMOSACMulti {
 		this.charge = new double[nsegments];
 		this.beta = new double[ndescriptors];
 		this.fpol = new double[ndescriptors];
-		this.cHB = new double[ndescriptors];
+		this.cHB = new double[ndescriptors][ndescriptors];
 		
 		double increment = (SIGMA_BOUND*2)/(nsegments-1);
 		for (int i = 0; i < nsegments; i++) {
@@ -383,7 +383,7 @@ public class COSMOSACMulti {
 						
 						hb = -Math.abs(hb);
 
-						deltaW_HB[d][d2][m][n] = Math.sqrt(cHB[d]*cHB[d2])*cHBT* hb;
+						deltaW_HB[d][d2][m][n] = cHB[d][d2]*cHBT* hb;
 					}
 				}
 			}
@@ -501,20 +501,23 @@ public class COSMOSACMulti {
 
 
 	public double getCHB() {
-		return cHB[0];
+		return cHB[0][0];
 	}
-	public double getCHB(int i) {
-		return cHB[i];
+	public double getCHB(int i, int j) {
+		return cHB[i][j];
 	}
 
 
 	public void setCHB(double chb) {
-		for (int i = 0; i < this.fpol.length; i++) {
-			this.cHB[i] = Math.abs(chb);
+		for (int i = 0; i < ndescriptors; i++) {
+			for (int j = 0; j < ndescriptors; j++) {
+				this.cHB[i][j] = Math.abs(chb);
+			}
 		}
 	}
-	public void setCHB(int i, double chb) {
-		this.cHB[i] = Math.abs(chb);
+	public void setCHB(int i, int j, double chb) {
+		this.cHB[i][j] = Math.abs(chb);
+		this.cHB[j][i] = Math.abs(chb);
 	}
 
 

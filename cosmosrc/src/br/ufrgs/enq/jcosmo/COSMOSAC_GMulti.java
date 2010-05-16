@@ -72,7 +72,7 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setCHB(0);
-		setCHB(2, 12318.276);
+//		setCHB(2, 12318.276);
 		setIgnoreSG(false);
 		setCoord(10);
 		setAnorm(107.16496305);
@@ -83,8 +83,8 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 		setBeta(1, 0.8234057258502678);
 		setBeta(2, 0.8234057258502678);
 		setCHB(0.0);
-		setCHB(1, 0.0);
-		setCHB(2, 11658.463520632726);
+//		setCHB(1, 0.0);
+//		setCHB(2, 11658.463520632726);
 		setSigmaHB(0.0080);
 		setSigmaHB2(0.0);
 		setFpol(1.590397183396032);
@@ -94,6 +94,12 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 		setCoord(10.0);
 		setAnorm(107.16496305);
 		setVnorm(66.69);
+		
+		setBeta(1);
+		setSigmaHB(0.0080);
+		setSigmaHB2(0.0);
+		setFpol(0.7);
+		setCHB(40000);
 	}
 	
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -135,19 +141,19 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			// the multi-area
 			double[] sigma1 = s.getAveragedChargeDensity();
 
-			String extensionLow = ".low" + extension;
+//			String extensionLow = ".low" + extension;
 			try {
-				s.parseFile(folder + name + extensionLow, rav);
-//				s.parseFile(folder + name + extension, rav*2);
+//				s.parseFile(folder + name + extensionLow, rav);
+				s.parseFile(folder + name + extension, rav*2);
 			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
-//				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
+//				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
+				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
 			}
 			double[] sigma2 = s.getAveragedChargeDensity();
 
 			// value from Klamt (COSMO-RS refinement)
 			double fcorr = 0.816;
-			fcorr = 0.9;
+//			fcorr = 0.9;
 
 			double[] area = s.getOriginalArea();
 			double[] area2 = new double[area.length];
@@ -155,7 +161,8 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			double[] sigmaT = new double[area.length];
 
 			for (int m = 0; m < area.length; m++) {
-				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+//				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+				sigmaT[m] = 10*(Math.abs(sigma1[m])/(Math.abs(sigma2[m]) + 1e-5)-1.38);
 			}
 			
 			// only 2 dimensions
@@ -175,19 +182,19 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			
 			
 			// now a new filter for area3 and area2
-			try {
-				s.parseFile(folder + name + extension, rav*2);												
-			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
-			}
-			sigma2 = s.getAveragedChargeDensity();
-			for (int m = 0; m < area.length; m++) {
-				double sT2 = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
-				if(area3[m]>0 && sT2<1.5){
-					area2[m]+= area3[m];
-					area3[m] = 0;
-				}
-			}
+//			try {
+//				s.parseFile(folder + name + extension, rav*2);												
+//			} catch (FileNotFoundException e) {
+//				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
+//			}
+//			sigma2 = s.getAveragedChargeDensity();
+//			for (int m = 0; m < area.length; m++) {
+//				double sT2 = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+//				if(area3[m]>0 && sT2<1.5){
+//					area2[m]+= area3[m];
+//					area3[m] = 0;
+//				}
+//			}
 
 			
 			s.simpleSorting(area, sigma1);
