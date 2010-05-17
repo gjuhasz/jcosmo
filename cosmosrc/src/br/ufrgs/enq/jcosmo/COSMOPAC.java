@@ -70,15 +70,16 @@ public class COSMOPAC extends COSMOSAC {
 //		setCHB(9.392658327026367E8);
 //		setSigmaHB(0.020400000000000012);
 		
-		setBeta(1.802558570630473);
+		// nonHB, COST:0.10516900155174044 NP:165
+		setBeta(1.7498729405164695);
 		setCHB(0.0);
-		setSigmaHB(0.0060);
+		setSigmaHB(0.01);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.5726976062736275);
+		setFpol(0.5753683897433504);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(58.6720205912125);
+		setAnorm(37.444248757489305);
 		setVnorm(66.69);
 	}
 
