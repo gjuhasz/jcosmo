@@ -73,6 +73,17 @@ public class COSMOSAC_G extends COSMOSAC {
 		setCoord(10);
 		setAnorm(79.53);
 		setVnorm(66.69);
+		
+		setBeta(1.959440999843308);
+		setCHB(0.0);
+		setSigmaHB(0.01);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.5235145645392095);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(53.38848174748837);
+		setVnorm(66.69);
 	}
 
 	public COSMOSAC_G() {

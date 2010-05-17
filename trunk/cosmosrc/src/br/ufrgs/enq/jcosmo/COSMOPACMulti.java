@@ -119,6 +119,26 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCoord(10.0);
 		setAnorm(51.404961223433276);
 		setVnorm(66.69);
+		
+		setBeta(1.0444319620531426);
+		setBeta(1, 1.0444319620531426);
+		setBeta(2, 1.0444319620531426);
+		setCHB(4.190793926262297E7);
+		setCHB(0, 0, 4.190793926262297E7);
+		setCHB(0, 1, 4.190793926262297E7);
+		setCHB(0, 2, 4.190793926262297E7);
+		setCHB(1, 1, 4.190793926262297E7);
+		setCHB(1, 2, 4.190793926262297E7);
+		setCHB(2, 2, 4.190793926262297E7);
+		setSigmaHB(1.0);
+		setSigmaHB2(0.0);
+		setFpol(0.8379989825719659);
+		setFpol(1, 0.9293525456181837);
+		setFpol(2, 0.7984149858676959);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(51.404961223433276);
+		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

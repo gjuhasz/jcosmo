@@ -23,8 +23,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 	public IDAC_Est() throws Exception {
 //		String modelClass = COSMOSAC.class.getName();
-		String modelClass = COSMOSAC_G.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+//		String modelClass = COSMOSAC_G.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
@@ -45,27 +45,28 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
-//		
+
+		//		
 //		experiments.add(new IDACExperiments("idac/Alcohol-Alkane.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass));
 //
 //		experiments.add(new IDACExperiments("idac/Alkane-Alcohol.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass)); //
+//		experiments.add(new IDACExperiments("idac/Alkane-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-Amine.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Alkane-Ketone.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Alkane-Phenol.csv", modelClass));
 		
 //		experiments.add(new IDACExperiments("idac/Alkene-Amine.csv", modelClass)); //
 //		
-		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass)); //
-		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
 
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass)); //
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
 
@@ -80,6 +81,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperiments("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
+		experiments.add(new IDACExperiments("idac/nonHB.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
 	}
