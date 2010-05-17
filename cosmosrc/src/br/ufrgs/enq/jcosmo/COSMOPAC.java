@@ -69,6 +69,17 @@ public class COSMOPAC extends COSMOSAC {
 		// now adjusting the HB terms with all nonaqueous
 //		setCHB(9.392658327026367E8);
 //		setSigmaHB(0.020400000000000012);
+		
+		setBeta(1.802558570630473);
+		setCHB(0.0);
+		setSigmaHB(0.0060);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.5726976062736275);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(58.6720205912125);
+		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

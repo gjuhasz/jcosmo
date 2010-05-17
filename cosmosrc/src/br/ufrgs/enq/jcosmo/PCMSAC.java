@@ -79,7 +79,7 @@ public class PCMSAC extends COSMOSAC {
 
 			for(int n=0; n<nsegments; ++n){
 				chargemn = charge[m]*fm+charge[n]*fn;
-				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
+				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 			}
 		}
 	}

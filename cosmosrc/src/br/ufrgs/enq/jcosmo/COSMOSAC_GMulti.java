@@ -40,6 +40,8 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 	public COSMOSAC_GMulti(){
 		super(51, 3);
 		
+		this.rav = 0.75;
+		
 		// NONAQUEOUS, COST:0.2736488469786023 NP:167
 //		idac/Alcohol-Alkane.csv AARD:0.3239770780689189 NP:10
 //		idac/Alcohol-CycloAlkane.csv AARD:0.31659960715621416 NP:15
@@ -95,11 +97,25 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 		setAnorm(107.16496305);
 		setVnorm(66.69);
 		
-		setBeta(1);
-		setSigmaHB(0.0080);
+		setBeta(1.4446959148112937);
+		setBeta(1, 1.4446959148112937);
+		setBeta(2, 1.4446959148112937);
+		setCHB(40000.0);
+		setCHB(0, 0, 40000.0);
+		setCHB(0, 1, 40000.0);
+		setCHB(0, 2, 40000.0);
+		setCHB(1, 1, 40000.0);
+		setCHB(1, 2, 40000.0);
+		setCHB(2, 2, 40000.0);
+		setSigmaHB(0.1);
 		setSigmaHB2(0.0);
-		setFpol(0.7);
-		setCHB(40000);
+		setFpol(0.851319604859719);
+		setFpol(1, 0.05729418931280367);
+		setFpol(2, 0.1932782622569627);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(53.21629458731964);
+		setVnorm(66.69);
 	}
 	
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -141,13 +157,13 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			// the multi-area
 			double[] sigma1 = s.getAveragedChargeDensity();
 
-//			String extensionLow = ".low" + extension;
+			String extensionLow = ".low" + extension;
 			try {
-//				s.parseFile(folder + name + extensionLow, rav);
-				s.parseFile(folder + name + extension, rav*2);
+				s.parseFile(folder + name + extensionLow, rav);
+//				s.parseFile(folder + name + extension, rav*2);
 			} catch (FileNotFoundException e) {
-//				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
-				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
+				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
+//				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
 			}
 			double[] sigma2 = s.getAveragedChargeDensity();
 
@@ -161,15 +177,15 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			double[] sigmaT = new double[area.length];
 
 			for (int m = 0; m < area.length; m++) {
-//				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
-				sigmaT[m] = 10*(Math.abs(sigma1[m])/(Math.abs(sigma2[m]) + 1e-5)-1.38);
+				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
+//				sigmaT[m] = 10*(Math.abs(sigma1[m])/(Math.abs(sigma2[m]) + 1e-5)-1.38);
 			}
 			
 			// only 2 dimensions
 			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 0.7; // so that METHANE is entirely on the first category
-			double tLimit2 = 2;
+			double tLimit = 0.5; // so that METHANE is entirely on the first category
+			double tLimit2 = 1;
 			for (int m = 0; m < area.length; m++) {
 				if(sigmaT[m]>tLimit){
 					if(sigmaT[m]<tLimit2)

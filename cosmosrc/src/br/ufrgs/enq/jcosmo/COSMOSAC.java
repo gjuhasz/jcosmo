@@ -73,7 +73,7 @@ public class COSMOSAC {
 
 	private static double SIGMA_BOUND = 0.025;
 	
-	double alphaPrime;
+	double alpha;
 
 	private static final double TOLERANCE = 1e-6;
 
@@ -171,6 +171,17 @@ public class COSMOSAC {
 		setFpol(0.6917);
 		setIgnoreSG(false);
 		setAnorm(80.82815711911084);
+		setVnorm(66.69);
+		
+		setBeta(0.7978170426404572);
+		setCHB(25580.016958492393);
+		setSigmaHB(0.01);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.4890576778031227);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(25.33504055661391);
 		setVnorm(66.69);
 	}
 
@@ -361,10 +372,8 @@ public class COSMOSAC {
 	public void parametersChanged(){
 		double aEff = Math.PI*rav*rav;
 		aEff = 7.5;
-		double alpha = 0.3*Math.pow(aEff, 1.5)/E0;
+		alpha = 0.3*Math.pow(aEff, 1.5)/E0;
 		
-		alphaPrime = fpol*alpha;
-
 		ACOSMO = new double[ncomps];
 		PROFILE = new double[nsegments];
 		deltaW = new double[nsegments][nsegments];
@@ -408,7 +417,7 @@ public class COSMOSAC {
 
 			for(int n=0; n<nsegments; ++n){
 				chargemn = charge[m]+charge[n];
-				deltaW[m][n] = (alphaPrime/2.0)*chargemn*chargemn;
+				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 			}
 		}
 	}

@@ -1,0 +1,207 @@
+System,T(K),GammaInf,Ref
+n-pentane/n-heptane,293.15,1,"Satoru Kato, 2002"
+n-pentane/n-octane,293.15,0.97,"Satoru Kato, 2002"
+n-pentane/n-dodecane,280.15,0.97,"Satoru Kato, 2002"
+n-pentane/n-dodecane,298.15,0.941,"Satoru Kato, 2002"
+n-hexane/n-heptane,293.15,1,"Satoru Kato, 2002"
+n-hexane/n-dodecane,280.15,0.995,"Satoru Kato, 2002"
+n-hexane/n-dodecane,298.15,0.988,"Satoru Kato, 2002"
+n-hexane/carbon tetrachloride,293,1.33,15
+n-heptane/carbon tetrachloride,328,1.27,15
+n-heptane/carbon tetrachloride,349,1.15,15
+carbon tetrachloride/n-hexane,301,1.2,15
+carbon tetrachloride/n-hexane,315,1.2,15
+carbon tetrachloride/n-hexane,332,1.19,15
+carbon tetrachloride/n-hexane,340,1.16,15
+carbon tetrachloride/n-heptane,293,1.2,15
+carbon tetrachloride/n-octane,293,1.17,15
+carbon tetrachloride/n-octane,328,1.11,15
+carbon tetrachloride/n-hexadecane,313,0.8,15
+carbon tetrachloride/n-hexadecane,320,0.8,15
+carbon tetrachloride/n-hexadecane,327,0.78,15
+carbon tetrachloride/n-hexadecane,333,0.78,15
+carbon tetrachloride/n-octadecane,303,0.77,15
+carbon tetrachloride/n-octadecane,313,0.76,15
+carbon tetrachloride/n-octadecane,323,0.75,15
+carbon tetrachloride/n-eicosane,329,0.77,15
+carbon tetrachloride/n-eicosane,338,0.75,15
+carbon tetrachloride/n-eicosane,348,0.74,15
+carbon tetrachloride/n-tetracosane,324,0.65,15
+carbon tetrachloride/n-tetracosane,333,0.63,15
+carbon tetrachloride/n-tetracosane,343,0.62,15
+carbon tetrachloride/n-tetracosane,353,0.61,15
+carbon tetrachloride/n-octacosane,353,0.58,15
+carbon tetrachloride/n-octacosane,373,0.59,15
+carbon tetrachloride/n-octacosane,393,0.58,15
+benzene/n-heptane,331,1.37,15
+benzene/n-heptane,350,1.33,15
+benzene/n-heptane,366,1.27,15
+benzene/n-octane,328,1.39,15
+benzene/n-octane,348,1.3,15
+benzene/n-octane,388,1.2,15
+benzene/n-hexadecane,293,1.11,15
+benzene/n-hexadecane,298,1.06,15
+benzene/n-hexadecane,303,1.05,15
+benzene/n-hexadecane,312,1.04,15
+benzene/n-hexadecane,313,1,15
+benzene/n-hexadecane,317,1,15
+benzene/n-hexadecane,323,0.99,15
+benzene/n-hexadecane,333,0.89,15
+benzene/n-hexadecane,343,0.62,15
+benzene/n-hexadecane,363,0.59,15
+benzene/n-octadecane,303,1,15
+benzene/n-octadecane,305,1,15
+benzene/n-octadecane,308,0.99,15
+benzene/n-octadecane,313,0.96,15
+benzene/n-octadecane,323,0.93,15
+benzene/n-octadecane,333,0.91,15
+benzene/n-octadecane,353,0.83,15
+benzene/n-eicosane,326,0.9,15
+benzene/n-eicosane,347,0.85,15
+benzene/n-eicosane,367,0.82,15
+benzene/n-docosane,323,0.82,15
+benzene/n-docosane,333,0.8,15
+benzene/n-docosane,341,0.78,15
+benzene/n-tetracosane,323,0.78,15
+benzene/n-tetracosane,328,0.77,15
+benzene/n-tetracosane,333,0.76,15
+benzene/n-tetracosane,338,0.75,15
+benzene/n-tetracosane,349,0.75,15
+benzene/n-tetracosane,357,0.73,15
+benzene/n-octacosane,323,0.71,15
+benzene/n-octacosane,338,0.68,15
+benzene/n-octacosane,348,0.66,15
+benzene/n-octacosane,353,0.65,15
+benzene/n-octacosane,373,0.63,15
+benzene/n-triacontane,349,0.63,15
+benzene/n-triacontane,357,0.61,15
+benzene/n-hexatriacontane,349,0.56,15
+benzene/n-hexatriacontane,353,0.55,15
+benzene/n-hexatriacontane,357,0.54,15
+toluene/n-hexadecane,312,1.05,15
+toluene/n-hexadecane,317,1.04,15
+toluene/n-hexadecane,333,0.9,15
+toluene/n-hexadecane,343,0.65,15
+toluene/n-hexadecane,363,0.62,15
+toluene/n-octadecane,303,0.9,15
+toluene/n-octadecane,313,0.92,15
+toluene/n-octadecane,323,0.9,15
+toluene/n-octadecane,333,0.89,15
+toluene/n-eicosane,326,0.89,15
+toluene/n-eicosane,347,0.86,15
+toluene/n-eicosane,367,0.85,15
+toluene/n-tetracosane,334,0.81,15
+toluene/n-tetracosane,344,0.77,15
+toluene/n-tetracosane,349,0.76,15
+toluene/n-tetracosane,353,0.76,15
+toluene/n-tetracosane,355,0.76,15
+toluene/n-tetracosane,357,0.76,15
+toluene/n-tetracosane,361,0.76,15
+toluene/n-octacosane,353,0.67,15
+toluene/n-octacosane,373,0.67,15
+toluene/n-triacontane,349,0.64,15
+toluene/n-triacontane,353,0.64,15
+toluene/n-triacontane,357,0.64,15
+toluene/n-triacontane,361,0.63,15
+toluene/n-hexatriacontane,349,0.58,15
+toluene/n-hexatriacontane,353,0.56,15
+toluene/n-hexatriacontane,357,0.56,15
+toluene/n-hexatriacontane,361,0.56,15
+cyclohexane/carbon tetrachloride,293,1.12,15
+cyclohexane/carbon tetrachloride,318,1.11,15
+cyclohexane/carbon tetrachloride,330,1.1,15
+cyclohexane/carbon tetrachloride,341,1.09,15
+cyclohexane/carbon tetrachloride,346,1.1,15
+n-hexane/acetone,298,6.62,1,5.67,5.95,6.77,6.55,7.81,6.11
+n-hexane/acetone,303,6.19,1,5.65,5.75,6.8287037037037e-05,6.26,7.98611111111111e-05,5.85
+n-hexane/acetone,308,6.06,1,5.46,5.55,6.49,5.99,7.44,5.61
+n-hexane/acetone,313,5.61,1,5.36,5.37,6.35,5.74,7.27,5.38
+n-hexane/acetone,318,5.42,1,5.27,5.19,6.2,5.51,7.11,5.17
+n-heptane/acetone,298,8.72,1,6.65,7.03,8.14,8.21,10.15,7.11
+n-heptane/acetone,303,8.26,1,6.51,6.75,7.94,7.8,9.68,6.78
+n-heptane/acetone,313,7.23,1,6.24,6.24,7.57,7.06,9.36,6.16
+n-heptane/acetone,333,4.6,10,5.76,5.38,6.91,5.89,6.46,5.16
+n-heptane/acetone,363,3.6,10,5.15,4.38,6.09,4.65,7.38,4.05
+n-octane/acetone,308,8.91,1,7.31,7.47,9.12,9.13,12.36,7.44
+n-octane/acetone,318,7.74,1,6.98,6.85,8.65,8.19,11.65,6.7
+"n-pentane/methyl ethyl ketone",298,3.66,10,3.38,3.41,3.71,6.42,3.35648148148148e-05,3.86
+"n-pentane/methyl ethyl ketone",333,2.99,10,3.06,2.92,3.36,2.83,3.31,3.22
+"n-pentane/methyl ethyl ketone",363,2.67,10,2.87,2.6,3.11,2.47,3.06,2.81
+"n-heptane/methyl ethyl ketone",298,4.35,10,4.57,4.51388888888889e-05,5.18,4.87,5.46,4.92
+"n-heptane/methyl ethyl ketone",333,3.46,10,4.04,3.77,4.53,3.79,4.74,3.86
+"n-heptane/methyl ethyl ketone",363,2.87,10,3.68,3.23,4.09,3.16,4.26,3.22
+"n-decane/methyl ethyl ketone",298,6.04,10,6.41,6.53,7.61,7.93,9.5,7.02
+"n-decane/methyl ethyl ketone",333,3.95,10,5.42,4.94,6.34,5,7.83,5.03
+"n-decane/methyl ethyl ketone",363,3.16,10,4.77,3.99,5.51,4.39,6.77,3.92
+acetone/n-hexane,298,6.68,1,6.28,5.74,6.84,5.62,6.01,6.32,
+acetone/n-hexane,303,6.38,1,6.05,5.49,6.59,5.33,5.82,6,
+acetone/n-hexane,313,5.78,1,5.65,5.02,6.13,4.81,5.47,5.45,
+acetone/n-heptane,298,6.73,1,5.92,5.41,6.44,5.44,5.65,5.89,`
+acetone/n-heptane,308,5.95,1,5.51,4.95,5.99,4.9,5.49,5.34,
+acetone/n-heptane,333,4.9,10,4.7,4.04,5.09,3.88,4.76,4.27,
+acetone/n-heptane,373,3.5,10,3.63,3.09,4.11,2.86,3.95,3.16,
+acetone/n-octane,298,6.72,1,5.57,5.1,6.07,5.27,5.7,5.55,
+acetone/n-decane,298,6.5,10,4.96,4.54,5.4,4.94,5.39,5.02,
+acetone/n-decane,303,4.5,10,3.94,3.38,4.26,3.53,4.38,3.63,
+acetone/n-decane,313,3.1,10,3.21,2.59,3.45,2.6,3.64,2.19907407407407e-05,
+acetone/n-hexadecane,298,6.1,10,3.67,3.35,3.99,4.18,4.63,3.99,
+acetone/n-hexadecane,333,4.2,10,2.91,2.5,3.15,2.98,3.76,2.89,
+acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
+"methyl ethyl ketone/n-hexane",298,5,10,5.36,4.88,5.72,4.51388888888889e-05,4.81,5.54,
+"methyl ethyl ketone/n-hexane",333,3.7,10,4.33,3.75,4.6,3.42,3.99,4.15,
+"methyl ethyl ketone/n-hexane",373,2.8,10,3.58,2.95,3.79,2.6,3.38,3.18,
+"methyl ethyl ketone/n-heptane",298,4.8,10,5.14,4.51388888888889e-05,5.49,4.52,4.73,5.18,
+"methyl ethyl ketone/n-heptane",333,3.5,10,4.15,3.6,4.41,3.34,3.92,3.88,
+"methyl ethyl ketone/n-heptane",373,2.6,10,3.44,2.83,3.35648148148148e-05,2.55,3.32,3,
+"methyl ethyl ketone/n-decane",298,4.8,10,4.46,4.07,4.76,4.19,4.44,4.47,
+"methyl ethyl ketone/n-decane",333,3.5,10,3.35648148148148e-05,3.12,3.83,3.1,3.68,3.35,
+"methyl ethyl ketone/n-decane",373,2.8,10,2.98,2.45,3.15,2.35,3.11,2.57,
+"methyl ethyl ketone/n-hexadecane",298,4.2,10,3.41,3.1,3.64,3.62,3.89,3.62,
+"methyl ethyl ketone/n-hexadecane",333,2.9,10,2.75,2.38,2.92,2.68,3.23,2.71,
+"methyl ethyl ketone/n-hexadecane",373,2.3,10,2.27,1.87,2.41,2.04,2.73,2.08,
+"diethyl ketone/n-heptane",298,3.7,10,2.77,2.58,2.85,3.59,2.52,3.48,
+"diethyl ketone/n-heptane",333,2.9,10,2.4,2.17,2.47,2.76,2.23,2.77,
+"diethyl ketone/n-heptane",373,2.3,10,2.12,1.87,2.18,2.19,2.01,2.25,
+"n,n-dimethylformamide/n-hexane",303,32.62,7
+"n,n-dimethylformamide/n-hexane",313,27.19,7
+"n,n-dimethylformamide/n-heptane",333,17.3,7
+"n,n-dimethylformamide/n-octane",313,17.8,7
+"n,n-dimethylformamide/n-octane",333,14.4,7
+"n,n-dimethylformamide/n-nonane",313,16.69,7
+"n,n-dimethylformamide/n-nonane",333,13.69,7
+"n,n-dimethylformamide/n-decane",313,15.09,7
+"n,n-dimethylformamide/n-decane",333,12.59,7
+"n,n-dimethylformamide/n-undecane",313,14.3,7
+"n,n-dimethylformamide/n-undecane",333,11.6,7
+"cis-2-pentene/n,n-dimethylformamide",293,7,7
+"cis-2-pentene/n,n-dimethylformamide",313,6.3,7
+"cis-2-pentene/n,n-dimethylformamide",333,5.7,7
+"1-hexene/n,n-dimethylformamide",293,9.6,7
+"1-hexene/n,n-dimethylformamide",313,7.7,7
+"1-hexene/n,n-dimethylformamide",333,6.7,7
+"1-heptene/n,n-dimethylformamide",293,12.2,7
+"1-heptene/n,n-dimethylformamide",313,8.9,7
+"1-heptene/n,n-dimethylformamide",333,8.1,7
+"1-octene/n,n-dimethylformamide",293,15.5,7
+"1-octene/n,n-dimethylformamide",313,12.6,7
+"1-octene/n,n-dimethylformamide",333,10.2,7
+"1-decene/n,n-dimethylformamide",293,27.19,7
+"1-decene/n,n-dimethylformamide",313,23.1,7
+"1-decene/n,n-dimethylformamide",333,17.8,7
+"1-dodecene/n,n-dimethylformamide",293,45.2,7
+"1-dodecene/n,n-dimethylformamide",313,38.9,7
+"1-dodecene/n,n-dimethylformamide",333,29.4,7
+"cyclohexane/n,n-dimethylformamide",298.15,12.18,"http://dx.doi.org/10.1016/S0378-3812(98)00429-4"
+"cyclopentene/n,n-dimethylformamide",298,4.5,7
+"cyclopentene/n,n-dimethylformamide",313,4.2,7
+"cyclopentene/n,n-dimethylformamide",333,4,7
+"cyclohexene/n,n-dimethylformamide",293,6,7
+"cyclohexene/n,n-dimethylformamide",313,5.3,7
+"cyclohexene/n,n-dimethylformamide",333,4.9,7
+"cycloheptene/n,n-dimethylformamide",293,7.8,7
+"cycloheptene/n,n-dimethylformamide",313,7,7
+"cycloheptene/n,n-dimethylformamide",333,5.6,7
+"cyclooctene/n,n-dimethylformamide",293,10.6,7
+"cyclooctene/n,n-dimethylformamide",313,8.5,7
+"cyclooctene/n,n-dimethylformamide",333,6.8,7
+

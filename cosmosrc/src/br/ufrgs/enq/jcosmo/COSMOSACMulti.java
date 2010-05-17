@@ -549,7 +549,7 @@ public class COSMOSACMulti {
 	}
 	public void setFpol(double fpol) {
 		for (int i = 0; i < this.fpol.length; i++) {
-			this.fpol[i] = fpol;
+			this.fpol[i] = Math.abs(fpol);
 		}
 	}
 	
@@ -559,7 +559,7 @@ public class COSMOSACMulti {
 	 * @param fpol the value
 	 */
 	public void setFpol(int i, double fpol) {
-		this.fpol[i] = fpol;
+		this.fpol[i] = Math.abs(fpol);
 	}
 	
 	public double getBeta() {
