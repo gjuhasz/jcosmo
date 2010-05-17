@@ -71,8 +71,8 @@ public class DiagonalCOSMOSAC {
 		
 		// or just the families
 		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
-		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
-		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 		
 		dig.showPlot();
 	}
