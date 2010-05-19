@@ -173,15 +173,15 @@ public class COSMOSAC {
 		setAnorm(80.82815711911084);
 		setVnorm(66.69);
 		
-		setBeta(0.7978170426404572);
-		setCHB(25580.016958492393);
-		setSigmaHB(0.01);
+		setBeta(1.0947446969598862);
+		setCHB(35641.7258589243);
+		setSigmaHB(0.002621822743558675);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.4890576778031227);
+		setFpol(0.024526693237433943);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(25.33504055661391);
+		setAnorm(71.72908857440859);
 		setVnorm(66.69);
 	}
 
