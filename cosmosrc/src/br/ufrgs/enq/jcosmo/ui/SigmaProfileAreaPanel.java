@@ -96,13 +96,7 @@ public class SigmaProfileAreaPanel extends JPanel {
 		dataset.removeAllSeries();
 	}
 	
-	/**
-	 * Adds a new descriptor profile
-	 * @param label the descriptor label
-	 * @param sigma the sigma (ordered)
-	 * @param area the area for each sigma
-	 */
-	public void addProfile(String label, double[] sigma, double[] area){
+	public void addProfile(String label, double[] sigma, double[] area, int rgb){
 		int n = sigma.length;
 		XYSeries comp= new XYSeries(label, false, false);
 
@@ -115,8 +109,20 @@ public class SigmaProfileAreaPanel extends JPanel {
 		}
 		dataset.addSeries(comp);
 		int series = dataset.getSeriesCount()-1;
+		sigmaProfilePlot.getRenderer().setSeriesPaint(series, new Color(rgb, rgb, rgb));
+	}
+	
+	/**
+	 * Adds a new descriptor profile
+	 * @param label the descriptor label
+	 * @param sigma the sigma (ordered)
+	 * @param area the area for each sigma
+	 */
+	public void addProfile(String label, double[] sigma, double[] area){
+		int series = dataset.getSeriesCount()-1;
 		int start = 80, delta = 40;
 		int rgb = start + delta*series;
-		sigmaProfilePlot.getRenderer().setSeriesPaint(series, new Color(rgb, rgb, rgb));
+		
+		addProfile(label, sigma, area, rgb);
 	}
 }
