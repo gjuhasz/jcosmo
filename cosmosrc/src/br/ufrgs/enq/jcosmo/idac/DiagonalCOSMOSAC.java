@@ -16,8 +16,8 @@ public class DiagonalCOSMOSAC {
 
 	public static void main (String[] args) throws Exception{
 //		String modelClass = COSMOSAC_G.class.getName();
-		String modelClass = COSMOSAC.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+//		String modelClass = COSMOSAC.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 		
 		IDACDiagonal dig = new IDACDiagonal();
@@ -70,11 +70,11 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 		
 		dig.showPlot();
 	}
