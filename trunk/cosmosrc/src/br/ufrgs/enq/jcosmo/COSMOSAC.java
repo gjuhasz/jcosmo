@@ -183,6 +183,19 @@ public class COSMOSAC {
 		setCoord(10.0);
 		setAnorm(71.72908857440859);
 		setVnorm(66.69);
+		
+		
+		// article results
+		setBeta(1.12);
+		setCHB(25580.016958492393);
+		setSigmaHB(0.00595);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(FPOL); // ?
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(80.83);
+		setVnorm(66.69);
 	}
 
 	public double getRav() {
