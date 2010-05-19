@@ -120,71 +120,104 @@ public class SigmaDescriptors {
 						double[] area = sigmaParser.getOriginalArea();
 						int[] atoms = sigmaParser.getAtom();
 						int[] elem = sigmaParser.getElem();
-						double[] areaAtom;
 						
 						int[] bondAtom1 = molParser.getBondAtom1();
 						int[] bondAtom2 = molParser.getBondAtom2();
 						int[] elementType = molParser.getElementType();
 
 						// lets filter the O-H atoms
-						areaAtom = new double[area.length];
+						double[] areaOH = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
 							if(elem[i]==8){
 								for (int j = 0; j < bondAtom1.length; j++) {
 									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
 											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
-										areaAtom[i] += area[i];
+										areaOH[i] += area[i];
 										area[i] = 0;
 										break;
 									}
 								}
 							}
 						}
-						sigmaParser.simpleSorting(areaAtom, sigmaBase);
-						chart.addProfile("O-H", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						// lets filter the H-O atoms
-						areaAtom = new double[area.length];
+						double[] areaHO = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
 							if(elem[i]==1){
 								for (int j = 0; j < bondAtom1.length; j++) {
 									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==8) ||
 											(elementType[bondAtom1[j]-1]==8 && bondAtom2[j]==atoms[i])){
-										areaAtom[i] += area[i];
+										areaHO[i] += area[i];
 										area[i] = 0;
 										break;
 									}
 								}
 							}
 						}
-						sigmaParser.simpleSorting(areaAtom, sigmaBase);
-						chart.addProfile("H-O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						// lets filter the N,O atoms
-						areaAtom = new double[area.length];
+						// lets filter the H-N atoms
+						double[] areaHN = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==7 || elem[i]==8){
-								areaAtom[i] += area[i];
+							if(elem[i]==1){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==7) ||
+											(elementType[bondAtom1[j]-1]==7 && bondAtom2[j]==atoms[i])){
+										areaHN[i] += area[i];
+										area[i] = 0;
+										break;
+									}
+								}
+							}
+						}
+						
+						// lets filter the N atoms
+						double[] areaN = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==7){
+								areaN[i] += area[i];
 								area[i] = 0;
 							}
 						}
-						sigmaParser.simpleSorting(areaAtom, sigmaBase);
-						chart.addProfile("N,O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+
+						// lets filter the O atoms
+						double[] areaO = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==8){
+								areaO[i] += area[i];
+								area[i] = 0;
+							}
+						}
 
 						// lets filter the F,Cl,Br,I atoms
-						areaAtom = new double[area.length];
+						double[] areaFetc = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
 							if(elem[i]==9 || elem[i]==17 || elem[i]==35 || elem[i]==53){
-								areaAtom[i] += area[i];
+								areaFetc[i] += area[i];
 								area[i] = 0;
 							}
 						}
-						sigmaParser.simpleSorting(areaAtom, sigmaBase);
-						chart.addProfile("F,Cl,Br,I", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 
 						// adding all other elements
 						sigmaParser.simpleSorting(area, sigmaBase);
 						chart.addProfile("C, H, Others", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaHO, sigmaBase);
+						chart.addProfile("H-O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaHN, sigmaBase);
+						chart.addProfile("H-N", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaOH, sigmaBase);
+						chart.addProfile("O-H", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaN, sigmaBase);
+						chart.addProfile("N", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaO, sigmaBase);
+						chart.addProfile("O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						sigmaParser.simpleSorting(areaFetc, sigmaBase);
+						chart.addProfile("F,Cl,Br,I", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 					}
 
 					// Polarizability analysis
