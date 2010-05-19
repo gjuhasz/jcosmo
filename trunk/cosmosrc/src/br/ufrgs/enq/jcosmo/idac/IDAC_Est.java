@@ -22,9 +22,9 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	List<IDACExperiments> experiments;
 
 	public IDAC_Est() throws Exception {
-		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSAC_G.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
@@ -64,11 +64,11 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperiments("idac/Amine-Alkane.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/Aromatic-Alkane.csv", modelClass));
 
-//		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-Amine.csv", modelClass)); //
 //		experiments.add(new IDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass)); //
-//		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass));
 
 		//		
 ////		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Alkane.csv", modelClass)); //

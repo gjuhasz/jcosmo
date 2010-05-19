@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
+import br.ufrgs.enq.jcosmo.MolParser;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
@@ -59,7 +60,7 @@ public class SigmaDescriptors {
 		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
 		String []fileTypeList = {"MOPAC", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
-		String []analysisTypeList = {"Polarizability", "Near", "Low", "Hydrogen-Bond"};
+		String []analysisTypeList = {"Polarizability", "Near", "Low", "Hydrogen-Bond", "Atom Type"};
 		final JComboBox analysisType = new JComboBox(analysisTypeList);
 
 		JButton run = new JButton("Refresh");
@@ -109,6 +110,83 @@ public class SigmaDescriptors {
 				SigmaProfileGenerator sigmaParser = new SigmaProfileGenerator(type);
 
 				try{
+					if(analysisType.getSelectedItem().equals("Atom Type")){
+						sigmaParser.parseFile(fileName, rav);
+						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
+
+						MolParser molParser = new MolParser();
+						molParser.parseFile(folder + nameField.getText() + ".mol");
+						
+						double[] area = sigmaParser.getOriginalArea();
+						int[] atoms = sigmaParser.getAtom();
+						int[] elem = sigmaParser.getElem();
+						double[] areaAtom;
+						
+						int[] bondAtom1 = molParser.getBondAtom1();
+						int[] bondAtom2 = molParser.getBondAtom2();
+						int[] elementType = molParser.getElementType();
+
+						// lets filter the O-H atoms
+						areaAtom = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==8){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
+											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
+										areaAtom[i] += area[i];
+										area[i] = 0;
+										break;
+									}
+								}
+							}
+						}
+						sigmaParser.simpleSorting(areaAtom, sigmaBase);
+						chart.addProfile("O-H", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						// lets filter the H-O atoms
+						areaAtom = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==1){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==8) ||
+											(elementType[bondAtom1[j]-1]==8 && bondAtom2[j]==atoms[i])){
+										areaAtom[i] += area[i];
+										area[i] = 0;
+										break;
+									}
+								}
+							}
+						}
+						sigmaParser.simpleSorting(areaAtom, sigmaBase);
+						chart.addProfile("H-O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						// lets filter the N,O atoms
+						areaAtom = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==7 || elem[i]==8){
+								areaAtom[i] += area[i];
+								area[i] = 0;
+							}
+						}
+						sigmaParser.simpleSorting(areaAtom, sigmaBase);
+						chart.addProfile("N,O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+
+						// lets filter the F,Cl,Br,I atoms
+						areaAtom = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==9 || elem[i]==17 || elem[i]==35 || elem[i]==53){
+								areaAtom[i] += area[i];
+								area[i] = 0;
+							}
+						}
+						sigmaParser.simpleSorting(areaAtom, sigmaBase);
+						chart.addProfile("F,Cl,Br,I", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+
+						// adding all other elements
+						sigmaParser.simpleSorting(area, sigmaBase);
+						chart.addProfile("C, H, Others", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+					}
+
 					// Polarizability analysis
 					if(analysisType.getSelectedItem().equals("Polarizability")){
 						sigmaParser.parseFile(fileName, rav);
