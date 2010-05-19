@@ -39,8 +39,8 @@ public class COSMOPAC extends COSMOSAC {
 		
 //		// article results
 //		setResCorr(1);
-//		setCHB(42700.7265672813);
-//		setSigmaHB(0.0064);
+		setCHB(42700.7265672813);
+		setSigmaHB(0.0064);
 //		setFpol(FPOL);
 //		setIgnoreSG(false);
 //		setAnorm(28.2);
@@ -55,8 +55,8 @@ public class COSMOPAC extends COSMOSAC {
 //		idac/Aromatic-Alkane.csv AARD:0.041880708942964404 NP:46
 //		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
 		setBeta(1.6513070950256865);
-		setCHB(0.0);
-		setSigmaHB(0.006);
+//		setCHB(0.0);
+//		setSigmaHB(0.006);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setFpol(0.6900883503832824);
@@ -71,16 +71,20 @@ public class COSMOPAC extends COSMOSAC {
 //		setSigmaHB(0.020400000000000012);
 		
 		// nonHB, COST:0.10516900155174044 NP:165
-		setBeta(1.7498729405164695);
+		setBeta(1.9871344869851588);
 		setCHB(0.0);
 		setSigmaHB(0.01);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.5753683897433504);
+		setFpol(0.5360550192460967);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(37.444248757489305);
+		setAnorm(46.78140757190759);
 		setVnorm(66.69);
+		
+//		setBeta(1);
+//		setFpol(FPOL);
+//		setAnorm(ANORM);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -96,11 +100,12 @@ public class COSMOPAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
+			String folder = "moltest/";
 			
 			try {
-				s.parseFile("mopac/" + name + extension);												
+				s.parseFile(folder + name + extension);												
 			} catch (Exception e) {
-				s.parseFile("mopac/" + name.replace('-','_') + extension);
+				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
