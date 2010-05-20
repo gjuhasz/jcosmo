@@ -19,6 +19,8 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.io.FileNotFoundException;
+
 
 /**
  * COSMO-SAC (GAMAESS sigma profiles) activity model.
@@ -74,15 +76,15 @@ public class COSMOSAC_G extends COSMOSAC {
 		setAnorm(79.53);
 		setVnorm(66.69);
 		
-		setBeta(1.959440999843308);
+		setBeta(2.716723022971033);
 		setCHB(0.0);
 		setSigmaHB(0.01);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.5235145645392095);
+		setFpol(1.7074753121035136);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(53.38848174748837);
+		setAnorm(ANORM);
 		setVnorm(66.69);
 	}
 
@@ -102,11 +104,14 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
-			String folder = "moltest/";
+//			String folder = "moltest/";
+//			String folder = "gam6-31+G2d,p/";
+//			String folder = "gam6-31Gd/";
+			String folder = "gamSTO3/";
 			
 			try {
 				s.parseFile(folder + name + extension);												
-			} catch (Exception e) {
+			} catch (FileNotFoundException e) {
 				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			

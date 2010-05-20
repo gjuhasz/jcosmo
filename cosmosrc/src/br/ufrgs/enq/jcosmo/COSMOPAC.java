@@ -81,7 +81,18 @@ public class COSMOPAC extends COSMOSAC {
 		setCoord(10.0);
 		setAnorm(46.78140757190759);
 		setVnorm(66.69);
-
+		
+		// nonHB, RM1, COST:0.112, NP:68
+		setBeta(2.144806645259847);
+		setCHB(0.0);
+		setSigmaHB(2.4440796188024025);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.5049604559424442);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(81.05566549258984);
+		setVnorm(66.69);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -97,7 +108,8 @@ public class COSMOPAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
-			String folder = "moltest/";
+//			String folder = "moltest/";
+			String folder = "mopRM1/";
 			
 			try {
 				s.parseFile(folder + name + extension);												

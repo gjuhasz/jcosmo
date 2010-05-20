@@ -3,6 +3,7 @@ package br.ufrgs.enq.jcosmo.idac;
 import br.ufrgs.enq.jcosmo.COSMOPACMulti;
 import br.ufrgs.enq.jcosmo.COSMOPACMultiAtom;
 import br.ufrgs.enq.jcosmo.COSMOSAC_GMulti;
+import br.ufrgs.enq.jcosmo.COSMOSAC_GMultiAtom;
 import br.ufrgs.enq.jcosmo.PCMSACMulti;
 
 /**
@@ -16,9 +17,10 @@ public class DiagonalCOSMOSACMulti {
 
 	public static void main (String[] args) throws Exception{
 //		String modelClass = COSMOPACMulti.class.getName();
-		String modelClass = COSMOPACMultiAtom.class.getName();
+//		String modelClass = COSMOPACMultiAtom.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
+		String modelClass = COSMOSAC_GMultiAtom.class.getName();
 		
 		IDACDiagonalMulti dig = new IDACDiagonalMulti();
 		
