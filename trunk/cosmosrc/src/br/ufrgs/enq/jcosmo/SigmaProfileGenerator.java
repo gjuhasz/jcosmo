@@ -478,14 +478,20 @@ public class SigmaProfileGenerator {
 	 * <p>This is needed to fit into the standard sigma discretization.
 	 * 
 	 * @param sigmaAveraged the areas to be sorted
+	 * 
+	 * @return the total sorted area sorted
+	 * 
 	 */
-	public void simpleSorting(double []area, double sigmaAveraged[]){
+	public double simpleSorting(double []area, double sigmaAveraged[]){
 		sortedArea = new double[sigmaPoints];
 		
 		int last = sortedArea.length-1;
+		double totalArea = 0;
 		
 		// SIGMA PROFILE SORTING TAKEN FROM LIN DISSERTATION**
 		for (int J = 0; J < sigmaAveraged.length; J++) {
+			totalArea+= area[J];
+			
 			int TMP = (int)((sigmaAveraged[J]-CHGDEN[0])/increment);
 			
 			if(TMP<0){
@@ -509,6 +515,7 @@ public class SigmaProfileGenerator {
 			else
 				sortedArea[TMP]+= area[J];
 		}
+		return totalArea;
 	}
 
 	/**

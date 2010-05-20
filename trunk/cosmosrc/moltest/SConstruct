@@ -82,10 +82,10 @@ Execute(delAction)
 
 # Convert mol files to gamess input
 inps = env.BabelGam(Glob('*.mol'))
-inps += env.BabelGam_low(Glob('*.mol'))
-inps += env.BabelGam_near(Glob('*.mol'))
-inps += env.BabelGam_m1(Glob('*.mol-1'))
-inps += env.BabelGam_p1(Glob('*.mol+1'))
+#inps += env.BabelGam_low(Glob('*.mol'))
+#inps += env.BabelGam_near(Glob('*.mol'))
+#inps += env.BabelGam_m1(Glob('*.mol-1'))
+#inps += env.BabelGam_p1(Glob('*.mol+1'))
 env.Depends(inps, 'keys.gamess')
 # env.Depends(inps, delAction)
 # process files with gamess

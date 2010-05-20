@@ -81,17 +81,7 @@ public class COSMOPAC extends COSMOSAC {
 		setCoord(10.0);
 		setAnorm(46.78140757190759);
 		setVnorm(66.69);
-		
-		setBeta(1.331523910266511);
-		setCHB(0.0);
-		setSigmaHB(2.4440796188024025);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.9868664547382379);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(24531.99919403441);
-		setVnorm(66.69);
+
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
