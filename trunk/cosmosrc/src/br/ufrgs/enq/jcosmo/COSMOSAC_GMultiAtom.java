@@ -29,22 +29,27 @@ import java.io.FileNotFoundException;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPACMultiAtom extends COSMOSACMulti {
+public class COSMOSAC_GMultiAtom extends COSMOSACMulti {
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
-	public COSMOPACMultiAtom(){
+	String folder = "mopac/";
+	
+	public COSMOSAC_GMultiAtom(){
 		super(51, 4);
 		
-		// we use another averaging radius
-		this.rav = COSMOSAC.RAV*1.1;
-		
-		setBeta(1.9871344869851588);
+
+		// nonHB, COST:0.14029708507644462 NP:68
+		folder = "gamSTO3/";
+		setBeta(3.3849341216002857);
 		setCHB(0);
 		setCHB(1, 2, 3153.28125);
 		setCHB(1, 3, 4000.28125);
-		setFpol(0.5360550192460967);
+		setFpol(1.2386513272071946);
+		setFpol(1, 1.2024559836598478);
+		setFpol(2, 1.5822106093430);
+		setFpol(3, 1.46507954035040);
 		setIgnoreSG(false);
 		setCoord(10.0);
 		setAnorm(46.78140757190759);
@@ -81,15 +86,12 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 
 		this.VCOSMO = new double[ncomps];
 		
-//		String folder = "mopac/";
-		String folder = "moltest/";
-
-		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.GAMESS,
 				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			String name = comps[i].name.replace(' ','_');
-			String extension = ".cos";
+			String extension = ".gout";
 			
 			try {
 				s.parseFile(folder + name + extension);												

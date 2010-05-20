@@ -108,7 +108,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 3;
+		return 2;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -121,7 +121,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -140,12 +140,12 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				int i=0;
 				cosmo.setBeta(pars[i++]);
 				cosmo.setFpol(pars[i++]);
-				cosmo.setCHB(pars[i++]);
-				cosmo.setSigmaHB(pars[i++]);
+//				cosmo.setCHB(pars[i++]);
+//				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
+//				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables
