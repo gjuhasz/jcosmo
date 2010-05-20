@@ -60,7 +60,7 @@ public class SigmaDescriptors {
 		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
 		String []fileTypeList = {"MOPAC", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
-		String []analysisTypeList = {"Polarizability", "Near", "Low", "Hydrogen-Bond", "Atom Type"};
+		String []analysisTypeList = {"Atom Type", "Polarizability", "Near", "Low", "Hydrogen-Bond"};
 		final JComboBox analysisType = new JComboBox(analysisTypeList);
 
 		JButton run = new JButton("Refresh");
@@ -114,25 +114,54 @@ public class SigmaDescriptors {
 						sigmaParser.parseFile(fileName, rav);
 						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
 
-						MolParser molParser = new MolParser();
-						molParser.parseFile(folder + nameField.getText() + ".mol");
-						
 						double[] area = sigmaParser.getOriginalArea();
 						int[] atoms = sigmaParser.getAtom();
 						int[] elem = sigmaParser.getElem();
 						
+						MolParser molParser = new MolParser();
+						molParser.parseFile(folder + nameField.getText() + ".mol");
 						int[] bondAtom1 = molParser.getBondAtom1();
 						int[] bondAtom2 = molParser.getBondAtom2();
 						int[] elementType = molParser.getElementType();
 
-						// lets filter the O-H atoms
-						double[] areaOH = new double[area.length];
+						// lets filter the N-H atoms
+						double[] areaNH = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==8){
+							if(elem[i]==7){
 								for (int j = 0; j < bondAtom1.length; j++) {
 									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
 											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
-										areaOH[i] += area[i];
+										areaNH[i] += area[i];
+										area[i] = 0;
+										break;
+									}
+								}
+							}
+						}
+
+						// lets filter the O-H atoms
+						double[] areaOH = new double[area.length];
+						for (int m = 0; m < area.length; m++) {
+							if(elem[m]==8){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==1) ||
+											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[m])){
+										areaOH[m] += area[m];
+										area[m] = 0;
+										break;
+									}
+								}
+							}
+						}
+						
+						// lets filter the [F,Cl,Br,I]-H atoms
+						double[] areaFH = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==9 || elem[i]==17 || elem[i]==35 || elem[i]==53){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
+											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
+										areaFH[i] += area[i];
 										area[i] = 0;
 										break;
 									}
@@ -142,13 +171,13 @@ public class SigmaDescriptors {
 						
 						// lets filter the H-O atoms
 						double[] areaHO = new double[area.length];
-						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==1){
+						for (int m = 0; m < area.length; m++) {
+							if(elem[m]==1){
 								for (int j = 0; j < bondAtom1.length; j++) {
-									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==8) ||
-											(elementType[bondAtom1[j]-1]==8 && bondAtom2[j]==atoms[i])){
-										areaHO[i] += area[i];
-										area[i] = 0;
+									if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==8) ||
+											(elementType[bondAtom1[j]-1]==8 && bondAtom2[j]==atoms[m])){
+										areaHO[m] += area[m];
+										area[m] = 0;
 										break;
 									}
 								}
@@ -170,6 +199,26 @@ public class SigmaDescriptors {
 							}
 						}
 						
+						// lets filter the H-[F,Cl,Br,I] atoms
+						double[] areaHF = new double[area.length];
+						for (int i = 0; i < area.length; i++) {
+							if(elem[i]==1){
+								for (int j = 0; j < bondAtom1.length; j++) {
+									if( (bondAtom1[j]==atoms[i] &&
+											(elementType[bondAtom2[j]-1]==9 || elementType[bondAtom2[j]-1]==17
+											 || elementType[bondAtom2[j]-1]==35 || elementType[bondAtom2[j]-1]==53) )
+										||(
+											(elementType[bondAtom1[j]-1]==9 || elementType[bondAtom1[j]-1]==17 ||
+													elementType[bondAtom1[j]-1]==35 || elementType[bondAtom1[j]-1]==53)
+												&& bondAtom2[j]==atoms[i])){
+										areaHF[i] += area[i];
+										area[i] = 0;
+										break;
+									}
+								}
+							}
+						}
+						
 						// lets filter the N atoms
 						double[] areaN = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
@@ -181,43 +230,54 @@ public class SigmaDescriptors {
 
 						// lets filter the O atoms
 						double[] areaO = new double[area.length];
-						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==8){
-								areaO[i] += area[i];
-								area[i] = 0;
+						for (int m = 0; m < area.length; m++) {
+							if(elem[m]==8){
+								areaO[m] += area[m];
+								area[m] = 0;
 							}
 						}
 
 						// lets filter the F,Cl,Br,I atoms
-						double[] areaFetc = new double[area.length];
+						double[] areaF = new double[area.length];
 						for (int i = 0; i < area.length; i++) {
 							if(elem[i]==9 || elem[i]==17 || elem[i]==35 || elem[i]==53){
-								areaFetc[i] += area[i];
+								areaF[i] += area[i];
 								area[i] = 0;
 							}
 						}
+						
+						double partial;
 
 						// adding all other elements
-						sigmaParser.simpleSorting(area, sigmaBase);
-						chart.addProfile("C, H, Others", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(area, sigmaBase);
+						chart.addProfile("C, H, Others (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaHO, sigmaBase);
-						chart.addProfile("H-O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaHN, sigmaBase);
+						chart.addProfile("H-N (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaHN, sigmaBase);
-						chart.addProfile("H-N", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaHO, sigmaBase);
+						chart.addProfile("H-O (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaOH, sigmaBase);
-						chart.addProfile("O-H", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaHF, sigmaBase);
+						chart.addProfile("H-[F,Cl,Br,I] (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaN, sigmaBase);
-						chart.addProfile("N", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaNH, sigmaBase);
+						chart.addProfile("N-H (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaO, sigmaBase);
-						chart.addProfile("O", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaOH, sigmaBase);
+						chart.addProfile("O-H (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
-						sigmaParser.simpleSorting(areaFetc, sigmaBase);
-						chart.addProfile("F,Cl,Br,I", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						partial = sigmaParser.simpleSorting(areaHF, sigmaBase);
+						chart.addProfile("[F,Cl,Br,I]-H (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						partial = sigmaParser.simpleSorting(areaN, sigmaBase);
+						chart.addProfile("N (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						partial = sigmaParser.simpleSorting(areaO, sigmaBase);
+						chart.addProfile("O (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						partial = sigmaParser.simpleSorting(areaF, sigmaBase);
+						chart.addProfile("[F,Cl,Br,I] (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 					}
 
 					// Polarizability analysis

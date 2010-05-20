@@ -22,6 +22,10 @@ package br.ufrgs.enq.jcosmo.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -70,6 +74,7 @@ public class SigmaProfileAreaPanel extends JPanel {
 		Font font = new Font("DeJaVu Serif", Font.BOLD, 16);
 		Font fontMini = new Font("DeJaVu Serif", 0, 12);
 		
+		sigmaProfileChart.getLegend().setItemFont(fontMini);
 		sigmaProfilePlot.getDomainAxis().setLabelFont(font);
 		sigmaProfilePlot.getRangeAxis().setLabelFont(font);
 		sigmaProfilePlot.getDomainAxis().setTickLabelFont(fontMini);
@@ -109,7 +114,27 @@ public class SigmaProfileAreaPanel extends JPanel {
 		}
 		dataset.addSeries(comp);
 		int series = dataset.getSeriesCount()-1;
-		sigmaProfilePlot.getRenderer().setSeriesPaint(series, new Color(rgb, rgb, rgb));
+		
+		int patternSize = 6;
+		BufferedImage bi = new BufferedImage(patternSize, patternSize,
+		        BufferedImage.TYPE_INT_RGB);
+		Rectangle r = new Rectangle(0, 0, patternSize, patternSize);
+	    Graphics2D big = bi.createGraphics();
+	    big.setColor(new Color(rgb, rgb, rgb));
+	    big.fillRect(0, 0, patternSize, patternSize);
+	    
+	    int pattern = series%4;
+	    if(pattern == 1 || pattern==3){
+	    	big.setColor(Color.WHITE);
+	    	big.drawLine(0, patternSize/2, patternSize, patternSize/2);
+	    }
+	    if(pattern == 2 || pattern==3){
+	    	big.setColor(Color.WHITE);
+	    	big.drawLine(patternSize/2, 0, patternSize/2, patternSize);
+	    }
+	    
+		TexturePaint paint = new TexturePaint(bi, r);
+		sigmaProfilePlot.getRenderer().setSeriesPaint(series, paint); // new Color(rgb, rgb, rgb));
 	}
 	
 	/**
@@ -120,7 +145,7 @@ public class SigmaProfileAreaPanel extends JPanel {
 	 */
 	public void addProfile(String label, double[] sigma, double[] area){
 		int series = dataset.getSeriesCount()-1;
-		int start = 80, delta = 40;
+		int start = 80, delta = 15;
 		int rgb = start + delta*series;
 		
 		addProfile(label, sigma, area, rgb);
