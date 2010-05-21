@@ -34,21 +34,58 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 		return "COSMO-SAC(MOPAC)";
 	}
 	
+	String folder = "mopac/";
+	
 	public COSMOPACMultiAtom(){
 		super(51, 4);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV*1.1;
 		
-		setBeta(1.9871344869851588);
-		setCHB(0);
-		setCHB(1, 2, 3153.28125);
-		setCHB(1, 3, 4000.28125);
-		setFpol(0.5360550192460967);
+		// nonHB, COST:0.08398846320047755, NP:68
+		folder = "mopAM1/";
+		setBeta(1.9455);
+		setCHB(0.0);
+		setFpol(0.54815);
+		setFpol(1, 0.552345);
+		setFpol(2, 0.43642137);
+		setFpol(2, 0.5023036);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(46.78140757190759);
-		setVnorm(66.69);
+		setAnorm(42.795026);
+		setVnorm(65.027547);
+		// HB part COST:0.3471202179898385 NP:81
+		setSigmaHB(0.004);
+		setCHB(1,2, 2935);
+		setCHB(1,3, 1462);
+		
+		// aqueous and nonaqueous, COST:0.5459409975779058 NP:246
+		folder = "mopAM1/";
+		setBeta(1);
+		setFpol(1.0259720937136563);
+		setFpol(1, 0.8236345);
+		setFpol(2, 0.9746551);
+		setFpol(3, 0.8355474);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(42.795026);
+		setVnorm(65.027547);
+		setCHB(1,2, 1519);
+		setCHB(1,3, 150);
+		
+		// aqueous and nonaqueous, vdw*1.18, COST:0.436 NP:246
+		folder = "mopAM1_R1.1/";
+		setBeta(1);
+		setFpol(1.238143);
+		setFpol(1, 0.20150);
+		setFpol(2, 2.12397);
+		setFpol(3, 1.10189);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(42.795026);
+		setVnorm(65.027547);
+		setCHB(1,2, 2263.);
+		setCHB(1,3, 280);
 	}
 	
 	protected void calculeDeltaW_HB(){
@@ -65,8 +102,8 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 						double hb = 0;
 						if((charge[ACC] * charge[DON]) < 0)
 							hb = (charge[ACC] - charge[DON]);
-
 						hb = -hb*hb;
+//						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
 
 						deltaW_HB[d][d2][m][n] = cHB[d][d2]* hb;
 					}
@@ -81,9 +118,6 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 
 		this.VCOSMO = new double[ncomps];
 		
-//		String folder = "mopac/";
-		String folder = "moltest/";
-
 		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
 				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {

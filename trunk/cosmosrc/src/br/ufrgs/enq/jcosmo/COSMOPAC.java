@@ -108,8 +108,8 @@ public class COSMOPAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
-//			String folder = "moltest/";
-			String folder = "mopRM1/";
+			String folder = "moltest/";
+//			String folder = "mopRM1/";
 			
 			try {
 				s.parseFile(folder + name + extension);												
