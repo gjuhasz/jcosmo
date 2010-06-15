@@ -32,67 +32,197 @@ public class COSMOPAC extends COSMOSAC {
 		return "COSMO-SAC(MOPAC)";
 	}
 	
+	String folder = "mopac/";
+
 	public COSMOPAC() {
 		
 		// we use another averaging radius
-		this.rav = COSMOSAC.RAV*1.1;
+		this.rav = COSMOSAC.RAV*0.6;
 		
-//		// article results
-//		setResCorr(1);
-		setCHB(42700.7265672813);
-		setSigmaHB(0.0064);
-//		setFpol(FPOL);
+////		// article results
+////		setResCorr(1);
+//		setCHB(42700.7265672813);
+//		setSigmaHB(0.0064);
+////		setFpol(FPOL);
+////		setIgnoreSG(false);
+////		setAnorm(28.2);
+////		setVnorm(66.69);
+////		setAEff(7.5);
+//		
+//		// Only non-HB and low polarizability (RAV*1.1),  COST:0.08096689998854072
+////		idac/Alkane-Alkane.csv AARD:0.07719095226428561 NP:7
+////		idac/Alkane-AlkylHalide.csv AARD:0.21358093090737124 NP:5
+////		idac/Alkane-Ketone.csv AARD:0.11663264840429993 NP:21
+////		idac/AlkylHalide-Alkane.csv AARD:0.09508975499887927 NP:35
+////		idac/Aromatic-Alkane.csv AARD:0.041880708942964404 NP:46
+////		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
+//		setBeta(1.6513070950256865);
+////		setCHB(0.0);
+////		setSigmaHB(0.006);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(1.0);
+//		setFpol(0.6900883503832824);
 //		setIgnoreSG(false);
-//		setAnorm(28.2);
+//		setCoord(10.0);
+//		setAnorm(51.404961223433276);
 //		setVnorm(66.69);
-//		setAEff(7.5);
-		
-		// Only non-HB and low polarizability (RAV*1.1),  COST:0.08096689998854072
-//		idac/Alkane-Alkane.csv AARD:0.07719095226428561 NP:7
-//		idac/Alkane-AlkylHalide.csv AARD:0.21358093090737124 NP:5
-//		idac/Alkane-Ketone.csv AARD:0.11663264840429993 NP:21
-//		idac/AlkylHalide-Alkane.csv AARD:0.09508975499887927 NP:35
-//		idac/Aromatic-Alkane.csv AARD:0.041880708942964404 NP:46
-//		idac/CycloAlkane-AlkylHalide.csv AARD:0.06457926168719777 NP:5
-		setBeta(1.6513070950256865);
+//		
+//		
+//		// now adjusting the HB terms with all nonaqueous
+////		setCHB(9.392658327026367E8);
+////		setSigmaHB(0.020400000000000012);
+//		
+//		// nonHB, COST:0.10516900155174044 NP:165
+//		setBeta(1.9871344869851588);
 //		setCHB(0.0);
-//		setSigmaHB(0.006);
+//		setSigmaHB(0.01);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(1.0);
+//		setFpol(0.5360550192460967);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(46.78140757190759);
+//		setVnorm(66.69);
+//		
+//		// nonHB, RM1, COST:0.112, NP:68
+//		setBeta(2.144806645259847);
+//		setCHB(0.0);
+//		setSigmaHB(2.4440796188024025);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(1.0);
+//		setFpol(0.5049604559424442);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(81.05566549258984);
+//		setVnorm(66.69);
+//		
+//		// eletrostatic
+//		setSigmaHB(0.008);
+//		setCHB(0);
+//		setFpol(151);
+		
+		
+		// COST:0.661595084764779
+		this.rav = COSMOSAC.RAV*0.6;
+		setBeta(1.0833791891812146);
+		setCHB(30723.010871759267);
+		setSigmaHB(0.002433385217034843);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.6900883503832824);
+		setFpol(0.08819078172495727);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(51.404961223433276);
+		setAnorm(32.5848146849939);
 		setVnorm(66.69);
-		
-		
-		// now adjusting the HB terms with all nonaqueous
-//		setCHB(9.392658327026367E8);
-//		setSigmaHB(0.020400000000000012);
-		
-		// nonHB, COST:0.10516900155174044 NP:165
-		setBeta(1.9871344869851588);
-		setCHB(0.0);
-		setSigmaHB(0.01);
+
+		// COST:0.6187205854133636
+		this.rav = COSMOSAC.RAV*0.01;
+		setBeta(1.0282683136600688);
+		setCHB(28462.21891389604);
+		setSigmaHB(0.002433386633495701);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.5360550192460967);
+		setFpol(0.07184423274107313);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(46.78140757190759);
+		setAnorm(37.76131078724174);
 		setVnorm(66.69);
 		
-		// nonHB, RM1, COST:0.112, NP:68
-		setBeta(2.144806645259847);
-		setCHB(0.0);
-		setSigmaHB(2.4440796188024025);
+		// :H=1.3:C=2.0:N=1.83:O=1.79:F=1.72:S=2.16:P=2.12:Cl=2.07:Br=2.18:I=2.32
+		// COST:0.559
+		folder = "mopAM1c/";
+		this.rav = COSMOSAC.RAV*0.01;
+		setBeta(1.2612819680772671);
+		setCHB(27744.33994865579);
+		setSigmaHB(0.002585296448832151);
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
-		setFpol(0.5049604559424442);
+		setFpol(0.07847475358309021);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(81.05566549258984);
+		setAnorm(34.69401869906048);
 		setVnorm(66.69);
+		
+		// EPS=999.0 CHARGE=0 COSWRT RSOLV=1.2 AM1 VDW(:H=1.44:C=2.21:N=2.015:O=1.976:F=1.911:S=2.34:P=2.34:Cl=2.275:Br=2.405:I=2.574) GNORM=0.1 RELSCF=0.1
+		// COST:0.6023343630822742
+		this.rav = COSMOSAC.RAV*0.01;
+		setBeta(0.7736216294236089);
+		setCHB(34835.9827671406);
+		setSigmaHB(0.001195408597551723);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.04342506402019329);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(55.93073585292235);
+		setVnorm(66.69);
+		
+		// EPS=999.0 CHARGE=0 COSWRT RSOLV=2.4 AM1 VDW(:H=1.44:C=2.21:N=2.015:O=1.976:F=1.911:S=2.34:P=2.34:Cl=2.275:Br=2.405:I=2.574) GNORM=0.1 RELSCF=0.1
+		// COST:0.5679029405844803
+		setBeta(1.182348955348154);
+		setCHB(49271.95312893527);
+		setSigmaHB(0.0020234303032980686);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.09037784897659495);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(27.417788010046856);
+		setVnorm(66.69);
+		
+		// EPS=5 CHARGE=0 COSWRT RSOLV=1.2 AM1 VDW(:H=1.44:C=2.21:N=2.015:O=1.976:F=1.911:S=2.34:P=2.34:Cl=2.275:Br=2.405:I=2.574) GNORM=0.1 RELSCF=0.1
+		// COST:0.5454579234422399
+		setBeta(1.1685916291195768);
+		setCHB(97657.79992765447);
+		setSigmaHB(0.0013826219894970337);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.15711050803756574);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(30.281177263334282);
+		setVnorm(66.69);
+		
+//		// EPS=5 CHARGE=0 COSWRT RSOLV=1.2 AM1 VDW(:H=1.3:C=2.0:N=1.83:O=1.79:F=1.72:S=2.16:P=2.12:Cl=2.07:Br=2.18:I=2.32) GNORM=0.1 RELSCF=0.1
+//		// COST:0.546049465502303
+//		setBeta(1.0565472966585658);
+//		setCHB(59652.74717744731);
+//		setSigmaHB(0.0014648860401811998);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(1.0);
+//		setFpol(0.11609313112102097);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(23.659474255246465);
+//		setVnorm(66.69);
+//		
+////		EPS=5 CHARGE=0 COSWRT RSOLV=2.2 AM1 VDW(:H=1.3:C=2.0:N=1.83:O=1.79:F=1.72:S=2.16:P=2.12:Cl=2.07:Br=2.18:I=2.32) GNORM=0.1 RELSCF=0.1
+////		COST:0.6391708893913468
+//		setBeta(0.8331366330666732);
+//		setCHB(66843.29958814124);
+//		setSigmaHB(0.0011012137936171128);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(1.0);
+//		setFpol(0.16764606120299697);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(43.769203298804996);
+//		setVnorm(66.69);
+		
+		// EPS=5 CHARGE=0 COSWRT RSOLV=0.6 AM1 VDW(:H=1.3:C=2.0:N=1.83:O=1.79:F=1.72:S=2.16:P=2.12:Cl=2.07:Br=2.18:I=2.32) GNORM=0.1 RELSCF=0.1
+		// COST:0.535390567158958
+		setBeta(0.9495328456872831);
+		setCHB(59622.270498422586);
+		setSigmaHB(8.713395874295679E-4);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.09208773507305704);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(20.69697773316389);
+		setVnorm(66.69);
+		
+		folder = "mopac/";
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -108,8 +238,6 @@ public class COSMOPAC extends COSMOSAC {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
-			String folder = "moltest/";
-//			String folder = "mopRM1/";
 			
 			try {
 				s.parseFile(folder + name + extension);												

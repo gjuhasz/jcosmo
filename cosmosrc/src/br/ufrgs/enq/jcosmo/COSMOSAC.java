@@ -196,6 +196,51 @@ public class COSMOSAC {
 		setCoord(10.0);
 		setAnorm(80.83);
 		setVnorm(66.69);
+		
+		// electrostatic deltaW, COST:0.5122766186327498 NP:672
+		setBeta(1.1983740582107176);
+		setCHB(35733.56320058883);
+		setSigmaHB(0.0029985190152935796);
+		setSigmaHB2(1.0);
+		setSigmaHB3(1.0);
+		setFpol(0.07497944979786468);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(80.83);
+		setVnorm(66.69);
+		
+//		// idac/nonaqueous.csv AARD:0.36629188907623855 NP:361
+//		// idac/aqueous.csv AARD:0.7007706720246113 NP:311
+//		// COST:0.5210874756068953
+//		setBeta(1.1476530578891553);
+//		setCHB(31054.041024247716);
+//		setSigmaHB(0.0033043145713630077);
+//		setSigmaHB2(0.48530335590723794);
+//		setSigmaHB3(1.0);
+//		setFpol(0.45471090287246685);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(64.7412501912964);
+//		setVnorm(66.69);
+
+		// solvent water only COST:0.4510264290028932
+		setBeta(1.2024778569098764);
+		setCHB(43806.493230652006);
+		setSigmaHB(0.003518327404610549);
+		setSigmaHB2(0.0);
+		setSigmaHB3(1.0);
+		setFpol(0.07742269047560099);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(80.21650597414602);
+		setVnorm(66.69);
+		
+		setCHB(43806.493230652006);
+		
+//		setSigmaHB(0.001);
+//		setSigmaHB3(0.001);
+//		setCHB(22000);
+//		setFpol(0.1);
 	}
 
 	public double getRav() {
@@ -423,14 +468,51 @@ public class COSMOSAC {
 	}
 	
 	protected void calculeDeltaW(){
-		double chargemn = 0;
 		for(int m=0; m<nsegments; ++m){
 			// initialize all SEGGAMMA (reused between calculations)
 			SEGGAMMA[m] = 1.0;
 
 			for(int n=0; n<nsegments; ++n){
-				chargemn = charge[m]+charge[n];
-				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+//				// electrostatic formulation
+//				double chargemn = charge[m]*charge[n];				
+//				// with a minimum cutt-off
+////				chargemn = Math.max(-0.018, chargemn);
+////				chargemn = Math.min(0, chargemn);
+//				if(chargemn>0)
+//					chargemn*=1.4;
+//				else
+//					chargemn/=1.4;
+//				deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
+				
+				// original formulation
+//				double chargemn = charge[m]+charge[n];
+//				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+				
+				double chargemn = charge[m]*charge[n];
+				if(chargemn<0)
+					deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
+				else
+					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*sigmaHB2;
+
+//				double chargem = Math.abs(charge[m]);
+//				double chargen = Math.abs(charge[n]);
+//				double chargemn = chargem+chargen;
+//				if(chargem<sigmaHB2 || chargen<sigmaHB2){
+//					// attraction between non-polar segments
+//					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
+//					
+////					chargem+=sigmaHB3;
+////					chargen+=sigmaHB3;
+////					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
+//					
+//					// attraction between non-polar segments
+////					double inductor = Math.max(chargem,	chargen);
+////					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
+//				}
+////				else{
+////					chargemn = charge[m]+charge[n];
+////					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+////				}
 			}
 		}
 	}
@@ -439,19 +521,25 @@ public class COSMOSAC {
 		for(int m=0; m<nsegments; ++m){
 
 			for(int n=0; n<nsegments; ++n){
+				double hb = 0;
+
+				// Hydrogen Bond effect:
 				int ACC = n, DON = m;
 				if(charge[m]>=charge[n]){
 					ACC = m;
 					DON = n;
 				}
-				// Hydrogen Bond effect:
-				double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+				hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+//				hb = Math.min(0.0, charge[ACC]*charge[DON] - sigmaHB*sigmaHB);
+				hb = -Math.abs(hb);
+				
+//				 simple electrostatics
+//				if(Math.abs(charge[m])>sigmaHB && Math.abs(charge[n])>sigmaHB)
+//					hb = charge[m]*charge[n];
 				
 				// Klamt, Fluid Phase Equilib. 2000
 //				double cHBT_c = 1.5;
 				double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
-
-				hb = -Math.abs(hb);
 				
 				deltaW_HB[m][n] = cHB*cHBT* hb;
 			}

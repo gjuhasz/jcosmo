@@ -56,6 +56,7 @@ public class SigmaProfileGenerator {
 		GAMESS,
 		MOPAC,
 		GAMESS_PCM,
+		GAMESS_SVP,
 	};
 	
 	FileType type;
@@ -118,6 +119,9 @@ public class SigmaProfileGenerator {
 		case GAMESS_PCM:
 			readSegmentChargesGAMESS_PCM(fileName);
 			break;
+		case GAMESS_SVP:
+			readSegmentChargesGAMESS_SVP(fileName);
+			break;
 		case MOPAC:
 			readSegmentChargesMOPAC(fileName);
 			break;
@@ -135,6 +139,7 @@ public class SigmaProfileGenerator {
 		case GAMESS:
 		case GAMESS_PCM:
 		case MOPAC:
+		default:
 //			simpleSorting(area, SIGMA);
 			
 			averageCharges(rav);
@@ -235,6 +240,64 @@ public class SigmaProfileGenerator {
 			area[i] = input.nextDouble();
 			SIGMA[i] = input.nextDouble();
 			// input.nextLine(); // density (charge/area)
+		}
+		input.close();
+	}
+	
+	void readSegmentChargesGAMESS_SVP(String filename) throws FileNotFoundException, Exception{
+
+		Scanner input = new Scanner(new File(filename));
+		input.useLocale(Locale.US);
+		
+		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
+		// volume information on "CAVITY VOLUME"
+		int cosmoSegments = 0;
+		while(input.hasNext()){
+			if(volume==0 && input.next().equals("CAVITY") && input.next().equals("VOLUME")){
+				input.next();
+				input.next();
+				input.next();
+				volume = input.nextDouble();
+			}
+			if(input.next().equals("$SVPIRF")){
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				
+				cosmoSegments = input.nextInt();
+				input.nextLine();
+				break;
+			}
+			input.nextLine();
+		}
+
+		if(cosmoSegments==0)
+			throw new Exception("File " + filename + " does not have SEGMENTS information");
+
+		x = new double[cosmoSegments];
+		y = new double[cosmoSegments];
+		z = new double[cosmoSegments];
+		area = new double[cosmoSegments];
+		SIGMA = new double[cosmoSegments];
+//		atom = new int[cosmoSegments];
+//		elem = new int[cosmoSegments];
+
+		double factor = AU_ANGSTRON;
+		for (int i = 0; i < cosmoSegments; i++) {
+			input.nextInt(); // segment id
+//			atom[i] = input.nextInt();
+//			elem[i] = atoms.get(atom[i]-1);
+			x[i] = input.nextDouble()*factor;
+			y[i] = input.nextDouble()*factor;
+			z[i] = input.nextDouble()*factor;
+
+			SIGMA[i] = input.nextDouble();
+			area[i] = input.nextDouble();
+			
+			input.next();
+			input.nextLine();
 		}
 		input.close();
 	}

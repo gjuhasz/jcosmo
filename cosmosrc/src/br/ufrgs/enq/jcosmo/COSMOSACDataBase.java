@@ -164,7 +164,7 @@ public class COSMOSACDataBase
 		
 		executeQuery(query);
 		
-		// The result should be exactly on row length
+		// The result should be exactly one row length
 		if(!res.next()){
 			c.name = name;
 			return c;

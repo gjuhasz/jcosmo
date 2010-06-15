@@ -37,7 +37,7 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 	String folder = "mopac/";
 	
 	public COSMOPACMultiAtom(){
-		super(51, 4);
+		super(51, 5);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV*1.1;
@@ -86,6 +86,26 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 		setVnorm(65.027547);
 		setCHB(1,2, 2263.);
 		setCHB(1,3, 280);
+		
+		
+		// aqueous and nonaqueous, vdw*1.18, COST:0.406 NP:246
+		// VDW(:H=1.416:C=2.006:N=1.829:O=1.83:F=1.7346:S=2.124:P=2.124:Cl=2.065:Br=2.183:I=2.3364)
+		folder = "mopAM1_R1.1/";
+		setBeta(1);
+		setFpol(1.239984186131108);
+		setFpol(1, 0.16314215854621106);
+		setFpol(2, 2.275728449088917);
+		setFpol(3, 0.9);
+		setFpol(4, 1.1023372);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(25.23);
+		setVnorm(65.027547);
+		setCHB(1,2, 2401.);
+		setCHB(1,3, 361);
+		setCHB(1,4, 1000);
+		
+		folder = "mopPM6/";
 	}
 	
 	protected void calculeDeltaW_HB(){
@@ -204,10 +224,19 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 				}
 			}
 			
-			// lets filter the N,O,F,Cl,Br,I atoms, acc
+			// lets filter the O
+			double[] areaO = new double[area.length];
+			for (int m = 0; m < area.length; m++) {
+				if(elem[m]==8){
+					areaO[m] += area[m];
+					area[m] = 0;
+				}
+			}
+			
+			// lets filter the N,F,Cl,Br,I atoms, acc
 			double[] areaAcc = new double[area.length];
 			for (int m = 0; m < area.length; m++) {
-				if(elem[m]==7 || elem[m]==8 || elem[m]==9 || elem[m]==17 || elem[m]==35 || elem[m]==53){
+				if(elem[m]==7 || elem[m]==9 || elem[m]==17 || elem[m]==35 || elem[m]==53){
 					areaAcc[m] += area[m];
 					area[m] = 0;
 				}
@@ -219,8 +248,10 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 			comps[i].areaMulti[1] = s.getSortedArea();
 			s.simpleSorting(areaOH, sigma1);
 			comps[i].areaMulti[2] = s.getSortedArea();
-			s.simpleSorting(areaAcc, sigma1);
+			s.simpleSorting(areaO, sigma1);
 			comps[i].areaMulti[3] = s.getSortedArea();
+			s.simpleSorting(areaAcc, sigma1);
+			comps[i].areaMulti[4] = s.getSortedArea();
 			
 //			s.printProfile(System.out);
 		}

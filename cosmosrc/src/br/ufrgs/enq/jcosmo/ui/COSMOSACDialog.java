@@ -66,6 +66,7 @@ import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
 import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 import br.ufrgs.enq.jcosmo.COSMOSAC_G;
+import br.ufrgs.enq.jcosmo.COSMOSAC_SVP;
 import br.ufrgs.enq.jcosmo.PCMSAC;
 
 /**
@@ -117,11 +118,12 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		
 		db = COSMOSACDataBase.getInstance();
 		
-		COSMOSAC models[] = new COSMOSAC[4];
+		COSMOSAC models[] = new COSMOSAC[5];
 		models[0] = new COSMOSAC();
 		models[1] = new COSMOPAC();
-		models[2] = new COSMOSAC_G();
-		models[3] = new PCMSAC();
+		models[2] = new COSMOSAC_SVP();
+		models[3] = new COSMOSAC_G();
+		models[4] = new PCMSAC();
 		modelBox = new JComboBox(models);
 		modelBox.addActionListener(this);
 		
