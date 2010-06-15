@@ -29,21 +29,21 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 		experiments = new ArrayList<IDACExperiments>();
 
-		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkene-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Alkyne-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/ArylHalide-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass)); //
-		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/CycloAlkene-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Ether-Water.csv", modelClass)); //
-		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkene-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Alkyne-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/AlkylHalide-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Aromatic-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/ArylHalide-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/MultiringAromatics-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/CarboxilicAcid-Water.csv", modelClass)); //
+//		experiments.add(new IDACExperiments("idac/CycloAlkane-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/CycloAlkene-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ether-Water.csv", modelClass)); //
+//		experiments.add(new IDACExperiments("idac/Ester-Water.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Ketone-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Water.csv", modelClass));
 
 		//		
@@ -82,8 +82,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		
 		// or just the two main groups
 //		experiments.add(new IDACExperiments("idac/nonHB.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
-//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -119,9 +119,9 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		pars[i++] = cosmo.getCHB();
 		pars[i++] = cosmo.getSigmaHB();
 		pars[i++] = cosmo.getSigmaHB2();
-//		pars[i++] = cosmo.getSigmaHB3();
+		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -143,9 +143,9 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				cosmo.setCHB(pars[i++]);
 				cosmo.setSigmaHB(pars[i++]);
 				cosmo.setSigmaHB2(pars[i++]);
-//				cosmo.setSigmaHB3(pars[i++]);
+				cosmo.setSigmaHB3(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
+//				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables

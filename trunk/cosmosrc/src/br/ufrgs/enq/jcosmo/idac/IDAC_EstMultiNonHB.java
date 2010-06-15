@@ -25,10 +25,10 @@ public class IDAC_EstMultiNonHB implements CostFunction, ObjectiveFunction {
 
 	public IDAC_EstMultiNonHB() throws Exception {
 //		String modelClass = COSMOPACMulti.class.getName();
-		String modelClass = COSMOPACMultiAtom.class.getName();
+//		String modelClass = COSMOPACMultiAtom.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
-//		String modelClass = COSMOSAC_GMultiAtom.class.getName();
+		String modelClass = COSMOSAC_GMultiAtom.class.getName();
 
 		experiments = new ArrayList<IDACExperimentsMulti>();
 
@@ -59,13 +59,13 @@ public class IDAC_EstMultiNonHB implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 7;
+		return 6;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
-		pars[i++] = cosmo.getBeta(0);
+//		pars[i++] = cosmo.getBeta(0);
 //		pars[i++] = cosmo.getBeta(1);
 //		pars[i++] = cosmo.getBeta(2);
 		pars[i++] = cosmo.getFpol();
@@ -98,7 +98,7 @@ public class IDAC_EstMultiNonHB implements CostFunction, ObjectiveFunction {
 				COSMOSACMulti cosmo = exp.getModels().get(j);
 				
 				int i=0;
-				cosmo.setBeta(pars[i++]);
+//				cosmo.setBeta(pars[i++]);
 //				cosmo.setBeta(1, pars[i++]);
 //				cosmo.setBeta(2, pars[i++]);
 				cosmo.setFpol(pars[i++]);

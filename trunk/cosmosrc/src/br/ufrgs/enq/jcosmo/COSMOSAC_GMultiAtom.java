@@ -46,14 +46,18 @@ public class COSMOSAC_GMultiAtom extends COSMOSACMulti {
 		setCHB(0);
 		setCHB(1, 2, 3153.28125);
 		setCHB(1, 3, 4000.28125);
-		setFpol(1.2386513272071946);
-		setFpol(1, 1.2024559836598478);
-		setFpol(2, 1.5822106093430);
-		setFpol(3, 1.46507954035040);
+		setFpol(0.522426426714836);
+		setFpol(1, 0.2638055269653509);
+		setFpol(2, 0.3347431562417416);
+		setFpol(3, 0.71317057);
 		setIgnoreSG(false);
 		setCoord(10.0);
 		setAnorm(46.78140757190759);
 		setVnorm(66.69);
+		
+		folder = "gam6-31+G2d,p/";
+		setBeta(1);
+		setFpol(FPOL);
 	}
 	
 	protected void calculeDeltaW_HB(){
