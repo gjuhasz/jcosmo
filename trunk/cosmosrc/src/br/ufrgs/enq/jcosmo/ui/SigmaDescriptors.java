@@ -58,9 +58,9 @@ public class SigmaDescriptors {
 		dlg.add(chart, BorderLayout.CENTER);
 
 		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
-		String []fileTypeList = {"MOPAC", "PCM-GAMESS", "COSMO-GAMESS"};
+		String []fileTypeList = {"MOPAC", "SVP-GAMESS", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
-		String []analysisTypeList = {"Atom Type", "Polarizability", "Near", "Low", "Hydrogen-Bond"};
+		String []analysisTypeList = {"None", "Atom Type", "Polarizability", "Near", "Low", "Hydrogen-Bond"};
 		final JComboBox analysisType = new JComboBox(analysisTypeList);
 
 		JButton run = new JButton("Refresh");
@@ -90,6 +90,12 @@ public class SigmaDescriptors {
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
 				}
+				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
+					folder = "moltest/";
+					extension = ".svp.gout";
+					type = SigmaProfileGenerator.FileType.GAMESS_SVP;
+					model = new COSMOSAC();
+				}
 				else if(fileType.getSelectedItem().equals("PCM-GAMESS")){
 					folder = "mopac/";
 					extension = ".pcm.gout";
@@ -112,6 +118,23 @@ public class SigmaDescriptors {
 				SigmaProfileGenerator sigmaParser = new SigmaProfileGenerator(type);
 
 				try{
+					if(analysisType.getSelectedItem().equals("None")){
+						sigmaParser.parseFile(fileName, rav);
+						
+						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
+						double[] area = sigmaParser.getOriginalArea();
+						double areaT = 0;
+						double sigmaAvg = 0;
+						for (int i = 0; i < area.length; i++) {
+							areaT += area[i];
+							sigmaAvg += area[i]*Math.abs(sigmaBase[i]);
+						}
+						sigmaAvg /= areaT;
+
+					
+						chart.addProfile("Sigma (" + areaT + ") Abs. Avg*1000=" + sigmaAvg*1000, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+					}
+
 					if(analysisType.getSelectedItem().equals("Atom Type")){
 						sigmaParser.parseFile(fileName, rav);
 						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();

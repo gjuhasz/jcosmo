@@ -19,6 +19,8 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.io.FileNotFoundException;
+
 
 
 /**
@@ -139,6 +141,18 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCoord(10.0);
 		setAnorm(51.404961223433276);
 		setVnorm(66.69);
+		
+		// electrostatic, COST:0.5222544293346916 NP:246
+		setCHB(0);
+		setBeta(1.401678412606783);
+		setFpol(1.3338365689282077);
+		setFpol(1, 1.9816779977345826);
+		setFpol(2, 2.8080251614130916);
+		
+		setBeta(1.15);
+		setFpol(0.7);
+		setFpol(1, 1.13);
+		setFpol(2, 0.46);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -153,11 +167,12 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".cos";
+			String folder = "moltest/";
 			
 			try {
-				s.parseFile("mopac/" + name + extension);												
-			} catch (Exception e) {
-				s.parseFile("mopac/" + name.replace('-','_') + extension);
+				s.parseFile(folder + name + extension);												
+			} catch (FileNotFoundException e) {
+				s.parseFile(folder + name.replace('-','_') + extension);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
@@ -187,8 +202,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// only 2 dimensions
 			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 2;
-			double tLimit2 = 3;
+			double tLimit = 0.5;
+			double tLimit2 = 1;
 			for (int m = 0; m < area.length; m++) {
 				if(sigmaT[m]>tLimit){
 					if(sigmaT[m]>tLimit2)

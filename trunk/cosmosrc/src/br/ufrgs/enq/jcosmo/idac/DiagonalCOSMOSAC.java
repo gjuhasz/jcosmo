@@ -1,9 +1,6 @@
 package br.ufrgs.enq.jcosmo.idac;
 
-import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
-import br.ufrgs.enq.jcosmo.COSMOSAC_G;
-import br.ufrgs.enq.jcosmo.PCMSAC;
 
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
@@ -15,8 +12,9 @@ public class DiagonalCOSMOSAC {
 	private static final long serialVersionUID = 1L;
 
 	public static void main (String[] args) throws Exception{
-		String modelClass = COSMOSAC_G.class.getName();
-//		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC_G.class.getName();
+		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC_SVP.class.getName();
 //		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 		
@@ -24,7 +22,7 @@ public class DiagonalCOSMOSAC {
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkene-Water.csv", modelClass);
@@ -42,27 +40,27 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Water.csv", modelClass);
 //		
-		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
-		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
-
-		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
-//		dig.addIDACExperiments("idac/Alkane-Ketone.csv", modelClass);
-		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
-		
-//		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
+//
+//		dig.addIDACExperiments("idac/Alkane-Alcohol.csv", modelClass);
+////		dig.addIDACExperiments("idac/Alkane-AlkylHalide.csv", modelClass);
+////		dig.addIDACExperiments("idac/Alkane-Amine.csv", modelClass);
+////		dig.addIDACExperiments("idac/Alkane-CarboxilicAcid.csv", modelClass);
+////		dig.addIDACExperiments("idac/Alkane-Ketone.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alkane-Phenol.csv", modelClass);
 //		
-//		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
-//		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
-//		
-		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
-//		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
-		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
+////		dig.addIDACExperiments("idac/Alkene-Amine.csv", modelClass);
+////		
+////		dig.addIDACExperiments("idac/AlkylHalide-Alkane.csv", modelClass);
+////		dig.addIDACExperiments("idac/Amine-Alkane.csv", modelClass);
+////		dig.addIDACExperiments("idac/Aromatic-Alkane.csv", modelClass);
+////		
+//		dig.addIDACExperiments("idac/CycloAlkane-Alcohol.csv", modelClass);
+////		dig.addIDACExperiments("idac/CycloAlkane-AlkylHalide.csv", modelClass);
+////		dig.addIDACExperiments("idac/CycloAlkane-Amine.csv", modelClass);
+////		dig.addIDACExperiments("idac/CycloAlkane-CarboxilicAcid.csv", modelClass);
+//		dig.addIDACExperiments("idac/CycloAlkane-Phenol.csv", modelClass);
 //		
 //		dig.addIDACExperiments("idac/Ketone-Alcohol.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Alkane.csv", modelClass);
@@ -70,9 +68,9 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
-//		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
-//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
+		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 		

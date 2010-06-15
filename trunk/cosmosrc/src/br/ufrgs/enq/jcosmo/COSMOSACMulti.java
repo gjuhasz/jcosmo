@@ -261,13 +261,25 @@ public class COSMOSACMulti {
 //		System.out.println("expDeltaW_RT");
 		for (int m = 0; m < nsegments; m++) {
 			for(int n = 0; n < nsegments; n++) {
-				double chargemn = charge[m]+charge[n];
+				// classical
+//				double chargemn = charge[m]+charge[n];
+//				double chargemn2 = chargemn*chargemn;
+				
+				// electrostatic
+				double chargemn2 = charge[m]*charge[n];
 				
 				for (int d = 0; d < ndescriptors; d++) {
 					
 					for (int d2 = 0; d2 < ndescriptors; d2++) {
 
-						double deltaWmn = (alpha*Math.sqrt(fpol[d]*fpol[d2])/2.0)*chargemn*chargemn;
+//						double deltaWmn = (alpha*Math.sqrt(fpol[d]*fpol[d2])/2.0)*chargemn2;
+						
+						double deltaWmn = (alpha/2.0)*chargemn2;
+						double fpolAvg = Math.sqrt(fpol[d]*fpol[d2]);
+						if(chargemn2 > 0)
+							deltaWmn *= fpolAvg;
+						else
+							deltaWmn /= fpolAvg;
 
 						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
 

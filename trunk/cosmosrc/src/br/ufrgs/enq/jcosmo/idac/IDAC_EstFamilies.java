@@ -59,7 +59,7 @@ public class IDAC_EstFamilies implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 6;
+		return 9;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -72,16 +72,17 @@ public class IDAC_EstFamilies implements CostFunction, ObjectiveFunction {
 		pars[i++] = cosmo.getFpol(1);
 		pars[i++] = cosmo.getFpol(2);
 		pars[i++] = cosmo.getFpol(3);
+		pars[i++] = cosmo.getFpol(4);
 //		pars[i++] = cosmo.getCHB(0);
 		pars[i++] = cosmo.getCHB(1,2);
 		pars[i++] = cosmo.getCHB(1,3);
-//		pars[i++] = cosmo.getCHB(1,4);
+		pars[i++] = cosmo.getCHB(1,4);
 //		pars[i++] = cosmo.getCHB(2);
 //		pars[i++] = cosmo.getSigmaHB();
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-//		pars[i++] = cosmo.getAnorm();
+		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -105,16 +106,17 @@ public class IDAC_EstFamilies implements CostFunction, ObjectiveFunction {
 				cosmo.setFpol(1, pars[i++]);
 				cosmo.setFpol(2, pars[i++]);
 				cosmo.setFpol(3, pars[i++]);
+				cosmo.setFpol(4, pars[i++]);
 //				cosmo.setCHB(pars[i++]);
 				cosmo.setCHB(1,2, pars[i++]);
 				cosmo.setCHB(1,3, pars[i++]);
-//				cosmo.setCHB(1,4, pars[i++]);
+				cosmo.setCHB(1,4, pars[i++]);
 //				cosmo.setCHB(2, pars[i++]);
 //				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-//				cosmo.setAnorm(pars[i++]);
+				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables
