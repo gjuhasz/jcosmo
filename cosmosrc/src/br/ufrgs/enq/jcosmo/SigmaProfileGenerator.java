@@ -143,6 +143,7 @@ public class SigmaProfileGenerator {
 //			simpleSorting(area, SIGMA);
 			
 			averageCharges(rav);
+//			averageCharges2(rav);
 			simpleSorting(area, sigmaAveraged);
 			break;
 		}
@@ -504,7 +505,7 @@ public class SigmaProfileGenerator {
 	 * Average the charges accordingly to a standard averaging radius.
 	 * <p>The averaging equation used here is as in Wang, Sandler, 2007.
 	 */
-	void averageCharges2() {
+	void averageCharges2(double rav) {
 		sigmaAveraged = new double[x.length];
 		
 		double Fdecay = 3.57;

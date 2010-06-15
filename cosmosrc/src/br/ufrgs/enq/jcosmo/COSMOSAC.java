@@ -75,7 +75,7 @@ public class COSMOSAC {
 	
 	double alpha;
 
-	private static final double TOLERANCE = 1e-6;
+	private static final double TOLERANCE = 1e-8;
 
 	protected double T;
 	protected double inv_RT;
@@ -104,6 +104,9 @@ public class COSMOSAC {
 	double expDeltaW[][];
 	double SEGGAMMA[];
 	double SEGGAMMAPR[][];
+	
+	double permitPure[];
+	double permit;
 	
 	ISegmentSolver segSolver;
 
@@ -197,17 +200,41 @@ public class COSMOSAC {
 		setAnorm(80.83);
 		setVnorm(66.69);
 		
-		// electrostatic deltaW, COST:0.5122766186327498 NP:672
-		setBeta(1.1983740582107176);
-		setCHB(35733.56320058883);
-		setSigmaHB(0.0029985190152935796);
+		// electrostatic deltaW, COST:0.5111694626971749
+		setBeta(1.2012424926507805);
+		setCHB(37513.928008612085);
+		setSigmaHB(0.00299950746817335);
 		setSigmaHB2(1.0);
-		setSigmaHB3(1.0);
-		setFpol(0.07497944979786468);
+		setSigmaHB3(0.013);
+		setFpol(0.0);
 		setIgnoreSG(false);
 		setCoord(10.0);
 		setAnorm(80.83);
 		setVnorm(66.69);
+		
+		// electrostatic deltaW with upper limit for interactions COST:0.48780484654455514
+		setBeta(1.2009096463485622);
+		setCHB(39323.35985290535);
+		setSigmaHB(0.0031004512628499416);
+		setSigmaHB2(1.0506652188720484);
+		setSigmaHB3(0.013701272456345826);
+		setFpol(0.0);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(80.83);
+		setVnorm(66.69);
+		
+		// attraction dispersion term, COST:0.5090071684043067
+//		setBeta(1.200113606053574);
+//		setCHB(36517.02765902227);
+//		setSigmaHB(0.0025573273834716796);
+//		setSigmaHB2(0.0025573273834716796);
+//		setSigmaHB3(1.0);
+//		setFpol(0.05);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(80.83);
+//		setVnorm(66.69);
 		
 //		// idac/nonaqueous.csv AARD:0.36629188907623855 NP:361
 //		// idac/aqueous.csv AARD:0.7007706720246113 NP:311
@@ -222,25 +249,17 @@ public class COSMOSAC {
 //		setCoord(10.0);
 //		setAnorm(64.7412501912964);
 //		setVnorm(66.69);
-
-		// solvent water only COST:0.4510264290028932
-		setBeta(1.2024778569098764);
-		setCHB(43806.493230652006);
-		setSigmaHB(0.003518327404610549);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.07742269047560099);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(80.21650597414602);
-		setVnorm(66.69);
-		
-		setCHB(43806.493230652006);
-		
-//		setSigmaHB(0.001);
-//		setSigmaHB3(0.001);
-//		setCHB(22000);
-//		setFpol(0.1);
+//		
+//		setBeta(1.18156084691798);
+//		setCHB(34010.27239534688);
+//		setSigmaHB(0.002712692892592733);
+//		setSigmaHB2(0.0);
+//		setSigmaHB3(0.0010);
+//		setFpol(0.05034299676106482);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(71.30317188963595);
+//		setVnorm(66.69);
 	}
 
 	public double getRav() {
@@ -286,17 +305,33 @@ public class COSMOSAC {
 		this.ncomps = comps.length;
 		
 		this.VCOSMO = new double[ncomps];		
+		this.ACOSMO = new double[ncomps];
+		this.permitPure = new double[ncomps];
 		this.area = new double[ncomps][nsegments];
 
 		for (int i = 0; i < comps.length; i++) {
 			this.VCOSMO[i] = comps[i].Vcosmo;
 			this.area[i] = comps[i].area;
 			
+			ACOSMO[i] = 0;
+			double s2 = 0;
+			double []charge = comps[i].charge;
+			for (int m = 0; m < charge.length; m++) {
+				ACOSMO[i] += area[i][m];
+				s2 += area[i][m]*charge[m]*charge[m];
+			}
+			s2 /= ACOSMO[i];
+			s2*=10000;
+			// from linear fit of some substances, with a lower limit
+			permitPure[i] = Math.max(1.8, s2*71.3-7.74);
+			
 			// Sort the compound area and charge and overwrite the compound data
 //			simpleSorting(this.area[i], comps[i].charge, comps[i].area);
 //			comps[i].area = this.area[i];
 //			comps[i].charge = this.charge;
 		}
+		
+
 
 		this.T = 300;
 
@@ -366,18 +401,22 @@ public class COSMOSAC {
 		// update this for T dependent HB
 		calculeDeltaW_HB();
 		
-		double hbfactor = 1;
 //		System.out.println("expDeltaW_RT");
 		for (int m = 0; m < nsegments; m++) {
 			for(int n = 0; n < nsegments; n++) {
+				double scale = 1;
 
 				// pure expDeltaW
 				for (int i = 0; i < ncomps; i++) {
-					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+//					scale = (permitPure[i]-1)/(permitPure[i]+0.5)/0.98;
+//					scale = Math.cbrt(scale);
+					expDeltaWPure[i][m][n] = Math.exp(-(deltaW[m][n] + deltaW_HB[m][n])*scale * inv_RT);
 				}
 				
 				// mixture expDeltaW
-				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + hbfactor*deltaW_HB[m][n]) * inv_RT);
+//				scale = ((permit-1)/(permit+0.5))/0.98;
+//				scale = Math.cbrt(scale);
+				expDeltaW[m][n] = Math.exp(-(deltaW[m][n] + deltaW_HB[m][n])*scale * inv_RT);
 				
 //				System.out.println(expDeltaW[m][n]);
 			}
@@ -414,6 +453,21 @@ public class COSMOSAC {
 			PROFILE[m] = numer/averageACOSMO;
 		}
 		
+		double s2 = 0;
+		double []charge = comps[0].charge;
+		for (int m = 0; m < PROFILE.length; m++) {
+			s2 += PROFILE[m]*charge[m]*charge[m];
+		}
+		s2*=10000;
+		// from linear fit of some substances, with a lower limit
+		permit = Math.max(1.8, s2*71.3-7.74);
+		
+//		permit = 0;
+//		for (int i = 0; i < ncomps; i++) {
+//			permit += 1/(z[i]*ACOSMO[i]*permitPure[i]);
+//		}
+//		permit = 1/(permit*averageACOSMO);
+		
 		// update the profiles which depend on the composition
 		setTemperature(this.T);
 	}
@@ -432,7 +486,6 @@ public class COSMOSAC {
 		aEff = 7.5;
 		alpha = 0.3*Math.pow(aEff, 1.5)/E0;
 		
-		ACOSMO = new double[ncomps];
 		PROFILE = new double[nsegments];
 		deltaW = new double[nsegments][nsegments];
 		deltaW_HB = new double[nsegments][nsegments];
@@ -448,10 +501,7 @@ public class COSMOSAC {
 		QNORM = new double[ncomps];
 		li = new double[ncomps];
 		for(int i=0; i<ncomps; ++i){
-			ACOSMO[i] = 0;
 			for (int m = 0; m < area[i].length; m++) {
-				ACOSMO[i] += area[i][m];
-
 				// initialize all SEGGAMMAPR (reused between calculations)
 				SEGGAMMAPR[i][m] = 1.0;
 			}
@@ -488,31 +538,32 @@ public class COSMOSAC {
 //				double chargemn = charge[m]+charge[n];
 //				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 				
-				double chargemn = charge[m]*charge[n];
-				if(chargemn<0)
-					deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
-				else
-					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*sigmaHB2;
+//				double chargemn = charge[m]*charge[n];
+//				if(chargemn<0)
+//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
+//				else
+//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*sigmaHB2;
 
-//				double chargem = Math.abs(charge[m]);
-//				double chargen = Math.abs(charge[n]);
-//				double chargemn = chargem+chargen;
-//				if(chargem<sigmaHB2 || chargen<sigmaHB2){
-//					// attraction between non-polar segments
-//					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
-//					
-////					chargem+=sigmaHB3;
-////					chargen+=sigmaHB3;
-////					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
-//					
-//					// attraction between non-polar segments
-////					double inductor = Math.max(chargem,	chargen);
-////					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
+				double chargem = Math.abs(charge[m]);
+				double chargen = Math.abs(charge[n]);
+				double chargemn = chargem+chargen;
+				if(chargem<sigmaHB2 || chargen<sigmaHB2){
+					chargemn = Math.max(chargem, chargen);
+					// attraction by induced dipoles non-polar segments
+					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
+					
+//					chargem+=sigmaHB3;
+//					chargen+=sigmaHB3;
+//					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
+					
+					// attraction between non-polar segments
+//					double inductor = Math.max(chargem,	chargen);
+//					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
+				}
+//				else{
+//					chargemn = charge[m]+charge[n];
+//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 //				}
-////				else{
-////					chargemn = charge[m]+charge[n];
-////					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
-////				}
 			}
 		}
 	}
@@ -522,14 +573,21 @@ public class COSMOSAC {
 
 			for(int n=0; n<nsegments; ++n){
 				double hb = 0;
+				double chargeacc = charge[m];
+				double chargedon = charge[n];
 
 				// Hydrogen Bond effect:
-				int ACC = n, DON = m;
-				if(charge[m]>=charge[n]){
-					ACC = m;
-					DON = n;
+				if(chargeacc < chargedon){
+					double tmp = chargedon;
+					chargedon = chargeacc;
+					chargeacc = tmp;
 				}
-				hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+				
+				// a saturation on this effect
+				chargedon = Math.max(-sigmaHB3, chargedon);
+				chargeacc = Math.min( sigmaHB3, chargeacc);
+				
+				hb = Math.max(0.0, chargeacc - sigmaHB)*Math.min(0.0, chargedon + sigmaHB);
 //				hb = Math.min(0.0, charge[ACC]*charge[DON] - sigmaHB*sigmaHB);
 				hb = -Math.abs(hb);
 				

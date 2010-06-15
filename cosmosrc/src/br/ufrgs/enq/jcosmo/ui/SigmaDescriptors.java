@@ -105,7 +105,8 @@ public class SigmaDescriptors {
 				else if(fileType.getSelectedItem().equals("COSMO-GAMESS")){
 //					folder = "moltest/";
 //					folder = "gam6-31+G2d,p/";
-					folder = "gamSTO3/";
+//					folder = "gamSTO3/";
+					folder = "gam6-311G/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
@@ -214,13 +215,13 @@ public class SigmaDescriptors {
 						
 						// lets filter the [F,Cl,Br,I]-H atoms
 						double[] areaFH = new double[area.length];
-						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==9 || elem[i]==17 || elem[i]==35 || elem[i]==53){
+						for (int m = 0; m < area.length; m++) {
+							if(elem[m]==9 || elem[m]==17 || elem[m]==35 || elem[m]==53){
 								for (int j = 0; j < bondAtom1.length; j++) {
-									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
-											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
-										areaFH[i] += area[i];
-										area[i] = 0;
+									if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==1) ||
+											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[m])){
+										areaFH[m] += area[m];
+										area[m] = 0;
 										break;
 									}
 								}

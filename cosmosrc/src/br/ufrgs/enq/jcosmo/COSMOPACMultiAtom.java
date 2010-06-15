@@ -40,7 +40,7 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 		super(51, 5);
 		
 		// we use another averaging radius
-		this.rav = COSMOSAC.RAV*1.1;
+		this.rav = COSMOSAC.RAV*1.3;
 		
 		// nonHB, COST:0.08398846320047755, NP:68
 		folder = "mopAM1/";

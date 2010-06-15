@@ -17,6 +17,11 @@ public class SegmentSolverSimple implements ISegmentSolver {
 		double norm = -1;
 		BLAS blas = BLAS.getInstance();
 		
+//		// start from 1
+//		for (int m = 0; m < nsegments; m++) {
+//			SEGGAMMA[m] = 1.0;
+//		}
+		
 		while(true){
 			for (int m = 0; m < nsegments; m++) {
 //			for (int m = compseg-1; m >= 0; m--) {

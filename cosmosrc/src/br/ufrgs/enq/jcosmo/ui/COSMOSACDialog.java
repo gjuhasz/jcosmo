@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -326,9 +327,10 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		addList("ETHANOL");
 //		addList("N-HEPTANE");
 //		addList("PROPIONIC-ACID");
-		addList("EMIM");
-		addList("NTF2");
-		addList("DCA");
+//		addList("EMIM");
+//		addList("NTF2");
+//		addList("DCA");
+		addList("N-OCTANE");
 		removeButton.setEnabled(true);
 	}
 
@@ -491,6 +493,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 		
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(2);
+		
 		for (int i=0; i<num; i++){
 
 			if(c[i] == null)
@@ -510,6 +515,19 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 				comp.add(charge[i][j]-(charge[i][j]-charge[i][j-1])/2, area[i][j]);
 			}
 
+			double areaT = 0;
+			double absSigmaAvg = 0;
+			double sigmaAvg2 = 0;
+			for(int j=1; j<n; ++j){
+				areaT += area[i][j];
+				absSigmaAvg += area[i][j]*Math.abs(charge[i][j]);
+				sigmaAvg2 += area[i][j]*charge[i][j]*charge[i][j];
+			}
+			absSigmaAvg /= areaT;
+			sigmaAvg2 /= areaT;
+			comp.setKey(c[i].name + " (A=" + nf.format(areaT) + ", |sigma|=" + nf.format(absSigmaAvg*1000)
+					+ ", |sigma|2=" + nf.format(sigmaAvg2*10000) + ")");
+			
 			dataset.addSeries(comp);
 			sigmaProfilePlot.setRenderer(i, stepRenderer);
 			sigmaProfilePlot.getRenderer().setSeriesStroke(i, new BasicStroke(2.5f));
