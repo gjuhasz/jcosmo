@@ -29,12 +29,22 @@ import java.io.FileNotFoundException;
  * 
  */
 public class COSMOSAC_G extends COSMOSAC {
+	private String folder = "mopac/";
+
 	public String toString(){
 		return "COSMO-SAC(GAMESS)";
 	}
 
 	public COSMOSAC_G(int numberOfSegments) {
 		super(numberOfSegments);
+		
+//		folder = "moltest/";
+//		folder = "gam6-31+G2d,p/";
+		folder = "gam6-31Gd/";
+//		folder = "gamSTO3/";
+		
+		this.rav = RAV;
+
 		
 		setFpol(FPOL);
 		setCHB(0);
@@ -86,6 +96,13 @@ public class COSMOSAC_G extends COSMOSAC {
 		setCoord(10.0);
 		setAnorm(ANORM);
 		setVnorm(66.69);
+		
+		
+		setFpol(0.52);
+		setCHB(8000);
+		setBeta(0.97);
+		setSigmaHB(0.001);
+		setSigmaHB2(0.0088);
 	}
 
 	public COSMOSAC_G() {
@@ -104,10 +121,6 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < comps.length; i++) {
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
-//			String folder = "moltest/";
-//			String folder = "gam6-31+G2d,p/";
-//			String folder = "gam6-31Gd/";
-			String folder = "gamSTO3/";
 			
 			try {
 				s.parseFile(folder + name + extension);												
@@ -125,6 +138,7 @@ public class COSMOSAC_G extends COSMOSAC {
 		for (int i = 0; i < ncomps; i++)
 			z[i] = 1.0/ncomps;
 
+		super.setComponents(comps);
 		parametersChanged();
 	}
 }

@@ -105,8 +105,8 @@ public class SigmaDescriptors {
 				else if(fileType.getSelectedItem().equals("COSMO-GAMESS")){
 //					folder = "moltest/";
 //					folder = "gam6-31+G2d,p/";
-//					folder = "gamSTO3/";
-					folder = "gam6-311G/";
+					folder = "gamSTO3/";
+//					folder = "gam6-311G/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
