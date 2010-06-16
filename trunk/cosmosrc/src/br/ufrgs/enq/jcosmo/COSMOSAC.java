@@ -535,8 +535,8 @@ public class COSMOSAC {
 //				deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
 				
 				// original formulation
-//				double chargemn = charge[m]+charge[n];
-//				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+				double chargemn = charge[m]+charge[n];
+				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 				
 //				double chargemn = charge[m]*charge[n];
 //				if(chargemn<0)
@@ -544,26 +544,26 @@ public class COSMOSAC {
 //				else
 //					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*sigmaHB2;
 
-				double chargem = Math.abs(charge[m]);
-				double chargen = Math.abs(charge[n]);
-				double chargemn = chargem+chargen;
-				if(chargem<sigmaHB2 || chargen<sigmaHB2){
-					chargemn = Math.max(chargem, chargen);
-					// attraction by induced dipoles non-polar segments
-					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
-					
-//					chargem+=sigmaHB3;
-//					chargen+=sigmaHB3;
-//					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
-					
-					// attraction between non-polar segments
-//					double inductor = Math.max(chargem,	chargen);
-//					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
-				}
-//				else{
-//					chargemn = charge[m]+charge[n];
-//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+//				double chargem = Math.abs(charge[m]);
+//				double chargen = Math.abs(charge[n]);
+//				double chargemn = chargem+chargen;
+//				if(chargem<sigmaHB2 || chargen<sigmaHB2){
+//					chargemn = Math.max(chargem, chargen);
+//					// attraction by induced dipoles non-polar segments
+//					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
+//					
+////					chargem+=sigmaHB3;
+////					chargen+=sigmaHB3;
+////					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
+//					
+//					// attraction between non-polar segments
+////					double inductor = Math.max(chargem,	chargen);
+////					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
 //				}
+////				else{
+////					chargemn = charge[m]+charge[n];
+////					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+////				}
 			}
 		}
 	}
@@ -587,7 +587,7 @@ public class COSMOSAC {
 				chargedon = Math.max(-sigmaHB3, chargedon);
 				chargeacc = Math.min( sigmaHB3, chargeacc);
 				
-				hb = Math.max(0.0, chargeacc - sigmaHB)*Math.min(0.0, chargedon + sigmaHB);
+				hb = Math.max(0.0, chargeacc - sigmaHB)*Math.min(0.0, chargedon + sigmaHB2);
 //				hb = Math.min(0.0, charge[ACC]*charge[DON] - sigmaHB*sigmaHB);
 				hb = -Math.abs(hb);
 				
