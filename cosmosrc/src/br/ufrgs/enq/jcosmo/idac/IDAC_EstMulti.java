@@ -273,9 +273,9 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setSigmaHB2(" + cosmo.getSigmaHB2() + ");");
 //		System.out.println("setSigmaHB3(" + cosmo.getSigmaHB3() + ");");
-		System.out.println("setFpol(" + cosmo.getFpol() + ");");
-		System.out.println("setFpol(1, " + cosmo.getFpol(1) + ");");
-		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
+//		System.out.println("setFpol(" + cosmo.getFpol() + ");");
+//		System.out.println("setFpol(1, " + cosmo.getFpol(1) + ");");
+//		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
 		System.out.println("setCoord(" + cosmo.getCoord() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
