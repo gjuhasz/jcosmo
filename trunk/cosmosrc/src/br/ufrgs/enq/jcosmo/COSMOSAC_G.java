@@ -106,7 +106,7 @@ public class COSMOSAC_G extends COSMOSAC {
 	}
 
 	public COSMOSAC_G() {
-		this(51);
+		this(11);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

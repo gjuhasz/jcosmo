@@ -32,15 +32,21 @@ import java.util.HashMap;
  */
 public class COSMOSAC_GMulti extends COSMOSACMulti {
 	private HashMap<String, COSMOSACCompound> compList;
-
+	private String folder = "mopac/";
+	
 	public String toString(){
 		return "COSMO-SAC(GAMESS)";
 	}
 	
 	public COSMOSAC_GMulti(){
-		super(51, 3);
+		super(51, 4);
 		
-		this.rav = 0.75;
+//		this.rav = 0.75;
+		
+//		folder = "moltest/";
+//		folder = "gam6-31+G2d,p/";
+		folder = "gam6-31Gd/";
+//		folder = "gamSTO3/";
 		
 		// NONAQUEOUS, COST:0.2736488469786023 NP:167
 //		idac/Alcohol-Alkane.csv AARD:0.3239770780689189 NP:10
@@ -116,6 +122,21 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 		setCoord(10.0);
 		setAnorm(53.21629458731964);
 		setVnorm(66.69);
+		
+		
+		setBeta(1.717360793290768);
+		setSigmaHB(0.00);
+		setCHB(0);
+		setFpol(0.4815843058165584);
+		setFpol(1, 0.7145865251377206);
+		setFpol(2, 0.5481833851742162);
+		setFpol(3, 1.092353511);
+//		setCHB(0, 1, 3622);
+//		setCHB(1, 0, 4600);
+//		setCHB(1, 2, 1000);
+//		setCHB(2, 1, 1000);
+//		setCHB(1, 3, 2700);
+//		setCHB(3, 1, 2700);
 	}
 	
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -142,13 +163,12 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			
 			String name = comps[i].name.replace(' ','_');
 			String extension = ".gout";
-//			String folder = "mopac/";
-			String folder = "moltest/";
 			
 			try {
 				s.parseFile(folder + name + extension, rav);												
 			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extension, rav);
+				name = name.replace('-','_');
+				s.parseFile(folder + name + extension, rav);
 			}
 			
 			comps[i].charge = s.getChargeDensity();
@@ -156,69 +176,55 @@ public class COSMOSAC_GMulti extends COSMOSACMulti {
 			
 			// the multi-area
 			double[] sigma1 = s.getAveragedChargeDensity();
+			int[] elem = s.getElem();
+			int[] atoms = s.getAtom();
 
-			String extensionLow = ".low" + extension;
-			try {
-				s.parseFile(folder + name + extensionLow, rav);
-//				s.parseFile(folder + name + extension, rav*2);
-			} catch (FileNotFoundException e) {
-				s.parseFile(folder + name.replace('-','_') + extensionLow, rav);
-//				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
-			}
-			double[] sigma2 = s.getAveragedChargeDensity();
+			double[] area0 = s.getOriginalArea();
+			double[] area1 = new double[area0.length];
+			double[] area2 = new double[area0.length];
+			double[] area3 = new double[area0.length];
 
-			// value from Klamt (COSMO-RS refinement)
-			double fcorr = 0.816;
-//			fcorr = 0.9;
-
-			double[] area = s.getOriginalArea();
-			double[] area2 = new double[area.length];
-			double[] area3 = new double[area.length];
-			double[] sigmaT = new double[area.length];
-
-			for (int m = 0; m < area.length; m++) {
-				sigmaT[m] = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
-//				sigmaT[m] = 10*(Math.abs(sigma1[m])/(Math.abs(sigma2[m]) + 1e-5)-1.38);
-			}
-			
-			// only 2 dimensions
 			comps[i].areaMulti = new double[ndescriptors][];
 			
-			double tLimit = 0.5; // so that METHANE is entirely on the first category
-			double tLimit2 = 1;
-			for (int m = 0; m < area.length; m++) {
-				if(sigmaT[m]>tLimit){
-					if(sigmaT[m]<tLimit2)
-						area2[m] = area[m];
-					else
-						area3[m] = area[m];
-					area[m] = 0;
+			MolParser molParser = new MolParser();
+			molParser.parseFile(folder + name + ".mol");
+			int[] bondAtom1 = molParser.getBondAtom1();
+			int[] bondAtom2 = molParser.getBondAtom2();
+			int[] elementType = molParser.getElementType();
+
+			// lets filter the O-H atoms
+			for (int m = 0; m < area0.length; m++) {
+				if(elem[m]==8){
+					for (int j = 0; j < bondAtom1.length; j++) {
+						if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==1) ||
+								(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[m])){
+							area3[m] += area0[m];
+							area0[m] = 0;
+							break;
+						}
+					}
 				}
 			}
 			
+			for (int m = 0; m < area0.length; m++) {
+				if(elem[m]==1){
+					area1[m] = area0[m];
+					area0[m] = 0;
+				}
+				else if( (elem[m]==7 || elem[m]==8 || elem[m]==17)){ //  && sigma1[m] > 0){
+					area2[m] = area0[m];
+					area0[m] = 0;
+				}
+			}
 			
-			// now a new filter for area3 and area2
-//			try {
-//				s.parseFile(folder + name + extension, rav*2);												
-//			} catch (FileNotFoundException e) {
-//				s.parseFile(folder + name.replace('-','_') + extension, rav*2);
-//			}
-//			sigma2 = s.getAveragedChargeDensity();
-//			for (int m = 0; m < area.length; m++) {
-//				double sT2 = 1000*Math.abs(sigma2[m]-fcorr*sigma1[m]);
-//				if(area3[m]>0 && sT2<1.5){
-//					area2[m]+= area3[m];
-//					area3[m] = 0;
-//				}
-//			}
-
-			
-			s.simpleSorting(area, sigma1);
+			s.simpleSorting(area0, sigma1);
 			comps[i].areaMulti[0] = s.getSortedArea();
-			s.simpleSorting(area2, sigma1);
+			s.simpleSorting(area1, sigma1);
 			comps[i].areaMulti[1] = s.getSortedArea();
-			s.simpleSorting(area3, sigma1);
+			s.simpleSorting(area2, sigma1);
 			comps[i].areaMulti[2] = s.getSortedArea();
+			s.simpleSorting(area3, sigma1);
+			comps[i].areaMulti[3] = s.getSortedArea();
 			
 			compList.put(comps[i].name, comps[i]);
 			

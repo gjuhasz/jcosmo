@@ -3,9 +3,7 @@ package br.ufrgs.enq.jcosmo.idac;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
-import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 
 import com.csvreader.CsvReader;
@@ -69,8 +67,6 @@ public class IDACExperimentsMulti {
 		// skip the headers
 		reader.readHeaders();
 		
-		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		
 		while(reader.readRecord()){
 			model = (COSMOSACMulti) Class.forName(modelClass).newInstance();
 			
@@ -93,25 +89,10 @@ public class IDACExperimentsMulti {
 			
 			boolean valid = true;
 			COSMOSACCompound comps[] = new COSMOSACCompound[2];
-			if (modelClass == COSMOPAC.class.getName()){
-				comps[0] = db.getComp("water");
-				comps[0].name = compNames[0].toUpperCase();
-				comps[1] = db.getComp("water");
-				comps[1].name = compNames[1].toUpperCase();
-			} 
-			else {
-				comps[0] = db.getComp(compNames[0].replace(' ', '-'));
-				comps[1] = db.getComp(compNames[1].replace(' ', '-'));
-				if(comps[0] == null){
-					System.err.println("Component " + compNames[0] + " not found, it will be ignored.");
-					valid = false;
-				}
-				if(comps[1] == null){
-					System.err.println("Component " + compNames[1] + " not found, it will be ignored.");
-					valid = false;
-				}
-			}
-			
+			comps[0] = new COSMOSACCompound();
+			comps[0].name = compNames[0].toUpperCase();
+			comps[1] = new COSMOSACCompound();
+			comps[1].name = compNames[1].toUpperCase();
 			try{
 				model.setComponents(comps);
 			}
@@ -171,7 +152,8 @@ public class IDACExperimentsMulti {
 			AARD += rd;
 			++NP;
 		}
-		AARD /= NP;
+		if(NP>0)
+			AARD /= NP;
 		System.out.println(filename + " AARD:" + AARD + " NP:" + NP);
 	}
 	
