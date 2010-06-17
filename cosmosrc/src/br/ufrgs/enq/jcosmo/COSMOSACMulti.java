@@ -60,7 +60,7 @@ public class COSMOSACMulti {
 	public static final double CHB = 85580.0;
 	
 	double sigmaHB = SIGMAHB;
-	double sigmaHB2 = 0;
+	double sigmaHB2 = SIGMAHB;
 	double sigmaHB3 = 1;
 	double [][]cHB;
 
@@ -262,11 +262,11 @@ public class COSMOSACMulti {
 		for (int m = 0; m < nsegments; m++) {
 			for(int n = 0; n < nsegments; n++) {
 				// classical
-//				double chargemn = charge[m]+charge[n];
-//				double chargemn2 = chargemn*chargemn;
+				double chargemn = charge[m]+charge[n];
+				double chargemn2 = chargemn*chargemn;
 				
 				// electrostatic
-				double chargemn2 = charge[m]*charge[n];
+//				double chargemn2 = charge[m]*charge[n];
 				
 				for (int d = 0; d < ndescriptors; d++) {
 					
@@ -276,10 +276,10 @@ public class COSMOSACMulti {
 						
 						double deltaWmn = (alpha/2.0)*chargemn2;
 						double fpolAvg = Math.sqrt(fpol[d]*fpol[d2]);
-						if(chargemn2 > 0)
+//						if(chargemn2 > 0)
 							deltaWmn *= fpolAvg;
-						else
-							deltaWmn /= fpolAvg;
+//						else
+//							deltaWmn /= fpolAvg;
 
 						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
 
@@ -387,7 +387,7 @@ public class COSMOSACMulti {
 							DON = n;
 						}
 						// Hydrogen Bond effect:
-						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB);
+						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB2);
 
 						// Klamt, Fluid Phase Equilib. 2000
 						// double cHBT_c = 1.5;
@@ -529,7 +529,7 @@ public class COSMOSACMulti {
 	}
 	public void setCHB(int i, int j, double chb) {
 		this.cHB[i][j] = Math.abs(chb);
-		this.cHB[j][i] = Math.abs(chb);
+//		this.cHB[j][i] = Math.abs(chb);
 	}
 
 

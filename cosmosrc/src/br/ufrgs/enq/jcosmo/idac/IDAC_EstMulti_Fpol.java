@@ -14,11 +14,11 @@ import br.ufrgs.enq.direct.ObjectiveFunction;
 import br.ufrgs.enq.jcosmo.COSMOPACMulti;
 import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 
-public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
+public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 
 	List<IDACExperimentsMulti> experiments;
 
-	public IDAC_EstMulti() throws Exception {
+	public IDAC_EstMulti_Fpol() throws Exception {
 		String modelClass = COSMOPACMulti.class.getName();
 //		String modelClass = COSMOPACMultiAtom.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
@@ -104,34 +104,34 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 5;
+		return 6;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
-//		pars[i++] = cosmo.getBeta(0);
+		pars[i++] = cosmo.getBeta(0);
 //		pars[i++] = cosmo.getBeta(1);
 //		pars[i++] = cosmo.getBeta(2);
-//		pars[i++] = cosmo.getFpol();
-//		pars[i++] = cosmo.getFpol(1);
-//		pars[i++] = cosmo.getFpol(2);
-//		pars[i++] = cosmo.getFpol(3);
+		pars[i++] = cosmo.getFpol();
+		pars[i++] = cosmo.getFpol(1);
+		pars[i++] = cosmo.getFpol(2);
+		pars[i++] = cosmo.getFpol(3);
 //		pars[i++] = cosmo.getCHB(0);
 //		pars[i++] = cosmo.getCHB(0,1);
 //		pars[i++] = cosmo.getCHB(1,0);
-		pars[i++] = cosmo.getCHB(1,2);
-		pars[i++] = cosmo.getCHB(2,1);
-		pars[i++] = cosmo.getCHB(1,3);
-		pars[i++] = cosmo.getCHB(3,1);
+//		pars[i++] = cosmo.getCHB(1,2);
+//		pars[i++] = cosmo.getCHB(2,1);
+//		pars[i++] = cosmo.getCHB(1,3);
+//		pars[i++] = cosmo.getCHB(3,1);
 //		pars[i++] = cosmo.getCHB(1,3);
 //		pars[i++] = cosmo.getCHB(1,4);
 //		pars[i++] = cosmo.getCHB(2);
-		pars[i++] = cosmo.getSigmaHB();
+//		pars[i++] = cosmo.getSigmaHB();
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-//		pars[i++] = cosmo.getAnorm();
+		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -148,27 +148,27 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 				COSMOSACMulti cosmo = exp.getModels().get(j);
 				
 				int i=0;
-//				cosmo.setBeta(pars[i++]);
+				cosmo.setBeta(pars[i++]);
 //				cosmo.setBeta(1, pars[i++]);
 //				cosmo.setBeta(2, pars[i++]);
-//				cosmo.setFpol(pars[i++]);
-//				cosmo.setFpol(1, pars[i++]);
-//				cosmo.setFpol(2, pars[i++]);
-//				cosmo.setFpol(3, pars[i++]);
+				cosmo.setFpol(pars[i++]);
+				cosmo.setFpol(1, pars[i++]);
+				cosmo.setFpol(2, pars[i++]);
+				cosmo.setFpol(3, pars[i++]);
 //				cosmo.setCHB(pars[i++]);
 //				cosmo.setCHB(0,1, pars[i++]);
 //				cosmo.setCHB(1,0, pars[i++]);
-				cosmo.setCHB(1,2, pars[i++]);
-				cosmo.setCHB(2,1, pars[i++]);
-				cosmo.setCHB(1,3, pars[i++]);
-				cosmo.setCHB(3,1, pars[i++]);
+//				cosmo.setCHB(1,2, pars[i++]);
+//				cosmo.setCHB(2,1, pars[i++]);
+//				cosmo.setCHB(1,3, pars[i++]);
+//				cosmo.setCHB(3,1, pars[i++]);
 //				cosmo.setCHB(1,4, pars[i++]);
 //				cosmo.setCHB(2, pars[i++]);
-				cosmo.setSigmaHB(pars[i++]);
+//				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-//				cosmo.setAnorm(pars[i++]);
+				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables
@@ -208,9 +208,9 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 	}
 
 	public static void main(String[] args) {
-		IDAC_EstMulti est;
+		IDAC_EstMulti_Fpol est;
 		try {
-			est = new IDAC_EstMulti();
+			est = new IDAC_EstMulti_Fpol();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return;
@@ -276,6 +276,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
 		System.out.println("setFpol(1, " + cosmo.getFpol(1) + ");");
 		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
+		System.out.println("setFpol(3, " + cosmo.getFpol(3) + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
 		System.out.println("setCoord(" + cosmo.getCoord() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
