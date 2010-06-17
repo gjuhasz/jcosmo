@@ -81,8 +81,8 @@ public class PCMSACMulti extends COSMOSACMulti {
 		setSigmaHB2(0.0);
 		setSigmaHB3(1.0);
 		setFpol(0.6757162680146256);
-		setFpol(1, 0.02456359490938178);
-		setFpol(2, 0.6734395049672226);
+//		setFpol(1, 0.02456359490938178);
+//		setFpol(2, 0.6734395049672226);
 		setIgnoreSG(false);
 		setCoord(10.0);
 		setAnorm(79.53);

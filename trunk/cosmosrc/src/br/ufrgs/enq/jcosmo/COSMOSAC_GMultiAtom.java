@@ -41,19 +41,19 @@ public class COSMOSAC_GMultiAtom extends COSMOSACMulti {
 		
 
 		// nonHB, COST:0.14029708507644462 NP:68
-		folder = "gamSTO3/";
-		setBeta(3.3849341216002857);
-		setCHB(0);
-		setCHB(1, 2, 3153.28125);
-		setCHB(1, 3, 4000.28125);
-		setFpol(0.522426426714836);
-		setFpol(1, 0.2638055269653509);
-		setFpol(2, 0.3347431562417416);
-		setFpol(3, 0.71317057);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(46.78140757190759);
-		setVnorm(66.69);
+//		folder = "gamSTO3/";
+//		setBeta(3.3849341216002857);
+//		setCHB(0);
+//		setCHB(1, 2, 3153.28125);
+//		setCHB(1, 3, 4000.28125);
+//		setFpol(0.522426426714836);
+//		setFpol(1, 0.2638055269653509);
+//		setFpol(2, 0.3347431562417416);
+//		setFpol(3, 0.71317057);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(46.78140757190759);
+//		setVnorm(66.69);
 		
 		folder = "gam6-31+G2d,p/";
 		setBeta(1);

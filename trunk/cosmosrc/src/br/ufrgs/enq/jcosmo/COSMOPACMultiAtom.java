@@ -42,68 +42,68 @@ public class COSMOPACMultiAtom extends COSMOSACMulti {
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV*1.3;
 		
-		// nonHB, COST:0.08398846320047755, NP:68
-		folder = "mopAM1/";
-		setBeta(1.9455);
-		setCHB(0.0);
-		setFpol(0.54815);
-		setFpol(1, 0.552345);
-		setFpol(2, 0.43642137);
-		setFpol(2, 0.5023036);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(42.795026);
-		setVnorm(65.027547);
-		// HB part COST:0.3471202179898385 NP:81
-		setSigmaHB(0.004);
-		setCHB(1,2, 2935);
-		setCHB(1,3, 1462);
-		
-		// aqueous and nonaqueous, COST:0.5459409975779058 NP:246
-		folder = "mopAM1/";
-		setBeta(1);
-		setFpol(1.0259720937136563);
-		setFpol(1, 0.8236345);
-		setFpol(2, 0.9746551);
-		setFpol(3, 0.8355474);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(42.795026);
-		setVnorm(65.027547);
-		setCHB(1,2, 1519);
-		setCHB(1,3, 150);
-		
-		// aqueous and nonaqueous, vdw*1.18, COST:0.436 NP:246
-		folder = "mopAM1_R1.1/";
-		setBeta(1);
-		setFpol(1.238143);
-		setFpol(1, 0.20150);
-		setFpol(2, 2.12397);
-		setFpol(3, 1.10189);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(42.795026);
-		setVnorm(65.027547);
-		setCHB(1,2, 2263.);
-		setCHB(1,3, 280);
-		
-		
-		// aqueous and nonaqueous, vdw*1.18, COST:0.406 NP:246
-		// VDW(:H=1.416:C=2.006:N=1.829:O=1.83:F=1.7346:S=2.124:P=2.124:Cl=2.065:Br=2.183:I=2.3364)
-		folder = "mopAM1_R1.1/";
-		setBeta(1);
-		setFpol(1.239984186131108);
-		setFpol(1, 0.16314215854621106);
-		setFpol(2, 2.275728449088917);
-		setFpol(3, 0.9);
-		setFpol(4, 1.1023372);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(25.23);
-		setVnorm(65.027547);
-		setCHB(1,2, 2401.);
-		setCHB(1,3, 361);
-		setCHB(1,4, 1000);
+//		// nonHB, COST:0.08398846320047755, NP:68
+//		folder = "mopAM1/";
+//		setBeta(1.9455);
+//		setCHB(0.0);
+//		setFpol(0.54815);
+//		setFpol(1, 0.552345);
+//		setFpol(2, 0.43642137);
+//		setFpol(2, 0.5023036);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(42.795026);
+//		setVnorm(65.027547);
+//		// HB part COST:0.3471202179898385 NP:81
+//		setSigmaHB(0.004);
+//		setCHB(1,2, 2935);
+//		setCHB(1,3, 1462);
+//		
+//		// aqueous and nonaqueous, COST:0.5459409975779058 NP:246
+//		folder = "mopAM1/";
+//		setBeta(1);
+//		setFpol(1.0259720937136563);
+//		setFpol(1, 0.8236345);
+//		setFpol(2, 0.9746551);
+//		setFpol(3, 0.8355474);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(42.795026);
+//		setVnorm(65.027547);
+//		setCHB(1,2, 1519);
+//		setCHB(1,3, 150);
+//		
+//		// aqueous and nonaqueous, vdw*1.18, COST:0.436 NP:246
+//		folder = "mopAM1_R1.1/";
+//		setBeta(1);
+//		setFpol(1.238143);
+//		setFpol(1, 0.20150);
+//		setFpol(2, 2.12397);
+//		setFpol(3, 1.10189);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(42.795026);
+//		setVnorm(65.027547);
+//		setCHB(1,2, 2263.);
+//		setCHB(1,3, 280);
+//		
+//		
+//		// aqueous and nonaqueous, vdw*1.18, COST:0.406 NP:246
+//		// VDW(:H=1.416:C=2.006:N=1.829:O=1.83:F=1.7346:S=2.124:P=2.124:Cl=2.065:Br=2.183:I=2.3364)
+//		folder = "mopAM1_R1.1/";
+//		setBeta(1);
+//		setFpol(1.239984186131108);
+//		setFpol(1, 0.16314215854621106);
+//		setFpol(2, 2.275728449088917);
+//		setFpol(3, 0.9);
+//		setFpol(4, 1.1023372);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(25.23);
+//		setVnorm(65.027547);
+//		setCHB(1,2, 2401.);
+//		setCHB(1,3, 361);
+//		setCHB(1,4, 1000);
 		
 		folder = "mopPM6/";
 	}

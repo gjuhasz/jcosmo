@@ -42,7 +42,7 @@ public class COSMOSACMulti {
 	public static final double RAV = 0.81764200000000;
 
 	double rav = RAV;
-	double []fpol;
+	double [][]fpol;
 	double []beta;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
@@ -121,7 +121,7 @@ public class COSMOSACMulti {
 		
 		this.charge = new double[nsegments];
 		this.beta = new double[ndescriptors];
-		this.fpol = new double[ndescriptors];
+		this.fpol = new double[ndescriptors][ndescriptors];
 		this.cHB = new double[ndescriptors][ndescriptors];
 		
 		double increment = (SIGMA_BOUND*2)/(nsegments-1);
@@ -275,7 +275,8 @@ public class COSMOSACMulti {
 //						double deltaWmn = (alpha*Math.sqrt(fpol[d]*fpol[d2])/2.0)*chargemn2;
 						
 						double deltaWmn = (alpha/2.0)*chargemn2;
-						double fpolAvg = Math.sqrt(fpol[d]*fpol[d2]);
+//						double fpolAvg = Math.sqrt(fpol[d]*fpol[d2]);
+						double fpolAvg = fpol[d][d2];
 //						if(chargemn2 > 0)
 							deltaWmn *= fpolAvg;
 //						else
@@ -554,14 +555,16 @@ public class COSMOSACMulti {
 
 	
 	public double getFpol() {
-		return fpol[0];
+		return fpol[0][0];
 	}
-	public double getFpol(int i) {
-		return fpol[i];
+	public double getFpol(int i, int j) {
+		return fpol[i][j];
 	}
 	public void setFpol(double fpol) {
-		for (int i = 0; i < this.fpol.length; i++) {
-			this.fpol[i] = Math.abs(fpol);
+		for (int i = 0; i < ndescriptors; i++) {
+			for (int j = 0; j < ndescriptors; j++) {
+				this.fpol[i][j] = Math.abs(fpol);				
+			}
 		}
 	}
 	
@@ -570,8 +573,8 @@ public class COSMOSACMulti {
 	 * @param i the descriptor
 	 * @param fpol the value
 	 */
-	public void setFpol(int i, double fpol) {
-		this.fpol[i] = Math.abs(fpol);
+	public void setFpol(int i, int j, double fpol) {
+		this.fpol[i][j] = Math.abs(fpol);
 	}
 	
 	public double getBeta() {
