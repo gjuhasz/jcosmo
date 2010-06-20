@@ -14,7 +14,7 @@ mopac = Builder(action = 'mopac $SOURCE', suffix = '.out', single_source=True)
 env.Append(BUILDERS = {'Mopac' : mopac})
 
 # MOPAC Geometry optimization stuff
-mol2d2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt.mopac $TARGET',
+mol2d2mop = Builder(action = 'babel -h -i mol $SOURCE -o mopin -xf keys_geom_opt.mopac $TARGET',
                      suffix = '.mop', single_source=True)
 mol2d2mop_p1 = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys_geom_opt_p1.mopac $TARGET',
                      suffix = '.mop', single_source=True)
