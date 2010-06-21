@@ -22,8 +22,6 @@ package br.ufrgs.enq.jcosmo;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
-
 
 
 /**
@@ -32,33 +30,25 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
  * @author Rafael de Pelegrini Soares
  * 
  */
-public class COSMOPACMulti extends COSMOSACMulti {
+public class COSMOPACMulti2 extends COSMOSACMulti {
 	private String folder;
 	private HashMap<String, COSMOSACCompound> compList;
-	private FileType type;
-	private String extension;
 
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
-	public COSMOPACMulti(){
-		super(51, 5);
+	public COSMOPACMulti2(){
+		super(11, 5);
 		
 		// we use another averaging radius
-		this.rav = COSMOSAC.RAV;
+		this.rav = COSMOSAC.RAV*1.1;
 		
-		type = SigmaProfileGenerator.FileType.MOPAC;
-		extension = ".cos";
 		folder = "mopac/";
 //		folder = "moltest/";
 //		folder = "mopAM1/";
 //		folder = "mopAM1c/";
 //		folder = "mopRM1/";
-		
-//		type = SigmaProfileGenerator.FileType.GAMESS;
-//		extension = ".gout";
-//		folder = "gam6-31Gd/";
 		
 //		// article results
 //		setResCorr(1);
@@ -70,44 +60,71 @@ public class COSMOPACMulti extends COSMOSACMulti {
 //		setVnorm(66.69);
 //		setAEff(7.5);
 		
-		// Estimating a base Fpol, Anorm and beta
-		// nonHB.csv NP:94  COST:0.08950252780992553
-		// EPS=999.0 CHARGE=0 COSWRT RSOLV=1.2 AM1 VDW(H=1.276:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968) GNORM=0.1 RELSCF=0.1
-		setBeta(1.9242298625056287);
+		// Estimating a base Fpol, Anorm and beta, later the other fpol's can be refined by groups
+		// nonHB.csv (RAV*1.1), NP:74  COST:0.14125299308250233
+		setBeta(1.7614059586590503);
 		setCHB(0.0);
-		setFpol(0.5351729083650381);
-		setAnorm(52.253508045274685);
+		setFpol(0.4487313504580587);
+		setAnorm(68.84830662391695);
 		
-		setCHB(88700);
-		setSigmaHB(0.009);
-		setSigmaHB2(0.004);
-		setBeta(2.25);
-		setFpol(0.43);
-		sigmaDisp = 0.0005;
-		cDisp = 0;
+		// Now refining the fpol by using atom groups
+		// idac/nonaqueous.csv AARD:0.30906048755539883 NP:166
+		// idac/aqueous.csv AARD:0.5644266269440232 NP:80
+		// Groups: Others, H-[X], O-H, [X]
+		setFpol(0, 0, 0.5539202049925867);
+		setFpol(0, 1, 0.3006546951718698);
+		setFpol(0, 2, 0.44036655733523866);
+		setFpol(0, 3, 0.9107567260382149);
+		setFpol(1, 1, 0.2593918378709723);
+		setFpol(1, 2, 0.39305951912580894);
+		setFpol(1, 3, 0.522127832591752);
+		setFpol(2, 2, 0.2829151539777929);
+		setFpol(2, 3, 0.4273418078062349);
+		setFpol(3, 3, 0.2348356781748074);
 		
-		setCHB(0);
-		setSigmaHB(0);
-		setSigmaHB2(0);
-		setCHB(1, 2, 6404);
-		setCHB(1, 3, 11003);
-		setAnorm(80);
+		// idac/nonaqueous.csv AARD:0.32142505824509987 NP:166
+		// idac/aqueous.csv AARD:0.602308251715228 NP:82
+		setBeta(1.442817285679101);
+		setCHB(0.0);
+		setAnorm(37.956541592840395);
+
+		// refining using groups
+		// idac/nonaqueous.csv AARD:0.17468664346591337 NP:166
+		setFpol(0, 0, 0.5873804448893425);
+		setFpol(0, 1, 0.4046809691780783);
+		setFpol(0, 2, 0.45645447290586216);
+		setFpol(0, 3, 0.8978885586648753);
+		setFpol(0, 4, 0.040416710931485356);
+		setFpol(1, 1, 0.019954367190134475);
+		setFpol(1, 2, 0.7161438156521922);
+		setFpol(1, 3, 2.796709799344939);
+		setFpol(1, 4, 0.5517777396911522);
+		setFpol(2, 2, 0.23687172097261877);
+		setFpol(2, 3, 3.696452067701017);
+		setFpol(2, 4, 3.8399582108072123);
+		setFpol(3, 3, 0.006770465352492372);
+		setFpol(3, 4, 0.01757967543675315);
+		setFpol(4, 4, 0.2682355020982772);
 		
-		// All nonaqueous, organic acids removed
-		// COST:0.18910604411365706, NP:309
-		setBeta(1.6193867595103684);
-		setFpol(0.664523609196695);
-		setAnorm(157.60541396778427);
-		setSigmaHB(0);
-		setCHB(1, 1, 10319);
-		setCHB(1, 2, 4000);
+		// idac/nonaqueous.csv AARD:0.2226227176807255 NP:166
+		// idac/glycerol.csv AARD:1.1540519368661408 NP:7
+		setFpol(0, 0, 0.6415731346889545);
+		setFpol(0, 1, 0.20573703012675426);
+		setFpol(0, 2, 0.48981671778781277);
+		setFpol(0, 3, 0.9178808089795247);
+		setFpol(0, 4, 0.3490764244862137);
+		setFpol(1, 1, 0.03830351609984964);
+		setFpol(1, 2, 0.8193485746870062);
+		setFpol(1, 3, 0.5918798064940802);
+		setFpol(1, 4, 0.17668904303788113);
+		setFpol(2, 2, 0.5540332546953947);
+		setFpol(2, 3, 1.172235878651001);
+		setFpol(2, 4, 0.8130573774067755);
+		setFpol(3, 3, 0.03501484559441628);
+		setFpol(3, 4, 0.5961241288041279);
+		setFpol(4, 4, 0.33574881273748186);		
 		
-		// aqueous
-		// COST:8259199383240307, NP:281
-		setCHB(1, 4, 3051);
-		setCHB(3, 1, 8681);
-		setCHB(3, 2, 757);
-		setCHB(3, 4, 4172);
+		// Maybe we need more atom groups to get a better match
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -119,11 +136,12 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		if(compList==null)
 			compList = new HashMap<String, COSMOSACCompound>();
 
-		SigmaProfileGenerator s = new SigmaProfileGenerator(type,
+		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC,
 				this.rav, nsegments);
 		for (int i = 0; i < comps.length; i++) {
 			
 			String name = comps[i].name.replace(' ','_');
+			String extension = ".cos";
 			
 			COSMOSACCompound c2 = compList.get(comps[i].name);
 			if(c2!=null){
@@ -157,36 +175,36 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			
 			MolParser molParser = new MolParser();
 			molParser.parseFile(folder + name + ".mol");
-			
-			// H2O in its own group
-			if(comps[i].name.equals("WATER")){
-				for (int m = 0; m < area0.length; m++) {
-					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
-						area4[m] += area0[m];
-						area0[m] = 0;
-					}
-					else
-						if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
-						area3[m] += area0[m];
-						area0[m] = 0;
-					}
-				}
-			}
 
-			// lets filter the H-[N,O,...] atoms (HB-donor)
+			// lets filter the H-[N,O,...] atoms
 			for (int m = 0; m < area0.length; m++) {
 				int boundedType[] = {7, 8, 9, 17, 35, 53};
-				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, boundedType)){
+				if(molParser.matchType(atoms[m], 1, boundedType)){
 					area1[m] += area0[m];
 					area0[m] = 0;
 				}
 			}
 			
-			// lets filter the [N,O,...]-H atoms (HB-acceptor bounded to H)
+			// lets filter the [N,O,...]-H atoms
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
-				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
-					area1[m] += area0[m];
+//				int atomType[] = {8};
+				if(molParser.matchType(atoms[m], atomType, 1)){
+					area3[m] += area0[m];
+					area0[m] = 0;
+				}
+			}
+			
+			// lets filter the C=C && C=-C atoms
+			for (int m = 0; m < area0.length; m++) {
+				if(molParser.matchBondType(atoms[m], 6, 2)){
+					area4[m] += area0[m];
+					area0[m] = 0;
+				}
+			}
+			for (int m = 0; m < area0.length; m++) {
+				if(molParser.matchBondType(atoms[m], 6, 3)){
+					area4[m] += area0[m];
 					area0[m] = 0;
 				}
 			}
@@ -194,30 +212,10 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// lets filter the [N, O, ...] atoms
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
-//				All on group2
 				if(molParser.matchType(atoms[m], atomType, 0)){
 					area2[m] += area0[m];
 					area0[m] = 0;
 				}
-
-//				// Oxygen goes to area2 only if double bounded
-//				if(molParser.matchBondType(atoms[m], atomType, 2)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				if(molParser.matchBondType(atoms[m], atomType, 3)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				// single bounded Oxygen go to area1
-//				if(molParser.matchType(atoms[m], 8, 0)){
-//					area1[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				if(molParser.matchBondType(atoms[m], atomType, 0)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
 			}
 			
 			s.simpleSorting(area0, sigma1);

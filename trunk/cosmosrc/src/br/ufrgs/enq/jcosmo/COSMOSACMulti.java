@@ -63,6 +63,9 @@ public class COSMOSACMulti {
 	double sigmaHB2 = SIGMAHB;
 	double sigmaHB3 = 1;
 	double [][]cHB;
+	
+	double cDisp = 0;
+	double sigmaDisp = 0.002;
 
 	private static double SIGMA_BOUND = 0.025;
 	
@@ -281,6 +284,19 @@ public class COSMOSACMulti {
 							deltaWmn *= fpolAvg;
 //						else
 //							deltaWmn /= fpolAvg;
+							
+						// dispersion forces for nearly neutral charges (always negative)
+						double charge2 = 0;
+						if(Math.abs(charge[m])<sigmaDisp){
+							charge2 = charge[n]*charge[n];
+							charge2*= charge2;
+						}
+						else if(Math.abs(charge[n])<sigmaDisp){
+							charge2 = charge[m]*charge[m];
+							charge2*= charge2;
+						}
+						charge2 *= 1e6;
+						deltaWmn -= cDisp*charge2;
 
 						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
 
@@ -530,7 +546,7 @@ public class COSMOSACMulti {
 	}
 	public void setCHB(int i, int j, double chb) {
 		this.cHB[i][j] = Math.abs(chb);
-//		this.cHB[j][i] = Math.abs(chb);
+		this.cHB[j][i] = Math.abs(chb);
 	}
 
 
@@ -575,6 +591,7 @@ public class COSMOSACMulti {
 	 */
 	public void setFpol(int i, int j, double fpol) {
 		this.fpol[i][j] = Math.abs(fpol);
+		this.fpol[j][i] = Math.abs(fpol);
 	}
 	
 	public double getBeta() {

@@ -89,6 +89,7 @@ public class SigmaDescriptors {
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
+					folder = "mopAM1/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";
@@ -142,105 +143,61 @@ public class SigmaDescriptors {
 
 						double[] area = sigmaParser.getOriginalArea();
 						int[] atoms = sigmaParser.getAtom();
-						int[] elem = sigmaParser.getElem();
 						
 						MolParser molParser = new MolParser();
 						molParser.parseFile(folder + nameField.getText() + ".mol");
-						int[] bondAtom1 = molParser.getBondAtom1();
-						int[] bondAtom2 = molParser.getBondAtom2();
-						int[] elementType = molParser.getElementType();
 						
 						// lets filter the H-[N,O,F,Cl,Br,I] atoms, the donnors
 						double[] areaHDonnor = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(elem[m]==1){
-								for (int j = 0; j < bondAtom1.length; j++) {
-									if(
-										((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==7))
-										|| ((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==8))
-										|| ((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==9))
-										|| ((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==17))
-										|| ((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==35))
-										|| ((bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==53))
-										){
-										areaHDonnor[m] += area[m];
-										area[m] = 0;
-										break;
-									}
-									else if(
-										((elementType[bondAtom1[j]-1]==7 && bondAtom2[j]==atoms[m]))
-										|| ((elementType[bondAtom1[j]-1]==8 && bondAtom2[j]==atoms[m]))
-										|| ((elementType[bondAtom1[j]-1]==9 && bondAtom2[j]==atoms[m]))
-										|| ((elementType[bondAtom1[j]-1]==17 && bondAtom2[j]==atoms[m]))
-										|| ((elementType[bondAtom1[j]-1]==35 && bondAtom2[j]==atoms[m]))
-										|| ((elementType[bondAtom1[j]-1]==53 && bondAtom2[j]==atoms[m]))
-										){
-										areaHDonnor[m] += area[m];
-										area[m] = 0;
-										break;
-									}
-								}
+							int boundedType[] = {7, 8, 9, 17, 35, 53};
+							if(molParser.matchType(atoms[m], 1, boundedType)){
+								areaHDonnor[m] += area[m];
+								area[m] = 0;
 							}
 						}
 
 						// lets filter the N-H atoms
 						double[] areaNH = new double[area.length];
-						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==7){
-								for (int j = 0; j < bondAtom1.length; j++) {
-									if( (bondAtom1[j]==atoms[i] && elementType[bondAtom2[j]-1]==1) ||
-											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[i])){
-										areaNH[i] += area[i];
-										area[i] = 0;
-										break;
-									}
-								}
+						for (int m = 0; m < area.length; m++) {
+							if(molParser.matchType(atoms[m], 7, 1)){
+								areaNH[m] += area[m];
+								area[m] = 0;
 							}
 						}
 
 						// lets filter the O-H atoms
 						double[] areaOH = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(elem[m]==8){
-								for (int j = 0; j < bondAtom1.length; j++) {
-									if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==1) ||
-											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[m])){
-										areaOH[m] += area[m];
-										area[m] = 0;
-										break;
-									}
-								}
+							if(molParser.matchType(atoms[m], 8, 1)){
+								areaOH[m] += area[m];
+								area[m] = 0;
 							}
 						}
 						
 						// lets filter the [F,Cl,Br,I]-H atoms
 						double[] areaFH = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(elem[m]==9 || elem[m]==17 || elem[m]==35 || elem[m]==53){
-								for (int j = 0; j < bondAtom1.length; j++) {
-									if( (bondAtom1[j]==atoms[m] && elementType[bondAtom2[j]-1]==1) ||
-											(elementType[bondAtom1[j]-1]==1 && bondAtom2[j]==atoms[m])){
-										areaFH[m] += area[m];
-										area[m] = 0;
-										break;
-									}
-								}
+							int atomType[] = {9, 17, 35, 53};
+							if(molParser.matchType(atoms[m], atomType, 1)){
+								areaFH[m] += area[m];
+								area[m] = 0;
 							}
 						}
 						
 						// lets filter the N atoms
 						double[] areaN = new double[area.length];
-						for (int i = 0; i < area.length; i++) {
-							if(elem[i]==7){
-								areaN[i] += area[i];
-								area[i] = 0;
+						for (int m = 0; m < area.length; m++) {
+							if(molParser.matchType(atoms[m], 7, 0)){
+								areaN[m] += area[m];
+								area[m] = 0;
 							}
 						}
 
 						// lets filter the O atoms
 						double[] areaO = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(elem[m]==8){
+							if(molParser.matchType(atoms[m], 8, 0)){
 								areaO[m] += area[m];
 								area[m] = 0;
 							}
@@ -249,7 +206,8 @@ public class SigmaDescriptors {
 						// lets filter the F,Cl,Br,I atoms
 						double[] areaF = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(elem[m]==9 || elem[m]==17 || elem[m]==35 || elem[m]==53){
+							int atomType[] = {9, 17, 35, 53};
+							if(molParser.matchType(atoms[m], atomType, 0)){
 								areaF[m] += area[m];
 								area[m] = 0;
 							}

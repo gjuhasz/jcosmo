@@ -79,8 +79,9 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		
 		// or just the two main groups
 //		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
-//		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -104,35 +105,22 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 5;
+		return 4;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
 //		pars[i++] = cosmo.getBeta(0);
-//		pars[i++] = cosmo.getBeta(1);
-//		pars[i++] = cosmo.getBeta(2);
 //		pars[i++] = cosmo.getFpol();
-//		pars[i++] = cosmo.getFpol(1);
-//		pars[i++] = cosmo.getFpol(2);
-//		pars[i++] = cosmo.getFpol(3);
-//		pars[i++] = cosmo.getCHB(0);
-//		pars[i++] = cosmo.getCHB(0,1);
-//		pars[i++] = cosmo.getCHB(1,0);
-		pars[i++] = cosmo.getCHB(1,2);
-		pars[i++] = cosmo.getCHB(2,1);
-		pars[i++] = cosmo.getCHB(1,3);
-		pars[i++] = cosmo.getCHB(3,1);
-//		pars[i++] = cosmo.getCHB(1,3);
-//		pars[i++] = cosmo.getCHB(1,4);
-//		pars[i++] = cosmo.getCHB(2);
-		pars[i++] = cosmo.getSigmaHB();
-//		pars[i++] = cosmo.getSigmaHB2();
-//		pars[i++] = cosmo.getSigmaHB3();
-//		pars[i++] = cosmo.getCoord();
 //		pars[i++] = cosmo.getAnorm();
-//		pars[i++] = cosmo.getVnorm();
+//		pars[i++] = cosmo.getCHB(1,1);
+//		pars[i++] = cosmo.getCHB(1,2);
+		
+		pars[i++] = cosmo.getCHB(1,4);
+		pars[i++] = cosmo.getCHB(3,1);
+		pars[i++] = cosmo.getCHB(3,2);
+		pars[i++] = cosmo.getCHB(3,4);
 	}
 
 	public double cost(double[] pars) throws CostException {
@@ -149,27 +137,15 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 				
 				int i=0;
 //				cosmo.setBeta(pars[i++]);
-//				cosmo.setBeta(1, pars[i++]);
-//				cosmo.setBeta(2, pars[i++]);
 //				cosmo.setFpol(pars[i++]);
-//				cosmo.setFpol(1, pars[i++]);
-//				cosmo.setFpol(2, pars[i++]);
-//				cosmo.setFpol(3, pars[i++]);
-//				cosmo.setCHB(pars[i++]);
-//				cosmo.setCHB(0,1, pars[i++]);
-//				cosmo.setCHB(1,0, pars[i++]);
-				cosmo.setCHB(1,2, pars[i++]);
-				cosmo.setCHB(2,1, pars[i++]);
-				cosmo.setCHB(1,3, pars[i++]);
-				cosmo.setCHB(3,1, pars[i++]);
-//				cosmo.setCHB(1,4, pars[i++]);
-//				cosmo.setCHB(2, pars[i++]);
-				cosmo.setSigmaHB(pars[i++]);
-//				cosmo.setSigmaHB2(pars[i++]);
-//				cosmo.setSigmaHB3(pars[i++]);
-//				cosmo.setCoord(pars[i++]);
 //				cosmo.setAnorm(pars[i++]);
-//				cosmo.setVnorm(pars[i++]);
+//				cosmo.setCHB(1,1, pars[i++]);
+//				cosmo.setCHB(1,2, pars[i++]);
+				
+				cosmo.setCHB(1,4, pars[i++]);
+				cosmo.setCHB(3,1, pars[i++]);
+				cosmo.setCHB(3,2, pars[i++]);
+				cosmo.setCHB(3,4, pars[i++]);
 				
 				// update some internal variables
 				cosmo.parametersChanged();
@@ -261,24 +237,12 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		// print a model friend version of the solution
 		COSMOSACMulti cosmo = est.experiments.get(0).getModels().get(0);
 		System.out.println("setBeta(" + cosmo.getBeta() + ");");
-		System.out.println("setBeta(1, " + cosmo.getBeta(1) + ");");
-		System.out.println("setBeta(2, " + cosmo.getBeta(2) + ");");
-		System.out.println("setCHB(" + cosmo.getCHB() + ");");
-		System.out.println("setCHB(0, 0, " + cosmo.getCHB(0,0) + ");");
-		System.out.println("setCHB(0, 1, " + cosmo.getCHB(0,1) + ");");
-		System.out.println("setCHB(0, 2, " + cosmo.getCHB(0,2) + ");");
+		System.out.println("setFpol(" + cosmo.getFpol() + ");");
+		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
 		System.out.println("setCHB(1, 1, " + cosmo.getCHB(1,1) + ");");
 		System.out.println("setCHB(1, 2, " + cosmo.getCHB(1,2) + ");");
-		System.out.println("setCHB(2, 2, " + cosmo.getCHB(2,2) + ");");
-		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
-		System.out.println("setSigmaHB2(" + cosmo.getSigmaHB2() + ");");
-//		System.out.println("setSigmaHB3(" + cosmo.getSigmaHB3() + ");");
-//		System.out.println("setFpol(" + cosmo.getFpol() + ");");
-//		System.out.println("setFpol(1, " + cosmo.getFpol(1) + ");");
-//		System.out.println("setFpol(2, " + cosmo.getFpol(2) + ");");
+		System.out.println("setCHB(1, 3, " + cosmo.getCHB(1,3) + ");");
 		System.out.println("setIgnoreSG(" + cosmo.isIgnoreSG() + ");");
 		System.out.println("setCoord(" + cosmo.getCoord() + ");");
-		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
-		System.out.println("setVnorm(" + cosmo.getVnorm() + ");");
 	}
 }

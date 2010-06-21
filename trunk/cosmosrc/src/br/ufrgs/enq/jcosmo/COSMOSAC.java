@@ -68,8 +68,11 @@ public class COSMOSAC {
 	
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = 0;
-	double sigmaHB3 = 1;
+	double sigmaHB3 = 0;
 	double cHB = CHB;
+	
+	double sigmaDisp = 0.002;
+	double cDisp = 1000;
 
 	private static double SIGMA_BOUND = 0.025;
 	
@@ -192,7 +195,7 @@ public class COSMOSAC {
 		setBeta(1.12);
 		setCHB(25580.016958492393);
 		setSigmaHB(0.00595);
-		setSigmaHB2(0.0);
+		setSigmaHB2(getSigmaHB());
 		setSigmaHB3(1.0);
 		setFpol(FPOL); // ?
 		setIgnoreSG(false);
@@ -200,29 +203,29 @@ public class COSMOSAC {
 		setAnorm(80.83);
 		setVnorm(66.69);
 		
-		// electrostatic deltaW, COST:0.5111694626971749
-		setBeta(1.2012424926507805);
-		setCHB(37513.928008612085);
-		setSigmaHB(0.00299950746817335);
-		setSigmaHB2(1.0);
-		setSigmaHB3(0.013);
-		setFpol(0.0);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(80.83);
-		setVnorm(66.69);
-		
-		// electrostatic deltaW with upper limit for interactions COST:0.48780484654455514
-		setBeta(1.2009096463485622);
-		setCHB(39323.35985290535);
-		setSigmaHB(0.0031004512628499416);
-		setSigmaHB2(1.0506652188720484);
-		setSigmaHB3(0.013701272456345826);
-		setFpol(0.0);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(80.83);
-		setVnorm(66.69);
+//		// electrostatic deltaW, COST:0.5111694626971749
+//		setBeta(1.2012424926507805);
+//		setCHB(37513.928008612085);
+//		setSigmaHB(0.00299950746817335);
+//		setSigmaHB2(1.0);
+//		setSigmaHB3(0.013);
+//		setFpol(0.0);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(80.83);
+//		setVnorm(66.69);
+//		
+//		// electrostatic deltaW with upper limit for interactions COST:0.48780484654455514
+//		setBeta(1.2009096463485622);
+//		setCHB(39323.35985290535);
+//		setSigmaHB(0.0031004512628499416);
+//		setSigmaHB2(1.0506652188720484);
+//		setSigmaHB3(0.013701272456345826);
+//		setFpol(0.0);
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(80.83);
+//		setVnorm(66.69);
 		
 		// attraction dispersion term, COST:0.5090071684043067
 //		setBeta(1.200113606053574);
@@ -538,6 +541,19 @@ public class COSMOSAC {
 				double chargemn = charge[m]+charge[n];
 				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 				
+				// dispersion forces for nearly neutral charges (always negative)
+				double charge2 = 0;
+				if(Math.abs(charge[m])<sigmaDisp){
+					charge2 = charge[n]*charge[n];
+					charge2*= charge2;
+				}
+				else if(Math.abs(charge[n])<sigmaDisp){
+					charge2 = charge[m]*charge[m];
+					charge2*= charge2;
+				}
+				charge2 *=1e6;
+				deltaW[m][n] -= cDisp*charge2;
+				
 //				double chargemn = charge[m]*charge[n];
 //				if(chargemn<0)
 //					deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
@@ -721,12 +737,27 @@ public class COSMOSAC {
 		cHB = chb;
 	}
 
+	public void setCDisp(double cDisp) {
+		this.cDisp = cDisp;
+	}
+	public double getCDisp() {
+		return cDisp;
+	}
+	
+	public double getSigmaDisp() {
+		return sigmaDisp;
+	}
+	public void setSigmaDisp(double sigmaDisp) {
+		this.sigmaDisp = sigmaDisp;
+	}
+
 
 	public double getSigmaHB() {
 		return sigmaHB;
 	}
 	public void setSigmaHB(double sigmaHB) {
 		this.sigmaHB = sigmaHB;
+		this.sigmaHB2 = sigmaHB;
 	}
 	public double getSigmaHB2() {
 		return sigmaHB2;
