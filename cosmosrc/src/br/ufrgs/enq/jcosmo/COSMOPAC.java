@@ -39,15 +39,22 @@ public class COSMOPAC extends COSMOSAC {
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
 		
-////		// article results
-////		setResCorr(1);
-//		setCHB(42700.7265672813);
-//		setSigmaHB(0.0064);
-////		setFpol(FPOL);
-////		setIgnoreSG(false);
-////		setAnorm(28.2);
-////		setVnorm(66.69);
-////		setAEff(7.5);
+		folder = "mopAM1/";
+		
+//		// article results
+		setBeta(1);
+		setCHB(42700.7265672813);
+		setSigmaHB(0.0064);
+		setFpol(FPOL);
+		setIgnoreSG(false);
+		setAnorm(28.2);
+		setVnorm(66.69);
+		
+		setAnorm(ANORM);
+		setBeta(1.29150929);
+		setFpol(0.43043818);
+		sigmaDisp = 9.999989892401997E-4;
+		cDisp = 22.3570;
 //		
 //		// Only non-HB and low polarizability (RAV*1.1),  COST:0.08096689998854072
 ////		idac/Alkane-Alkane.csv AARD:0.07719095226428561 NP:7
@@ -222,7 +229,6 @@ public class COSMOPAC extends COSMOSAC {
 //		setAnorm(20.69697773316389);
 //		setVnorm(66.69);
 		
-		folder = "moltest/";
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

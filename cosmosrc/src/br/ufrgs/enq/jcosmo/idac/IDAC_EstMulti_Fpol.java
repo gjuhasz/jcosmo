@@ -17,6 +17,7 @@ import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 
 	List<IDACExperimentsMulti> experiments;
+	static int ndesc;
 
 	public IDAC_EstMulti_Fpol() throws Exception {
 		String modelClass = COSMOPACMulti.class.getName();
@@ -24,7 +25,9 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
 //		String modelClass = COSMOSAC_GMultiAtom.class.getName();
-
+		
+		ndesc = 5;
+		
 		experiments = new ArrayList<IDACExperimentsMulti>();
 
 //		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
@@ -78,9 +81,10 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
-//		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -104,37 +108,21 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 18;
+//		return (ndesc*ndesc+ndesc)/2;
+		return 3;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
 		pars[i++] = cosmo.getBeta(0);
-//		pars[i++] = cosmo.getBeta(1);
-//		pars[i++] = cosmo.getBeta(2);
-		for (int k = 0; k < 4; k++) {
-			for (int l = 0; l < 4; l++) {
-				pars[i++] = cosmo.getFpol(k,l);
-			}
-		}
-
-//		pars[i++] = cosmo.getCHB(0);
-//		pars[i++] = cosmo.getCHB(0,1);
-//		pars[i++] = cosmo.getCHB(1,0);
-//		pars[i++] = cosmo.getCHB(1,2);
-//		pars[i++] = cosmo.getCHB(2,1);
-//		pars[i++] = cosmo.getCHB(1,3);
-//		pars[i++] = cosmo.getCHB(3,1);
-//		pars[i++] = cosmo.getCHB(1,3);
-//		pars[i++] = cosmo.getCHB(1,4);
-//		pars[i++] = cosmo.getCHB(2);
-//		pars[i++] = cosmo.getSigmaHB();
-//		pars[i++] = cosmo.getSigmaHB2();
-//		pars[i++] = cosmo.getSigmaHB3();
-//		pars[i++] = cosmo.getCoord();
 		pars[i++] = cosmo.getAnorm();
-//		pars[i++] = cosmo.getVnorm();
+		pars[i++] = cosmo.getFpol();
+//		for (int k = 0; k < ndesc; k++) {
+//			for (int l = k; l < ndesc; l++) {
+//				pars[i++] = cosmo.getFpol(k,l);
+//			}
+//		}
 	}
 
 	public double cost(double[] pars) throws CostException {
@@ -151,28 +139,13 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 				
 				int i=0;
 				cosmo.setBeta(pars[i++]);
-//				cosmo.setBeta(1, pars[i++]);
-//				cosmo.setBeta(2, pars[i++]);
-				for (int k = 0; k < 4; k++) {
-					for (int l = 0; l < 4; l++) {
-						cosmo.setFpol(k,l, pars[i++]);
-					}
-				}
-//				cosmo.setCHB(pars[i++]);
-//				cosmo.setCHB(0,1, pars[i++]);
-//				cosmo.setCHB(1,0, pars[i++]);
-//				cosmo.setCHB(1,2, pars[i++]);
-//				cosmo.setCHB(2,1, pars[i++]);
-//				cosmo.setCHB(1,3, pars[i++]);
-//				cosmo.setCHB(3,1, pars[i++]);
-//				cosmo.setCHB(1,4, pars[i++]);
-//				cosmo.setCHB(2, pars[i++]);
-//				cosmo.setSigmaHB(pars[i++]);
-//				cosmo.setSigmaHB2(pars[i++]);
-//				cosmo.setSigmaHB3(pars[i++]);
-//				cosmo.setCoord(pars[i++]);
 				cosmo.setAnorm(pars[i++]);
-//				cosmo.setVnorm(pars[i++]);
+				cosmo.setFpol(pars[i++]);
+//				for (int k = 0; k < ndesc; k++) {
+//					for (int l = k; l < ndesc; l++) {
+//						cosmo.setFpol(k,l, pars[i++]);
+//					}
+//				}
 				
 				// update some internal variables
 				cosmo.parametersChanged();
@@ -276,8 +249,8 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 		System.out.println("setSigmaHB(" + cosmo.getSigmaHB() + ");");
 		System.out.println("setSigmaHB2(" + cosmo.getSigmaHB2() + ");");
 //		System.out.println("setSigmaHB3(" + cosmo.getSigmaHB3() + ");");
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < ndesc; i++) {
+			for (int j = i; j < ndesc; j++) {
 				System.out.println("setFpol(" + i + ", " + j + ", " + cosmo.getFpol(i,j) + ");");
 			}
 		}

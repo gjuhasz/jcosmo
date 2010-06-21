@@ -82,7 +82,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 	private static final String ABOUT = "about";
 	
 	private JTextField temperature;
-	private JTextField sigmaHB, sigmaHB2, sigmaHB3, chargeHB, beta, fpol, anorm;
+	private JTextField sigmaHB, sigmaHB2, sigmaHB3, chargeHB, sigmaDisp, chargeDisp, beta, fpol, anorm;
 	private JCheckBox ignoreSGButton;
 
 	COSMOSACDataBase db;
@@ -221,6 +221,13 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 
 		northAba1.add(new JLabel("Charge HB"));
 		northAba1.add(chargeHB = new JTextField(10));
+		
+		northAba1.add(new JLabel("Sigma Disp"));
+		northAba1.add(sigmaDisp = new JTextField(10));
+		northAba1.add(new JLabel("Charge Disp"));
+		northAba1.add(chargeDisp = new JTextField(10));
+
+		
 		northAba1.add(new JLabel("Beta"));
 		northAba1.add(beta = new JTextField(10));
 		northAba1.add(new JLabel("fpol"));
@@ -371,6 +378,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		cosmosac.setSigmaHB3(Double.parseDouble(sigmaHB3.getText()));
 //		cosmosac.setSigmaHBUpper(Double.parseDouble(sigmaHBUpper.getText()));
 		cosmosac.setCHB(Double.parseDouble(chargeHB.getText()));
+		cosmosac.setSigmaDisp(Double.parseDouble(sigmaDisp.getText()));
+		cosmosac.setCDisp(Double.parseDouble(chargeDisp.getText()));
 		cosmosac.setBeta(Double.parseDouble(beta.getText()));
 		cosmosac.setFpol(Double.parseDouble(fpol.getText()));
 		cosmosac.setAnorm(Double.parseDouble(anorm.getText()));
@@ -546,6 +555,8 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 			sigmaHB.setText(Double.toString(cosmosac.getSigmaHB()));
 			sigmaHB2.setText(Double.toString(cosmosac.getSigmaHB2()));
 			sigmaHB3.setText(Double.toString(cosmosac.getSigmaHB3()));
+			sigmaDisp.setText(Double.toString(cosmosac.getSigmaDisp()));
+			chargeDisp.setText(Double.toString(cosmosac.getCDisp()));
 			beta.setText(Double.toString(cosmosac.getBeta()));
 			fpol.setText(Double.toString(cosmosac.getFpol()));
 			anorm.setText(Double.toString(cosmosac.getAnorm()));
