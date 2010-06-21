@@ -43,7 +43,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 	}
 	
 	public COSMOPACMulti(){
-		super(51, 5);
+		super(21, 5);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -108,6 +108,13 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(3, 1, 8681);
 		setCHB(3, 2, 757);
 		setCHB(3, 4, 4172);
+		
+		// aqueous, without some multiring aromatics
+		// COST:0.6484449484937216 NP:276
+		setCHB(1, 4, 3538);
+		setCHB(3, 1, 8485);
+		setCHB(3, 2, 372);
+		setCHB(3, 4, 3973);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -195,29 +202,32 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
 //				All on group2
-				if(molParser.matchType(atoms[m], atomType, 0)){
+//				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+//					area2[m] += area0[m];
+//					area0[m] = 0;
+//				}
+
+				// Oxygen goes to area2 only if double bounded
+				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 2)){
 					area2[m] += area0[m];
 					area0[m] = 0;
 				}
-
-//				// Oxygen goes to area2 only if double bounded
-//				if(molParser.matchBondType(atoms[m], atomType, 2)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				if(molParser.matchBondType(atoms[m], atomType, 3)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				// single bounded Oxygen go to area1
-//				if(molParser.matchType(atoms[m], 8, 0)){
-//					area1[m] += area0[m];
-//					area0[m] = 0;
-//				}
-//				if(molParser.matchBondType(atoms[m], atomType, 0)){
-//					area2[m] += area0[m];
-//					area0[m] = 0;
-//				}
+				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 3)){
+					area2[m] += area0[m];
+					area0[m] = 0;
+				}
+				// single bounded Oxygen go to area1
+				// FIXME: detect automatically ACETATE and OXIDE oxygens
+				if(!comps[i].name.endsWith("ATE") && !comps[i].name.endsWith("OXIDE")){
+					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+						area1[m] += area0[m];
+						area0[m] = 0;
+					}
+				}
+				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+					area2[m] += area0[m];
+					area0[m] = 0;
+				}
 			}
 			
 			s.simpleSorting(area0, sigma1);
