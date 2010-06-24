@@ -19,6 +19,7 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
@@ -163,7 +164,13 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti = new double[ndescriptors][];
 			
 			MolParser molParser = new MolParser();
-			molParser.parseFile(folder + name + ".mol");
+			File molFile = new File(folder + name + ".mol");
+			if(!molFile.exists())
+				molFile = new File(folder + name + ".mol+1");
+			if(!molFile.exists())
+				molFile = new File(folder + name + ".mol-1");
+
+			molParser.parseFile(molFile.getPath());
 			
 			// H2O in its own group
 			if(comps[i].name.equals("WATER")){

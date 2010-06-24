@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
@@ -89,7 +90,7 @@ public class SigmaDescriptors {
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
-					folder = "mopAM1/";
+					folder = "mopac/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";
@@ -145,7 +146,14 @@ public class SigmaDescriptors {
 						int[] atoms = sigmaParser.getAtom();
 						
 						MolParser molParser = new MolParser();
-						molParser.parseFile(folder + nameField.getText() + ".mol");
+						String name = nameField.getText();
+						File molFile = new File(folder + name + ".mol");
+						if(!molFile.exists())
+							molFile = new File(folder + name + ".mol+1");
+						if(!molFile.exists())
+							molFile = new File(folder + name + ".mol-1");
+
+						molParser.parseFile(molFile.getPath());
 						
 						// lets filter the H-[N,O,F,Cl,Br,I] atoms, the donnors
 						double[] areaHDonnor = new double[area.length];
