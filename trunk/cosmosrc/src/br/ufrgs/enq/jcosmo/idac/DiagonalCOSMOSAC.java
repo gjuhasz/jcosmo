@@ -1,6 +1,6 @@
 package br.ufrgs.enq.jcosmo.idac;
 
-import br.ufrgs.enq.jcosmo.COSMOSAC_G;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
@@ -12,8 +12,8 @@ public class DiagonalCOSMOSAC {
 	private static final long serialVersionUID = 1L;
 
 	public static void main (String[] args) throws Exception{
-		String modelClass = COSMOSAC_G.class.getName();
-//		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC_G.class.getName();
+		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSAC_SVP.class.getName();
 //		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
@@ -69,7 +69,7 @@ public class DiagonalCOSMOSAC {
 		
 		// or just the families
 //		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
-		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
 		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);

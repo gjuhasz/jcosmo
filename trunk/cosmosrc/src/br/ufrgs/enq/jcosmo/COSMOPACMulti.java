@@ -34,17 +34,17 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
  * 
  */
 public class COSMOPACMulti extends COSMOSACMulti {
-	private String folder;
+	protected String folder;
 	private HashMap<String, COSMOSACCompound> compList;
-	private FileType type;
-	private String extension;
+	protected FileType type;
+	protected String extension;
 
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
 	public COSMOPACMulti(){
-		super(21, 5);
+		super(51, 5);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -56,10 +56,6 @@ public class COSMOPACMulti extends COSMOSACMulti {
 //		folder = "mopAM1/";
 //		folder = "mopAM1c/";
 //		folder = "mopRM1/";
-		
-//		type = SigmaProfileGenerator.FileType.GAMESS;
-//		extension = ".gout";
-//		folder = "gam6-31Gd/";
 		
 //		// article results
 //		setResCorr(1);
@@ -116,6 +112,13 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(3, 1, 8485);
 		setCHB(3, 2, 372);
 		setCHB(3, 4, 3973);
+		
+//		// aqueous298
+//		// COST:0.6168177661961685 NP:220
+//		setCHB(1, 4, 3733);
+//		setCHB(3, 1, 9569);
+//		setCHB(3, 2, 398);
+//		setCHB(3, 4, 3773);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -191,6 +194,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			for (int m = 0; m < area0.length; m++) {
 				int boundedType[] = {7, 8, 9, 17, 35, 53};
 				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, boundedType)){
+//				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
 					area1[m] += area0[m];
 					area0[m] = 0;
 				}

@@ -134,6 +134,9 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
 			
+//			if(Math.abs(T-298)>2)
+//				continue;
+			
 			model.setTemperature(T);
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
