@@ -20,7 +20,6 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 
 	public IDAC_EstMulti() throws Exception {
 		String modelClass = COSMOPACMulti.class.getName();
-//		String modelClass = COSMOPACMultiAtom.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
 //		String modelClass = COSMOSAC_GMultiAtom.class.getName();
@@ -81,7 +80,8 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {

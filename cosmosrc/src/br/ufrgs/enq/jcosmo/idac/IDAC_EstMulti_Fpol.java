@@ -108,21 +108,21 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-//		return (ndesc*ndesc+ndesc)/2;
-		return 3;
+		return (ndesc*ndesc+ndesc)/2 + 1;
+//		return 3;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
 		pars[i++] = cosmo.getBeta(0);
-		pars[i++] = cosmo.getAnorm();
-		pars[i++] = cosmo.getFpol();
-//		for (int k = 0; k < ndesc; k++) {
-//			for (int l = k; l < ndesc; l++) {
-//				pars[i++] = cosmo.getFpol(k,l);
-//			}
-//		}
+//		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getFpol();
+		for (int k = 0; k < ndesc; k++) {
+			for (int l = k; l < ndesc; l++) {
+				pars[i++] = cosmo.getFpol(k,l);
+			}
+		}
 	}
 
 	public double cost(double[] pars) throws CostException {
@@ -139,13 +139,13 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 				
 				int i=0;
 				cosmo.setBeta(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
-				cosmo.setFpol(pars[i++]);
-//				for (int k = 0; k < ndesc; k++) {
-//					for (int l = k; l < ndesc; l++) {
-//						cosmo.setFpol(k,l, pars[i++]);
-//					}
-//				}
+//				cosmo.setAnorm(pars[i++]);
+//				cosmo.setFpol(pars[i++]);
+				for (int k = 0; k < ndesc; k++) {
+					for (int l = k; l < ndesc; l++) {
+						cosmo.setFpol(k,l, pars[i++]);
+					}
+				}
 				
 				// update some internal variables
 				cosmo.parametersChanged();

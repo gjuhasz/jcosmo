@@ -542,17 +542,17 @@ public class COSMOSAC {
 				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
 				
 				// dispersion forces for nearly neutral charges (always negative)
-				double charge2 = 0;
-				if(Math.abs(charge[m])<sigmaDisp){
-					charge2 = charge[n]*charge[n];
-					charge2*= charge2;
-				}
-				else if(Math.abs(charge[n])<sigmaDisp){
-					charge2 = charge[m]*charge[m];
-					charge2*= charge2;
-				}
-				charge2 *=1e6;
-				deltaW[m][n] -= cDisp*charge2;
+//				double charge2 = 0;
+//				if(Math.abs(charge[m])<sigmaDisp){
+//					charge2 = charge[n]*charge[n];
+//					charge2*= charge2;
+//				}
+//				else if(Math.abs(charge[n])<sigmaDisp){
+//					charge2 = charge[m]*charge[m];
+//					charge2*= charge2;
+//				}
+//				charge2 *=1e6;
+//				deltaW[m][n] -= cDisp*charge2;
 				
 //				double chargemn = charge[m]*charge[n];
 //				if(chargemn<0)
@@ -600,8 +600,8 @@ public class COSMOSAC {
 				}
 				
 				// a saturation on this effect
-				chargedon = Math.max(-sigmaHB3, chargedon);
-				chargeacc = Math.min( sigmaHB3, chargeacc);
+//				chargedon = Math.max(-sigmaHB3, chargedon);
+//				chargeacc = Math.min( sigmaHB3, chargeacc);
 				
 				hb = Math.max(0.0, chargeacc - sigmaHB)*Math.min(0.0, chargedon + sigmaHB2);
 //				hb = Math.min(0.0, charge[ACC]*charge[DON] - sigmaHB*sigmaHB);
