@@ -222,12 +222,12 @@ acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
 "cyclooctene/n,n-dimethylformamide",293,10.6,7
 "cyclooctene/n,n-dimethylformamide",313,8.5,7
 "cyclooctene/n,n-dimethylformamide",333,6.8,7
-"?benzene/acetonitrile",298.15,2.901,"doi:10.1016/j.fluid.2003.06.002"
-"?toluene/acetonitrile",298.15,4.302,"doi:10.1016/j.fluid.2003.06.002"
-"?ethylbenzene/acetonitrile",298.15,5.601,"doi:10.1016/j.fluid.2003.06.002"
-"?n-pentane/ethyl acetate",298.15,3.019,"doi:10.1016/j.fluid.2003.06.002"
-"?n-hexane/ethyl acetate",298.15,3.600,"doi:10.1016/j.fluid.2003.06.002"
-"?n-heptane/ethyl acetate",298.15,3.819,"doi:10.1016/j.fluid.2003.06.002"
-"?n-ocatane/ethyl acetate",298.15,4.831,"doi:10.1016/j.fluid.2003.06.002"
-"?n-nonane/ethyl acetate",298.15,5.430,"doi:10.1016/j.fluid.2003.06.002"
+"benzene/acetonitrile",298.15,2.901,"doi:10.1016/j.fluid.2003.06.002"
+"toluene/acetonitrile",298.15,4.302,"doi:10.1016/j.fluid.2003.06.002"
+"ethylbenzene/acetonitrile",298.15,5.601,"doi:10.1016/j.fluid.2003.06.002"
+"n-pentane/ethyl acetate",298.15,3.019,"doi:10.1016/j.fluid.2003.06.002"
+"n-hexane/ethyl acetate",298.15,3.600,"doi:10.1016/j.fluid.2003.06.002"
+"n-heptane/ethyl acetate",298.15,3.819,"doi:10.1016/j.fluid.2003.06.002"
+"n-ocatane/ethyl acetate",298.15,4.831,"doi:10.1016/j.fluid.2003.06.002"
+"n-nonane/ethyl acetate",298.15,5.430,"doi:10.1016/j.fluid.2003.06.002"
 

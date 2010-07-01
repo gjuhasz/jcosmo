@@ -54,6 +54,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		folder = "mopac/";
 //		folder = "moltest/";
 //		folder = "mopAM1/";
+//		folder = "mopPM6/";
 //		folder = "mopAM1c/";
 //		folder = "mopRM1/";
 		
@@ -119,6 +120,19 @@ public class COSMOPACMulti extends COSMOSACMulti {
 //		setCHB(3, 1, 9569);
 //		setCHB(3, 2, 398);
 //		setCHB(3, 4, 3773);
+		
+		
+		// idac/nonHB.csv AARD:0.15308190023848653 NP:177
+		folder = "mopRM1/";
+		setBeta(1.3914496900673619);
+		setFpol(0.7231083021154256);
+		setAnorm(59.75);
+		
+		// All nonaqueous, organic acids removed
+		// COST:0.2699540627504734 NP:309
+		setCHB(1, 1, 17909.410190827366);
+		setCHB(1, 2, 9060.336445271969);
+		
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
