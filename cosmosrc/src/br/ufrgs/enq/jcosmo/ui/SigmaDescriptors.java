@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,7 +62,7 @@ public class SigmaDescriptors {
 		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
 		String []fileTypeList = {"MOPAC", "SVP-GAMESS", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
-		String []analysisTypeList = {"None", "Atom Type", "Polarizability", "Near", "Low", "Hydrogen-Bond"};
+		String []analysisTypeList = {"None", "Atom Type", "Polarizability", "Low", "Hydrogen-Bond"};
 		final JComboBox analysisType = new JComboBox(analysisTypeList);
 
 		JButton run = new JButton("Refresh");
@@ -82,6 +83,9 @@ public class SigmaDescriptors {
 
 				nameField.selectAll();
 				nameField.grabFocus();
+				
+				NumberFormat nf = NumberFormat.getInstance();
+				nf.setMaximumFractionDigits(2);
 
 				String folder = "moltest/";
 				FileType type = SigmaProfileGenerator.FileType.MOPAC;
@@ -90,7 +94,8 @@ public class SigmaDescriptors {
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
-					folder = "mopac/";
+//					folder = "mopac/";
+					folder = "mopRM1/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";
@@ -106,9 +111,10 @@ public class SigmaDescriptors {
 				}
 				else if(fileType.getSelectedItem().equals("COSMO-GAMESS")){
 //					folder = "moltest/";
-//					folder = "gam6-31+G2d,p/";
-					folder = "gamSTO3/";
+//					folder = "gam6-31++G2d,p/";
+//					folder = "gamSTO3/";
 //					folder = "gam6-311G/";
+					folder = "gam6-31Gd/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
@@ -159,64 +165,51 @@ public class SigmaDescriptors {
 						double[] areaHDonnor = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int boundedType[] = {7, 8, 9, 17, 35, 53};
-							if(molParser.matchType(atoms[m], 1, boundedType)){
+							if(sigmaBase[m]<0 && molParser.matchType(atoms[m], 1, boundedType)){
 								areaHDonnor[m] += area[m];
 								area[m] = 0;
 							}
 						}
 
-						// lets filter the N-H atoms
+						// lets filter the [N,O,...]-H atoms (HB-acceptor bounded to H)
 						double[] areaNH = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(molParser.matchType(atoms[m], 7, 1)){
+							int atomType[] = {7, 8, 9, 17, 35, 53};
+							if(sigmaBase[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
 								areaNH[m] += area[m];
 								area[m] = 0;
 							}
 						}
-
-						// lets filter the O-H atoms
-						double[] areaOH = new double[area.length];
-						for (int m = 0; m < area.length; m++) {
-							if(molParser.matchType(atoms[m], 8, 1)){
-								areaOH[m] += area[m];
-								area[m] = 0;
-							}
-						}
 						
-						// lets filter the [F,Cl,Br,I]-H atoms
-						double[] areaFH = new double[area.length];
-						for (int m = 0; m < area.length; m++) {
-							int atomType[] = {9, 17, 35, 53};
-							if(molParser.matchType(atoms[m], atomType, 1)){
-								areaFH[m] += area[m];
-								area[m] = 0;
-							}
-						}
-						
-						// lets filter the N atoms
+						// lets filter the [N, O, ...] atoms
 						double[] areaN = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
-							if(molParser.matchType(atoms[m], 7, 0)){
+							int atomType[] = {7, 8, 9, 17, 35, 53};
+//							All on group2
+//							if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+//								area2[m] += area0[m];
+//								area0[m] = 0;
+//							}
+
+							// Oxygen goes to area2 only if double bounded
+							if(sigmaBase[m]>0 && molParser.matchBondType(atoms[m], atomType, 2)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
-						}
-
-						// lets filter the O atoms
-						double[] areaO = new double[area.length];
-						for (int m = 0; m < area.length; m++) {
-							if(molParser.matchType(atoms[m], 8, 0)){
-								areaO[m] += area[m];
+							if(sigmaBase[m]>0 && molParser.matchBondType(atoms[m], atomType, 3)){
+								areaN[m] += area[m];
 								area[m] = 0;
 							}
-						}
-
-						// lets filter the F,Cl,Br,I atoms
-						double[] areaF = new double[area.length];
-						for (int m = 0; m < area.length; m++) {
-							int atomType[] = {9, 17, 35, 53};
-							if(molParser.matchType(atoms[m], atomType, 0)){
-								areaF[m] += area[m];
+							// single bounded Oxygen go to area1
+							// FIXME: detect automatically ACETATE and OXIDE oxygens
+							if(!nameField.getText().endsWith("ATE") && !nameField.getText().endsWith("OXIDE")){
+								if(sigmaBase[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+									areaNH[m] += area[m];
+									area[m] = 0;
+								}
+							}
+							if(sigmaBase[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+								areaN[m] += area[m];
 								area[m] = 0;
 							}
 						}
@@ -225,25 +218,16 @@ public class SigmaDescriptors {
 
 						// adding all other elements
 						partial = sigmaParser.simpleSorting(area, sigmaBase);
-						chart.addProfile("C, H, Others (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("0. C, H, Others (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaHDonnor, sigmaBase);
-						chart.addProfile("H-Donnor (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("1. H-Donnor (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaNH, sigmaBase);
-						chart.addProfile("N-H (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-						
-						partial = sigmaParser.simpleSorting(areaOH, sigmaBase);
-						chart.addProfile("O-H (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("1. [N, O, ...]-H (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaN, sigmaBase);
-						chart.addProfile("N (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-						
-						partial = sigmaParser.simpleSorting(areaO, sigmaBase);
-						chart.addProfile("O (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-						
-						partial = sigmaParser.simpleSorting(areaF, sigmaBase);
-						chart.addProfile("[F,Cl,Br,I] (" + partial + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("2. [N, O, ...] (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 					}
 
 					// Polarizability analysis
@@ -341,71 +325,6 @@ public class SigmaDescriptors {
 //						double []sT = {1, 2, 2.5};
 //						double []sT = {1.5, 2};
 //						double []sT = {-1, 0.18, 0.18, 1};
-						double[] areaT = new double[area.length];
-						for (int i = -1; i < sT.length; i++) {
-							double stLow, stUp;
-							double partialArea = 0;
-							if(i<0){
-								stLow = -Double.MAX_VALUE;
-								stUp = sT[0];
-							}
-							else if(i<sT.length-1){
-								stLow = sT[i];
-								stUp = sT[i+1];
-							}
-							else{
-								stLow = sT[i];
-								stUp = Double.MAX_VALUE;
-							}
-
-							for (int m = 0; m < area.length; m++) {
-								if(sigmaT[m]>=stLow && sigmaT[m]<stUp){
-									areaT[m] = area[m];
-									partialArea += area[m];
-								}
-								else
-									areaT[m] = 0;
-							}
-							sigmaParser.simpleSorting(areaT, sigmaBase);
-							
-							DecimalFormat fm = new DecimalFormat();
-							fm.setMaximumFractionDigits(2);
-							String partial = String.format(" (%s)", fm.format(partialArea));
-							if(i==-1)
-								chart.addProfile("sT<" + stUp + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-							else if(i<sT.length-1)
-								chart.addProfile("sT=" + stLow + " to " + stUp + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-							else
-								chart.addProfile("sT>" + stLow + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
-						}
-					}
-					if(analysisType.getSelectedItem().equals("Near")){
-						sigmaParser.parseFile(fileName, rav);
-						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
-
-						fileName = folder + nameField.getText() + ".near" + extension;
-						sigmaParser.parseFile(fileName, rav);
-						double[] sigma2 = sigmaParser.getAveragedChargeDensity();
-
-						// value from Klamt (COSMO-RS refinement)
-						double fcorr = 0.816;
-						fcorr = 0.9;
-
-						double[] area = sigmaParser.getOriginalArea();
-						double[] sigmaT = new double[area.length];
-
-						sigmaParser.simpleSorting(area, sigmaBase);
-
-						for (int m = 0; m < area.length; m++) {
-							sigmaT[m] = 1000*(fcorr*sigma2[m]-sigmaBase[m]);
-						}
-//						double []sT = {-2, 0, 2};
-//						double []sT = {0.4, 1};
-//						double []sT = {0.7, 2};
-//						double []sT = {0.7, 2, 3};
-//						double []sT = {1, 2, 2.5};
-//						double []sT = {1.5, 2};
-						double []sT = {-1, 0.5, 0.5, 1};
 						double[] areaT = new double[area.length];
 						for (int i = -1; i < sT.length; i++) {
 							double stLow, stUp;
