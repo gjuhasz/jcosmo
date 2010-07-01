@@ -78,10 +78,10 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		
 		// or just the two main groups
 //		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
-//		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -105,22 +105,22 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 4;
+		return 5;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
-//		pars[i++] = cosmo.getBeta(0);
-//		pars[i++] = cosmo.getFpol();
-//		pars[i++] = cosmo.getAnorm();
-//		pars[i++] = cosmo.getCHB(1,1);
-//		pars[i++] = cosmo.getCHB(1,2);
+		pars[i++] = cosmo.getBeta(0);
+		pars[i++] = cosmo.getFpol();
+		pars[i++] = cosmo.getAnorm();
+		pars[i++] = cosmo.getCHB(1,1);
+		pars[i++] = cosmo.getCHB(1,2);
 		
-		pars[i++] = cosmo.getCHB(1,4);
-		pars[i++] = cosmo.getCHB(3,1);
-		pars[i++] = cosmo.getCHB(3,2);
-		pars[i++] = cosmo.getCHB(3,4);
+//		pars[i++] = cosmo.getCHB(1,4);
+//		pars[i++] = cosmo.getCHB(3,1);
+//		pars[i++] = cosmo.getCHB(3,2);
+//		pars[i++] = cosmo.getCHB(3,4);
 	}
 
 	public double cost(double[] pars) throws CostException {
@@ -136,16 +136,16 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 				COSMOSACMulti cosmo = exp.getModels().get(j);
 				
 				int i=0;
-//				cosmo.setBeta(pars[i++]);
-//				cosmo.setFpol(pars[i++]);
-//				cosmo.setAnorm(pars[i++]);
-//				cosmo.setCHB(1,1, pars[i++]);
-//				cosmo.setCHB(1,2, pars[i++]);
+				cosmo.setBeta(pars[i++]);
+				cosmo.setFpol(pars[i++]);
+				cosmo.setAnorm(pars[i++]);
+				cosmo.setCHB(1,1, pars[i++]);
+				cosmo.setCHB(1,2, pars[i++]);
 				
-				cosmo.setCHB(1,4, pars[i++]);
-				cosmo.setCHB(3,1, pars[i++]);
-				cosmo.setCHB(3,2, pars[i++]);
-				cosmo.setCHB(3,4, pars[i++]);
+//				cosmo.setCHB(1,4, pars[i++]);
+//				cosmo.setCHB(3,1, pars[i++]);
+//				cosmo.setCHB(3,2, pars[i++]);
+//				cosmo.setCHB(3,4, pars[i++]);
 				
 				// update some internal variables
 				cosmo.parametersChanged();

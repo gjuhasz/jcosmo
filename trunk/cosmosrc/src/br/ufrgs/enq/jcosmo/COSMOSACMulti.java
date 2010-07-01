@@ -71,7 +71,7 @@ public class COSMOSACMulti {
 	
 	double alpha;
 
-	private static final double TOLERANCE = 1e-6;
+	private static final double TOLERANCE = 1e-4;
 
 	protected double T;
 	protected double inv_RT;

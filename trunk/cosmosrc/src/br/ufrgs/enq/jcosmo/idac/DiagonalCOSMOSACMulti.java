@@ -68,12 +68,12 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
-		dig.addIDACExperiments("idac/aqueous298.csv", modelClass);
-//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/aqueous298.csv", modelClass);
+		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/glycerol.csv", modelClass);
 		
 		dig.showPlot();
