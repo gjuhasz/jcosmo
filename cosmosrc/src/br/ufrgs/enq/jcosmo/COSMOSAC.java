@@ -137,60 +137,6 @@ public class COSMOSAC {
 			charge[i] = -SIGMA_BOUND + increment*(double)i;
 		}
 		
-//		// IDAC COST:0.6295141051725348, CUTOFF HB, all available IDAC
-//		setResCorr(1.1495842571017678);
-//		setCHB(84309.60094136275);
-//		setSigmaHB(0.0071967046136033035);
-//		setFpol(0.5448510600327106);
-//		setIgnoreSG(false);
-//		
-//		// IDAC COST:0.3835742283036457, CUTOFF HB, all available IDAC without water as solute and amines
-//		setResCorr(1.1280385832644837);
-//		setCHB(84514.517941592);
-//		setSigmaHB(0.00806375458669691);
-//		setFpol(0.6123714287684722);
-//		setIgnoreSG(false);
-//		
-//		// IDAC COST:0.5022846030794819 NP:623, CUTOFF HB, all available IDAC but amines
-//		setResCorr(1.1466116315959618);
-//		setCHB(37236.75882313268);
-//		setSigmaHB(0.0031696732302331646);
-//		setFpol(0.030186686524868365);
-//		setIgnoreSG(false);
-//		setAnorm(68.28177228851187);
-//		setVnorm(66.69);
-//		setFpol(FPOL);
-		
-		// IDAC COST:0.572460842572617 NP:623, CUTOFF HB, without resCorr all available IDAC but amines
-//		setResCorr(1);
-//		setCHB(37236.75882313268);
-//		setSigmaHB(0.0031696732302331646);
-//		setFpol(0.030186686524868365);
-//		setIgnoreSG(false);
-//		setAnorm(68.28177228851187);
-//		setVnorm(66.69);
-
-		// IDAC COST:0.5449980847647419 NP:623, CUTOFF HB, without fpol and all IDAC but amines, ketones, carbox., etc.
-		setBeta(1.1166225104520564);
-		setCHB(25580.016958492393);
-		setSigmaHB(0.005949735966583021);
-		setFpol(0.6917);
-		setIgnoreSG(false);
-		setAnorm(80.82815711911084);
-		setVnorm(66.69);
-		
-		setBeta(1.0947446969598862);
-		setCHB(35641.7258589243);
-		setSigmaHB(0.002621822743558675);
-		setSigmaHB2(0.0);
-		setSigmaHB3(1.0);
-		setFpol(0.024526693237433943);
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(71.72908857440859);
-		setVnorm(66.69);
-		
-		
 		// article results
 		setBeta(1.12);
 		setCHB(25580.016958492393);
@@ -202,67 +148,6 @@ public class COSMOSAC {
 		setCoord(10.0);
 		setAnorm(80.83);
 		setVnorm(66.69);
-		
-//		// electrostatic deltaW, COST:0.5111694626971749
-//		setBeta(1.2012424926507805);
-//		setCHB(37513.928008612085);
-//		setSigmaHB(0.00299950746817335);
-//		setSigmaHB2(1.0);
-//		setSigmaHB3(0.013);
-//		setFpol(0.0);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(80.83);
-//		setVnorm(66.69);
-//		
-//		// electrostatic deltaW with upper limit for interactions COST:0.48780484654455514
-//		setBeta(1.2009096463485622);
-//		setCHB(39323.35985290535);
-//		setSigmaHB(0.0031004512628499416);
-//		setSigmaHB2(1.0506652188720484);
-//		setSigmaHB3(0.013701272456345826);
-//		setFpol(0.0);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(80.83);
-//		setVnorm(66.69);
-		
-		// attraction dispersion term, COST:0.5090071684043067
-//		setBeta(1.200113606053574);
-//		setCHB(36517.02765902227);
-//		setSigmaHB(0.0025573273834716796);
-//		setSigmaHB2(0.0025573273834716796);
-//		setSigmaHB3(1.0);
-//		setFpol(0.05);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(80.83);
-//		setVnorm(66.69);
-		
-//		// idac/nonaqueous.csv AARD:0.36629188907623855 NP:361
-//		// idac/aqueous.csv AARD:0.7007706720246113 NP:311
-//		// COST:0.5210874756068953
-//		setBeta(1.1476530578891553);
-//		setCHB(31054.041024247716);
-//		setSigmaHB(0.0033043145713630077);
-//		setSigmaHB2(0.48530335590723794);
-//		setSigmaHB3(1.0);
-//		setFpol(0.45471090287246685);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(64.7412501912964);
-//		setVnorm(66.69);
-//		
-//		setBeta(1.18156084691798);
-//		setCHB(34010.27239534688);
-//		setSigmaHB(0.002712692892592733);
-//		setSigmaHB2(0.0);
-//		setSigmaHB3(0.0010);
-//		setFpol(0.05034299676106482);
-//		setIgnoreSG(false);
-//		setCoord(10.0);
-//		setAnorm(71.30317188963595);
-//		setVnorm(66.69);
 	}
 
 	public double getRav() {
