@@ -40,6 +40,7 @@ public class COSMOPAC extends COSMOSAC {
 		this.rav = COSMOSAC.RAV;
 		
 		folder = "mopAM1/";
+		folder = "mopRM1/";
 		
 //		// article results
 		setBeta(1);

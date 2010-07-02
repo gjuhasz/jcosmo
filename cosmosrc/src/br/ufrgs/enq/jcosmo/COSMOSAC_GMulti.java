@@ -36,15 +36,38 @@ public class COSMOSAC_GMulti extends COSMOPACMulti {
 		extension = ".gout";
 		
 //		folder = "moltest/";
-		folder = "gam6-31++G2d,p/";
-//		folder = "gam6-31Gd/";
+//		folder = "gam6-31++G2d,p/";
 //		folder = "gamSTO3/";
 		
 		
+		setAnorm(ANORM);
+		setCHB(0);
+		
 		// nonHB
-		// COST:0.2167219390934047 NP:68
-		setBeta(2.050763884895556);
-		setFpol(0.5513422645169235);
+		// COST:0.21537997778086931 NP:68
+		folder = "gam6-31Gd/";
+		setBeta(2.139335747070768);
+		setFpol(0.5204917405729581);
+		// nonaqueous
+		// COST:0.29569685222821074 NP:152
+		setCHB(1, 1, 1700);
+		setCHB(1, 2, 0);
+		
+		// nonHB
+		// COST:0.3818185937017241 NP:68
+		folder = "gam6-31Gd/";
+		setBeta(1.0);
+		setFpol(0.8965470231369211);
+		// COST:0.29569685222821074 NP:152
+		setCHB(1, 1, 1990);
+		setCHB(1, 2, 0);
+		
+//		// aqueous
+//		// 
+//		setCHB(1, 4, 1700);
+//		setCHB(3, 1, 1700);
+//		setCHB(3, 2, 1700);
+//		setCHB(3, 4, 1700);
 		
 	
 	}
