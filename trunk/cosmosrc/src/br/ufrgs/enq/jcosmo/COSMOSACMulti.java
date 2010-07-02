@@ -286,17 +286,17 @@ public class COSMOSACMulti {
 //							deltaWmn /= fpolAvg;
 							
 						// dispersion forces for nearly neutral charges (always negative)
-						double charge2 = 0;
-						if(Math.abs(charge[m])<sigmaDisp){
-							charge2 = charge[n]*charge[n];
-							charge2*= charge2;
-						}
-						else if(Math.abs(charge[n])<sigmaDisp){
-							charge2 = charge[m]*charge[m];
-							charge2*= charge2;
-						}
-						charge2 *= 1e6;
-						deltaWmn -= cDisp*charge2;
+//						double charge2 = 0;
+//						if(Math.abs(charge[m])<sigmaDisp){
+//							charge2 = charge[n]*charge[n];
+//							charge2*= charge2;
+//						}
+//						else if(Math.abs(charge[n])<sigmaDisp){
+//							charge2 = charge[m]*charge[m];
+//							charge2*= charge2;
+//						}
+//						charge2 *= 1e6;
+//						deltaWmn -= cDisp*charge2;
 
 						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
 

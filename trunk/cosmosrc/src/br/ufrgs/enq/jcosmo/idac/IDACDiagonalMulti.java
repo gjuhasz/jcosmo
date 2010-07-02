@@ -178,20 +178,23 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 		XYSeries diag = new XYSeries(NP);
 		diag.add(-2, -2);
 		diag.add(26, 26);
+//		diag.add(6, 6);
 		dataset.addSeries(diag);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);
 		
 		XYSeries erroPos = new XYSeries("-1 ln unit");
 		erroPos.add(-2, -1);
-		erroPos.add(26, 27);
+//		erroPos.add(26, 27);
+		erroPos.add(6, 7);
 		dataset.addSeries(erroPos);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);
 		
 		XYSeries erroNeg = new XYSeries("+1 ln unit");
 		erroNeg.add(-2, -3);
-		erroNeg.add(26, 25);
+//		erroNeg.add(26, 25);
+		erroNeg.add(6, 5);
 		dataset.addSeries(erroNeg);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);

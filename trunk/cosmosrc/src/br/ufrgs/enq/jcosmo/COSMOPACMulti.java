@@ -44,7 +44,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 	}
 	
 	public COSMOPACMulti(){
-		super(51, 5);
+		super(31, 6);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -100,19 +100,19 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(1, 1, 10319);
 		setCHB(1, 2, 4000);
 		
-		// aqueous
-		// COST:8259199383240307, NP:281
-		setCHB(1, 4, 3051);
-		setCHB(3, 1, 8681);
-		setCHB(3, 2, 757);
-		setCHB(3, 4, 4172);
-		
-		// aqueous, without some multiring aromatics
-		// COST:0.6484449484937216 NP:276
-		setCHB(1, 4, 3538);
-		setCHB(3, 1, 8485);
-		setCHB(3, 2, 372);
-		setCHB(3, 4, 3973);
+//		// aqueous
+//		// COST:8259199383240307, NP:281
+//		setCHB(1, 4, 3051);
+//		setCHB(3, 1, 8681);
+//		setCHB(3, 2, 757);
+//		setCHB(3, 4, 4172);
+//		
+//		// aqueous, without some multiring aromatics
+//		// COST:0.6484449484937216 NP:276
+//		setCHB(1, 4, 3538);
+//		setCHB(3, 1, 8485);
+//		setCHB(3, 2, 372);
+//		setCHB(3, 4, 3973);
 		
 //		// aqueous298
 //		// COST:0.6168177661961685 NP:220
@@ -124,6 +124,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		
 		// idac/nonHB.csv AARD:0.15308190023848653 NP:177
 		folder = "mopRM1/";
+		folder = "mopRM1_all/";
 		setBeta(1.3914496900673619);
 		setFpol(0.7231083021154256);
 		setAnorm(59.75);
@@ -133,6 +134,21 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(1, 1, 17909.410190827366);
 		setCHB(1, 2, 9060.336445271969);
 		
+		// All, organic acids removed
+		// idac/nonaqueous.csv AARD:0.2650079544178982 NP:166
+		// idac/aqueous298.csv AARD:0.3993883436028464 NP:46
+		setBeta(1.8980246384490922);
+		setFpol(0.6038991461667053);
+		setCHB(1, 2, 15887.410190827366);
+		setCHB(1, 3, 8636.336445271969);
+		
+		setCHB(1, 4, 8730.336445271969);
+		
+		setCHB(5, 2, 13792.336445271969);
+		setCHB(5, 3, 4307.336445271969);
+		setCHB(5, 4, 8029.336445271969);
+
+		setCoord(7.2);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -177,6 +193,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			double[] area2 = new double[area0.length];
 			double[] area3 = new double[area0.length];
 			double[] area4 = new double[area0.length];
+			double[] area5 = new double[area0.length];
 
 			comps[i].areaMulti = new double[ndescriptors][];
 			
@@ -198,7 +215,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 					}
 					else
 						if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
-						area3[m] += area0[m];
+						area5[m] += area0[m];
 						area0[m] = 0;
 					}
 				}
@@ -218,7 +235,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
 				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
-					area1[m] += area0[m];
+					area2[m] += area0[m];
 					area0[m] = 0;
 				}
 			}
@@ -226,33 +243,42 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// lets filter the [N, O, ...] atoms
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
-//				All on group2
+				
+				// FIXME: detect automatically ETHER oxygen to put on area 2
+				if(comps[i].name.contains("ETHER")){
+					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+						area2[m] += area0[m];
+						area0[m] = 0;
+					}
+				}
+				
+//				All on group3
+				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+					area3[m] += area0[m];
+					area0[m] = 0;
+				}
+
+				// Oxygen goes to area3 only if double bounded
+//				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 2)){
+//					area3[m] += area0[m];
+//					area0[m] = 0;
+//				}
+//				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 3)){
+//					area3[m] += area0[m];
+//					area0[m] = 0;
+//				}
+//				// single bounded Oxygen go to area1
+//				// FIXME: detect automatically ACETATE and OXIDE oxygens
+//				if(!comps[i].name.endsWith("ATE") && !comps[i].name.endsWith("OXIDE")){
+//					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+//						area2[m] += area0[m];
+//						area0[m] = 0;
+//					}
+//				}
 //				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
 //					area2[m] += area0[m];
 //					area0[m] = 0;
 //				}
-
-				// Oxygen goes to area2 only if double bounded
-				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 2)){
-					area2[m] += area0[m];
-					area0[m] = 0;
-				}
-				if(sigma1[m]>0 && molParser.matchBondType(atoms[m], atomType, 3)){
-					area2[m] += area0[m];
-					area0[m] = 0;
-				}
-				// single bounded Oxygen go to area1
-				// FIXME: detect automatically ACETATE and OXIDE oxygens
-				if(!comps[i].name.endsWith("ATE") && !comps[i].name.endsWith("OXIDE")){
-					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
-						area1[m] += area0[m];
-						area0[m] = 0;
-					}
-				}
-				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
-					area2[m] += area0[m];
-					area0[m] = 0;
-				}
 			}
 			
 			s.simpleSorting(area0, sigma1);
@@ -265,6 +291,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti[3] = s.getSortedArea();
 			s.simpleSorting(area4, sigma1);
 			comps[i].areaMulti[4] = s.getSortedArea();
+			s.simpleSorting(area5, sigma1);
+			comps[i].areaMulti[5] = s.getSortedArea();
 			
 			compList.put(comps[i].name, comps[i]);
 			
