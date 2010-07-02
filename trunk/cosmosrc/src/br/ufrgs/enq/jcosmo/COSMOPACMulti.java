@@ -44,7 +44,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 	}
 	
 	public COSMOPACMulti(){
-		super(31, 6);
+		super(51, 6);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -97,58 +97,57 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setFpol(0.664523609196695);
 		setAnorm(157.60541396778427);
 		setSigmaHB(0);
-		setCHB(1, 1, 10319);
-		setCHB(1, 2, 4000);
+		setCHB(1, 2, 10319);
+		setCHB(1, 3, 4000);
 		
-//		// aqueous
-//		// COST:8259199383240307, NP:281
-//		setCHB(1, 4, 3051);
-//		setCHB(3, 1, 8681);
-//		setCHB(3, 2, 757);
-//		setCHB(3, 4, 4172);
+		// aqueous
+		// COST:8259199383240307, NP:281
+		setCHB(1, 4, 3051);
+		setCHB(5, 2, 8681);
+		setCHB(5, 3, 757);
+		setCHB(5, 4, 4172);
+		
+		// idac/nonHB.csv AARD:0.15861478815098135 NP:177
+		// idac/aqueous298.csv AARD:0.5912341384957966 NP:221
+		setBeta(1.583661007957088);
+		setFpol(0.6547624245375059);
+		setAnorm(156.60541396778427);
+		setSigmaHB(0);
+		setCHB(1, 2, 10379);
+		setCHB(1, 3, 4076);
+		setCHB(1, 4, 3635);
+		setCHB(5, 4, 9190);
+		setCHB(5, 3, 391);
+		setCHB(5, 4, 4171);
+		
+//		folder = "mopRM1/";
+//		folder = "mopRM1_all/";
+//		// idac/nonHB.csv AARD:0.15308190023848653 NP:177
+//		setBeta(1.3914496900673619);
+//		setFpol(0.7231083021154256);
+//		setAnorm(59.75);
 //		
-//		// aqueous, without some multiring aromatics
-//		// COST:0.6484449484937216 NP:276
-//		setCHB(1, 4, 3538);
-//		setCHB(3, 1, 8485);
-//		setCHB(3, 2, 372);
-//		setCHB(3, 4, 3973);
-		
-//		// aqueous298
-//		// COST:0.6168177661961685 NP:220
-//		setCHB(1, 4, 3733);
-//		setCHB(3, 1, 9569);
-//		setCHB(3, 2, 398);
-//		setCHB(3, 4, 3773);
-		
-		
-		// idac/nonHB.csv AARD:0.15308190023848653 NP:177
-		folder = "mopRM1/";
-		folder = "mopRM1_all/";
-		setBeta(1.3914496900673619);
-		setFpol(0.7231083021154256);
-		setAnorm(59.75);
-		
-		// All nonaqueous, organic acids removed
-		// COST:0.2699540627504734 NP:309
-		setCHB(1, 1, 17909.410190827366);
-		setCHB(1, 2, 9060.336445271969);
-		
-		// All, organic acids removed
-		// idac/nonaqueous.csv AARD:0.2650079544178982 NP:166
-		// idac/aqueous298.csv AARD:0.3993883436028464 NP:46
-		setBeta(1.8980246384490922);
-		setFpol(0.6038991461667053);
-		setCHB(1, 2, 15887.410190827366);
-		setCHB(1, 3, 8636.336445271969);
-		
-		setCHB(1, 4, 8730.336445271969);
-		
-		setCHB(5, 2, 13792.336445271969);
-		setCHB(5, 3, 4307.336445271969);
-		setCHB(5, 4, 8029.336445271969);
-
-		setCoord(7.2);
+//		// All nonaqueous, organic acids removed
+//		// COST:0.2699540627504734 NP:309
+//		setCHB(1, 1, 17909.410190827366);
+//		setCHB(1, 2, 9060.336445271969);
+//		
+//		// All, organic acids removed
+//		// idac/nonaqueous.csv AARD:0.2742846427425226 NP:175
+//		// idac/aqueous298.csv AARD:0.2993434657056727 NP:45
+//		setBeta(1.9252617485766563);
+//		setFpol(0.6057728092510122);
+//		setAnorm(58.22311);
+//		setCHB(1, 2, 14687);
+//		setCHB(1, 3, 8214);
+//		
+//		setCHB(1, 4, 8271);
+//		
+//		setCHB(5, 2, 13092);
+//		setCHB(5, 3, 4114);
+//		setCHB(5, 4, 7808);
+//
+//		setCoord(7.2);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

@@ -77,8 +77,8 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
-//		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
 		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
@@ -105,7 +105,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 8;
+		return 9;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -116,7 +116,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		pars[i++] = cosmo.getFpol(0,1);
 //		pars[i++] = cosmo.getFpol(0,2);
 //		pars[i++] = cosmo.getFpol(0,3);
-//		pars[i++] = cosmo.getAnorm();
+		pars[i++] = cosmo.getAnorm();
 		pars[i++] = cosmo.getCHB(1,2);
 		pars[i++] = cosmo.getCHB(1,3);
 		
@@ -144,7 +144,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //				cosmo.setFpol(0,1, pars[i++]);
 //				cosmo.setFpol(0,2, pars[i++]);
 //				cosmo.setFpol(0,3, pars[i++]);
-//				cosmo.setAnorm(pars[i++]);
+				cosmo.setAnorm(pars[i++]);
 				cosmo.setCHB(1,2, pars[i++]);
 				cosmo.setCHB(1,3, pars[i++]);
 				
