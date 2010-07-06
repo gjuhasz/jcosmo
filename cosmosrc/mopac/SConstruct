@@ -63,12 +63,9 @@ files = []
 files_p1 = []
 files_m1 = []
 for fi in molfiles :
-	# print str(fi)
 	if str(fi).endswith("+1.mol") :
-		print str(fi)
 		files_p1.append(fi)
 	elif str(fi).endswith("-1.mol") :
-		print str(fi)
 		files_m1.append(fi)
 	else :
 		files.append(fi)
