@@ -228,6 +228,35 @@ acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
 "n-pentane/ethyl acetate",298.15,3.019,"doi:10.1016/j.fluid.2003.06.002"
 "n-hexane/ethyl acetate",298.15,3.600,"doi:10.1016/j.fluid.2003.06.002"
 "n-heptane/ethyl acetate",298.15,3.819,"doi:10.1016/j.fluid.2003.06.002"
-"n-ocatane/ethyl acetate",298.15,4.831,"doi:10.1016/j.fluid.2003.06.002"
+"n-octane/ethyl acetate",298.15,4.831,"doi:10.1016/j.fluid.2003.06.002"
 "n-nonane/ethyl acetate",298.15,5.430,"doi:10.1016/j.fluid.2003.06.002"
-
+"diethyl ether/n-octane","283.15","1.25","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-octane","293.15","1.24","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-octane","303.15","1.22","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-octane","283.15","1.24","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-octane","293.15","1.23","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-octane","303.15","1.21","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-octane","313.15","1.20","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-octane","283.15","1.23","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-octane","293.15","1.20","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-octane","303.15","1.17","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-octane","313.15","1.10","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-tetradecane","283.15","1.22","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-tetradecane","293.15","1.18","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-tetradecane","303.15","1.15","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-tetradecane","283.15","1.17","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-tetradecane","293.15","1.15","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-tetradecane","303.15","1.10","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-tetradecane","313.15","1.07","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-tetradecane","283.15","1.15","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-tetradecane","293.15","1.11","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-tetradecane","303.15","1.08","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-tetradecane","313.15","1.06","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-hexadecane","293.15","1.15","doi:10.1016/S0378-3812(97)00115-5",
+"diethyl ether/n-hexadecane","303.15","1.11","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-hexadecane","293.15","1.13","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-hexadecane","303.15","1.09","doi:10.1016/S0378-3812(97)00115-5",
+"methyl tert-Butyl ether/n-hexadecane","313.15","1.06","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-hexadecane","293.15","1.10","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-hexadecane","303.15","1.07","doi:10.1016/S0378-3812(97)00115-5",
+"diisopropyl ether/n-hexadecane","313.15","1.05","doi:10.1016/S0378-3812(97)00115-5",
