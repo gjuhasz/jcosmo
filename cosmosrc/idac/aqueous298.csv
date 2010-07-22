@@ -237,6 +237,9 @@ n-tetradecanoic acid/water,298,52900000,10
 "Methyl propyl ether/water","298.15","131.63","DOI 10.1007/s10822-006-9079-6",
 "methyl sec-Butyl ether/water","298.15","301.87","DOI 10.1007/s10822-006-9079-6",
 "methyl tert-Butyl ether/water","298.15","113.3","DOI 10.1007/s10822-006-9079-6",
+"methyl tert-Butyl ether/water","298.15","139","doi:10.1016/j.fluid.2006.02.022",
+"diethyl ether/water","298.15","77","doi:10.1016/S0378-3812(01)00675-6",
+"diisopropyl ether/water","298.15","616","doi:10.1016/S0378-3812(01)00675-6",
 "Ethylene oxide/water","298.15","6.23","DOI 10.1007/s10822-006-9079-6",
 acetone/water,298,7.8,10
 "methyl ethyl ketone/water",298,26.2,10
