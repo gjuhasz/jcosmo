@@ -53,6 +53,9 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 
 	List<Color> color = new ArrayList<Color>();
 	
+	double maxLnGamma = -Double.MAX_VALUE;
+	double minLnGamma = Double.MAX_VALUE;
+	
 	public void addIDACExperiments(String filename, String modelClass, Color cor) throws Exception {
 		this.modelClass = modelClass;
 		color.add(cor);
@@ -133,6 +136,7 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 			COSMOSACMulti model = models.get(i);
 			T = temperatures.get(i);
 			double gammaInf = gammaInfs.get(i);
+			double lnGammaInf = Math.log(gammaInf);
 			
 //			if(Math.abs(T-298)>2)
 //				continue;
@@ -140,8 +144,13 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 			model.setTemperature(T);
 			model.setComposition(z);
 			model.activityCoefficientLn(lnGamma, 0);
+			
+			if(lnGammaInf > maxLnGamma)
+				maxLnGamma = lnGammaInf;
+			if(lnGammaInf < minLnGamma)
+				minLnGamma = lnGammaInf;
 						
-			point.add(Math.log(gammaInf), lnGamma[0]);
+			point.add(lnGammaInf, lnGamma[0]);
 			tpNames.add(model.getComps()[0].name + "/" + model.getComps()[1].name +
 					", T=" + T + ", " + gammaInf +  " (" + Math.log(gammaInf) + ", " + lnGamma[0] + ")");
 		}
@@ -158,8 +167,8 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 				"Logarithm of Experimental IDAC", "Logarithm of Model IDAC", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		plot = (XYPlot) chart.getPlot();		
-		plot.getDomainAxis().setRange(new Range(-2, 26));
-		plot.getRangeAxis().setRange(new Range(-2, 26));
+		plot.getDomainAxis().setRange(new Range(minLnGamma-1, maxLnGamma+1));
+		plot.getRangeAxis().setRange(new Range(minLnGamma-1, maxLnGamma+2));
 		
 		plot.setBackgroundPaint(Color.black);
 	
@@ -176,25 +185,25 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 				1.0f, new float[] { 10.0f, 6.0f }, 0.0f);
 		
 		XYSeries diag = new XYSeries(NP);
-		diag.add(-2, -2);
-		diag.add(26, 26);
+		diag.add(minLnGamma-1, minLnGamma-1);
+		diag.add(maxLnGamma+1, maxLnGamma+1);
 //		diag.add(6, 6);
 		dataset.addSeries(diag);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);
 		
 		XYSeries erroPos = new XYSeries("-1 ln unit");
-		erroPos.add(-2, -1);
+		erroPos.add(minLnGamma-1, minLnGamma-2);
 //		erroPos.add(26, 27);
-		erroPos.add(6, 7);
+		erroPos.add(maxLnGamma+1, maxLnGamma);
 		dataset.addSeries(erroPos);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);
 		
 		XYSeries erroNeg = new XYSeries("+1 ln unit");
-		erroNeg.add(-2, -3);
+		erroNeg.add(minLnGamma-1, minLnGamma);
 //		erroNeg.add(26, 25);
-		erroNeg.add(6, 5);
+		erroNeg.add(maxLnGamma+1, maxLnGamma+2);
 		dataset.addSeries(erroNeg);
 		r.setSeriesStroke(i, dashed);
 		r.setSeriesLinesVisible(i++, true);

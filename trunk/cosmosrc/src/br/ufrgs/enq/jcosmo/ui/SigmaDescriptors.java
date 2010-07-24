@@ -60,9 +60,10 @@ public class SigmaDescriptors {
 		dlg.add(chart, BorderLayout.CENTER);
 
 		final JTextField nameField = new JTextField("HYDROGEN_FLUORIDE", 16);
+		nameField.setText("N-FORMYLMORPHOLINE");
 		String []fileTypeList = {"MOPAC", "SVP-GAMESS", "PCM-GAMESS", "COSMO-GAMESS"};
 		final JComboBox fileType = new JComboBox(fileTypeList);
-		String []analysisTypeList = {"None", "Atom Type", "Polarizability", "Low", "Hydrogen-Bond"};
+		String []analysisTypeList = {"Atom Type", "None", "Polarizability", "Low", "H, N, O, ..."};
 		final JComboBox analysisType = new JComboBox(analysisTypeList);
 
 		JButton run = new JButton("Refresh");
@@ -91,10 +92,12 @@ public class SigmaDescriptors {
 				FileType type = SigmaProfileGenerator.FileType.MOPAC;
 				String extension = ".cos";
 				COSMOSAC model = null;
+				double sigmaHB = 0.0042;
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
-					folder = "mopac/";
+//					folder = "mopac/";
+					folder = "mopPOA1_all/";
 //					folder = "mopRM1/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
@@ -114,7 +117,8 @@ public class SigmaDescriptors {
 //					folder = "gam6-31++G2d,p/";
 //					folder = "gamSTO3/";
 //					folder = "gam6-311G/";
-					folder = "gam6-31Gd/";
+//					folder = "gam6-31Gd/";
+					folder = "mopac/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
@@ -154,18 +158,13 @@ public class SigmaDescriptors {
 						MolParser molParser = new MolParser();
 						String name = nameField.getText();
 						File molFile = new File(folder + name + ".mol");
-						if(!molFile.exists())
-							molFile = new File(folder + name + ".mol+1");
-						if(!molFile.exists())
-							molFile = new File(folder + name + ".mol-1");
-
 						molParser.parseFile(molFile.getPath());
 						
 						// lets filter the H-[N,O,F,Cl,Br,I] atoms, the donnors
 						double[] areaHDonnor = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int boundedType[] = {7, 8, 9, 17, 35, 53};
-							if(sigmaBase[m]<0 && molParser.matchType(atoms[m], 1, boundedType)){
+							if(sigmaBase[m]<-sigmaHB && molParser.matchType(atoms[m], 1, boundedType)){
 								areaHDonnor[m] += area[m];
 								area[m] = 0;
 							}
@@ -175,7 +174,7 @@ public class SigmaDescriptors {
 						double[] areaNH = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int atomType[] = {7, 8, 9, 17, 35, 53};
-							if(sigmaBase[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
+							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], atomType, 1)){
 								areaNH[m] += area[m];
 								area[m] = 0;
 							}
@@ -192,42 +191,60 @@ public class SigmaDescriptors {
 //							}
 
 							// Oxygen goes to area2 only if double bounded
-							if(sigmaBase[m]>0 && molParser.matchBondType(atoms[m], atomType, 2)){
+							if(sigmaBase[m]>sigmaHB && molParser.matchBondType(atoms[m], atomType, 2)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
-							if(sigmaBase[m]>0 && molParser.matchBondType(atoms[m], atomType, 3)){
+							if(sigmaBase[m]>sigmaHB && molParser.matchBondType(atoms[m], atomType, 3)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
 							// single bounded Oxygen go to area1
 							// FIXME: detect automatically ACETATE and OXIDE oxygens
 							if(!nameField.getText().endsWith("ATE") && !nameField.getText().endsWith("OXIDE")){
-								if(sigmaBase[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+								if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], 8, 0)){
 									areaNH[m] += area[m];
 									area[m] = 0;
 								}
 							}
-							if(sigmaBase[m]>0 && molParser.matchType(atoms[m], atomType, 0)){
+							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], 8, 0)){
+								areaNH[m] += area[m];
+								area[m] = 0;
+							}
+							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], atomType, 0)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
 						}
 						
+						// lets filter the H-C-[N,O,F,Cl,Br,I] atoms, the donnors 2
+						double[] areaHDonnor2 = new double[area.length];
+						for (int m = 0; m < area.length; m++) {
+							int boundedType2[] = {7, 8, 9, 17, 35, 53};
+							if(sigmaBase[m]<sigmaHB && molParser.matchType(atoms[m], 1, 6, boundedType2)){
+								areaHDonnor2[m] += area[m];
+								area[m] = 0;
+							}
+						}
+
+						
 						double partial;
 
 						// adding all other elements
 						partial = sigmaParser.simpleSorting(area, sigmaBase);
-						chart.addProfile("0. C, H, Others (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("0. NonHB (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaHDonnor, sigmaBase);
-						chart.addProfile("1. H-Donnor (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("1. H-[N, O, ...] (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaNH, sigmaBase);
-						chart.addProfile("1. [N, O, ...]-H (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("2. [N, O, ...]-H (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						
 						partial = sigmaParser.simpleSorting(areaN, sigmaBase);
-						chart.addProfile("2. [N, O, ...] (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						chart.addProfile("3. [N, O, ...] (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
+						
+						partial = sigmaParser.simpleSorting(areaHDonnor2, sigmaBase);
+						chart.addProfile("4. H-C-[N, O, ...] (" + nf.format(partial) + ")", sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 					}
 
 					// Polarizability analysis
@@ -363,7 +380,7 @@ public class SigmaDescriptors {
 								chart.addProfile("sT>" + stLow + partial, sigmaParser.getChargeDensity(), sigmaParser.getSortedArea());
 						}
 					}
-					if(analysisType.getSelectedItem().equals("Hydrogen-Bond")){
+					if(analysisType.getSelectedItem().equals("H, N, O, ...")){
 						// Hydrogen-Bond analysis
 						sigmaParser.parseFile(fileName, rav);
 						
