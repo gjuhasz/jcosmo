@@ -111,29 +111,29 @@ public class MolParser {
 		}
 	}
 	
-	public boolean matchType(int atom, int atomType, int []boundedType){
-		for (int i = 0; i < boundedType.length; i++) {
-			if(matchType(atom, atomType, boundedType[i]))
+	public boolean matchType(int atom, int atomType, int []bondedType){
+		for (int i = 0; i < bondedType.length; i++) {
+			if(matchType(atom, atomType, bondedType[i]))
 				return true;
 		}
 		return false;
 	}
 	
-	public boolean matchType(int atom, int []atomType, int boundedType){
+	public boolean matchType(int atom, int []atomType, int bondedType){
 		for (int i = 0; i < atomType.length; i++) {
-			if(matchType(atom, atomType[i], boundedType))
+			if(matchType(atom, atomType[i], bondedType))
 				return true;
 		}
 		return false;
 	}
 	
-	public boolean matchType(int atom, int atomType, int boundedType){
+	public boolean matchType(int atom, int atomType, int bondedType){
 		if(atomType==0 || elementType[atom-1]==atomType){
-			if(boundedType==0)
+			if(bondedType==0)
 				return true;
 			for (int j = 0; j < bondAtom1.length; j++) {
-				if( (bondAtom1[j]==atom && elementType[bondAtom2[j]-1]==boundedType) ||
-						(bondAtom2[j]==atom && elementType[bondAtom1[j]-1]==boundedType)){
+				if( (bondAtom1[j]==atom && elementType[bondAtom2[j]-1]==bondedType) ||
+						(bondAtom2[j]==atom && elementType[bondAtom1[j]-1]==bondedType)){
 					return true;
 				}
 			}
@@ -141,13 +141,29 @@ public class MolParser {
 		return false;
 	}
 	
-	public boolean matchBondType(int atom, int atomType, int boundType){
+	public boolean matchType(int atom, int atomType, int bondedType, int []bondedType2){
 		if(atomType==0 || elementType[atom-1]==atomType){
-			if(boundType==0)
+			for (int j = 0; j < bondAtom1.length; j++) {
+				if(bondAtom1[j]==atom && elementType[bondAtom2[j]-1]==bondedType){
+					if(matchType(bondAtom2[j], bondedType, bondedType2))
+						return true;
+				}
+				if(bondAtom2[j]==atom && elementType[bondAtom1[j]-1]==bondedType){
+					if(matchType(bondAtom1[j], bondedType, bondedType2))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean matchBondType(int atom, int atomType, int bondType){
+		if(atomType==0 || elementType[atom-1]==atomType){
+			if(bondType==0)
 				return true;
 			for (int j = 0; j < bondAtom1.length; j++) {
-				if( (bondAtom1[j]==atom && this.bondType[j]==boundType) ||
-						(bondAtom2[j]==atom && this.bondType[j]==boundType)){
+				if( (bondAtom1[j]==atom && this.bondType[j]==bondType) ||
+						(bondAtom2[j]==atom && this.bondType[j]==bondType)){
 					return true;
 				}
 			}
@@ -155,9 +171,9 @@ public class MolParser {
 		return false;
 	}
 	
-	public boolean matchBondType(int atom, int []atomType, int boundType){
+	public boolean matchBondType(int atom, int []atomType, int bondType){
 		for (int i = 0; i < atomType.length; i++) {
-			if(matchBondType(atom, atomType[i], boundType))
+			if(matchBondType(atom, atomType[i], bondType))
 				return true;
 		}
 		return false;
