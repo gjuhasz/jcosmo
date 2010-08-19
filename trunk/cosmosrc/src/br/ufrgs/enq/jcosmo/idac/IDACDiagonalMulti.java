@@ -53,8 +53,8 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 
 	List<Color> color = new ArrayList<Color>();
 	
-	double maxLnGamma = -Double.MAX_VALUE;
-	double minLnGamma = Double.MAX_VALUE;
+	int maxLnGamma = -Integer.MAX_VALUE;
+	int minLnGamma = Integer.MAX_VALUE;
 	
 	public void addIDACExperiments(String filename, String modelClass, Color cor) throws Exception {
 		this.modelClass = modelClass;
@@ -146,9 +146,9 @@ public class IDACDiagonalMulti extends JFrame implements XYToolTipGenerator{
 			model.activityCoefficientLn(lnGamma, 0);
 			
 			if(lnGammaInf > maxLnGamma)
-				maxLnGamma = lnGammaInf;
+				maxLnGamma = (int)lnGammaInf;
 			if(lnGammaInf < minLnGamma)
-				minLnGamma = lnGammaInf;
+				minLnGamma = (int)lnGammaInf;
 						
 			point.add(lnGammaInf, lnGamma[0]);
 			tpNames.add(model.getComps()[0].name + "/" + model.getComps()[1].name +

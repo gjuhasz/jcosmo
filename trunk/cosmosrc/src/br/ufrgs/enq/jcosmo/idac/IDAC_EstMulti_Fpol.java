@@ -26,7 +26,7 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 //		String modelClass = COSMOSAC_GMulti.class.getName();
 //		String modelClass = COSMOSAC_GMultiAtom.class.getName();
 		
-		ndesc = 5;
+		ndesc = 4;
 		
 		experiments = new ArrayList<IDACExperimentsMulti>();
 
@@ -109,14 +109,15 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 		return (ndesc*ndesc+ndesc)/2 + 1;
+//		return (ndesc*ndesc+ndesc)/2;
 //		return 3;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
-		pars[i++] = cosmo.getBeta(0);
-//		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getBeta(0);
+		pars[i++] = cosmo.getAnorm();
 //		pars[i++] = cosmo.getFpol();
 		for (int k = 0; k < ndesc; k++) {
 			for (int l = k; l < ndesc; l++) {
@@ -138,8 +139,8 @@ public class IDAC_EstMulti_Fpol implements CostFunction, ObjectiveFunction {
 				COSMOSACMulti cosmo = exp.getModels().get(j);
 				
 				int i=0;
-				cosmo.setBeta(pars[i++]);
-//				cosmo.setAnorm(pars[i++]);
+//				cosmo.setBeta(pars[i++]);
+				cosmo.setAnorm(pars[i++]);
 //				cosmo.setFpol(pars[i++]);
 				for (int k = 0; k < ndesc; k++) {
 					for (int l = k; l < ndesc; l++) {

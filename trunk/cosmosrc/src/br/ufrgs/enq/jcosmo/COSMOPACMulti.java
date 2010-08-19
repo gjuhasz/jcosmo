@@ -51,12 +51,16 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		
 		type = SigmaProfileGenerator.FileType.MOPAC;
 		extension = ".cos";
-		folder = "mopac/";
+//		folder = "mopac/";
 //		folder = "moltest/";
-//		folder = "mopAM1/";
+//		folder = "mopAM1_1.18/";
+//		folder = "mopPOA1/";
+		folder = "mopPOA1_all/";
 //		folder = "mopPM6/";
 //		folder = "mopAM1c/";
 //		folder = "mopRM1/";
+		
+//		setIgnoreSG(true);
 		
 //		// article results
 //		setResCorr(1);
@@ -102,10 +106,10 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		
 		// aqueous
 		// COST:8259199383240307, NP:281
-		setCHB(1, 4, 3051);
-		setCHB(5, 2, 8681);
-		setCHB(5, 3, 757);
-		setCHB(5, 4, 4172);
+//		setCHB(1, 4, 3051);
+//		setCHB(5, 2, 8681);
+//		setCHB(5, 3, 757);
+//		setCHB(5, 4, 4172);
 		
 		// idac/nonHB.csv AARD:0.15861478815098135 NP:177
 		// idac/aqueous298.csv AARD:0.5912341384957966 NP:221
@@ -115,39 +119,37 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setSigmaHB(0);
 		setCHB(1, 2, 10379);
 		setCHB(1, 3, 4076);
-		setCHB(1, 4, 3635);
-		setCHB(5, 4, 9190);
-		setCHB(5, 3, 391);
-		setCHB(5, 4, 4171);
+//		setCHB(1, 4, 3635);
+//		setCHB(5, 4, 9190);
+//		setCHB(5, 3, 391);
+//		setCHB(5, 4, 4171);
 		
-//		folder = "mopRM1/";
-//		folder = "mopRM1_all/";
-//		// idac/nonHB.csv AARD:0.15308190023848653 NP:177
-//		setBeta(1.3914496900673619);
-//		setFpol(0.7231083021154256);
-//		setAnorm(59.75);
+//		setBeta(1.1449668413958016);
+//		setFpol(1.5991543095613814);
 //		
-//		// All nonaqueous, organic acids removed
-//		// COST:0.2699540627504734 NP:309
-//		setCHB(1, 1, 17909.410190827366);
-//		setCHB(1, 2, 9060.336445271969);
+//		setCHB(1, 2, 2076);
+//		setCHB(1, 3, 4076);
+//		setCHB(1, 4, 8000);
+//		setCHB(5, 2, 8000);
+//		setCHB(5, 3, 4000);
+//		setCHB(5, 4, 5000);
 //		
-//		// All, organic acids removed
-//		// idac/nonaqueous.csv AARD:0.2742846427425226 NP:175
-//		// idac/aqueous298.csv AARD:0.2993434657056727 NP:45
-//		setBeta(1.9252617485766563);
-//		setFpol(0.6057728092510122);
-//		setAnorm(58.22311);
-//		setCHB(1, 2, 14687);
-//		setCHB(1, 3, 8214);
+//		setSigmaHB(0.0042);
 //		
-//		setCHB(1, 4, 8271);
-//		
-//		setCHB(5, 2, 13092);
-//		setCHB(5, 3, 4114);
-//		setCHB(5, 4, 7808);
+//		setBeta(1.1449668413958016);
+//		setCHB(47138.69690169665);
+//		setSigmaHB(0.007351579606927401);
+//		setSigmaHB2(0.007351579606927401);
+//		setSigmaHB3(1.0);
+//		setFpol(1.5991543095613814);
 //
-//		setCoord(7.2);
+//		setAnorm(ANORM);
+		
+//		setBeta(1);
+//		setFpol(FPOL);
+		
+//		setFpol(0.7);
+//		setIgnoreSG(true);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -198,25 +200,24 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			
 			MolParser molParser = new MolParser();
 			File molFile = new File(folder + name + ".mol");
-			if(!molFile.exists())
-				molFile = new File(folder + name + ".mol+1");
-			if(!molFile.exists())
-				molFile = new File(folder + name + ".mol-1");
-
 			molParser.parseFile(molFile.getPath());
 			
-			// H2O in its own group
+			// H2O in its own group or scaled to avoid two new groups
 			if(comps[i].name.equals("WATER")){
 				for (int m = 0; m < area0.length; m++) {
-					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
-						area4[m] += area0[m];
-						area0[m] = 0;
-					}
-					else
-						if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
-						area5[m] += area0[m];
-						area0[m] = 0;
-					}
+//					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+////						area4[m] += area0[m];
+//						area2[m] += area0[m];
+//						area0[m] = 0;
+//					}
+//					else
+//						if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
+////							area5[m] += area0[m];
+//							area1[m] += area0[m];
+//							area0[m] = 0;
+//					}
+					// scale the sigma
+					sigma1[m] *= 0.9;
 				}
 			}
 
@@ -230,7 +231,16 @@ public class COSMOPACMulti extends COSMOSACMulti {
 				}
 			}
 			
-			// lets filter the [N,O,...]-H atoms (HB-acceptor bounded to H)
+//			// lets filter the H-C-[N,O,F,Cl,Br,I] atoms, the donnors 2
+//			for (int m = 0; m < area0.length; m++) {
+//				int boundedType2[] = {7, 8, 9, 17, 35, 53};
+//				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 6, boundedType2)){
+//					area4[m] += area0[m];
+//					area0[m] = 0;
+//				}
+//			}
+			
+			// lets filter the [N,O,...]-H atoms (HB-acceptor bonded to H)
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
 				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){

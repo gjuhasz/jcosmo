@@ -26,7 +26,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 		experiments = new ArrayList<IDACExperiments>();
 
-//		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
+		experiments.add(new IDACExperiments("idac/Alcohol-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Aldehyde-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkane-Water.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/Alkene-Water.csv", modelClass));
@@ -76,8 +76,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		
 		// or just the two main groups
 //		experiments.add(new IDACExperiments("idac/nonHB.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
-		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -102,7 +102,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 6;
+		return 4;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -112,8 +112,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		pars[i++] = cosmo.getFpol();
 		pars[i++] = cosmo.getCHB();
 		pars[i++] = cosmo.getSigmaHB();
-		pars[i++] = cosmo.getSigmaDisp();
-		pars[i++] = cosmo.getCDisp();
+//		pars[i++] = cosmo.getSigmaDisp();
+//		pars[i++] = cosmo.getCDisp();
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
@@ -140,8 +140,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
 //				cosmo.setSigmaHB3(pars[i++]);
-				cosmo.setSigmaDisp(pars[i++]);
-				cosmo.setCDisp(pars[i++]);
+//				cosmo.setSigmaDisp(pars[i++]);
+//				cosmo.setCDisp(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
 //				cosmo.setAnorm(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);

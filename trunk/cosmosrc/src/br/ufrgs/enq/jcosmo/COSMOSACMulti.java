@@ -103,7 +103,11 @@ public class COSMOSACMulti {
 	ISegmentSolver segSolver;
 
 	/** Flag if the Staverman-Guggenheim term is ignored */
-	boolean ignoreSG = false;
+	boolean ignoreCombinatorial = false;
+	/** Flag if the residual term is ignored */
+	boolean ignoreResidual = false;
+	
+	
 	private double averageACOSMO;
 	COSMOSACCompound[] comps;
 
@@ -405,6 +409,8 @@ public class COSMOSACMulti {
 						}
 						// Hydrogen Bond effect:
 						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB2);
+						
+//						hb = Math.pow(Math.abs(hb), 1.5);
 
 						// Klamt, Fluid Phase Equilib. 2000
 						// double cHBT_c = 1.5;
@@ -475,21 +481,27 @@ public class COSMOSACMulti {
 
 			// GAMMASGI IS ACTUALLY LNGAMMASG
 			double lnGammaSG = 0;
-			if(!ignoreSG){
+			if(!ignoreCombinatorial){
 				lnGammaSG += Math.log(phi_z)+
 				(coord/2)*QNORM[i]*Math.log(theta_phi)
 				+ li[i] - (phi_z)*sum_zi_li;
 			}
-
+			
 			// CALCULATION OF GAMMAS
 			double lnGammaRestoration = 0.0;
-			for (int d = 0; d < ndescriptors; d++) {
-				for(int m=0; m<nsegments; ++m){
-					//				lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
-					double lnMixSeg = Math.log(SEGGAMMA[d][m]);
-					double lnMixPure = Math.log(SEGGAMMAPR[i][d][m]);
+			if(ignoreResidual==false){
+				for (int d = 0; d < ndescriptors; d++) {
+					for(int m=0; m<nsegments; ++m){
+						// avoid computing for null areas
+						if(comps[i].areaMulti[d][m]==0)
+							continue;
 
-					lnGammaRestoration += beta[d]*(comps[i].areaMulti[d][m]/aEff)*(lnMixSeg - lnMixPure);
+						// lnGammaRestoration += (sigma[i][m]/aEffPrime)*(Math.log(SEGGAMMA[m]/(SEGGAMMAPR[i][m])));
+						double lnMixSeg = Math.log(SEGGAMMA[d][m]);
+						double lnMixPure = Math.log(SEGGAMMAPR[i][d][m]);
+
+						lnGammaRestoration += beta[d]*(comps[i].areaMulti[d][m]/aEff)*(lnMixSeg - lnMixPure);
+					}
 				}
 			}
 			lnGama[i+start] = lnGammaRestoration + lnGammaSG;
@@ -497,7 +509,10 @@ public class COSMOSACMulti {
 	}
 
 	public boolean isIgnoreSG() {
-		return ignoreSG;
+		return ignoreCombinatorial;
+	}
+	public boolean isIgnoreResidual() {
+		return ignoreResidual;
 	}
 
 	/**
@@ -505,7 +520,15 @@ public class COSMOSACMulti {
 	 * @param ignoreSG <code>true</code> if the term should be ignored
 	 */
 	public void setIgnoreSG(boolean ignoreSG) {
-		this.ignoreSG = ignoreSG;
+		this.ignoreCombinatorial = ignoreSG;
+	}
+	
+	/**
+	 * Sets if the residual term should be ignored.
+	 * @param ignoreResidual <code>true</code> if the term should be ignored
+	 */
+	public void setIgnoreResidual(boolean ignoreResidual) {
+		this.ignoreResidual = ignoreResidual;
 	}
 
 

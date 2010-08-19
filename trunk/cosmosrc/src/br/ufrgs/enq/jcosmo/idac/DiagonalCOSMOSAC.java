@@ -1,6 +1,6 @@
 package br.ufrgs.enq.jcosmo.idac;
 
-import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOPAC;
 
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
@@ -13,16 +13,16 @@ public class DiagonalCOSMOSAC {
 
 	public static void main (String[] args) throws Exception{
 //		String modelClass = COSMOSAC_G.class.getName();
-		String modelClass = COSMOSAC.class.getName();
+//		String modelClass = COSMOSAC.class.getName();
 //		String modelClass = COSMOSAC_SVP.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 		
 		IDACDiagonal dig = new IDACDiagonal();
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkene-Water.csv", modelClass);
@@ -38,7 +38,7 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-//		dig.addIDACExperiments("idac/Water.csv", modelClass);
+		dig.addIDACExperiments("idac/Water.csv", modelClass);
 //		
 //		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
@@ -70,7 +70,7 @@ public class DiagonalCOSMOSAC {
 		// or just the families
 //		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
-		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
+//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 		

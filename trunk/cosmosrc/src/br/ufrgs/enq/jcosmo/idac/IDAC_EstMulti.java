@@ -12,6 +12,7 @@ import org.apache.commons.math.optimization.PointCostPair;
 
 import br.ufrgs.enq.direct.ObjectiveFunction;
 import br.ufrgs.enq.jcosmo.COSMOPACMulti;
+//import br.ufrgs.enq.jcosmo.COSMOPACMultiUNIFAC;
 import br.ufrgs.enq.jcosmo.COSMOSACMulti;
 
 public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
@@ -20,13 +21,16 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 
 	public IDAC_EstMulti() throws Exception {
 		String modelClass = COSMOPACMulti.class.getName();
+//		String modelClass = COSMOPACMultiUNIFAC.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
 //		String modelClass = COSMOSAC_GMultiAtom.class.getName();
 
 		experiments = new ArrayList<IDACExperimentsMulti>();
 
-//		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Water298.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/AlcoholSmall-Water298.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Aldehyde-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Alkane-Water.csv", modelClass));
 ////		experiments.add(new IDACExperimentsMulti("idac/Alkene-Water.csv", modelClass));
@@ -41,7 +45,7 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 ////		experiments.add(new IDACExperimentsMulti("idac/Ether-Water.csv", modelClass)); //
 ////		experiments.add(new IDACExperimentsMulti("idac/Ester-Water.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Water.csv", modelClass));
-//		experiments.add(new IDACExperimentsMulti("idac/Water.csv", modelClass));
+		experiments.add(new IDACExperimentsMulti("idac/Water.csv", modelClass));
 		
 //		experiments.add(new IDACExperimentsMulti("idac/Alcohol-Alkane.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/Alcohol-CycloAlkane.csv", modelClass));
@@ -77,11 +81,11 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 //		experiments.add(new IDACExperimentsMulti("idac/Ketone-Alkane.csv", modelClass)); //
 		
 		// or just the two main groups
-		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/nonHB.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/glycerol.csv", modelClass));
 //		experiments.add(new IDACExperimentsMulti("idac/aqueous.csv", modelClass));
-		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
+//		experiments.add(new IDACExperimentsMulti("idac/aqueous298.csv", modelClass));
 	}
 
 	public boolean getBounds(double[] xl, double[] xu) {
@@ -105,20 +109,23 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 		}
 	}
 	public int getNumberOfPars(){
-		return 9;
+		return 6;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
 		COSMOSACMulti cosmo = (COSMOSACMulti) experiments.get(0).getModels().get(0);
 
-		pars[i++] = cosmo.getBeta(0);
-		pars[i++] = cosmo.getFpol();
+//		pars[i++] = cosmo.getBeta(0);
+//		pars[i++] = cosmo.getFpol();
 //		pars[i++] = cosmo.getFpol(0,1);
 //		pars[i++] = cosmo.getFpol(0,2);
 //		pars[i++] = cosmo.getFpol(0,3);
-		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getAnorm();
 		pars[i++] = cosmo.getCHB(1,2);
 		pars[i++] = cosmo.getCHB(1,3);
+//		pars[i++] = cosmo.getCHB(1,4);
+//		pars[i++] = cosmo.getCHB(4,2);
+//		pars[i++] = cosmo.getCHB(4,3);
 		
 		pars[i++] = cosmo.getCHB(1,4);
 		pars[i++] = cosmo.getCHB(5,2);
@@ -139,14 +146,17 @@ public class IDAC_EstMulti implements CostFunction, ObjectiveFunction {
 				COSMOSACMulti cosmo = exp.getModels().get(j);
 				
 				int i=0;
-				cosmo.setBeta(pars[i++]);
-				cosmo.setFpol(pars[i++]);
+//				cosmo.setBeta(pars[i++]);
+//				cosmo.setFpol(pars[i++]);
 //				cosmo.setFpol(0,1, pars[i++]);
 //				cosmo.setFpol(0,2, pars[i++]);
 //				cosmo.setFpol(0,3, pars[i++]);
-				cosmo.setAnorm(pars[i++]);
+//				cosmo.setAnorm(pars[i++]);
 				cosmo.setCHB(1,2, pars[i++]);
 				cosmo.setCHB(1,3, pars[i++]);
+//				cosmo.setCHB(1,4, pars[i++]);
+//				cosmo.setCHB(4,2, pars[i++]);
+//				cosmo.setCHB(4,3, pars[i++]);
 				
 				cosmo.setCHB(1,4, pars[i++]);
 				cosmo.setCHB(5,2, pars[i++]);
