@@ -1,6 +1,7 @@
 package br.ufrgs.enq.jcosmo.idac;
 
 import br.ufrgs.enq.jcosmo.COSMOPAC;
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
@@ -22,7 +23,7 @@ public class DiagonalCOSMOSAC {
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkene-Water.csv", modelClass);
@@ -38,7 +39,7 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Water.csv", modelClass);
 //		
 //		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
@@ -68,7 +69,8 @@ public class DiagonalCOSMOSAC {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+//		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);

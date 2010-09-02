@@ -97,8 +97,9 @@ public class SigmaDescriptors {
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
 //					folder = "mopac/";
-					folder = "mopPOA1_all/";
+//					folder = "mopPOA1_all/";
 //					folder = "mopRM1/";
+					folder = "mopRM1_all/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";

@@ -24,7 +24,7 @@ public class DiagonalCOSMOSACMulti {
 		
 		dig.setTitle("IDAC for COSMOSAC model");
 		
-		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alcohol-Water298.csv", modelClass);
 //		dig.addIDACExperiments("idac/AlcoholSmall-Water298.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
@@ -42,7 +42,7 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Ester-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water.csv", modelClass);
+//		dig.addIDACExperiments("idac/Water.csv", modelClass);
 		
 //		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
@@ -74,13 +74,13 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous298.csv", modelClass);
-//		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
+		dig.addIDACExperiments("idac/nonaqueous.csv", modelClass);
 //		dig.addIDACExperiments("idac/glycerol.csv", modelClass);
 		
 		dig.showPlot();
