@@ -231,17 +231,31 @@ public class COSMOPAC extends COSMOSAC {
 //		setAnorm(20.69697773316389);
 //		setVnorm(66.69);
 		
-		
-		setBeta(1.1449668413958016);
-		setCHB(47138.69690169665);
-		setSigmaHB(0.007351579606927401);
-		setSigmaHB2(0.007351579606927401);
-		setSigmaHB3(1.0);
-		setFpol(1.5991543095613814);
+		// nonHB COST:0.1228614057740516 NP:196
+		// RSOLV=1.2 RM1 VDW(H=1.276:C=1.972:N=1.898:O=1.8632:F=1.7052:S=2.088:P=2.088:Cl=2.43:Br=2.146:I=2.2968)
+		folder = "mopRM1_all/";
+		rav = 1.15*RAV;
+		setBeta(1.4174886027020652);
+		setFpol(0.7258152987045381);
+		setCHB(0);
 		setIgnoreSG(false);
 		setCoord(10.0);
-		setAnorm(79.53);
-		setVnorm(66.69);
+		setAnorm(53.96283430888596);
+		setRPower(0.8305611275321202);
+		setVnorm(86.01343230125369);
+		
+		// nonHB COST:0.1295918375389806 NP:196
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		folder = "mopPOA1_all/";
+		rav = 1.15*RAV;
+		setBeta(1.7112762508999033);
+		setCHB(0.0);
+		setFpol(0.6884343905835382);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(56.502077074611016);
+		setRPower(0.8152912289882516);
+		setVnorm(86.01343230125369);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

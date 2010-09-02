@@ -34,7 +34,7 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
  * 
  */
 public class COSMOPACMulti extends COSMOSACMulti {
-	protected String folder;
+	protected String folder = "mopac/";
 	private HashMap<String, COSMOSACCompound> compList;
 	protected FileType type;
 	protected String extension;
@@ -51,16 +51,6 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		
 		type = SigmaProfileGenerator.FileType.MOPAC;
 		extension = ".cos";
-//		folder = "mopac/";
-//		folder = "moltest/";
-//		folder = "mopAM1_1.18/";
-//		folder = "mopPOA1/";
-		folder = "mopPOA1_all/";
-//		folder = "mopPM6/";
-//		folder = "mopAM1c/";
-//		folder = "mopRM1/";
-		
-//		setIgnoreSG(true);
 		
 //		// article results
 //		setResCorr(1);
@@ -85,71 +75,57 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setSigmaHB2(0.004);
 		setBeta(2.25);
 		setFpol(0.43);
-		sigmaDisp = 0.0005;
-		cDisp = 0;
 		
+		// nonHB COST:0.1228614057740516 NP:196
+		// RSOLV=1.2 RM1 VDW(H=1.276:C=1.972:N=1.898:O=1.8632:F=1.7052:S=2.088:P=2.088:Cl=2.43:Br=2.146:I=2.2968)
+		folder = "mopRM1_all/";
+		rav = 1.15*RAV;
+		setBeta(1.4174886027020652);
+		setFpol(0.7258152987045381);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(53.96283430888596);
+		setRPower(0.8305611275321202);
+		setVnorm(86.01343230125369);
 		setCHB(0);
-		setSigmaHB(0);
-		setSigmaHB2(0);
-		setCHB(1, 2, 6404);
-		setCHB(1, 3, 11003);
-		setAnorm(80);
 		
-		// All nonaqueous, organic acids removed
-		// COST:0.18910604411365706, NP:309
-		setBeta(1.6193867595103684);
-		setFpol(0.664523609196695);
-		setAnorm(157.60541396778427);
-		setSigmaHB(0);
-		setCHB(1, 2, 10319);
-		setCHB(1, 3, 4000);
 		
-		// aqueous
-		// COST:8259199383240307, NP:281
-//		setCHB(1, 4, 3051);
-//		setCHB(5, 2, 8681);
-//		setCHB(5, 3, 757);
-//		setCHB(5, 4, 4172);
+		// nonaqueous COST:0.3150708568308204 NP:309
+		// RSOLV=1.2 RM1 VDW(H=1.276:C=1.972:N=1.898:O=1.8632:F=1.7052:S=2.088:P=2.088:Cl=2.43:Br=2.146:I=2.2968)
+		folder = "mopRM1_all/";
+		rav = 1.15*RAV;
+		// 1. H-[N,O,...] atoms (HB-donor)
+		// 2. [N,O,...]-H atoms (HB-acceptor bonded to H)
+		// 3. [N, O, ...] atoms
+		setCHB(1, 2, 78490.20300723576);
+		setCHB(1, 3, 42850.88698579484);
+		setSigmaHB(0.004101434989318874);
 		
-		// idac/nonHB.csv AARD:0.15861478815098135 NP:177
-		// idac/aqueous298.csv AARD:0.5912341384957966 NP:221
-		setBeta(1.583661007957088);
-		setFpol(0.6547624245375059);
-		setAnorm(156.60541396778427);
-		setSigmaHB(0);
-		setCHB(1, 2, 10379);
-		setCHB(1, 3, 4076);
-//		setCHB(1, 4, 3635);
-//		setCHB(5, 4, 9190);
-//		setCHB(5, 3, 391);
-//		setCHB(5, 4, 4171);
+		setCHB(1, 4, 42850.88698579484);
 		
-//		setBeta(1.1449668413958016);
-//		setFpol(1.5991543095613814);
-//		
-//		setCHB(1, 2, 2076);
-//		setCHB(1, 3, 4076);
-//		setCHB(1, 4, 8000);
-//		setCHB(5, 2, 8000);
-//		setCHB(5, 3, 4000);
-//		setCHB(5, 4, 5000);
-//		
-//		setSigmaHB(0.0042);
-//		
-//		setBeta(1.1449668413958016);
-//		setCHB(47138.69690169665);
-//		setSigmaHB(0.007351579606927401);
-//		setSigmaHB2(0.007351579606927401);
-//		setSigmaHB3(1.0);
-//		setFpol(1.5991543095613814);
-//
-//		setAnorm(ANORM);
+		// nonHB COST:0.1295918375389806 NP:196
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		folder = "mopPOA1_all/";
+		rav = 1.15*RAV;
+		setBeta(1.7112762508999033);
+		setFpol(0.6884343905835382);
+		setIgnoreSG(false);
+		setCoord(10.0);
+		setAnorm(56.502077074611016);
+		setRPower(0.8152912289882516);
+		setVnorm(86.01343230125369);
 		
-//		setBeta(1);
-//		setFpol(FPOL);
+		// nonaqueous COST:0.1994620741954684 NP:309
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		// 1. H-[N,O,...] atoms (HB-donor)
+		// 2. [N,...]-H atoms (HB-acceptor bonded to H)
+		// 3. [N, O, ...] atoms
+		// 4. [O,...]-H atoms (HB-acceptor bonded to H)
+		setCHB(1, 2, 73835.20300723576);
+		setCHB(1, 3, 35255.88698579484);
+		setCHB(1, 4, 40986.88698579484);
+		setSigmaHB(0.004101434989318874);
 		
-//		setFpol(0.7);
-//		setIgnoreSG(true);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -242,9 +218,17 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			
 			// lets filter the [N,O,...]-H atoms (HB-acceptor bonded to H)
 			for (int m = 0; m < area0.length; m++) {
-				int atomType[] = {7, 8, 9, 17, 35, 53};
+//				int atomType[] = {7, 8, 9, 17, 35, 53};
+				int atomType[] = {8};
 				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
 					area2[m] += area0[m];
+					area0[m] = 0;
+				}
+			}
+			for (int m = 0; m < area0.length; m++) {
+				int atomType[] = {7, 9, 17, 35, 53};
+				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
+					area4[m] += area0[m];
 					area0[m] = 0;
 				}
 			}

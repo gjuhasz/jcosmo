@@ -58,6 +58,7 @@ public class COSMOSAC {
 
 	double vnorm = VNORM;
 	double anorm = ANORM;
+	double rPower = 1;
 
 	/** Default coordination number (KLAMT USED 7.2) */
 	public static final double COORD = 10.0;
@@ -411,60 +412,9 @@ public class COSMOSAC {
 			SEGGAMMA[m] = 1.0;
 
 			for(int n=0; n<nsegments; ++n){
-//				// electrostatic formulation
-//				double chargemn = charge[m]*charge[n];				
-//				// with a minimum cutt-off
-////				chargemn = Math.max(-0.018, chargemn);
-////				chargemn = Math.min(0, chargemn);
-//				if(chargemn>0)
-//					chargemn*=1.4;
-//				else
-//					chargemn/=1.4;
-//				deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
-				
 				// original formulation
 				double chargemn = charge[m]+charge[n];
 				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
-				
-				// dispersion forces for nearly neutral charges (always negative)
-//				double charge2 = 0;
-//				if(Math.abs(charge[m])<sigmaDisp){
-//					charge2 = charge[n]*charge[n];
-//					charge2*= charge2;
-//				}
-//				else if(Math.abs(charge[n])<sigmaDisp){
-//					charge2 = charge[m]*charge[m];
-//					charge2*= charge2;
-//				}
-//				charge2 *=1e6;
-//				deltaW[m][n] -= cDisp*charge2;
-				
-//				double chargemn = charge[m]*charge[n];
-//				if(chargemn<0)
-//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn;
-//				else
-//					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*sigmaHB2;
-
-//				double chargem = Math.abs(charge[m]);
-//				double chargen = Math.abs(charge[n]);
-//				double chargemn = chargem+chargen;
-//				if(chargem<sigmaHB2 || chargen<sigmaHB2){
-//					chargemn = Math.max(chargem, chargen);
-//					// attraction by induced dipoles non-polar segments
-//					deltaW[m][n] = -(fpol*alpha/2.0)*chargemn*chargemn;
-//					
-////					chargem+=sigmaHB3;
-////					chargen+=sigmaHB3;
-////					deltaW[m][n] = -(fpol*alpha/2.0)*(chargem*chargem + chargen*chargen);
-//					
-//					// attraction between non-polar segments
-////					double inductor = Math.max(chargem,	chargen);
-////					deltaW[m][n] = -(fpol*alpha/2.0)*inductor;
-//				}
-////				else{
-////					chargemn = charge[m]+charge[n];
-////					deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
-////				}
 			}
 		}
 	}
@@ -491,10 +441,6 @@ public class COSMOSAC {
 				hb = Math.max(0.0, chargeacc - sigmaHB)*Math.min(0.0, chargedon + sigmaHB2);
 //				hb = Math.min(0.0, charge[ACC]*charge[DON] - sigmaHB*sigmaHB);
 				hb = -Math.abs(hb);
-				
-//				 simple electrostatics
-//				if(Math.abs(charge[m])>sigmaHB && Math.abs(charge[n])>sigmaHB)
-//					hb = charge[m]*charge[n];
 				
 				// Klamt, Fluid Phase Equilib. 2000
 //				double cHBT_c = 1.5;
@@ -540,11 +486,13 @@ public class COSMOSAC {
 		segSolver.solve(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
 		
 		// THE STAVERMAN-GUGGENHEIM EQUATION
-		double BOTTHETA = 0;
-		double BOTPHI = 0;
+		double sum_zi_qi = 0;
+		double sum_zi_ri = 0;
+		double sum_ziR_ri = 0;
 		for(int i=0; i<ncomps; ++i){
-			BOTTHETA += z[i]*QNORM[i];
-			BOTPHI += z[i]*RNORM[i];
+			sum_zi_qi += z[i]*QNORM[i];
+			sum_zi_ri += z[i]*RNORM[i];
+			sum_ziR_ri += z[i]*Math.pow(RNORM[i], rPower);
 		}
 		
 		double aEff = Math.PI*rav*rav;
@@ -555,16 +503,23 @@ public class COSMOSAC {
 			sum_zi_li += z[i]*li[i];
 
 		for(int i=0; i<ncomps; ++i){
-			double phi_z = RNORM[i]/BOTPHI;
+			double phi_zi = RNORM[i]/sum_zi_ri;
+			double psi_zi = RNORM[i]/sum_ziR_ri;
+			double theta_zi = QNORM[i]/sum_zi_qi;
 
-			double theta_phi = QNORM[i]/BOTTHETA/(RNORM[i]/BOTPHI);
-
-			// GAMMASGI IS ACTUALLY LNGAMMASG
 			double lnGammaSG = 0;
 			if(!ignoreSG){
-				lnGammaSG += Math.log(phi_z)+
-				(coord/2)*QNORM[i]*Math.log(theta_phi)
-				+ li[i] - (phi_z)*sum_zi_li;
+				// original expression
+//				double theta_phi = theta_zi/phi_zi;
+//				lnGammaSG += Math.log(phi_zi)+
+//				(coord/2)*QNORM[i]*Math.log(theta_phi)
+//				+ li[i] - (phi_zi)*sum_zi_li;
+
+				// expression from DOI:10.1021/ie070465z
+				double phi_theta = phi_zi/theta_zi;
+				lnGammaSG += Math.log(psi_zi) + 1 - psi_zi - (coord/2)*QNORM[i]*
+					( Math.log(phi_theta) + 1 - phi_theta);
+
 			}
 
 			// CALCULATION OF GAMMAS
@@ -602,6 +557,13 @@ public class COSMOSAC {
 		this.anorm = anorm;
 	}
 
+	public double getRPower() {
+		return rPower;
+	}
+
+	public void setRPower(double rPower) {
+		this.rPower = rPower;
+	}
 
 	public double getVnorm() {
 		return vnorm;

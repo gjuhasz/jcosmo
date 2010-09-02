@@ -51,6 +51,7 @@ public class COSMOSACMulti {
 
 	double vnorm = VNORM;
 	double anorm = ANORM;
+	double rPower = 1;
 
 	/** Default coordination number (KLAMT USED 7.2) */
 	public static final double COORD = 10.0;
@@ -64,9 +65,6 @@ public class COSMOSACMulti {
 	double sigmaHB3 = 1;
 	double [][]cHB;
 	
-	double cDisp = 0;
-	double sigmaDisp = 0.002;
-
 	private static double SIGMA_BOUND = 0.025;
 	
 	double alpha;
@@ -272,36 +270,10 @@ public class COSMOSACMulti {
 				double chargemn = charge[m]+charge[n];
 				double chargemn2 = chargemn*chargemn;
 				
-				// electrostatic
-//				double chargemn2 = charge[m]*charge[n];
-				
 				for (int d = 0; d < ndescriptors; d++) {
 					
 					for (int d2 = 0; d2 < ndescriptors; d2++) {
-
-//						double deltaWmn = (alpha*Math.sqrt(fpol[d]*fpol[d2])/2.0)*chargemn2;
-						
-						double deltaWmn = (alpha/2.0)*chargemn2;
-//						double fpolAvg = Math.sqrt(fpol[d]*fpol[d2]);
-						double fpolAvg = fpol[d][d2];
-//						if(chargemn2 > 0)
-							deltaWmn *= fpolAvg;
-//						else
-//							deltaWmn /= fpolAvg;
-							
-						// dispersion forces for nearly neutral charges (always negative)
-//						double charge2 = 0;
-//						if(Math.abs(charge[m])<sigmaDisp){
-//							charge2 = charge[n]*charge[n];
-//							charge2*= charge2;
-//						}
-//						else if(Math.abs(charge[n])<sigmaDisp){
-//							charge2 = charge[m]*charge[m];
-//							charge2*= charge2;
-//						}
-//						charge2 *= 1e6;
-//						deltaWmn -= cDisp*charge2;
-
+						double deltaWmn = fpol[d][d2] * (alpha/2.0)*chargemn2;
 						expDeltaW[d][d2][m][n] = Math.exp(-(deltaWmn + hbfactor*deltaW_HB[d][d2][m][n]) * inv_RT);
 
 						// System.out.println(expDeltaW[d][d2][m][n]);
@@ -460,11 +432,13 @@ public class COSMOSACMulti {
 		segSolver.solveMulti(PROFILE, 1.0, SEGGAMMA, expDeltaW, TOLERANCE);
 		
 		// THE STAVERMAN-GUGGENHEIM EQUATION
-		double BOTTHETA = 0;
-		double BOTPHI = 0;
+		double sum_zi_qi = 0;
+		double sum_zi_ri = 0;
+		double sum_ziR_ri = 0;
 		for(int i=0; i<ncomps; ++i){
-			BOTTHETA += z[i]*QNORM[i];
-			BOTPHI += z[i]*RNORM[i];
+			sum_zi_qi += z[i]*QNORM[i];
+			sum_zi_ri += z[i]*RNORM[i];
+			sum_ziR_ri += z[i]*Math.pow(RNORM[i], rPower);
 		}
 		
 		double aEff = Math.PI*rav*rav;
@@ -475,21 +449,28 @@ public class COSMOSACMulti {
 			sum_zi_li += z[i]*li[i];
 
 		for(int i=0; i<ncomps; ++i){
-			double phi_z = RNORM[i]/BOTPHI;
+			double phi_zi = RNORM[i]/sum_zi_ri;
+			double psi_zi = RNORM[i]/sum_ziR_ri;
+			double theta_zi = QNORM[i]/sum_zi_qi;
 
-			double theta_phi = QNORM[i]/BOTTHETA/(RNORM[i]/BOTPHI);
-
-			// GAMMASGI IS ACTUALLY LNGAMMASG
 			double lnGammaSG = 0;
 			if(!ignoreCombinatorial){
-				lnGammaSG += Math.log(phi_z)+
-				(coord/2)*QNORM[i]*Math.log(theta_phi)
-				+ li[i] - (phi_z)*sum_zi_li;
+				// original expression
+//				double theta_phi = theta_zi/phi_zi;
+//				lnGammaSG += Math.log(phi_zi)+
+//				(coord/2)*QNORM[i]*Math.log(theta_phi)
+//				+ li[i] - (phi_zi)*sum_zi_li;
+
+				// expression from DOI:10.1021/ie070465z
+				double phi_theta = phi_zi/theta_zi;
+				lnGammaSG += Math.log(psi_zi) + 1 - psi_zi - (coord/2)*QNORM[i]*
+					( Math.log(phi_theta) + 1 - phi_theta);
+
 			}
 			
 			// CALCULATION OF GAMMAS
 			double lnGammaRestoration = 0.0;
-			if(ignoreResidual==false){
+			if(!ignoreResidual){
 				for (int d = 0; d < ndescriptors; d++) {
 					for(int m=0; m<nsegments; ++m){
 						// avoid computing for null areas
@@ -535,8 +516,6 @@ public class COSMOSACMulti {
 	public double getAnorm() {
 		return anorm;
 	}
-
-
 	public void setAnorm(double anorm) {
 		this.anorm = anorm;
 	}
@@ -545,10 +524,15 @@ public class COSMOSACMulti {
 	public double getVnorm() {
 		return vnorm;
 	}
-
-
 	public void setVnorm(double vnorm) {
 		this.vnorm = vnorm;
+	}
+
+	public double getRPower() {
+		return rPower;
+	}
+	public void setRPower(double rPower) {
+		this.rPower = rPower;
 	}
 
 
