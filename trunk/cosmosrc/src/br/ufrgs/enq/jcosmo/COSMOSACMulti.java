@@ -60,6 +60,11 @@ public class COSMOSACMulti {
 	public static final double SIGMAHB = 0.0084;
 	public static final double CHB = 85580.0;
 	
+	public static final int HBTYPE_ORIGINAL = 0;
+	public static final int HBTYPE_HSIEH = 1;
+	public static final int HBTYPE_FIXED = 2;
+	
+	int hbType = HBTYPE_ORIGINAL;
 	double sigmaHB = SIGMAHB;
 	double sigmaHB2 = SIGMAHB;
 	double sigmaHB3 = 1;
@@ -333,19 +338,21 @@ public class COSMOSACMulti {
 		aEff = 7.5;
 		alpha = 0.3*Math.pow(aEff, 1.5)/E0;
 
-		ACOSMO = new double[ncomps];
-		PROFILE = new double[ndescriptors][nsegments];
-		deltaW_HB = new double[ndescriptors][ndescriptors][nsegments][nsegments];
-		expDeltaW = new double[ndescriptors][ndescriptors][nsegments][nsegments];
-		
-		SEGGAMMA = new double[ndescriptors][nsegments];
-		SEGGAMMAPR = new double[ncomps][ndescriptors][nsegments];
-//		segSolver = new SegmentSolverNewton();
-		segSolver = new SegmentSolverSimple();
-		
-		RNORM = new double[ncomps];
-		QNORM = new double[ncomps];
-		li = new double[ncomps];
+		if(ACOSMO==null || ACOSMO.length!=ncomps){		
+			ACOSMO = new double[ncomps];
+			PROFILE = new double[ndescriptors][nsegments];
+			deltaW_HB = new double[ndescriptors][ndescriptors][nsegments][nsegments];
+			expDeltaW = new double[ndescriptors][ndescriptors][nsegments][nsegments];
+
+			SEGGAMMA = new double[ndescriptors][nsegments];
+			SEGGAMMAPR = new double[ncomps][ndescriptors][nsegments];
+			//		segSolver = new SegmentSolverNewton();
+			segSolver = new SegmentSolverSimple();
+
+			RNORM = new double[ncomps];
+			QNORM = new double[ncomps];
+			li = new double[ncomps];
+		}
 		for(int i=0; i<ncomps; ++i){
 			ACOSMO[i] = 0;
 			for (int d = 0; d < ndescriptors; d++) {
@@ -384,13 +391,24 @@ public class COSMOSACMulti {
 						double chargeDon = Math.min(0.0, charge[DON] + sigmaHB2);
 						
 						// some sort of saturation
-//						chargeAcc = Math.min(chargeAcc, sigmaHB);
-//						chargeDon = Math.max(chargeDon, -sigmaHB);
+						chargeAcc = Math.min(chargeAcc, sigmaHB3);
+						chargeDon = Math.max(chargeDon, -sigmaHB3);
 						
-						double hb = chargeAcc*chargeDon;
+						double hb;
+						switch (hbType) {
+						case HBTYPE_HSIEH:
+							hb = chargeAcc-chargeDon;
+							hb *= hb;
+							break;
+						case HBTYPE_FIXED:
+							// is always the same (just a scaling factor to get the same order of magnitude)
+							hb = (0.010*0.010);
+							break;
+						default:
+							hb = chargeAcc*chargeDon;
+							break;
+						}
 						
-//						hb = Math.pow(Math.abs(hb), 1.5);
-
 						// Klamt, Fluid Phase Equilib. 2000
 						// double cHBT_c = 1.5;
 						double cHBT = 1; // Math.max(0, 1 + cHBT_c * (298.15/T - 1));
@@ -631,5 +649,13 @@ public class COSMOSACMulti {
 	 */
 	public void setBeta(int i, double beta) {
 		this.beta[i] = beta;
+	}
+
+	public int getHbType() {
+		return hbType;
+	}
+
+	public void setHbType(int hbType) {
+		this.hbType = hbType;
 	}
 }

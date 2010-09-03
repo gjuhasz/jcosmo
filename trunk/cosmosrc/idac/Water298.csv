@@ -1,0 +1,14 @@
+System,T,GammaInf,Ref
+water/n-pentane,298,2270,14
+water/n-hexane,298,1650,14
+water/n-heptane,298,1350,14
+water/n-octane,298,1230,14
+water/cyclopentane,293,1370,14
+water/cyclohexane,293,2140,14
+water/cyclohexane,298,1720,14
+water/ethanol,298,2.52,10,2.66,4.77,1.58,3.07,2.44,2.51,-
+water/n-butanol,298,3.8,10,3.8,5.34,2.71,4.41,1.9,4.67,-
+water/1-octanol,298,4.51,10,5.77,5.67,4.81,7.17,1.49,8.31,-,,,,,,
+water/1-decanol,298,4.9,10,6.66,5.7,5.86,8.59,1.39,9.75,-,,,,,,
+"water/1,2-dichloroethane",293,122,2
+water/1-chlorobutane,293,244,3

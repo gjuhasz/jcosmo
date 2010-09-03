@@ -68,7 +68,7 @@ public class COSMOSAC {
 	public static final double CHB = 85580.0;
 	
 	double sigmaHB = SIGMAHB;
-	double sigmaHB2 = 0;
+	double sigmaHB2 = SIGMAHB;
 	double sigmaHB3 = 0;
 	double cHB = CHB;
 	
@@ -138,17 +138,17 @@ public class COSMOSAC {
 			charge[i] = -SIGMA_BOUND + increment*(double)i;
 		}
 		
-		// article results
-		setBeta(1.12);
-		setCHB(25580.016958492393);
-		setSigmaHB(0.00595);
-		setSigmaHB2(getSigmaHB());
-		setSigmaHB3(1.0);
-		setFpol(FPOL); // ?
-		setIgnoreSG(false);
-		setCoord(10.0);
-		setAnorm(80.83);
-		setVnorm(66.69);
+//		// article results
+//		setBeta(1.12);
+//		setCHB(25580.016958492393);
+//		setSigmaHB(0.00595);
+//		setSigmaHB2(getSigmaHB());
+//		setSigmaHB3(1.0);
+//		setFpol(FPOL); // ?
+//		setIgnoreSG(false);
+//		setCoord(10.0);
+//		setAnorm(80.83);
+//		setVnorm(66.69);
 	}
 
 	public double getRav() {
@@ -415,6 +415,16 @@ public class COSMOSAC {
 				// original formulation
 				double chargemn = charge[m]+charge[n];
 				deltaW[m][n] = (fpol*alpha/2.0)*chargemn*chargemn;
+				
+//				// only positive charges are polarized
+//				double chargem = charge[m];
+//				double chargen = charge[n];
+//				if(chargem < 0)
+//					chargem *= fpol;
+//				if(chargen < 0)
+//					chargen *= fpol;
+//				double chargemn = chargem+chargen;
+//				deltaW[m][n] = (alpha/2.0)*chargemn*chargemn;
 			}
 		}
 	}
