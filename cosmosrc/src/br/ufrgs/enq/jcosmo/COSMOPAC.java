@@ -233,7 +233,7 @@ public class COSMOPAC extends COSMOSAC {
 		
 		// nonHB COST:0.1228614057740516 NP:196
 		// RSOLV=1.2 RM1 VDW(H=1.276:C=1.972:N=1.898:O=1.8632:F=1.7052:S=2.088:P=2.088:Cl=2.43:Br=2.146:I=2.2968)
-		folder = "mopRM1_all/";
+		folder = "profiles/RM1/";
 		rav = 1.15*RAV;
 		setBeta(1.4174886027020652);
 		setFpol(0.7258152987045381);
@@ -246,7 +246,7 @@ public class COSMOPAC extends COSMOSAC {
 		
 		// nonHB COST:0.1295918375389806 NP:196
 		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
-		folder = "mopPOA1_all/";
+		folder = "profiles/POA1/";
 		rav = 1.15*RAV;
 		setBeta(1.7112762508999033);
 		setCHB(0.0);

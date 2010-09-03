@@ -1,2 +1,5 @@
 System,T(K),GammaInf,Ref
 "cyclohexane/n,n-dimethylformamide",298.15,12.18,"http://dx.doi.org/10.1016/S0378-3812(98)00429-4"
+"cyclohexane/n,n-dimethylformamide",283.15,15.6,"db from 10.1021/ie049122g"
+"cyclohexane/n,n-dimethylformamide",293.15,13.1,"db from 10.1021/ie049122g"
+

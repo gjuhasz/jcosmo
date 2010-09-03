@@ -62,10 +62,10 @@ n-heptane/carbon tetrachloride,349,1.15,15
 "n-nonane/n,n-dimethylformamide",293,38.98,7
 "n-nonane/n,n-dimethylformamide",333,23.1,7
 "n-decane/n,n-dimethylformamide",333,24.8,7
-?n-heptane/acetic acid,298,23.5,6
-?n-heptane/acetic acid,318,20.49,6
-?n-heptane/propionic acid,298,6.27,6
-?n-heptane/propionic acid,318,6.75,6
+n-heptane/acetic acid,298,23.5,6
+n-heptane/acetic acid,318,20.49,6
+n-heptane/propionic acid,298,6.27,6
+n-heptane/propionic acid,318,6.75,6
 n-hexane/acetone,298,6.62,1,5.67,5.95,6.77,6.55,7.81,6.11
 n-hexane/acetone,303,6.19,1,5.65,5.75,6.8287037037037e-05,6.26,7.98611111111111e-05,5.85
 n-hexane/acetone,308,6.06,1,5.46,5.55,6.49,5.99,7.44,5.61
@@ -287,7 +287,10 @@ cyclohexane/carbon tetrachloride,318,1.11,15
 cyclohexane/carbon tetrachloride,330,1.1,15
 cyclohexane/carbon tetrachloride,341,1.09,15
 cyclohexane/carbon tetrachloride,346,1.1,15
-"cyclohexane/n,n-dimethylformamide",333,19.09,7
+"?cyclohexane/n,n-dimethylformamide",333,19.09,7
+"cyclohexane/n,n-dimethylformamide",283.15,15.6,"db from 10.1021/ie049122g"
+"cyclohexane/n,n-dimethylformamide",293.15,13.1,"db from 10.1021/ie049122g"
+"cyclohexane/n,n-dimethylformamide",298.15,12.18,"http://dx.doi.org/10.1016/S0378-3812(98)00429-4"
 ?cyclohexane/acetic acid,298,21.83,6
 ?cyclohexane/acetic acid,318,18.09,6
 ?cyclohexane/propionic acid,298,5.14,5

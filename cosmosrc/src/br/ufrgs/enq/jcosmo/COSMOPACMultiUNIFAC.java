@@ -47,6 +47,8 @@ public class COSMOPACMultiUNIFAC extends COSMOPACMulti {
 	public COSMOPACMultiUNIFAC() {
 		setIgnoreSG(true);
 //		setIgnoreResidual(true);
+		
+		DataBase.getInstance("jar:(thermolab.jar)thermolabdbUNIFAC");
 		unifac = new UNIFAC();
 		unifac.setIgnoreResidual(true);
 		
@@ -77,6 +79,8 @@ public class COSMOPACMultiUNIFAC extends COSMOPACMulti {
 	}
 	
 	public void activityCoefficientLn(double[] lnGama, int start){
+		for (int i = 0; i < lnGama.length; i++)
+			lnGama[i] = 0;
 		super.activityCoefficientLn(lnGama, start);
 		
 		unifac.set(T, Const.P1atm, z, Phase.CHANGED_ALL);

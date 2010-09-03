@@ -380,7 +380,14 @@ public class COSMOSACMulti {
 							DON = n;
 						}
 						// Hydrogen Bond effect:
-						double hb = Math.max(0.0, charge[ACC] - sigmaHB)*Math.min(0.0, charge[DON] + sigmaHB2);
+						double chargeAcc = Math.max(0.0, charge[ACC] - sigmaHB);
+						double chargeDon = Math.min(0.0, charge[DON] + sigmaHB2);
+						
+						// some sort of saturation
+//						chargeAcc = Math.min(chargeAcc, sigmaHB);
+//						chargeDon = Math.max(chargeDon, -sigmaHB);
+						
+						double hb = chargeAcc*chargeDon;
 						
 //						hb = Math.pow(Math.abs(hb), 1.5);
 
