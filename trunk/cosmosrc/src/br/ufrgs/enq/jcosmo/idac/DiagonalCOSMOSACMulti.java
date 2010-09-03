@@ -1,7 +1,8 @@
 package br.ufrgs.enq.jcosmo.idac;
 
 import br.ufrgs.enq.jcosmo.COSMOPACMulti;
-//import br.ufrgs.enq.jcosmo.COSMOPACMultiUNIFAC;
+import br.ufrgs.enq.jcosmo.COSMOPACMultiUNIFAC;
+
 
 /**
  * Class representing an set of infinite dilution activity coefficient (IDAC) experiments.
@@ -74,7 +75,7 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);

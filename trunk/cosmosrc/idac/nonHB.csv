@@ -220,6 +220,8 @@ acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
 "1-dodecene/n,n-dimethylformamide",313,38.9,7
 "1-dodecene/n,n-dimethylformamide",333,29.4,7
 "cyclohexane/n,n-dimethylformamide",298.15,12.18,"http://dx.doi.org/10.1016/S0378-3812(98)00429-4"
+"cyclohexane/n,n-dimethylformamide",283.15,15.6,"db from 10.1021/ie049122g"
+"cyclohexane/n,n-dimethylformamide",293.15,13.1,"db from 10.1021/ie049122g"
 "cyclopentene/n,n-dimethylformamide",298,4.5,7
 "cyclopentene/n,n-dimethylformamide",313,4.2,7
 "cyclopentene/n,n-dimethylformamide",333,4,7

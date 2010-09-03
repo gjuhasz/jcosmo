@@ -65,7 +65,16 @@ public class MolParser {
 		input.nextLine();
 		
 		int natoms = input.nextInt();
-		int nbonds = input.nextInt();
+		int nbonds = 0;
+		if(natoms >= 1000){
+			// got concatenated
+			int natomsTmp = natoms/1000;
+			nbonds = natoms - natomsTmp*1000;
+			natoms = natomsTmp;
+		}
+		else
+			nbonds = input.nextInt();
+		
 		input.nextLine();
 		
 		elementType = new int[natoms];
@@ -104,7 +113,14 @@ public class MolParser {
 		
 		for (int i = 0; i < nbonds; i++) {
 			bondAtom1[i] = input.nextInt();
-			bondAtom2[i] = input.nextInt();
+			if(bondAtom1[i] >= 1000){
+				// got concatenated
+				int bondAtom1Tmp = bondAtom1[i]/1000;
+				bondAtom2[i] = bondAtom1[i] - bondAtom1Tmp*1000;
+				bondAtom1[i] = bondAtom1Tmp;
+			}
+			else
+				bondAtom2[i] = input.nextInt();
 			bondType[i] = input.nextInt();
 			
 			input.nextLine();

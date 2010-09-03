@@ -44,7 +44,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 	}
 	
 	public COSMOPACMulti(){
-		super(51, 6);
+		super(51, 4);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -92,7 +92,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		
 		// nonaqueous COST:0.3150708568308204 NP:309
 		// RSOLV=1.2 RM1 VDW(H=1.276:C=1.972:N=1.898:O=1.8632:F=1.7052:S=2.088:P=2.088:Cl=2.43:Br=2.146:I=2.2968)
-		folder = "mopRM1_all/";
+		folder = "profiles/RM1/";
 		rav = 1.15*RAV;
 		// 1. H-[N,O,...] atoms (HB-donor)
 		// 2. [N,O,...]-H atoms (HB-acceptor bonded to H)
@@ -101,11 +101,9 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(1, 3, 42850.88698579484);
 		setSigmaHB(0.004101434989318874);
 		
-		setCHB(1, 4, 42850.88698579484);
-		
 		// nonHB COST:0.1295918375389806 NP:196
 		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
-		folder = "mopPOA1_all/";
+		folder = "profiles/POA1/";
 		rav = 1.15*RAV;
 		setBeta(1.7112762508999033);
 		setFpol(0.6884343905835382);
@@ -118,14 +116,22 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		// nonaqueous COST:0.1994620741954684 NP:309
 		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
 		// 1. H-[N,O,...] atoms (HB-donor)
-		// 2. [N,...]-H atoms (HB-acceptor bonded to H)
+		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
 		// 3. [N, O, ...] atoms
-		// 4. [O,...]-H atoms (HB-acceptor bonded to H)
 		setCHB(1, 2, 73835.20300723576);
 		setCHB(1, 3, 35255.88698579484);
-		setCHB(1, 4, 40986.88698579484);
 		setSigmaHB(0.004101434989318874);
 		
+		// nonaqueous COST:0.19117638251223185 NP:309
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		// 1. H-[N,O,...] atoms (HB-donor)
+		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
+		// 3. [N, O, ...] atoms
+		setCHB(1, 2, 75118);
+		setCHB(1, 3, 37635);
+		setSigmaHB(0.004101434989318874);
+		setAnorm(89.58325799626894);
+		setRPower(0.828688763292654);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -169,8 +175,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			double[] area1 = new double[area0.length];
 			double[] area2 = new double[area0.length];
 			double[] area3 = new double[area0.length];
-			double[] area4 = new double[area0.length];
-			double[] area5 = new double[area0.length];
+//			double[] area4 = new double[area0.length];
+//			double[] area5 = new double[area0.length];
 
 			comps[i].areaMulti = new double[ndescriptors][];
 			
@@ -218,17 +224,9 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			
 			// lets filter the [N,O,...]-H atoms (HB-acceptor bonded to H)
 			for (int m = 0; m < area0.length; m++) {
-//				int atomType[] = {7, 8, 9, 17, 35, 53};
-				int atomType[] = {8};
+				int atomType[] = {7, 8, 9, 17, 35, 53};
 				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
 					area2[m] += area0[m];
-					area0[m] = 0;
-				}
-			}
-			for (int m = 0; m < area0.length; m++) {
-				int atomType[] = {7, 9, 17, 35, 53};
-				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
-					area4[m] += area0[m];
 					area0[m] = 0;
 				}
 			}
@@ -282,10 +280,10 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti[2] = s.getSortedArea();
 			s.simpleSorting(area3, sigma1);
 			comps[i].areaMulti[3] = s.getSortedArea();
-			s.simpleSorting(area4, sigma1);
-			comps[i].areaMulti[4] = s.getSortedArea();
-			s.simpleSorting(area5, sigma1);
-			comps[i].areaMulti[5] = s.getSortedArea();
+//			s.simpleSorting(area4, sigma1);
+//			comps[i].areaMulti[4] = s.getSortedArea();
+//			s.simpleSorting(area5, sigma1);
+//			comps[i].areaMulti[5] = s.getSortedArea();
 			
 			compList.put(comps[i].name, comps[i]);
 			
