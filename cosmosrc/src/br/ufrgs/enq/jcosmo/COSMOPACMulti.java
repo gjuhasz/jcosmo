@@ -38,13 +38,16 @@ public class COSMOPACMulti extends COSMOSACMulti {
 	private HashMap<String, COSMOSACCompound> compList;
 	protected FileType type;
 	protected String extension;
+	
+	double sigmaHBmin = 0.0038;
+	double waterScale = 1;
 
 	public String toString(){
 		return "COSMO-SAC(MOPAC)";
 	}
 	
 	public COSMOPACMulti(){
-		super(51, 4);
+		super(51, 6);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -118,6 +121,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		// 1. H-[N,O,...] atoms (HB-donor)
 		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
 		// 3. [N, O, ...] atoms
+		sigmaHBmin = 0;
 		setCHB(1, 2, 73835.20300723576);
 		setCHB(1, 3, 35255.88698579484);
 		setSigmaHB(0.004101434989318874);
@@ -127,11 +131,59 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		// 1. H-[N,O,...] atoms (HB-donor)
 		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
 		// 3. [N, O, ...] atoms
+		sigmaHBmin = 0;
 		setCHB(1, 2, 75118);
 		setCHB(1, 3, 37635);
 		setSigmaHB(0.004101434989318874);
 		setAnorm(89.58325799626894);
 		setRPower(0.828688763292654);
+		
+		// nonaqueous COST:0.1934094483336229 NP:311
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		// 1. H-[N,O,...] atoms (HB-donor)
+		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
+		// 3. [N, O, ...] atoms
+		sigmaHBmin = 0;
+		setCHB(1, 2, 44603);
+		setCHB(1, 3, 23650);
+		setSigmaHB(0);
+		setAnorm(162);
+		setRPower(0.7996776507608064);
+		
+		// nonaqueous COST:0.2093479192972507 NP:311
+		// the better performance for glycerol mixtures was observed with this set
+		// RSOLV=1.2 AM1 EXTERNAL=POA1.rm1 VDW(H=1.392:C=1.972:N=1.798:O=1.7632:F=1.7052:S=2.088:P=2.088:Cl=2.03:Br=2.146:I=2.2968)
+		// 1. H-[N,O,...] atoms (HB-donor)
+		// 2. [N, O, ...]-H atoms (HB-acceptor bonded to H)
+		// 3. [N, O, ...] atoms
+		sigmaHBmin = 0;
+		setHbType(HBTYPE_HSIEH);
+		setCHB(1, 2, 7531);
+		setCHB(1, 3, 3509);
+		setSigmaHB(0);
+		setAnorm(162.23);
+		setRPower(0.8039);
+
+		// testing water
+		folder = "profiles/POA1/";
+//		waterScale = 0.8;
+		sigmaHBmin = 0.00;
+		setCHB(1, 4, 4397);
+		setCHB(5, 2, 4647);
+		setCHB(5, 3, 144);
+		setCHB(5, 4, 2912);
+		
+		folder = "profiles/AM1/";
+		setCHB(1, 4, 3660);
+		setCHB(5, 2, 4262);
+		setCHB(5, 3, 144);
+		setCHB(5, 4, 674);
+		
+//		setHbType(HBTYPE_FIXED);
+//		setCHB(1, 2, 6531);
+//		setCHB(1, 3, 6531);
+//		sigmaHBmin = 0.0;
+//		waterScale = 1;
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
@@ -175,8 +227,8 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			double[] area1 = new double[area0.length];
 			double[] area2 = new double[area0.length];
 			double[] area3 = new double[area0.length];
-//			double[] area4 = new double[area0.length];
-//			double[] area5 = new double[area0.length];
+			double[] area4 = new double[area0.length];
+			double[] area5 = new double[area0.length];
 
 			comps[i].areaMulti = new double[ndescriptors][];
 			
@@ -187,26 +239,26 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// H2O in its own group or scaled to avoid two new groups
 			if(comps[i].name.equals("WATER")){
 				for (int m = 0; m < area0.length; m++) {
-//					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
-////						area4[m] += area0[m];
+					if(sigma1[m]>sigmaHBmin && molParser.matchType(atoms[m], 8, 0)){
+						area4[m] += area0[m];
 //						area2[m] += area0[m];
-//						area0[m] = 0;
-//					}
-//					else
-//						if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
-////							area5[m] += area0[m];
+						area0[m] = 0;
+					}
+					else
+						if(sigma1[m]<-sigmaHBmin && molParser.matchType(atoms[m], 1, 0)){
+							area5[m] += area0[m];
 //							area1[m] += area0[m];
-//							area0[m] = 0;
-//					}
+							area0[m] = 0;
+					}
 					// scale the sigma
-					sigma1[m] *= 0.9;
+//					sigma1[m] *= waterScale;
 				}
 			}
 
 			// lets filter the H-[N,O,...] atoms (HB-donor)
 			for (int m = 0; m < area0.length; m++) {
 				int boundedType[] = {7, 8, 9, 17, 35, 53};
-				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, boundedType)){
+				if(sigma1[m]<-sigmaHBmin && molParser.matchType(atoms[m], 1, boundedType)){
 //				if(sigma1[m]<0 && molParser.matchType(atoms[m], 1, 0)){
 					area1[m] += area0[m];
 					area0[m] = 0;
@@ -225,7 +277,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			// lets filter the [N,O,...]-H atoms (HB-acceptor bonded to H)
 			for (int m = 0; m < area0.length; m++) {
 				int atomType[] = {7, 8, 9, 17, 35, 53};
-				if(sigma1[m]>0 && molParser.matchType(atoms[m], atomType, 1)){
+				if(sigma1[m]>sigmaHBmin && molParser.matchType(atoms[m], atomType, 1)){
 					area2[m] += area0[m];
 					area0[m] = 0;
 				}
@@ -237,7 +289,7 @@ public class COSMOPACMulti extends COSMOSACMulti {
 				
 				// FIXME: detect automatically ETHER oxygen to put on area 2
 				if(comps[i].name.contains("ETHER")){
-					if(sigma1[m]>0 && molParser.matchType(atoms[m], 8, 0)){
+					if(sigma1[m]>sigmaHBmin && molParser.matchType(atoms[m], 8, 0)){
 						area2[m] += area0[m];
 						area0[m] = 0;
 					}
@@ -280,10 +332,10 @@ public class COSMOPACMulti extends COSMOSACMulti {
 			comps[i].areaMulti[2] = s.getSortedArea();
 			s.simpleSorting(area3, sigma1);
 			comps[i].areaMulti[3] = s.getSortedArea();
-//			s.simpleSorting(area4, sigma1);
-//			comps[i].areaMulti[4] = s.getSortedArea();
-//			s.simpleSorting(area5, sigma1);
-//			comps[i].areaMulti[5] = s.getSortedArea();
+			s.simpleSorting(area4, sigma1);
+			comps[i].areaMulti[4] = s.getSortedArea();
+			s.simpleSorting(area5, sigma1);
+			comps[i].areaMulti[5] = s.getSortedArea();
 			
 			compList.put(comps[i].name, comps[i]);
 			

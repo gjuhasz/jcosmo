@@ -5,7 +5,7 @@
 
 # Configuration
 molfiles = '../molfiles'
-variant = 'POA1'
+variant = 'AM1'
 
 import os
 env = Environment()
@@ -17,6 +17,18 @@ env['ENV']['HOME'] = os.environ['HOME']
 keys = 'keys.mopac_' + variant
 keys_p1 = 'keys_p1.mopac_' + variant
 keys_m1 = 'keys_m1.mopac_' + variant
+
+# creating the charge files
+file = open(keys,'r')
+fileContents = file.readline()
+file.close()
+file = open(keys_p1,'w')
+file.write('CHARGE=1 ' + fileContents)
+file.close()
+file = open(keys_m1,'w')
+file.write('CHARGE=-1 ' + fileContents)
+file.close()
+
 mol2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf ' + keys + ' $TARGET',
                      suffix = '.mop', single_source=True)
 mol2mop_low = Builder(action = 'babel -i mol $SOURCE -o mopin -xf keys.mopac.low $TARGET',

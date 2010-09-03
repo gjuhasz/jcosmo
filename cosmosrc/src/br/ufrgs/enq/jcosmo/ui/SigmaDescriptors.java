@@ -92,7 +92,7 @@ public class SigmaDescriptors {
 				FileType type = SigmaProfileGenerator.FileType.MOPAC;
 				String extension = ".cos";
 				COSMOSAC model = null;
-				double sigmaHB = 0.0042;
+				double sigmaHBmin = 0.0038;
 
 				if(fileType.getSelectedItem().equals("MOPAC")){
 					model = new COSMOPAC();
@@ -165,7 +165,7 @@ public class SigmaDescriptors {
 						double[] areaHDonnor = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int boundedType[] = {7, 8, 9, 17, 35, 53};
-							if(sigmaBase[m]<-sigmaHB && molParser.matchType(atoms[m], 1, boundedType)){
+							if(sigmaBase[m]<-sigmaHBmin && molParser.matchType(atoms[m], 1, boundedType)){
 								areaHDonnor[m] += area[m];
 								area[m] = 0;
 							}
@@ -175,7 +175,7 @@ public class SigmaDescriptors {
 						double[] areaNH = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int atomType[] = {7, 8, 9, 17, 35, 53};
-							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], atomType, 1)){
+							if(sigmaBase[m]>sigmaHBmin && molParser.matchType(atoms[m], atomType, 1)){
 								areaNH[m] += area[m];
 								area[m] = 0;
 							}
@@ -192,27 +192,27 @@ public class SigmaDescriptors {
 //							}
 
 							// Oxygen goes to area2 only if double bounded
-							if(sigmaBase[m]>sigmaHB && molParser.matchBondType(atoms[m], atomType, 2)){
+							if(sigmaBase[m]>sigmaHBmin && molParser.matchBondType(atoms[m], atomType, 2)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
-							if(sigmaBase[m]>sigmaHB && molParser.matchBondType(atoms[m], atomType, 3)){
+							if(sigmaBase[m]>sigmaHBmin && molParser.matchBondType(atoms[m], atomType, 3)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
 							// single bounded Oxygen go to area1
 							// FIXME: detect automatically ACETATE and OXIDE oxygens
 							if(!nameField.getText().endsWith("ATE") && !nameField.getText().endsWith("OXIDE")){
-								if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], 8, 0)){
+								if(sigmaBase[m]>sigmaHBmin && molParser.matchType(atoms[m], 8, 0)){
 									areaNH[m] += area[m];
 									area[m] = 0;
 								}
 							}
-							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], 8, 0)){
+							if(sigmaBase[m]>sigmaHBmin && molParser.matchType(atoms[m], 8, 0)){
 								areaNH[m] += area[m];
 								area[m] = 0;
 							}
-							if(sigmaBase[m]>sigmaHB && molParser.matchType(atoms[m], atomType, 0)){
+							if(sigmaBase[m]>sigmaHBmin && molParser.matchType(atoms[m], atomType, 0)){
 								areaN[m] += area[m];
 								area[m] = 0;
 							}
@@ -222,7 +222,7 @@ public class SigmaDescriptors {
 						double[] areaHDonnor2 = new double[area.length];
 						for (int m = 0; m < area.length; m++) {
 							int boundedType2[] = {7, 8, 9, 17, 35, 53};
-							if(sigmaBase[m]<sigmaHB && molParser.matchType(atoms[m], 1, 6, boundedType2)){
+							if(sigmaBase[m]<sigmaHBmin && molParser.matchType(atoms[m], 1, 6, boundedType2)){
 								areaHDonnor2[m] += area[m];
 								area[m] = 0;
 							}
