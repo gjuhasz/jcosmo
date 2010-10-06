@@ -63,6 +63,7 @@ public class COSMOSACMulti {
 	public static final int HBTYPE_ORIGINAL = 0;
 	public static final int HBTYPE_HSIEH = 1;
 	public static final int HBTYPE_FIXED = 2;
+	public static final int HBTYPE_COVALENT = 3;
 	
 	int hbType = HBTYPE_ORIGINAL;
 	double sigmaHB = SIGMAHB;
@@ -404,6 +405,15 @@ public class COSMOSACMulti {
 							// is always the same (just a scaling factor to get the same order of magnitude)
 							hb = (0.010*0.010);
 							break;
+						case HBTYPE_COVALENT:
+//							hb = 0.006*chargeAcc;
+//							chargeDon = 0.010 + chargeDon;
+//							hb = 0.006*chargeDon;
+							hb = chargeAcc-chargeDon;
+							hb *= hb;
+							if(chargeDon < -0.007 || chargeAcc > 0.010)
+								hb = 0;
+							break;
 						default:
 							hb = chargeAcc*chargeDon;
 							break;
@@ -475,7 +485,7 @@ public class COSMOSACMulti {
 
 		for(int i=0; i<ncomps; ++i){
 			double phi_zi = RNORM[i]/sum_zi_ri;
-			double psi_zi = RNORM[i]/sum_ziR_ri;
+			double psi_zi = Math.pow(RNORM[i], rPower)/sum_ziR_ri;
 			double theta_zi = QNORM[i]/sum_zi_qi;
 
 			double lnGammaSG = 0;
