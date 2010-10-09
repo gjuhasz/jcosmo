@@ -1,3 +1,4 @@
+import os
 
 # www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
 
@@ -5,10 +6,13 @@
 
 # Configuration
 molfiles = '../molfiles'
-# molfiles = '../molbig'
-# variant = 'RM1'
-tmpdir = 'tmp'
-variant = 'POA1'
+#molfiles = '../molbig'
+variant = 'RM1'
+#variant = 'RM1_1.18'
+# variant = 'POA1'
+
+# the tmp directory for this build
+tmpdir = 'tmp/' + variant + '/' + os.path.basename(molfiles)
 
 import os
 env = Environment()
