@@ -1,16 +1,13 @@
 import os
 
-# www.scons.org scritp files for COSMO computations using both MOPAC and GAMESS
+# www.scons.org script files for COSMO computations using both MOPAC and GAMESS
 
 # Use "nohup" to run from ssh and keep running after logout
 
-# Configuration
-#molfiles = '../molfiles'
-molfiles = '../molbig'
-#variant = 'RM1'
-#variant = 'RM1_1.18'
-variant = 'AM1'
-# variant = 'POA1'
+# Configuration, can be changed by command line arguments like:
+# $ scons molfiles=../molbig variant=RM1
+molfiles = ARGUMENTS.get('molfiles', '../molfiles')
+variant = ARGUMENTS.get('variant', 'RM1')
 
 # the tmp directory for this build
 tmpdir = 'tmp/' + variant + '/' + os.path.basename(molfiles)
