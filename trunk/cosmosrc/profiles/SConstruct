@@ -5,10 +5,11 @@ import os
 # Use "nohup" to run from ssh and keep running after logout
 
 # Configuration
-molfiles = '../molfiles'
-#molfiles = '../molbig'
-variant = 'RM1'
+#molfiles = '../molfiles'
+molfiles = '../molbig'
+#variant = 'RM1'
 #variant = 'RM1_1.18'
+variant = 'AM1'
 # variant = 'POA1'
 
 # the tmp directory for this build
@@ -110,10 +111,11 @@ allmops += mops_p1
 allmops += mops_m1
 mopacBuild = env.Mopac(allmops)
 env.Alias('mopac', mopacBuild)
-env.Default('mopac')
-env.Install(variant, mopacBuild)
-env.Install(variant, files)
-env.Install(variant, molfiles)
+# env.Default('mopac')
+install = env.Install(variant, mopacBuild)
+install += env.Install(variant, files)
+install += env.Install(variant, molfiles)
+env.Default(install)
 
 # Build all files for Gamess
 # Delete all DAT files, otherwise gamess will stop
