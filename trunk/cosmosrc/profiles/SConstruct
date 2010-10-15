@@ -12,7 +12,6 @@ variant = ARGUMENTS.get('variant', 'RM1')
 # the tmp directory for this build
 tmpdir = 'tmp/' + variant + '/' + os.path.basename(molfiles)
 
-import os
 env = Environment()
 
 env['ENV']['USER'] = os.environ['USER']
