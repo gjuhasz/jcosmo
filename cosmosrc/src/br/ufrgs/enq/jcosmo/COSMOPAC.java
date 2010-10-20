@@ -35,6 +35,7 @@ public class COSMOPAC extends COSMOSAC {
 	String folder = "mopac/";
 
 	public COSMOPAC() {
+		super(51);
 		
 		// we use another averaging radius
 		this.rav = COSMOSAC.RAV;
@@ -256,6 +257,26 @@ public class COSMOPAC extends COSMOSAC {
 		setAnorm(56.502077074611016);
 		setRPower(0.8152912289882516);
 		setVnorm(86.01343230125369);
+		
+		// Non energetic study
+		// idac/Athermal.csv AARD:0.03634304855190082 NP:146
+		folder = "profiles/RM1/";
+		setAnorm(225.53381478405623);
+		setRPower(0.6229842090038551);
+		// idac/Athermal.csv AARD:0.036278854768369694 NP:146
+		folder = "profiles/RM1_1.18/";
+		setAnorm(124.18305909611365);
+		setRPower(0.6372590453541258);
+		// idac/nonHB.csv AARD:0.1271605266268788 NP:269
+		setBeta(1.399460298613211);
+		setFpol(0.73377065315896);
+		
+		// idac/nonHB.csv AARD:0.10439292160859014 NP:269
+		rav = 1.30*RAV;
+		setBeta(1.3205203534195487);
+		setFpol(0.843371077585408);
+		setAnorm(64.61423251936094);
+		setRPower(0.7700935807819056);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

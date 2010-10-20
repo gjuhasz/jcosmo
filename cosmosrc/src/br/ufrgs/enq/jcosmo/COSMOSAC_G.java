@@ -40,8 +40,9 @@ public class COSMOSAC_G extends COSMOSAC {
 		
 //		folder = "moltest/";
 //		folder = "gam6-31+G2d,p/";
-		folder = "gam6-31Gd/";
+//		folder = "gam6-31Gd/";
 //		folder = "gamSTO3/";
+		folder = "profiles/gamess/";
 		
 		this.rav = RAV;
 
@@ -103,10 +104,17 @@ public class COSMOSAC_G extends COSMOSAC {
 		setBeta(0.97);
 		setSigmaHB(0.001);
 		setSigmaHB2(0.0088);
+		
+		setCHB(0);
+		setRPower(0.67);
+		setBeta(1.8297164);
+		setFpol(0.449987);
+		
+		//this.rav = 1.3*RAV;
 	}
 
 	public COSMOSAC_G() {
-		this(11);
+		this(51);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
