@@ -185,6 +185,7 @@ public class SigmaProfileGenerator {
 		Scanner input = new Scanner(new File(filename));
 		input.useLocale(Locale.US);
 		
+		
 		// discovering which the atoms-element map
 		List<Integer> atoms = new ArrayList<Integer>();
 		while(input.hasNext()){
@@ -200,19 +201,31 @@ public class SigmaProfileGenerator {
 			if(atoms.size()!=0)
 				break;
 		}
-
-		// first lets try to find the "NUMBER OF SURFACE SEGMENTS IS"
+		
+		// first lets try to find the "Total surface area of cavity (A**2)"
 		// volume information on "VOLUME INSIDE CONSTS:"
 		int cosmoSegments = 0;
 		while(input.hasNext()){
-			if(volume==0 && input.next().equals("VOLUME") && input.next().equals("INSIDE") &&
-					input.next().equals("CONSTS:")){
+			if(volume==0 && input.next().equals("Total") && input.next().equals("surface")){
+				input.nextLine();
+				
+				String tmp;
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				input.next();
+				tmp = input.next();
 				volume = input.nextDouble();
-			}
-			if(input.next().equals("NUMBER") && input.next().equals("OF") &&
-					input.next().equals("SURFACE") && input.next().equals("SEGMENTS") &&
-					input.next().equals("IS")){
+				
+				tmp = input.nextLine();
+				tmp = input.nextLine();
+				tmp = input.nextLine();
+				
+				tmp = input.next();
 				cosmoSegments = input.nextInt();
+				tmp = input.nextLine();
+				tmp = input.nextLine();
 				break;
 			}
 			input.nextLine();

@@ -323,10 +323,11 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 		setVisible(true);
 
 		// test for a mixture
-		addList("WATER");
-		addList("H3O+1");
-		addList("OH-1");
-		addList("CL-1");
+//		addList("WATER");
+//		addList("H3O+1");
+//		addList("OH-1");
+//		addList("CL-1");
+		addList("OXYGEN");
 //		addList("sec-butylamine");
 //		addList("hydrogen-fluoride");
 //		addList("ACETONE");

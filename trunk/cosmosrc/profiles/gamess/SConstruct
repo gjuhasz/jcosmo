@@ -15,13 +15,13 @@ keys_p1 = 'keys_p1.gamess'
 keys_m1 = 'keys_m1.gamess'
 # creating the charge files
 file = open(keys,'r')
-fileContents = file.readline()
+fileContents = file.read()
 file.close()
 file = open(keys_p1,'w')
-file.write(fileContents + '$CONTRL ICHARG=+1 $END')
+file.write(fileContents + ' $CONTRL ICHARG=+1 $END')
 file.close()
 file = open(keys_m1,'w')
-file.write(fileContents + '$CONTRL ICHARG=-1 $END')
+file.write(fileContents + ' $CONTRL ICHARG=-1 $END')
 file.close()
 
 # Gamess stuff
