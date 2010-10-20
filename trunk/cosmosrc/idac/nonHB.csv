@@ -175,20 +175,18 @@ acetone/n-decane,313,3.1,10,3.21,2.59,3.45,2.6,3.64,2.19907407407407e-05,
 acetone/n-hexadecane,298,6.1,10,3.67,3.35,3.99,4.18,4.63,3.99,
 acetone/n-hexadecane,333,4.2,10,2.91,2.5,3.15,2.98,3.76,2.89,
 acetone/n-hexadecane,373,3.1,10,2.37,1.91,2.55,2.2,3.12,2.14,
-"methyl ethyl ketone/n-pentane",303.12,5.19,"10.1021/je00009a037"
+"methyl ethyl ketone/n-pentane",303.12,5.19,"10.1021/je00009a037 TODO adicionar o resto"
 "methyl ethyl ketone/n-hexane",303.39,4.31,"10.1021/je00009a037"
 "methyl ethyl ketone/n-hexane",313.27,3.92,"10.1021/je00009a037"
-"methyl ethyl ketone/n-hexane",312.89,4.23,"10.1021/je00009a037"
-"methyl ethyl ketone/n-hexane",332.99,3.27,"10.1021/je00009a037"
 "methyl ethyl ketone/n-hexane",298,5,10,5.36,4.88,5.72,4.51388888888889e-05,4.81,5.54,
 "methyl ethyl ketone/n-hexane",333,3.7,10,4.33,3.75,4.6,3.42,3.99,4.15,
 "methyl ethyl ketone/n-hexane",373,2.8,10,3.58,2.95,3.79,2.6,3.38,3.18,
 "methyl ethyl ketone/n-heptane",298,4.8,10,5.14,4.51388888888889e-05,5.49,4.52,4.73,5.18,
 "methyl ethyl ketone/n-heptane",333,3.5,10,4.15,3.6,4.41,3.34,3.92,3.88,
 "methyl ethyl ketone/n-heptane",373,2.6,10,3.44,2.83,3.35648148148148e-05,2.55,3.32,3,
-"?methyl ethyl ketone/n-decane",298,4.8,10,4.46,4.07,4.76,4.19,4.44,4.47,
-"?methyl ethyl ketone/n-decane",333,3.5,10,3.35648148148148e-05,3.12,3.83,3.1,3.68,3.35,
-"?methyl ethyl ketone/n-decane",373,2.8,10,2.98,2.45,3.15,2.35,3.11,2.57,
+"methyl ethyl ketone/n-decane",298,4.8,10,4.46,4.07,4.76,4.19,4.44,4.47,
+"methyl ethyl ketone/n-decane",333,3.5,10,3.35648148148148e-05,3.12,3.83,3.1,3.68,3.35,
+"methyl ethyl ketone/n-decane",373,2.8,10,2.98,2.45,3.15,2.35,3.11,2.57,
 "methyl ethyl ketone/n-hexadecane",298,4.2,10,3.41,3.1,3.64,3.62,3.89,3.62,
 "methyl ethyl ketone/n-hexadecane",333,2.9,10,2.75,2.38,2.92,2.68,3.23,2.71,
 "methyl ethyl ketone/n-hexadecane",373,2.3,10,2.27,1.87,2.41,2.04,2.73,2.08,
