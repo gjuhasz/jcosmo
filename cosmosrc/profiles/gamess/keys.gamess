@@ -23,10 +23,10 @@
 ! 6-311G
 ! $BASIS GBASIS=N311 NGAUSS=6 $END
 ! COSMO-RS GAMESS recommended
- $BASIS GBASIS=N311 NGAUSS=6 $END
+ $BASIS GBASIS=KTZVP $END
 
 ! One of the following
-! $guess guess=KTZVP $end
+ $guess guess=HUCKEL $end
 
 ! Reuse geometry
 ! $contrl runtyp=energy maxit=100 $end

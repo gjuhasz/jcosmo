@@ -99,7 +99,8 @@ public class SigmaDescriptors {
 //					folder = "mopac/";
 //					folder = "mopPOA1_all/";
 //					folder = "mopRM1/";
-					folder = "profiles/POA1/";
+//					folder = "profiles/POA1/";
+					folder = "profiles/RM1/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";
@@ -119,7 +120,7 @@ public class SigmaDescriptors {
 //					folder = "gamSTO3/";
 //					folder = "gam6-311G/";
 //					folder = "gam6-31Gd/";
-					folder = "mopac/";
+					folder = "profiles/gamess/";
 					extension = ".gout";
 					type = SigmaProfileGenerator.FileType.GAMESS;
 					model = new COSMOSAC_G();
