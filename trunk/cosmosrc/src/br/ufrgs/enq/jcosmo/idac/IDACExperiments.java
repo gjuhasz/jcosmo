@@ -147,7 +147,8 @@ public class IDACExperiments {
 			if(printGammas){
 				System.out.println(
 //						model.getComps()[0].name + '/' + model.getComps()[1].name + ',' +
-						gammaInf + "," + Math.exp(lnGamma[0]));
+//						gammaInf + "," + Math.exp(lnGamma[0]));
+						Math.log(gammaInf) + "," + lnGamma[0]);
 			}
 			
 			AARD += rd;

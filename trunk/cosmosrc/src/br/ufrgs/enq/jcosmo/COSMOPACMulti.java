@@ -179,6 +179,11 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(5, 3, 144);
 		setCHB(5, 4, 674);
 		
+		folder = "profiles/RM1_1.18/";
+		//folder = "profiles/RM1/";
+		setRPower(0.67);
+		//setRPower(1);
+		
 //		setHbType(HBTYPE_FIXED);
 //		setCHB(1, 2, 6531);
 //		setCHB(1, 3, 6531);

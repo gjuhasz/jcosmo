@@ -76,6 +76,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		
 		// or just the two main groups
 		experiments.add(new IDACExperiments("idac/nonHB.csv", modelClass));
+//		experiments.add(new IDACExperiments("idac/Athermal.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/nonaqueous.csv", modelClass));
 //		experiments.add(new IDACExperiments("idac/aqueous.csv", modelClass));
 	}

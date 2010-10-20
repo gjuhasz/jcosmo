@@ -209,23 +209,22 @@ public class SigmaProfileGenerator {
 			if(volume==0 && input.next().equals("Total") && input.next().equals("surface")){
 				input.nextLine();
 				
-				String tmp;
 				input.next();
 				input.next();
 				input.next();
 				input.next();
 				input.next();
-				tmp = input.next();
+				input.next();
 				volume = input.nextDouble();
 				
-				tmp = input.nextLine();
-				tmp = input.nextLine();
-				tmp = input.nextLine();
+				input.nextLine();
+				input.nextLine();
+				input.nextLine();
 				
-				tmp = input.next();
+				input.next();
 				cosmoSegments = input.nextInt();
-				tmp = input.nextLine();
-				tmp = input.nextLine();
+				input.nextLine();
+				input.nextLine();
 				break;
 			}
 			input.nextLine();

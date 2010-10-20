@@ -149,6 +149,13 @@ public class COSMOSAC {
 //		setCoord(10.0);
 //		setAnorm(80.83);
 //		setVnorm(66.69);
+		
+		
+		setAnorm(124.18305909611365);
+		setRPower(0.6372590453541258);
+		setBeta(1.399460298613211);
+		setFpol(0.73377065315896);
+		setCHB(0);
 	}
 
 	public double getRav() {
@@ -199,6 +206,8 @@ public class COSMOSAC {
 		this.area = new double[ncomps][nsegments];
 
 		for (int i = 0; i < comps.length; i++) {
+			if(comps[i].area == null)
+				comps[i] = COSMOSACDataBase.getInstance().getComp(comps[i].name);
 			this.VCOSMO[i] = comps[i].Vcosmo;
 			this.area[i] = comps[i].area;
 			
@@ -514,7 +523,7 @@ public class COSMOSAC {
 
 		for(int i=0; i<ncomps; ++i){
 			double phi_zi = RNORM[i]/sum_zi_ri;
-			double psi_zi = RNORM[i]/sum_ziR_ri;
+			double psi_zi = Math.pow(RNORM[i], rPower)/sum_ziR_ri;
 			double theta_zi = QNORM[i]/sum_zi_qi;
 
 			double lnGammaSG = 0;
@@ -529,7 +538,10 @@ public class COSMOSAC {
 				double phi_theta = phi_zi/theta_zi;
 				lnGammaSG += Math.log(psi_zi) + 1 - psi_zi - (coord/2)*QNORM[i]*
 					( Math.log(phi_theta) + 1 - phi_theta);
-
+				
+				// combinatorial from Klamt, 1998 (eq 30. DOI 10.1021/jp980017s)
+				// there is a major problem with this expression (to be published)
+				// lnGammaSG = 0.14*Math.log(sum_zi_qi/QNORM[i]);
 			}
 
 			// CALCULATION OF GAMMAS

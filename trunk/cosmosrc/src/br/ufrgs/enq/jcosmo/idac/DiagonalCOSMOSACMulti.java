@@ -14,8 +14,8 @@ public class DiagonalCOSMOSACMulti {
 	private static final long serialVersionUID = 1L;
 
 	public static void main (String[] args) throws Exception{
-		String modelClass = COSMOPACMulti.class.getName();
-//		String modelClass = COSMOPACMultiUNIFAC.class.getName();
+//		String modelClass = COSMOPACMulti.class.getName();
+		String modelClass = COSMOPACMultiUNIFAC.class.getName();
 //		String modelClass = COSMOPACMultiAtom.class.getName();
 //		String modelClass = PCMSACMulti.class.getName();
 //		String modelClass = COSMOSAC_GMulti.class.getName();
@@ -26,7 +26,7 @@ public class DiagonalCOSMOSACMulti {
 		dig.setTitle("IDAC for COSMOSAC model");
 		
 //		dig.addIDACExperiments("idac/Alcohol-Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Alcohol-Water298.csv", modelClass);
+//		dig.addIDACExperiments("idac/Alcohol-Water298.csv", modelClass);
 //		dig.addIDACExperiments("idac/AlcoholSmall-Water298.csv", modelClass);
 //		dig.addIDACExperiments("idac/Aldehyde-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alkane-Water.csv", modelClass);
@@ -44,7 +44,7 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Ketone-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/VinylHalide-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/Water.csv", modelClass);
-		dig.addIDACExperiments("idac/Water298.csv", modelClass);
+//		dig.addIDACExperiments("idac/Water298.csv", modelClass);
 		
 //		dig.addIDACExperiments("idac/Alcohol-Alkane.csv", modelClass);
 //		dig.addIDACExperiments("idac/Alcohol-CycloAlkane.csv", modelClass);
@@ -76,7 +76,7 @@ public class DiagonalCOSMOSACMulti {
 //		dig.addIDACExperiments("idac/Alkane-Alkane.csv", modelClass);
 		
 		// or just the families
-//		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
+		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
 //		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
