@@ -1,0 +1,38 @@
+ $contrl scftyp=rhf $end
+
+! One of the following
+! $contrl dfttyp=b3lyp $end
+! $contrl mplevl=2 $end
+! COSMO-RS GAMESS recommended
+ $contrl dfttyp=BP86 $end
+
+ $system timlim=10000 mwords=20 $end
+ $SCF DIRSCF=.TRUE. $end
+
+! COSMO-GAMESS article
+! $basis gbasis=N31 ngauss=6 ndfunc=2 npfunc=1 $end
+! 6-31+G(2d,p)
+! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=2 NPFUNC=1 DIFFSP=.T. $END
+! 6-31G(2d) =? 6-31G**
+! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=2 $END
+! 6-31G(d) = 6-31G*
+! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=1 $END
+! 3-21G
+! $BASIS GBASIS=N21 NGAUSS=3 $END
+! $BASIS GBASIS=N31 NGAUSS=6 NDFUNC=2 NPFUNC=1 DIFFSP=.T. DIFFS=.T. $END
+! 6-311G
+! $BASIS GBASIS=N311 NGAUSS=6 $END
+! COSMO-RS GAMESS recommended
+ $BASIS GBASIS=N311 NGAUSS=6 $END
+
+! One of the following
+! $guess guess=KTZVP $end
+
+! Reuse geometry
+! $contrl runtyp=energy maxit=100 $end
+! Optimize the geometry with COSMO effects
+ $contrl runtyp=OPTIMIZE maxit=30 $end
+
+! Run COSMO on perfect conductor
+ $COSGMS PRFCND=.TRUE. $end
+
