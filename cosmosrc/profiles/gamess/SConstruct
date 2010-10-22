@@ -1,4 +1,5 @@
 import os
+import shutil
 
 # www.scons.org script files for COSMO computations using both MOPAC and GAMESS
 
@@ -71,13 +72,48 @@ Execute(delAction)
 
 # Convert mol files to gamess input
 inps = env.BabelGam(files)
-#inps += env.BabelGam(Glob('*.optmol'))
-#inps += env.BabelGam_m1(Glob('*.mol-1'))
-#inps += env.BabelGam_p1(Glob('*.mol+1'))
 env.Depends(inps, ['keys.gamess'])
 # env.Depends(inps, delAction)
 # process files with gamess
 gamessBuild = env.Gamess(inps)
 env.Alias('gamess', gamessBuild)
+
+# Creating script to be used by SGE
+rungms = '/home/u/rpseng/gamess/rungms'
+# rungms = '/home/rafael/src/gamess/rungms'
+queue = 's_thin_day.q'
+# queue = 's_fat_day.q'
+file = open('sge.sh','w')
+file.write("""#!/bin/bash
+#
+# Clear previouslly created files
+rm -f /home/u/rpseng/gamess/tmp/*.dat
+
+# Opcoes de execucao:\n""")
+file.write('#$ -t 1-' + str(len(molfiles)))
+file.write("""
+#$ -cwd
+#$ -q s_thin_day.q
+#$ -tc 48
+#$ -o $TASK_ID.gout
+
+# Comando para o array:
+/home/u/rpseng/gamess/rungms $SGE_TASK_ID.inp
+"""
+)
+file.close()
+# copy all files as array files
+file = open('mv.sh','w')
+i = 1
+inpcopies = []
+for fi in molfiles :
+  name, extension = os.path.splitext(str(fi))
+  inpcopies += env.InstallAs(source = name + '.inp', target = str(i) + '.inp')
+  file.write('mv -f ' + str(i) + '.gout ' + name + '.gout\n')
+  i = i+1
+file.close()
+
+env.Depends(inpcopies, inps)
+env.Alias('inps', inpcopies)
 
 env.Default(gamessBuild)
