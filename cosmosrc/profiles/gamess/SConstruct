@@ -81,35 +81,32 @@ env.Alias('gamess', gamessBuild)
 # Creating script to be used by SGE
 rungms = '/home/u/rpseng/gamess/rungms'
 # rungms = '/home/rafael/src/gamess/rungms'
-queue = 's_thin_day.q'
-# queue = 's_fat_day.q'
-file = open('sge.sh','w')
-file.write("""#!/bin/bash
-#
-# Clear previouslly created files
-rm -f /home/u/rpseng/gamess/tmp/*.dat
+basedir = os.path.basename(os.path.abspath('.'))
 
-# Opcoes de execucao:\n""")
-file.write('#$ -t 1-' + str(len(molfiles)))
+file = open('qsub.sh','w')
+file.write('#!/bin/bash\n\n')
+
+file.write('\n#$ -t 1-' + str(len(molfiles)))
+file.write('\n#$ -N ' + basedir)
 file.write("""
 #$ -cwd
 #$ -q s_thin_day.q
 #$ -tc 48
-#$ -o $TASK_ID.gout
+""")
+file.write('#$ -o ' + basedir + '$TASK_ID.gout\n\n')
 
-# Comando para o array:
-/home/u/rpseng/gamess/rungms $SGE_TASK_ID.inp
-"""
-)
+file.write('rm -f /dados/rpseng/' + basedir + 'SGE_TASK_ID.dat\n')
+file.write('/home/u/rpseng/gamess/rungms ' + basedir + '$SGE_TASK_ID.inp')
 file.close()
+
 # copy all files as array files
 file = open('mv.sh','w')
 i = 1
 inpcopies = []
 for fi in molfiles :
   name, extension = os.path.splitext(str(fi))
-  inpcopies += env.InstallAs(source = name + '.inp', target = str(i) + '.inp')
-  file.write('mv -f ' + str(i) + '.gout ' + name + '.gout\n')
+  inpcopies += env.InstallAs(source = name + '.inp', target = basedir + str(i) + '.inp')
+  file.write('mv -f ' + basedir + str(i) + '.gout ' + name + '.gout\n')
   i = i+1
 file.close()
 
