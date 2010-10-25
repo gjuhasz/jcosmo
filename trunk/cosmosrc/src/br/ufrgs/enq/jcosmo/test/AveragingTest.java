@@ -28,7 +28,7 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
  * @author rafael
  *
  */
-public class SigmaAveragingTest {
+public class AveragingTest {
 
 	public static void main(String[] args) throws Exception {
 		
