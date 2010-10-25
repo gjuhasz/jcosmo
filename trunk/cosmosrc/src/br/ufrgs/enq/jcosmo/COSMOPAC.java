@@ -279,6 +279,9 @@ public class COSMOPAC extends COSMOSAC {
 		setFpol(0.843371077585408);
 		setAnorm(64.61423251936094);
 		setRPower(0.7700935807819056);
+		
+		
+		rav = 1.30*RAV;
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {

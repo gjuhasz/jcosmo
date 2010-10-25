@@ -21,8 +21,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 	public IDAC_Est() throws Exception {
 //		String modelClass = COSMOSAC.class.getName();
-		String modelClass = COSMOSAC_G.class.getName();
-//		String modelClass = COSMOPAC.class.getName();
+//		String modelClass = COSMOSAC_G.class.getName();
+		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
