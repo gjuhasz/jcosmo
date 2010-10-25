@@ -327,7 +327,7 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		addList("H3O+1");
 //		addList("OH-1");
 //		addList("CL-1");
-		addList("OXYGEN");
+//		addList("OXYGEN");
 //		addList("sec-butylamine");
 //		addList("hydrogen-fluoride");
 //		addList("ACETONE");
@@ -342,6 +342,9 @@ public class COSMOSACDialog extends JFrame implements ActionListener {
 //		addList("NTF2");
 //		addList("DCA");
 //		addList("N-OCTANE");
+		addList("ETHYLENE CARBONATE");
+		addList("BENZENE");
+		addList("TOLUENE");
 		removeButton.setEnabled(true);
 	}
 
