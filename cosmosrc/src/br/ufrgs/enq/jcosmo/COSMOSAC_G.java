@@ -43,6 +43,10 @@ public class COSMOSAC_G extends COSMOSAC {
 //		folder = "gam6-31Gd/";
 //		folder = "gamSTO3/";
 		folder = "profiles/gamess/";
+//		folder = "profiles/gam6-311G/";
+//		folder = "profiles/gam6-31Gd/";
+//		folder = "profiles/gam6-31GdM/";
+//		folder = "profiles/gb97-d/";
 		
 		this.rav = RAV;
 
@@ -107,10 +111,10 @@ public class COSMOSAC_G extends COSMOSAC {
 		
 		setCHB(0);
 		setRPower(0.67);
-		setBeta(1.8297164);
-		setFpol(0.449987);
+		setBeta(1.447663);
+		setFpol(0.5895713);
 		
-		//this.rav = 1.3*RAV;
+		this.rav = RAV;
 	}
 
 	public COSMOSAC_G() {

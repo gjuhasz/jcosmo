@@ -142,8 +142,9 @@ public class SigmaProfileGenerator {
 		default:
 //			simpleSorting(area, SIGMA);
 			
-			averageCharges(rav);
+//			averageCharges(rav);
 //			averageCharges2(rav);
+			averageCharges3(rav);
 			simpleSorting(area, sigmaAveraged);
 			break;
 		}
@@ -178,6 +179,13 @@ public class SigmaProfileGenerator {
 	 */
 	public double[] getChargeDensity(){
 		return CHGDEN;
+	}
+	
+	/**
+	 * @return the original (not averaged) charge density
+	 */
+	public double[] getOriginalChargeDensity(){
+		return SIGMA;
 	}
 
 	void readSegmentChargesGAMESS(String filename) throws FileNotFoundException, Exception{
@@ -544,6 +552,41 @@ public class SigmaProfileGenerator {
 				double temp = ( (Rn2 * Reff2)/(Rn2 + Reff2) )*exp;
 				num += SIGMA[K]*temp;
 				den += temp;
+			}
+			sigmaAveraged[J] = num/den;
+		}
+	}
+	
+	/**
+	 * Average the charges accordingly to a standard averaging radius.
+	 * <p>The averaging equation used is as the book on COSMO-RS, by Klamt.
+	 */
+	void averageCharges3(double rav) {
+		sigmaAveraged = new double[x.length];
+
+		double RAV2 = rav*rav;
+		double sav = 4*Math.PI*RAV2;
+
+		// BEGIN AVERAGING SURFACE CHARGES
+		for(int J=0; J<x.length; ++J){
+			double num = 0.0;
+			double den = 0.0;
+
+			for(int K=0; K<x.length; ++K){
+				double deltax = x[K]-x[J];
+				double deltay = y[K]-y[J];
+				double deltaz = z[K]-z[J];
+				double DMN = Math.sqrt(deltax*deltax + deltay*deltay + deltaz*deltaz);
+				
+				double qj = SIGMA[K]*area[K];
+				double sj = area[K];
+				
+				double DMN2 = DMN*DMN;
+				
+				double exp = Math.exp(-DMN2/(RAV2));
+				
+				num += qj/(sj+sav) * exp;
+				den += sj/(sj+sav) * exp;
 			}
 			sigmaAveraged[J] = num/den;
 		}

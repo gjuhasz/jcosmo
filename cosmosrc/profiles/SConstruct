@@ -32,20 +32,6 @@ file = open(keys_m1,'w')
 file.write('CHARGE=-1 ' + fileContents)
 file.close()
 
-# GAMESS keys file stuff
-keys = 'keys.gamess'
-keys_p1 = 'keys_p1.gamess'
-keys_m1 = 'keys_m1.gamess'
-# creating the charge files
-file = open(keys,'r')
-fileContents = file.readline()
-file.close()
-file = open(keys_p1,'w')
-file.write(fileContents + '$CONTRL ICHARG=+1 $END')
-file.close()
-file = open(keys_m1,'w')
-file.write(fileContents + '$CONTRL ICHARG=-1 $END')
-file.close()
 
 mol2mop = Builder(action = 'babel -i mol $SOURCE -o mopin -xf ' + keys + ' $TARGET',
                      suffix = '.mop', single_source=True)
@@ -61,32 +47,6 @@ env.Append(BUILDERS = {'Mol2Mop_m1' : mol2mop_m1})
 env.Append(BUILDERS = {'Mopac' : mopac})
 env.Append(BUILDERS = {'MopacOpt' : mopacopt})
 
-# Gamess stuff
-babelgam = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess $TARGET',
-                     suffix = '.inp', single_source=True)
-babelgam_p1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess_p1 $TARGET',
-                     suffix = '.inp', single_source=True)
-babelgam_m1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess_m1 $TARGET',
-                     suffix = '.inp', single_source=True)
-babelgampcm = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess.pcm $TARGET',
-                     suffix = '.pcm.inp', single_source=True)
-babelgampcm_m1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess.pcm_m1 $TARGET',
-                     suffix = '.pcm.inp', single_source=True)
-babelgampcm_p1 = Builder(action = 'babel -i mol $SOURCE -o gamin -xf keys.gamess.pcm_p1 $TARGET',
-                     suffix = '.pcm.inp', single_source=True)
-# Gamess also produces a .dat file
-def gamess_targets(target, source, env):
-           target.append('$HOME/src/gamess/$TARGET.dat')
-           return target, source
-gamess = Builder(action = os.environ['HOME'] + '/src/gamess/rungms $SOURCE > $TARGET', suffix = '.gout',
-	single_source=True) # , emitter = gamess_targets)
-env.Append(BUILDERS = {'BabelGam' : babelgam})
-env.Append(BUILDERS = {'BabelGam_m1' : babelgam_m1})
-env.Append(BUILDERS = {'BabelGam_p1' : babelgam_p1})
-env.Append(BUILDERS = {'BabelGamPCM' : babelgampcm})
-env.Append(BUILDERS = {'BabelGamPCM_m1' : babelgampcm_m1})
-env.Append(BUILDERS = {'BabelGamPCM_p1' : babelgampcm_p1})
-env.Append(BUILDERS = {'Gamess' : gamess})
 
 # files
 env.VariantDir(tmpdir, molfiles)
@@ -119,33 +79,4 @@ install = env.Install(variant, mopacBuild)
 install += env.Install(variant, molfiles)
 env.Alias('mopac', install)
 env.Default(install)
-
-# Build all files for Gamess
-# Delete all DAT files, otherwise gamess will stop
-delAction = Delete(Glob(os.environ['HOME'] + '/src/gamess/tmp/*.dat'))
-Execute(delAction)
-
-# Convert mol files to gamess input
-inps = env.BabelGam(files)
-#inps += env.BabelGam(Glob('*.optmol'))
-#inps += env.BabelGam_m1(Glob('*.mol-1'))
-#inps += env.BabelGam_p1(Glob('*.mol+1'))
-env.Depends(inps, ['keys.gamess'])
-# env.Depends(inps, delAction)
-# process files with gamess
-gamessBuild = env.Gamess(inps)
-install = env.Install('gamess', gamessBuild)
-install += env.Install('gamess', molfiles)
-Alias('gamess', install)
-
-# Convert mol files to gamess PCM input
-inps = env.BabelGamPCM(Glob('*.mol'))
-#inps += env.BabelGamPCM(Glob('*.optmol'))
-inps += env.BabelGamPCM_p1(Glob('*.mol+1'))
-inps += env.BabelGamPCM_m1(Glob('*.mol-1'))
-env.Depends(inps, 'keys.gamess.pcm')
-# env.Depends(inps, delAction)
-# process files with gamess
-gamessBuild = env.Gamess(inps)
-Alias('gamesspcm', gamessBuild)
 

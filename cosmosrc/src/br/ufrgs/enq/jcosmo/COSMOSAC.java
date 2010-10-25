@@ -19,6 +19,8 @@
 
 package br.ufrgs.enq.jcosmo;
 
+import org.netlib.blas.BLAS;
+
 
 
 
@@ -221,7 +223,7 @@ public class COSMOSAC {
 			s2 /= ACOSMO[i];
 			s2*=10000;
 			// from linear fit of some substances, with a lower limit
-			permitPure[i] = Math.max(1.8, s2*71.3-7.74);
+			permitPure[i] = Math.max(1.8, s2*71.3-5.74);
 			
 			// Sort the compound area and charge and overwrite the compound data
 //			simpleSorting(this.area[i], comps[i].charge, comps[i].area);
@@ -358,7 +360,7 @@ public class COSMOSAC {
 		}
 		s2*=10000;
 		// from linear fit of some substances, with a lower limit
-		permit = Math.max(1.8, s2*71.3-7.74);
+		permit = Math.max(1.8, s2*71.3-5.74);
 		
 //		permit = 0;
 //		for (int i = 0; i < ncomps; i++) {

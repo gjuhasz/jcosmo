@@ -4,7 +4,9 @@
 ! $contrl dfttyp=b3lyp $end
 ! $contrl mplevl=2 $end
 ! COSMO-RS GAMESS recommended
- $contrl dfttyp=BP86 $end
+! $contrl dfttyp=BP86 $end
+! COSAb recommended
+ $contrl dfttyp=B97-D $end
 
  $system timlim=10000 mwords=20 $end
  $SCF DIRSCF=.TRUE. $end
@@ -29,9 +31,9 @@
  $guess guess=HUCKEL $end
 
 ! Reuse geometry
-! $contrl runtyp=energy maxit=100 $end
+ $contrl runtyp=energy maxit=100 $end
 ! Optimize the geometry with COSMO effects
- $contrl runtyp=OPTIMIZE maxit=30 $end
+! $contrl runtyp=OPTIMIZE maxit=30 $end
 
 ! Run COSMO on perfect conductor
  $COSGMS PRFCND=.TRUE. $end

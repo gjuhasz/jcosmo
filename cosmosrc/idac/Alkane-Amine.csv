@@ -6,3 +6,6 @@ System,T(K),GammaInf,Ref
 "n-nonane/n,n-dimethylformamide",293,38.98,7
 "n-nonane/n,n-dimethylformamide",333,23.1,7
 "n-decane/n,n-dimethylformamide",333,24.8,7
+"n-octane/cyclohexylamine",353.15,1.36,"10.1021/je050316s",
+"n-octane/cyclohexylamine",373.15,1.29,"10.1021/je050316s",
+"n-octane/cyclohexylamine",393.15,1.20,"10.1021/je050316s",

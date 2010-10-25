@@ -13,6 +13,7 @@ import org.apache.commons.math.optimization.PointCostPair;
 import br.ufrgs.enq.direct.ObjectiveFunction;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
+import br.ufrgs.enq.jcosmo.COSMOSAC_G;
 
 public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
@@ -20,8 +21,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 	public IDAC_Est() throws Exception {
 //		String modelClass = COSMOSAC.class.getName();
-//		String modelClass = COSMOSAC_G.class.getName();
-		String modelClass = COSMOPAC.class.getName();
+		String modelClass = COSMOSAC_G.class.getName();
+//		String modelClass = COSMOPAC.class.getName();
 //		String modelClass = PCMSAC.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
@@ -103,7 +104,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 4;
+		return 2;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -118,8 +119,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //		pars[i++] = cosmo.getSigmaHB2();
 //		pars[i++] = cosmo.getSigmaHB3();
 //		pars[i++] = cosmo.getCoord();
-		pars[i++] = cosmo.getAnorm();
-		pars[i++] = cosmo.getRPower();
+//		pars[i++] = cosmo.getAnorm();
+//		pars[i++] = cosmo.getRPower();
 //		pars[i++] = cosmo.getVnorm();
 	}
 
@@ -145,8 +146,8 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 //				cosmo.setSigmaDisp(pars[i++]);
 //				cosmo.setCDisp(pars[i++]);
 //				cosmo.setCoord(pars[i++]);
-				cosmo.setAnorm(pars[i++]);
-				cosmo.setRPower(pars[i++]);
+//				cosmo.setAnorm(pars[i++]);
+//				cosmo.setRPower(pars[i++]);
 //				cosmo.setVnorm(pars[i++]);
 				
 				// update some internal variables

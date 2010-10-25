@@ -10,3 +10,11 @@ System,T(K),GammaInf,Ref
 "n,n-dimethylformamide/n-decane",333,12.59,7
 "n,n-dimethylformamide/n-undecane",313,14.3,7
 "n,n-dimethylformamide/n-undecane",333,11.6,7
+"cyclohexylamine/n-octane",353.15,1.61,"10.1021/je050316s TODO: add other data from this source",
+"cyclohexylamine/n-octane",373.15,1.50,"10.1021/je050316s",
+"cyclohexylamine/n-octane",393.15,1.42,"10.1021/je050316s",
+"cyclohexylamine/toluene",353.15,1.19,"10.1021/je050316s",
+"cyclohexylamine/toluene",373.15,1.12,"10.1021/je050316s",
+"cyclohexylamine/aniline",383.15,0.84,"10.1021/je050316s",
+"cyclohexylamine/aniline",393.15,0.94,"10.1021/je050316s",
+"cyclohexylamine/aniline",403.15,1.03,"10.1021/je050316s",

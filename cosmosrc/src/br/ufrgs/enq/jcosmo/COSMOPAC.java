@@ -271,6 +271,8 @@ public class COSMOPAC extends COSMOSAC {
 		setBeta(1.399460298613211);
 		setFpol(0.73377065315896);
 		
+		folder = "profiles/RM1/";
+		
 		// idac/nonHB.csv AARD:0.10439292160859014 NP:269
 		rav = 1.30*RAV;
 		setBeta(1.3205203534195487);
