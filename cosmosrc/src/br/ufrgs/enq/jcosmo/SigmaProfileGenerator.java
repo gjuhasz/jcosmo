@@ -144,7 +144,8 @@ public class SigmaProfileGenerator {
 			
 //			averageCharges(rav);
 //			averageCharges2(rav);
-			averageCharges3(rav);
+//			averageCharges3(rav);
+			averageCharges4(rav);
 			simpleSorting(area, sigmaAveraged);
 			break;
 		}
@@ -565,7 +566,7 @@ public class SigmaProfileGenerator {
 		sigmaAveraged = new double[x.length];
 
 		double RAV2 = rav*rav;
-		double sav = 4*Math.PI*RAV2;
+		double sav = Math.PI*RAV2;
 
 		// BEGIN AVERAGING SURFACE CHARGES
 		for(int J=0; J<x.length; ++J){
@@ -589,6 +590,37 @@ public class SigmaProfileGenerator {
 				den += sj/(sj+sav) * exp;
 			}
 			sigmaAveraged[J] = num/den;
+		}
+	}
+	
+	/**
+	 * New averaging
+	 */
+	void averageCharges4(double rav) {
+		sigmaAveraged = new double[x.length];
+
+		// BEGIN AVERAGING SURFACE CHARGES
+		for(int J=0; J<x.length; ++J){
+			double energySum = 0;
+			double chargeSum = 0;
+			double areaSum = 0;
+
+			for(int K=0; K<x.length; ++K){
+				double deltax = x[K]-x[J];
+				double deltay = y[K]-y[J];
+				double deltaz = z[K]-z[J];
+				double DMN = Math.sqrt(deltax*deltax + deltay*deltay + deltaz*deltaz);
+				
+				if(DMN > rav)
+					continue;
+				
+				chargeSum += area[K]*SIGMA[K];
+				energySum += area[K]*SIGMA[K]*SIGMA[K];
+				areaSum += area[K];
+			}
+			sigmaAveraged[J] = Math.sqrt(energySum/areaSum);
+			if(chargeSum < 0)
+				sigmaAveraged[J] = -sigmaAveraged[J];
 		}
 	}
 	
