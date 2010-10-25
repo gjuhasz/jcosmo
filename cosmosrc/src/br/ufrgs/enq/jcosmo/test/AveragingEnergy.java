@@ -25,6 +25,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
+import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
 
 /**
  * Diagonal for averaging energy effects.
@@ -44,6 +45,8 @@ public class AveragingEnergy extends JFrame implements XYToolTipGenerator{
 		// Configuration
 		String folder = "profiles/RM1/";
 		String extension = ".cos";
+		FileType type = SigmaProfileGenerator.FileType.MOPAC;
+		double rav = COSMOSAC.RAV;
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -103,9 +106,9 @@ public class AveragingEnergy extends JFrame implements XYToolTipGenerator{
 
 			SigmaProfileGenerator sigmaParser;
 
-			sigmaParser = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC);
+			sigmaParser = new SigmaProfileGenerator(type);
 			try {
-				sigmaParser.parseFile(fileName, COSMOSAC.RAV);
+				sigmaParser.parseFile(fileName, rav);
 			} catch (Exception e) {
 				continue;
 			}
