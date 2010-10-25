@@ -77,7 +77,7 @@ public class DiagonalCOSMOSACMulti {
 		
 		// or just the families
 		dig.addIDACExperiments("idac/nonHB.csv", modelClass);
-//		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
+		dig.addIDACExperiments("idac/Athermal.csv", modelClass);
 //		dig.addIDACExperiments("idac/Chlorinated-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/LargeIDAC-Water.csv", modelClass);
 //		dig.addIDACExperiments("idac/aqueous.csv", modelClass);

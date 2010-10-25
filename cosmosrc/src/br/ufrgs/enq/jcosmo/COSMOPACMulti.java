@@ -173,11 +173,11 @@ public class COSMOPACMulti extends COSMOSACMulti {
 		setCHB(5, 3, 144);
 		setCHB(5, 4, 2912);
 		
-		folder = "profiles/AM1/";
-		setCHB(1, 4, 3660);
-		setCHB(5, 2, 4262);
-		setCHB(5, 3, 144);
-		setCHB(5, 4, 674);
+//		folder = "profiles/AM1/";
+//		setCHB(1, 4, 3660);
+//		setCHB(5, 2, 4262);
+//		setCHB(5, 3, 144);
+//		setCHB(5, 4, 674);
 		
 		folder = "profiles/RM1_1.18/";
 		//folder = "profiles/RM1/";
@@ -189,6 +189,9 @@ public class COSMOPACMulti extends COSMOSACMulti {
 //		setCHB(1, 3, 6531);
 //		sigmaHBmin = 0.0;
 //		waterScale = 1;
+		
+		setRPower(0.67);
+		setAnorm(200);
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
