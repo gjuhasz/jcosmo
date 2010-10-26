@@ -23,7 +23,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
 
@@ -33,20 +32,25 @@ import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
  * @author rafael
  *
  */
-public class AveragingEnergy extends JFrame implements XYToolTipGenerator{
+public class AveragingEnergyCorrected extends JFrame implements XYToolTipGenerator{
 	private static final long serialVersionUID = 1L;
 
 	List<String> tps = new Vector<String>();
 
 	List<Color> color = new ArrayList<Color>();
 
-	public AveragingEnergy() {
+	public AveragingEnergyCorrected() {
 
 		// Configuration
-		String folder = "profiles/RM1/";
+		String folder = "profiles/RM1_1.18/";
 		String extension = ".cos";
 		FileType type = SigmaProfileGenerator.FileType.MOPAC;
-		double rav = COSMOSAC.RAV;
+//		double rav = 1.5;
+//		double fortho = 0.66;
+		double rav = 1.0;
+		double fortho = 0.79209;
+		double rav2 = 1.5*rav;
+		double fcorr = -2.0;
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -107,22 +111,32 @@ public class AveragingEnergy extends JFrame implements XYToolTipGenerator{
 			SigmaProfileGenerator sigmaParser;
 
 			sigmaParser = new SigmaProfileGenerator(type);
+			double[] sigmaAvg;
+			double[] sigmaAvg2;
 			try {
 				sigmaParser.parseFile(fileName, rav);
+				sigmaAvg = sigmaParser.getAveragedChargeDensity();
+				
+				sigmaParser.parseFile(fileName, rav2);
+				sigmaAvg2 = sigmaParser.getAveragedChargeDensity();
 			} catch (Exception e) {
 				continue;
 			}
 
 			double[] area = sigmaParser.getOriginalArea();
 			double []sigma = sigmaParser.getOriginalChargeDensity();
-			double[] sigmaAvg = sigmaParser.getAveragedChargeDensity();
+
 
 			double energy = 0, energyAvg = 0;
 			double areaT = 0;
 			for (int i = 0; i < sigmaAvg.length; i++) {
 				areaT += area[i];
+				
+				// Orthogonalize the sigmaAvg2
+				sigmaAvg2[i] = sigmaAvg2[i] - fortho*sigmaAvg[i];
+				
 				energy += area[i]*sigma[i]*sigma[i];
-				energyAvg += area[i]*sigmaAvg[i]*sigmaAvg[i];
+				energyAvg += area[i]*sigmaAvg[i]*(sigmaAvg[i] + fcorr*sigmaAvg2[i]);
 			}
 			points.add(energy/areaT*1e3, energyAvg/areaT*1e3);
 			line.addData(energy/areaT*1e3, energyAvg/areaT*1e3);
@@ -153,6 +167,6 @@ public class AveragingEnergy extends JFrame implements XYToolTipGenerator{
 	}
 	
 	public static void main(String[] args) {
-		new AveragingEnergy();
+		new AveragingEnergyCorrected();
 	}
 }

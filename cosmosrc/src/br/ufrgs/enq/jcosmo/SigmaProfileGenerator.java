@@ -141,11 +141,12 @@ public class SigmaProfileGenerator {
 		case MOPAC:
 		default:
 //			simpleSorting(area, SIGMA);
+//			this.sigmaAveraged = SIGMA;
 			
 //			averageCharges(rav);
 //			averageCharges2(rav);
-//			averageCharges3(rav);
-			averageCharges4(rav);
+			averageCharges3(rav);
+//			averageCharges4(rav);
 			simpleSorting(area, sigmaAveraged);
 			break;
 		}

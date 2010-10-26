@@ -271,7 +271,7 @@ public class COSMOPAC extends COSMOSAC {
 		setBeta(1.399460298613211);
 		setFpol(0.73377065315896);
 		
-		folder = "profiles/RM1/";
+//		folder = "profiles/RM1/";
 		
 		// idac/nonHB.csv AARD:0.10439292160859014 NP:269
 		rav = 1.30*RAV;
@@ -279,9 +279,6 @@ public class COSMOPAC extends COSMOSAC {
 		setFpol(0.843371077585408);
 		setAnorm(64.61423251936094);
 		setRPower(0.7700935807819056);
-		
-		
-		rav = 1.30*RAV;
 	}
 
 	public void setComponents(COSMOSACCompound comps[]) throws Exception {
