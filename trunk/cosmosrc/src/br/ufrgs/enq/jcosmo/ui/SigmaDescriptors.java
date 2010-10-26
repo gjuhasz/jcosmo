@@ -252,15 +252,16 @@ public class SigmaDescriptors {
 
 					// Polarizability analysis
 					if(analysisType.getSelectedItem().equals("Polarizability")){
+						
+						rav = 1.0;
+						double fortho = 0.79209;
+						double rav2 = 1.5*rav;
+						
 						sigmaParser.parseFile(fileName, rav);
 						double[] sigmaBase = sigmaParser.getAveragedChargeDensity();
 
-						sigmaParser.parseFile(fileName, rav*2);
+						sigmaParser.parseFile(fileName, rav2);
 						double[] sigma2 = sigmaParser.getAveragedChargeDensity();
-
-						// value from Klamt (COSMO-RS refinement)
-						double fcorr = 0.816;
-//						fcorr = 0.75;
 
 						double[] area = sigmaParser.getOriginalArea();
 						double[] sigmaT = new double[area.length];
@@ -269,7 +270,7 @@ public class SigmaDescriptors {
 
 						for (int m = 0; m < area.length; m++) {
 //							sigmaT[m] = 1000*Math.abs(fcorr*sigmaBase[m] - sigma2[m]);
-							sigmaT[m] = 1000*(fcorr*sigmaBase[m] - sigma2[m]);
+							sigmaT[m] = 1000*(sigma2[m] - fortho*sigmaBase[m]);
 						}
 //						double []sT = {-2, 0, 2};
 						double []sT = {-1, -0.5, 0.5, 1};
