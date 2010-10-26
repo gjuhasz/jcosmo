@@ -22,25 +22,29 @@ package br.ufrgs.enq.jcosmo.test;
 import br.ufrgs.enq.jcosmo.COSMOPAC;
 import br.ufrgs.enq.jcosmo.COSMOSAC;
 import br.ufrgs.enq.jcosmo.COSMOSACCompound;
-import br.ufrgs.enq.jcosmo.COSMOSACDataBase;
 
 public class ActivityTests {
 
 	public static void main(String[] args) throws Exception {
 		
-		COSMOSACDataBase db = COSMOSACDataBase.getInstance();
-		
 		COSMOSACCompound comps[] = new COSMOSACCompound[2];
-		comps[0] = db.getComp("propionic-acid");
-		comps[1] = db.getComp("cyclohexane");
+		comps[0] = new COSMOSACCompound();
+		comps[1] = new COSMOSACCompound();
+		comps[0].name = "N,N-DIMETHYLFORMAMIDE";
+		comps[1].name = "N-HEXANE";
+		
+		comps[0].name = "N-OCTANE";
+		comps[1].name = "ETHYL ACETATE";
+		
+		comps[0].name = "N-PENTANE";
+		comps[1].name = "METHYL ETHYL KETONE";
 		
 		COSMOSAC cosmosac = new COSMOPAC();
-		cosmosac.setSigmaHB(COSMOSAC.SIGMAHB);
 		cosmosac.setComponents(comps);
 
-		cosmosac.setTemperature(298);
+		cosmosac.setTemperature(333.15);
 
-		int n = 100;
+		int n = 21;
 		double x[] = new double[2];
 		double lnGamma[] = new double[2];
 

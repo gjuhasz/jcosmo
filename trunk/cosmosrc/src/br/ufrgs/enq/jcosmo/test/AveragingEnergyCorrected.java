@@ -48,9 +48,9 @@ public class AveragingEnergyCorrected extends JFrame implements XYToolTipGenerat
 //		double rav = 1.5;
 //		double fortho = 0.66;
 		double rav = 1.0;
-		double fortho = 0.79209;
+		double f_ortho = 0.79209;
 		double rav2 = 1.5*rav;
-		double fcorr = -2.0;
+		double f_corr = -2.0;
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -133,10 +133,10 @@ public class AveragingEnergyCorrected extends JFrame implements XYToolTipGenerat
 				areaT += area[i];
 				
 				// Orthogonalize the sigmaAvg2
-				sigmaAvg2[i] = sigmaAvg2[i] - fortho*sigmaAvg[i];
+				sigmaAvg2[i] = sigmaAvg2[i] - f_ortho*sigmaAvg[i];
 				
 				energy += area[i]*sigma[i]*sigma[i];
-				energyAvg += area[i]*sigmaAvg[i]*(sigmaAvg[i] + fcorr*sigmaAvg2[i]);
+				energyAvg += area[i]*sigmaAvg[i]*(sigmaAvg[i] + f_corr*sigmaAvg2[i]);
 			}
 			points.add(energy/areaT*1e3, energyAvg/areaT*1e3);
 			line.addData(energy/areaT*1e3, energyAvg/areaT*1e3);
