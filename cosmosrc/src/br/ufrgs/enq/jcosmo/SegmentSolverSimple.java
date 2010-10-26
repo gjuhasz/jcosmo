@@ -27,10 +27,10 @@ public class SegmentSolverSimple implements ISegmentSolver {
 //			for (int m = compseg-1; m >= 0; m--) {
 				double SUMMATION = 0.0;
 				for(int n = 0; n < nsegments; n++) {
-					SUMMATION += PROFILE[n]*factor* SEGGAMMA[n] * expDeltaW_RT[m][n];
+					SUMMATION += PROFILE[n]* SEGGAMMA[n] * expDeltaW_RT[m][n];
 				}
 				// substitute with the new value
-				SEGGAMMA[m] = 1.0/SUMMATION;
+				SEGGAMMA[m] = 1.0/(factor*SUMMATION);
 			}
 			
 			double newnorm = blas.dnrm2(SEGGAMMA.length, SEGGAMMA, 1);

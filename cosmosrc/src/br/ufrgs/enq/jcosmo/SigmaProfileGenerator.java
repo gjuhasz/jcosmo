@@ -147,7 +147,8 @@ public class SigmaProfileGenerator {
 //			averageCharges2(rav);
 			averageCharges3(rav);
 //			averageCharges4(rav);
-			simpleSorting(area, sigmaAveraged);
+			if(sigmaPoints>0)
+				simpleSorting(area, sigmaAveraged);
 			break;
 		}
 	}

@@ -19,7 +19,6 @@
 
 package br.ufrgs.enq.jcosmo;
 
-import org.netlib.blas.BLAS;
 
 
 
