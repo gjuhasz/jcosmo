@@ -13,6 +13,7 @@ import java.io.File;
 import org.netlib.blas.BLAS;
 
 import br.ufrgs.enq.jcosmo.SigmaProfileGenerator;
+import br.ufrgs.enq.jcosmo.SigmaProfileGenerator.FileType;
 
 
 
@@ -62,7 +63,7 @@ public class COSMOSAC2 {
 	double rav = RAV;
 	double rav2 = 1.5*RAV;
 	double f_ortho = 0.79209;
-	double fcorr = -2.0;
+	double f_corr = -2.0;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
@@ -109,6 +110,7 @@ public class COSMOSAC2 {
 	
 	String folder = "profiles/RM1_1.18/";
 	String extension = ".cos";
+	FileType type = SigmaProfileGenerator.FileType.MOPAC;
 
 	public String toString(){
 		return "COSMO-SAC2";
@@ -121,8 +123,8 @@ public class COSMOSAC2 {
 		rav = 1;
 		rav2 = 1.5*rav;
 		f_ortho = 0.79209;
-//		fcorr = -2.0;
-		fcorr = 0;
+		f_corr = -2.0;
+//		f_corr = 0;
 		
 		setBeta(2.03472);
 		setFpol(0.685231);
@@ -167,13 +169,13 @@ public class COSMOSAC2 {
 		if(!file.exists())
 			name = name.replace('-','_');
 			
-		SigmaProfileGenerator s = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC, this.rav, 0);
+		SigmaProfileGenerator s = new SigmaProfileGenerator(type , this.rav, 0);
 		s.parseFile(folder + name + extension);
 			
 		comp.sigma = s.getAveragedChargeDensity();
 		comp.area = s.getOriginalArea();
 		
-		SigmaProfileGenerator s2 = new SigmaProfileGenerator(SigmaProfileGenerator.FileType.MOPAC, this.rav2, 0);
+		SigmaProfileGenerator s2 = new SigmaProfileGenerator(type, this.rav2, 0);
 		s2.parseFile(folder + name + extension);
 		comp.sigmaOrtho = s2.getAveragedChargeDensity();
 		
@@ -342,7 +344,7 @@ public class COSMOSAC2 {
 
 							double sigma_mn = compi.sigma[m]+compj.sigma[n];
 							double sigma_mnOrtho = compi.sigmaOrtho[m] + compj.sigmaOrtho[n];
-							double deltaW = (fpol*alpha/2.0)* sigma_mn*(sigma_mn + fcorr * sigma_mnOrtho);
+							double deltaW = (fpol*alpha/2.0)* sigma_mn*(sigma_mn + f_corr * sigma_mnOrtho);
 							
 							double expDeltaW_RT = Math.exp(-(deltaW + deltaW_HB) * inv_RT);
 							
