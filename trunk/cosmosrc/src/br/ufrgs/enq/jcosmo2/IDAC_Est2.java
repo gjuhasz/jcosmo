@@ -12,11 +12,11 @@ import org.apache.commons.math.optimization.PointCostPair;
 
 import br.ufrgs.enq.direct.ObjectiveFunction;
 
-public class IDAC_Est implements CostFunction, ObjectiveFunction {
+public class IDAC_Est2 implements CostFunction, ObjectiveFunction {
 
 	List<IDACExperiments> experiments;
 
-	public IDAC_Est() throws Exception {
+	public IDAC_Est2() throws Exception {
 		String modelClass = COSMOSAC2.class.getName();
 
 		experiments = new ArrayList<IDACExperiments>();
@@ -98,7 +98,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 	public int getNumberOfPars(){
 //		return 6;
-		return 2;
+		return 3;
 	}
 	public void getCurrent(double [] pars){
 		int i=0;
@@ -106,6 +106,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 
 		pars[i++] = cosmo.getBeta();
 		pars[i++] = cosmo.getFpol();
+		pars[i++] = cosmo.getFcorr();
 //		pars[i++] = cosmo.getCHB();
 //		pars[i++] = cosmo.getSigmaHB();
 //		pars[i++] = cosmo.getSigmaDisp();
@@ -133,6 +134,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 				int i=0;
 				cosmo.setBeta(pars[i++]);
 				cosmo.setFpol(pars[i++]);
+				cosmo.setFcorr(pars[i++]);
 //				cosmo.setCHB(pars[i++]);
 //				cosmo.setSigmaHB(pars[i++]);
 //				cosmo.setSigmaHB2(pars[i++]);
@@ -181,9 +183,9 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 	}
 
 	public static void main(String[] args) {
-		IDAC_Est est;
+		IDAC_Est2 est;
 		try {
-			est = new IDAC_Est();
+			est = new IDAC_Est2();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return;
@@ -236,6 +238,7 @@ public class IDAC_Est implements CostFunction, ObjectiveFunction {
 		COSMOSAC2 cosmo = est.experiments.get(0).getModels().get(0);
 		System.out.println("setBeta(" + cosmo.getBeta() + ");");
 		System.out.println("setFpol(" + cosmo.getFpol() + ");");
+		System.out.println("setFcorr(" + cosmo.getFcorr() + ");");
 		System.out.println("setAnorm(" + cosmo.getAnorm() + ");");
 		System.out.println("setRPower(" + cosmo.getRPower() + ");");
 //		System.out.println("setCHB(" + cosmo.getCHB() + ");");

@@ -7,6 +7,8 @@ import shutil
 
 env = Environment()
 
+env.AppendENVPath('PATH', '/home/u/rpseng/bin')
+
 env['ENV']['USER'] = os.environ['USER']
 env['ENV']['HOME'] = os.environ['HOME']
 
@@ -95,6 +97,7 @@ file.write("""
 """)
 file.write('#$ -o ' + basedir + '$TASK_ID.gout\n\n')
 
+file.write(basedir + '$SGE_TASK_ID.gout\n')
 file.write('rm -f /dados/rpseng/' + basedir + '$SGE_TASK_ID.dat\n')
 file.write('/home/u/rpseng/gamess/rungms ' + basedir + '$SGE_TASK_ID.inp')
 file.close()

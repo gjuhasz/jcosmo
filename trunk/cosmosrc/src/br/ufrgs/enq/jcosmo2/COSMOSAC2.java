@@ -47,7 +47,7 @@ public class COSMOSAC2 {
 	// SIGMA compression stuff
 	private static final int COMPRESSED_SEGMENTS = 51;
 	private static final double SIGMA_MAX = 0.025;
-	private static final double SIGMA_THRESHOLD = SIGMA_MAX/(COMPRESSED_SEGMENTS-1);
+	private static final double SIGMA_THRESHOLD = 2*SIGMA_MAX/(COMPRESSED_SEGMENTS-1);
 	private static final double[] SIGMA_COMPRESSED = new double[COMPRESSED_SEGMENTS];
 	private static final double[] AREA_COMPRESSED = new double[COMPRESSED_SEGMENTS];
 	private static final double SIGMA_INCREMENT = (SIGMA_MAX*2)/(COMPRESSED_SEGMENTS-1);
@@ -63,7 +63,7 @@ public class COSMOSAC2 {
 	double rav = RAV;
 	double rav2 = 1.5*RAV;
 	double f_ortho = 0.79209;
-	double f_corr = -2.0;
+	double fcorr = -2.0;
 
 	static final double RGAS = 0.001987; // kcal/mol/K
 	public static final double VNORM = 66.69;
@@ -106,6 +106,9 @@ public class COSMOSAC2 {
 	/** Flag if the Staverman-Guggenheim term is ignored */
 	boolean ignoreSG = false;
 	private double averageACOSMO;
+	
+	boolean skipAverage = false;
+	
 	Compound[] comps;
 	
 	String folder = "profiles/RM1_1.18/";
@@ -123,14 +126,56 @@ public class COSMOSAC2 {
 		rav = 1;
 		rav2 = 1.5*rav;
 		f_ortho = 0.79209;
-		f_corr = -2.0;
-//		f_corr = 0;
-		
+		fcorr = -2.0;
+
 		setBeta(2.03472);
 		setFpol(0.685231);
 		setAnorm(64.61423251936094);
 		setRPower(0.7700935807819056);
 		setCHB(0);
+
+		folder = "profiles/RM1_1.18/";
+		skipAverage = false;
+		rav = 1;
+		rav2 = 1.5*rav;
+		f_ortho = 0.8033901717857764;
+		fcorr = -2.0;
+		setBeta(1.988614770236198);
+		setFpol(0.6776862764908341);
+		
+		folder = "profiles/RM1_1.18/";
+		skipAverage = false;
+		rav = 1.5;
+		rav2 = 1.5*rav;
+		f_ortho = 0.6665617963244067;
+		setBeta(1.7897260990915678);
+		setFpol(0.8618302987294044);
+		setFcorr(-0.03928437537005114);
+		
+		// nonHB COST:0.1149666078072233 NP:237
+		folder = "profiles/RM1_1.18/";
+		skipAverage = false;
+		rav = 1.5;
+		rav2 = 2*rav;
+		f_ortho = 0.41830198448203804;
+		fcorr = -2.0;
+		setBeta(1.3674741777731985);
+		setFpol(1.0982211235904975);
+		setFcorr(-2.859963039753584);
+		
+//		// nonHB COST:0.1404634741935444
+//		folder = "profiles/RM1/";
+//		skipAverage = true;
+//		setBeta(1.668791603688795);
+//		setFpol(0.5527341346636111);
+	}
+
+	public double getFcorr() {
+		return fcorr;
+	}
+
+	public void setFcorr(double fcorr) {
+		this.fcorr = fcorr;
 	}
 
 	public double getRav() {
@@ -171,20 +216,27 @@ public class COSMOSAC2 {
 			
 		SigmaProfileGenerator s = new SigmaProfileGenerator(type , this.rav, 0);
 		s.parseFile(folder + name + extension);
-			
-		comp.sigma = s.getAveragedChargeDensity();
 		comp.area = s.getOriginalArea();
 		
-		SigmaProfileGenerator s2 = new SigmaProfileGenerator(type, this.rav2, 0);
-		s2.parseFile(folder + name + extension);
-		comp.sigmaOrtho = s2.getAveragedChargeDensity();
+		if(skipAverage){
+			// Either use the original charge density (no averaging)
+			comp.sigma = s.getOriginalChargeDensity();
+		}
+		else{
+			// Or use the averaged charges
+			comp.sigma = s.getAveragedChargeDensity();
+			SigmaProfileGenerator s2 = new SigmaProfileGenerator(type, this.rav2, 0);
+			s2.parseFile(folder + name + extension);
+			comp.sigmaOrtho = s2.getAveragedChargeDensity();
+		}
 		
 		comp.volumeTotal = s.getVolume();
 		comp.areaTotal = 0;
 		for (int m = 0; m < comp.area.length; m++){
 			comp.areaTotal += comp.area[m];
 			
-			comp.sigmaOrtho[m] -= f_ortho*comp.sigma[m];
+			if(comp.sigmaOrtho!=null)
+				comp.sigmaOrtho[m] -= f_ortho*comp.sigma[m];
 		}
 		
 		compressProfile(comp);
@@ -203,7 +255,7 @@ public class COSMOSAC2 {
 		int nremain = comp.area.length, nsorted = 0;
 		
 		for (int J = 0; J < comp.area.length; J++) {
-			if(Math.abs(comp.sigmaOrtho[J]) > SIGMA_THRESHOLD)
+			if(comp.sigmaOrtho!=null && Math.abs(comp.sigmaOrtho[J]) > SIGMA_THRESHOLD)
 				continue;
 			
 			int TMP = (int)((comp.sigma[J]+SIGMA_MAX)/SIGMA_INCREMENT);
@@ -344,7 +396,7 @@ public class COSMOSAC2 {
 
 							double sigma_mn = compi.sigma[m]+compj.sigma[n];
 							double sigma_mnOrtho = compi.sigmaOrtho[m] + compj.sigmaOrtho[n];
-							double deltaW = (fpol*alpha/2.0)* sigma_mn*(sigma_mn + f_corr * sigma_mnOrtho);
+							double deltaW = (fpol*alpha/2.0)* sigma_mn*(sigma_mn + fcorr * sigma_mnOrtho);
 							
 							double expDeltaW_RT = Math.exp(-(deltaW + deltaW_HB) * inv_RT);
 							

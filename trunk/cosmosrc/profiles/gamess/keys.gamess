@@ -31,9 +31,9 @@
  $guess guess=HUCKEL $end
 
 ! Reuse geometry
- $contrl runtyp=energy maxit=100 $end
+! $contrl runtyp=energy maxit=100 $end
 ! Optimize the geometry with COSMO effects
-! $contrl runtyp=OPTIMIZE maxit=30 $end
+ $contrl runtyp=OPTIMIZE maxit=30 $end
 
 ! Run COSMO on perfect conductor
  $COSGMS PRFCND=.TRUE. $end
