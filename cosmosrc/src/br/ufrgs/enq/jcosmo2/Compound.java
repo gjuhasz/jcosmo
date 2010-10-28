@@ -34,9 +34,13 @@ public class Compound {
 	
 	public int ID;
 	public String name, formula, CAS;
-	public double []sigma;
-	public double []sigmaOrtho;
+	public double []sigmaAvg;
+	public double []sigmaDelta;
 	public double []area;
+	public double []x;
+	public double []y;
+	public double []z;
+	
 	public double volumeTotal;
 	public double areaTotal;
 	
@@ -51,7 +55,7 @@ public class Compound {
 	public void printProfile(PrintStream out){
 		out.println("Sigma\tP(Sigma)");
 		for (int i = 0; i < area.length; i++) {
-			out.println(sigma[i] + "\t" + area[i]);
+			out.println(sigmaAvg[i] + "\t" + area[i]);
 		}
 	}
 }

@@ -17,7 +17,7 @@
  * along with JCosmo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package br.ufrgs.enq.jcosmo;
+package br.ufrgs.enq.jcosmo2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+
+import br.ufrgs.enq.jcosmo.COSMOSAC;
 
 /**
  * Create the sigma profile based on GAMESS LOG or MOPAC COS file.
@@ -39,7 +41,7 @@ import java.util.Scanner;
  * @author rafael
  *
  */
-public class SigmaProfileGenerator {
+public class SigmaProfileGenerator2 {
 	
 	private static final double CHARGE_LOWER = -0.025;
 	protected static final double AU_ANGSTRON = 0.529177249;
@@ -66,7 +68,7 @@ public class SigmaProfileGenerator {
 	 * Creates the sigma profile given a COSMO/GAMESS output file with the default number of segments (51)
 	 * and default averaging radius.
 	 */
-	public SigmaProfileGenerator(FileType type) {
+	public SigmaProfileGenerator2(FileType type) {
 		this(type, COSMOSAC.RAV, 51);
 	}
 	
@@ -74,7 +76,7 @@ public class SigmaProfileGenerator {
 	 * Creates the sigma profile given a COSMO/GAMESS output and the number of segments,
 	 * default averaging radius is used.
 	 */
-	public SigmaProfileGenerator(FileType type, int sigmaPoints) {
+	public SigmaProfileGenerator2(FileType type, int sigmaPoints) {
 		this(type, COSMOSAC.RAV, sigmaPoints);
 	}
 	
@@ -85,7 +87,7 @@ public class SigmaProfileGenerator {
 	 * @param rav averaging radius
 	 * @param sigmaPoints the number of elements on the resulting profile (usually 51)
 	 */
-	public SigmaProfileGenerator(FileType type, double rav, int sigmaPoints) {
+	public SigmaProfileGenerator2(FileType type, double rav, int sigmaPoints) {
 		this.type = type;
 		this.rav = rav;
 		this.sigmaPoints = sigmaPoints;
@@ -143,9 +145,10 @@ public class SigmaProfileGenerator {
 //			simpleSorting(area, SIGMA);
 //			this.sigmaAveraged = SIGMA;
 			
-			averageCharges(rav);
+			sigmaAveraged = new double[x.length];
+			averageCharges(rav, SIGMA, sigmaAveraged, area, x, y, z);
 //			averageCharges2(rav);
-//			averageCharges3(rav);
+//			averageCharges3(rav, SIGMA, sigmaAveraged, area, x, y, z);
 //			averageCharges4(rav);
 			if(sigmaPoints>0)
 				simpleSorting(area, sigmaAveraged);
@@ -488,9 +491,8 @@ public class SigmaProfileGenerator {
 	 * Average the charges accordingly to a standard averaging radius.
 	 * <p>The averaging equation used is as in Mullins, Liu, Ghaderi, Fast, 2008.
 	 */
-	void averageCharges(double rav) {
-		sigmaAveraged = new double[x.length];
-
+	public static void averageCharges(double rav, double SIGMA[], double sigmaAveraged[], double area[],
+			double x[], double y[], double z[]) {
 		double RAV2 = rav*rav;
 
 		// BEGIN AVERAGING SURFACE CHARGES
@@ -564,8 +566,8 @@ public class SigmaProfileGenerator {
 	 * Average the charges accordingly to a standard averaging radius.
 	 * <p>The averaging equation used is as the book on COSMO-RS, by Klamt.
 	 */
-	void averageCharges3(double rav) {
-		sigmaAveraged = new double[x.length];
+	public static void averageCharges3(double rav, double SIGMA[], double sigmaAveraged[], double area[],
+			double x[], double y[], double z[]) {
 
 		double RAV2 = rav*rav;
 		double sav = Math.PI*RAV2;
@@ -704,15 +706,5 @@ public class SigmaProfileGenerator {
 	 */
 	public int[] getElem() {
 		return elem;
-	}
-
-	public double[] getX() {
-		return x;
-	}
-	public double[] getY() {
-		return y;
-	}
-	public double[] getZ() {
-		return z;
 	}
 }

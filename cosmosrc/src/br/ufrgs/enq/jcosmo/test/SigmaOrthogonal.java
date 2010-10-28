@@ -20,7 +20,7 @@ public class SigmaOrthogonal {
 		String folder = "profiles/RM1_1.18/";
 		String extension = ".cos";
 		FileType type = SigmaProfileGenerator.FileType.MOPAC;
-		double rav = 1.5;
+		double rav = 0.5;
 		double rav2 = 2*rav;
 		
 //		String folder = "profiles/gamess/";
@@ -30,6 +30,7 @@ public class SigmaOrthogonal {
 //		double rav2 = 1.5*rav;
 
 		SimpleRegression line = new SimpleRegression();
+		SimpleRegression line0 = new SimpleRegression();
 		
 		File folderObj = new File(folder);
 		String names[] = folderObj.list();
@@ -45,11 +46,13 @@ public class SigmaOrthogonal {
 
 			SigmaProfileGenerator sigmaParser;
 
+			double []sigma0;
 			double []sigma;
 			double []sigma2;
 			sigmaParser = new SigmaProfileGenerator(type);
 			try {
 				sigmaParser.parseFile(fileName, rav);
+				sigma0 = sigmaParser.getOriginalChargeDensity();
 				sigma = sigmaParser.getAveragedChargeDensity();
 				
 				sigmaParser.parseFile(fileName, rav2);
@@ -60,10 +63,12 @@ public class SigmaOrthogonal {
 			}
 
 			for (int i = 0; i < sigma.length; i++) {
+				line0.addData(sigma0[i], sigma[i]);
 				line.addData(sigma[i], sigma2[i]);
 			}
 		}
 
-		System.out.println("Slope = " + line.getSlope() + " Intercept = " + line.getIntercept() + ", R2 = " + line.getR());
+		System.out.println("Slope0 = " + line0.getSlope() + " Intercept = " + line0.getIntercept() + ", R2 = " + line0.getRSquare());
+		System.out.println("Slope = " + line.getSlope() + " Intercept = " + line.getIntercept() + ", R2 = " + line.getRSquare());
 	}
 }
