@@ -173,6 +173,7 @@ public class COSMOSAC2 {
 		setFpol(0.38473549097776416);
 		setFcorr(1);
 		
+		folder = "profiles/RM1_1.18/";
 		// linear relation from tests
 		rav = 1.1;
 		// eq for av
@@ -255,17 +256,23 @@ public class COSMOSAC2 {
 			//			comp.sigmaOrtho = s2.getAveragedChargeDensity();
 			comp.sigmaDelta = s.getOriginalChargeDensity();
 
+			double energy0 = 0, energyAvg = 0;
 			for (int m = 0; m < comp.area.length; m++){
+				energy0 += comp.area[m] * comp.sigmaDelta[m]*comp.sigmaDelta[m];
+				energyAvg += comp.area[m] * comp.sigmaAvg[m]*comp.sigmaAvg[m];
+				
 				comp.areaTotal += comp.area[m];
 				comp.sigmaDelta[m] = f_ortho*comp.sigmaDelta[m] - comp.sigmaAvg[m];
 			}
-			double [] sigmaDeltaAvg = new double[comp.sigmaDelta.length];
-			SigmaProfileGenerator2.averageCharges(rav, comp.sigmaDelta, sigmaDeltaAvg, comp.area, comp.x, comp.y, comp.z);
-			comp.sigmaDelta = sigmaDeltaAvg;
-//			for (int m = 0; m < comp.area.length; m++){
-//				comp.sigmaAvg[m] = (comp.sigmaAvg[m] + fcorr * sigmaDeltaAvg[m])/f_ortho;
-//				comp.sigmaDelta[m] = 0;
-//			}
+//			double [] sigmaDeltaAvg = new double[comp.sigmaDelta.length];
+//			SigmaProfileGenerator2.averageCharges(rav, comp.sigmaDelta, sigmaDeltaAvg, comp.area, comp.x, comp.y, comp.z);
+//			comp.sigmaDelta = sigmaDeltaAvg;
+			
+			double sigmaScale = Math.sqrt(energy0/energyAvg);
+			for (int m = 0; m < comp.area.length; m++){
+				comp.sigmaAvg[m] *= sigmaScale;
+				comp.sigmaDelta[m] = 0;
+			}
 		}
 		
 		compressProfile(comp);
