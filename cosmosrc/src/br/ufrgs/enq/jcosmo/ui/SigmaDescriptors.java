@@ -101,7 +101,7 @@ public class SigmaDescriptors {
 //					folder = "mopRM1/";
 //					folder = "profiles/POA1/";
 					folder = "profiles/RM1_1.18/";
-					folder = "profiles/RM1/";
+//					folder = "profiles/RM1/";
 				}
 				else if(fileType.getSelectedItem().equals("SVP-GAMESS")){
 					folder = "moltest/";

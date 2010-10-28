@@ -42,15 +42,37 @@ public class AveragingEnergyCorrected extends JFrame implements XYToolTipGenerat
 	public AveragingEnergyCorrected() {
 
 		// Configuration
+//		String folder = "profiles/RM1_1.18/";
+//		String extension = ".cos";
+//		FileType type = SigmaProfileGenerator.FileType.MOPAC;
+//		double rav = 1.0;
+//		double f_ortho = 0.8033901717857764;
+//		double rav2 = 1.5*rav;
+//		double f_corr = -2.0;
+		
+//		String folder = "profiles/RM1_1.18/";
+//		String extension = ".cos";
+//		FileType type = SigmaProfileGenerator.FileType.MOPAC;
+//		double rav = 1.5;
+//		double f_ortho = 0.6665617963244067;
+//		double rav2 = 1.5*rav;
+//		double f_corr = -2.0;
+		
 		String folder = "profiles/RM1_1.18/";
 		String extension = ".cos";
 		FileType type = SigmaProfileGenerator.FileType.MOPAC;
+		double rav = 1.5;
+		double f_ortho = 0.41830198448203804;
+		double rav2 = 2*rav;
+		double f_corr = -2.6;
+		
+//		String folder = "profiles/gamess/";
+//		String extension = ".gout";
+//		FileType type = SigmaProfileGenerator.FileType.GAMESS;
 //		double rav = 1.5;
-//		double fortho = 0.66;
-		double rav = 1.0;
-		double f_ortho = 0.79209;
-		double rav2 = 1.5*rav;
-		double f_corr = -2.0;
+//		double f_ortho = 0.7241079673777269;
+//		double rav2 = 1.5*rav;
+//		double f_corr = -4.0;
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
@@ -105,7 +127,7 @@ public class AveragingEnergyCorrected extends JFrame implements XYToolTipGenerat
 			if(!name.endsWith(extension))
 				continue;
 
-			name = name.substring(0, name.length() - 4);
+			name = name.substring(0, name.length() - extension.length());
 			String fileName = folder + name + extension;
 
 			SigmaProfileGenerator sigmaParser;

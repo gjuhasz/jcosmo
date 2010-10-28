@@ -17,11 +17,17 @@ public class SigmaOrthogonal {
 
 	public static void main(String[] args) {
 		// Configuration
-		String folder = "profiles/RM1/";
+		String folder = "profiles/RM1_1.18/";
 		String extension = ".cos";
 		FileType type = SigmaProfileGenerator.FileType.MOPAC;
-		double rav = 1.0;
-		double rav2 = 1.5*rav;
+		double rav = 1.5;
+		double rav2 = 2*rav;
+		
+//		String folder = "profiles/gamess/";
+//		String extension = ".gout";
+//		FileType type = SigmaProfileGenerator.FileType.GAMESS;
+//		double rav = 1.5;
+//		double rav2 = 1.5*rav;
 
 		SimpleRegression line = new SimpleRegression();
 		
@@ -32,7 +38,7 @@ public class SigmaOrthogonal {
 			if(!name.endsWith(extension))
 				continue;
 			
-			name = name.substring(0, name.length() - 4);
+			name = name.substring(0, name.length() - extension.length());
 			String fileName = folder + name + extension;
 			
 			System.out.println("Adding " + name + "...");
@@ -49,6 +55,7 @@ public class SigmaOrthogonal {
 				sigmaParser.parseFile(fileName, rav2);
 				sigma2 = sigmaParser.getAveragedChargeDensity();
 			} catch (Exception e) {
+				e.printStackTrace();
 				continue;
 			}
 
