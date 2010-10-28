@@ -45,8 +45,8 @@ public class COSMOSAC2 {
 	public static final double RAV = 0.81764200000000;
 	
 	// SIGMA compression stuff
-	private static final int COMPRESSED_SEGMENTS = 51;
-	private static final double SIGMA_MAX = 0.025;
+	private static final int COMPRESSED_SEGMENTS = 61;
+	private static final double SIGMA_MAX = 0.030;
 	private static final double SIGMA_THRESHOLD = 2*SIGMA_MAX/(COMPRESSED_SEGMENTS-1);
 	private static final double[] SIGMA_COMPRESSED = new double[COMPRESSED_SEGMENTS];
 	private static final double[] AREA_COMPRESSED = new double[COMPRESSED_SEGMENTS];
@@ -163,6 +163,23 @@ public class COSMOSAC2 {
 		setFpol(1.0982211235904975);
 		setFcorr(-2.859963039753584);
 		
+		// nonHB COST:0.14219163689050052 NP:272		
+		folder = "profiles/RM1/";
+		skipAverage = false;
+		rav = 1.5;
+		rav2 = 2*rav;
+		f_ortho = 0.6057217795048631;
+		setBeta(2.4226621419936434);
+		setFpol(0.38473549097776416);
+		setFcorr(1);
+		
+		// linear relation from tests
+		rav = 1.1;
+		// eq for av
+		f_ortho = rav*-0.312370 + 1.05062; // av
+//		f_ortho = rav*-0.346096 + 1.126528; // av3
+
+		
 //		// nonHB COST:0.1404634741935444
 //		folder = "profiles/RM1/";
 //		skipAverage = true;
@@ -217,26 +234,38 @@ public class COSMOSAC2 {
 		SigmaProfileGenerator s = new SigmaProfileGenerator(type , this.rav, 0);
 		s.parseFile(folder + name + extension);
 		comp.area = s.getOriginalArea();
-		
-		if(skipAverage){
-			// Either use the original charge density (no averaging)
-			comp.sigma = s.getOriginalChargeDensity();
-		}
-		else{
-			// Or use the averaged charges
-			comp.sigma = s.getAveragedChargeDensity();
-			SigmaProfileGenerator s2 = new SigmaProfileGenerator(type, this.rav2, 0);
-			s2.parseFile(folder + name + extension);
-			comp.sigmaOrtho = s2.getAveragedChargeDensity();
-		}
+		comp.x = s.getX();
+		comp.y = s.getY();
+		comp.z = s.getZ();
 		
 		comp.volumeTotal = s.getVolume();
 		comp.areaTotal = 0;
-		for (int m = 0; m < comp.area.length; m++){
-			comp.areaTotal += comp.area[m];
-			
-			if(comp.sigmaOrtho!=null)
-				comp.sigmaOrtho[m] -= f_ortho*comp.sigma[m];
+		
+		if(skipAverage){
+			// Either use the original charge density (no averaging)
+			comp.sigmaAvg = s.getOriginalChargeDensity();
+			for (int m = 0; m < comp.area.length; m++)
+				comp.areaTotal += comp.area[m];
+		}
+		else{
+			// Or use the averaged charges
+			comp.sigmaAvg = s.getAveragedChargeDensity();
+			//			SigmaProfileGenerator s2 = new SigmaProfileGenerator(type, this.rav2, 0);
+			//			s2.parseFile(folder + name + extension);
+			//			comp.sigmaOrtho = s2.getAveragedChargeDensity();
+			comp.sigmaDelta = s.getOriginalChargeDensity();
+
+			for (int m = 0; m < comp.area.length; m++){
+				comp.areaTotal += comp.area[m];
+				comp.sigmaDelta[m] = f_ortho*comp.sigmaDelta[m] - comp.sigmaAvg[m];
+			}
+			double [] sigmaDeltaAvg = new double[comp.sigmaDelta.length];
+			SigmaProfileGenerator2.averageCharges(rav, comp.sigmaDelta, sigmaDeltaAvg, comp.area, comp.x, comp.y, comp.z);
+			comp.sigmaDelta = sigmaDeltaAvg;
+//			for (int m = 0; m < comp.area.length; m++){
+//				comp.sigmaAvg[m] = (comp.sigmaAvg[m] + fcorr * sigmaDeltaAvg[m])/f_ortho;
+//				comp.sigmaDelta[m] = 0;
+//			}
 		}
 		
 		compressProfile(comp);
@@ -245,8 +274,8 @@ public class COSMOSAC2 {
 	/**
 	 * Compress the sigma profile of the given compound.
 	 * 
-	 * <p>Only nonzero elements are keeped and those with only a small
-	 * orthogonal correction are agregated as possible.
+	 * <p>Only nonzero elements are kept and those with only a small
+	 * deviation correction are aggregated as possible.
 	 * 
 	 * @param comp
 	 */
@@ -255,16 +284,16 @@ public class COSMOSAC2 {
 		int nremain = comp.area.length, nsorted = 0;
 		
 		for (int J = 0; J < comp.area.length; J++) {
-			if(comp.sigmaOrtho!=null && Math.abs(comp.sigmaOrtho[J]) > SIGMA_THRESHOLD)
+			if(comp.sigmaDelta!=null && Math.abs(comp.sigmaDelta[J]) > SIGMA_THRESHOLD)
 				continue;
 			
-			int TMP = (int)((comp.sigma[J]+SIGMA_MAX)/SIGMA_INCREMENT);
+			int TMP = (int)((comp.sigmaAvg[J]+SIGMA_MAX)/SIGMA_INCREMENT);
 			
 			if(TMP<0 || TMP > last)
 				continue;
 			
 			// Charges are simply put into a range 
-			if(comp.sigma[J]-SIGMA_COMPRESSED[TMP] > SIGMA_INCREMENT/2)
+			if(comp.sigmaAvg[J]-SIGMA_COMPRESSED[TMP] > SIGMA_INCREMENT/2)
 				TMP++;
 
 			if(AREA_COMPRESSED[TMP]==0)
@@ -294,15 +323,15 @@ public class COSMOSAC2 {
 			if(comp.area[i] == 0)
 				continue;
 			newArea[index] = comp.area[i];
-			newSigma[index] = comp.sigma[i];
-			newSigmaOrtho[index] = comp.sigmaOrtho[i];
+			newSigma[index] = comp.sigmaAvg[i];
+			newSigmaOrtho[index] = comp.sigmaDelta[i];
 			index++;
 		}
 		
 		// replace the old vectors
 		comp.area = newArea;
-		comp.sigma = newSigma;
-		comp.sigmaOrtho = newSigmaOrtho;
+		comp.sigmaAvg = newSigma;
+		comp.sigmaDelta = newSigmaOrtho;
 	}
 	
 	/**
@@ -394,9 +423,10 @@ public class COSMOSAC2 {
 
 							double deltaW_HB = 0;
 
-							double sigma_mn = compi.sigma[m]+compj.sigma[n];
-							double sigma_mnOrtho = compi.sigmaOrtho[m] + compj.sigmaOrtho[n];
-							double deltaW = (fpol*alpha/2.0)* sigma_mn*(sigma_mn + fcorr * sigma_mnOrtho);
+							double sigma_mn = compi.sigmaAvg[m]+compj.sigmaAvg[n];
+							double sigma_mnDelta = compi.sigmaDelta[m] + compj.sigmaDelta[n];
+							sigma_mn = (sigma_mn + fcorr*sigma_mnDelta)/f_ortho;
+							double deltaW = (fpol*alpha/2.0)* sigma_mn*sigma_mn;
 							
 							double expDeltaW_RT = Math.exp(-(deltaW + deltaW_HB) * inv_RT);
 							
